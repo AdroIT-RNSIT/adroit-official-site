@@ -39,50 +39,258 @@ const Home = () => {
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[150px]"></div>
       </div>
 
-      {/* Hero Section */}
-      <section 
-        ref={heroRef}
-        className="min-h-screen flex items-center justify-center relative px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out"
-      >
-        <div className="max-w-5xl text-center z-10 relative">
-          <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></span>
-            <span>Department of Computer Science & Engineering</span>
-          </div>
+     {/* Hero Section */}
+<section 
+  ref={heroRef}
+  className="min-h-screen flex items-center justify-center relative px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
+>
+  <div className="max-w-5xl text-center z-10 relative">
+    <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
+      <span className="w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></span>
+      <span>Department of Computer Science & Engineering</span>
+    </div>
 
-          <h1 className="mb-6">
-            <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
-              Welcome to
-            </span>
-            <span className="block text-6xl md:text-8xl lg:text-9xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-tight drop-shadow-[0_0_30px_rgba(0,240,255,0.3)]">
-              AdroIT
-            </span>
-          </h1>
+    <h1 className="mb-6">
+      <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
+        Welcome to
+      </span>
+      <span className="block text-6xl md:text-8xl lg:text-9xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-tight">
+        AdroIT
+      </span>
+    </h1>
 
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
-            The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
-            cutting-edge technology, collaborative projects, and industry-ready skills
-          </p>
+    <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
+      The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
+      cutting-edge technology, collaborative projects, and industry-ready skills
+    </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto">
-              <span className="relative z-10">Join AdroIT Now</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
-                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-              Explore Our Projects
-            </button>
-          </div>
-        </div>
+    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <button className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto">
+        <span className="relative z-10">Join AdroIT Now</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
+          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <button className="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
+        Explore Our Projects
+      </button>
+    </div>
+  </div>
 
-        {/* Decorative Rings */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none z-0 opacity-20">
-          <div className="absolute w-full h-full border border-cyan-500/20 rounded-full animate-spin-slow"></div>
-          <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/20 rounded-full animate-spin-slower-reverse"></div>
-        </div>
-      </section>
+  {/* Enhanced Decorative Rings with Glowing Effect and Moving Dot */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] pointer-events-none z-0">
+    
+    {/* Outer Glow Effect */}
+    <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-r from-cyan-400/5 to-purple-600/5 blur-[20px] animate-pulse-glow"></div>
+    
+    {/* Main Rings with Glow */}
+    <div className="absolute w-full h-full border border-cyan-500/30 rounded-full animate-spin-slow shadow-[0_0_30px_5px_rgba(34,211,238,0.15)]"></div>
+    <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/25 rounded-full animate-spin-slower-reverse shadow-[0_0_25px_5px_rgba(168,85,247,0.1)]"></div>
+    
+    {/* Inner Ring */}
+    <div className="absolute w-[40%] h-[40%] top-[30%] left-[30%] border border-cyan-400/20 rounded-full animate-spin-slowest shadow-[0_0_20px_3px_rgba(34,211,238,0.1)]"></div>
+
+    {/* Moving Dot from the "i" in AdroIT */}
+    <div className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_15px_5px_rgba(34,211,238,0.4)] animate-move-spiral">
+      {/* Blinking Core */}
+      <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
+    </div>
+
+    {/* Trail Effect Dots */}
+    <div className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400/50 shadow-[0_0_8px_2px_rgba(34,211,238,0.3)] animate-move-spiral-trail-1"></div>
+    <div className="absolute w-1 h-1 rounded-full bg-purple-500/40 shadow-[0_0_6px_1px_rgba(168,85,247,0.3)] animate-move-spiral-trail-2"></div>
+    <div className="absolute w-0.5 h-0.5 rounded-full bg-cyan-400/30 shadow-[0_0_4px_1px_rgba(34,211,238,0.3)] animate-move-spiral-trail-3"></div>
+
+    {/* Connection Lines */}
+    <svg className="absolute top-0 left-0 w-full h-full">
+      <defs>
+        <linearGradient id="spiralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
+        </linearGradient>
+      </defs>
+      {/* Spiral line path */}
+      <path
+        d="M325,325 Q200,200 400,100 Q500,200 250,400 Q100,500 300,300"
+        fill="none"
+        stroke="url(#spiralGradient)"
+        strokeWidth="0.5"
+        strokeDasharray="2 3"
+      />
+    </svg>
+
+    {/* Floating Particles Along the Path */}
+    {[...Array(8)].map((_, i) => (
+      <div
+        key={i}
+        className="absolute w-1 h-1 rounded-full bg-cyan-400/30 animate-float-particle"
+        style={{
+          animationDelay: `${i * 0.5}s`,
+          animationDuration: `${3 + i}s`
+        }}
+      />
+    ))}
+  </div>
+
+  {/* Add custom animations */}
+  <style jsx>{`
+    @keyframes pulse-glow {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(1.02);
+      }
+    }
+
+    @keyframes spin-slowest {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes move-spiral {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      25% {
+        transform: translate(-120px, -120px) scale(1.2);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translate(120px, -120px) scale(1);
+        opacity: 1;
+      }
+      75% {
+        transform: translate(120px, 120px) scale(1.2);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes move-spiral-trail-1 {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+      10% {
+        transform: translate(-40px, -40px);
+        opacity: 0.5;
+      }
+      20% {
+        transform: translate(-80px, -80px);
+        opacity: 0.3;
+      }
+      30% {
+        transform: translate(-120px, -120px);
+        opacity: 0.1;
+      }
+      100% {
+        transform: translate(-120px, -120px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes move-spiral-trail-2 {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+      20% {
+        transform: translate(60px, -60px);
+        opacity: 0.5;
+      }
+      40% {
+        transform: translate(120px, -120px);
+        opacity: 0.3;
+      }
+      60% {
+        transform: translate(180px, -180px);
+        opacity: 0.1;
+      }
+      100% {
+        transform: translate(180px, -180px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes move-spiral-trail-3 {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+      30% {
+        transform: translate(60px, 60px);
+        opacity: 0.5;
+      }
+      60% {
+        transform: translate(120px, 120px);
+        opacity: 0.3;
+      }
+      90% {
+        transform: translate(180px, 180px);
+        opacity: 0.1;
+      }
+      100% {
+        transform: translate(180px, 180px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes float-particle {
+      0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+      10%, 90% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 0.6;
+        transform: translate(20px, -20px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    .animate-spin-slowest {
+      animation: spin-slowest 40s linear infinite;
+    }
+
+    .animate-move-spiral {
+      animation: move-spiral 6s ease-in-out infinite;
+    }
+
+    .animate-move-spiral-trail-1 {
+      animation: move-spiral-trail-1 6s ease-out infinite;
+    }
+
+    .animate-move-spiral-trail-2 {
+      animation: move-spiral-trail-2 6s ease-out infinite;
+      animation-delay: 0.3s;
+    }
+
+    .animate-move-spiral-trail-3 {
+      animation: move-spiral-trail-3 6s ease-out infinite;
+      animation-delay: 0.6s;
+    }
+
+    .animate-float-particle {
+      animation: float-particle var(--duration) ease-in-out infinite;
+    }
+  `}</style>
+</section>
 
       {/* Why AdroIT Section */}
       <section 
