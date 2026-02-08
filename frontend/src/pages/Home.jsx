@@ -3,6 +3,7 @@ import ThreeScene from '../home/ThreeScene';
 
 const Home = () => {
   const heroRef = useRef(null);
+  const interactiveRef = useRef(null);
   const aboutRef = useRef(null);
   const eventsRef = useRef(null);
 
@@ -22,6 +23,7 @@ const Home = () => {
     }, observerOptions);
 
     if (heroRef.current) observer.observe(heroRef.current);
+    if (interactiveRef.current) observer.observe(interactiveRef.current);
     if (aboutRef.current) observer.observe(aboutRef.current);
     if (eventsRef.current) observer.observe(eventsRef.current);
 
@@ -91,17 +93,31 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Three.js Interactive Section */}
-      <section className="min-h-[70vh] relative flex items-center justify-center bg-[#12121a] border-y border-white/10">
+      {/* Three.js Interactive Section - Seamlessly Blended */}
+      <section 
+        ref={interactiveRef}
+        className="min-h-[70vh] relative flex items-center justify-center py-20 opacity-0 translate-y-12 transition-all duration-1000"
+      >
+        {/* Three.js Canvas Background */}
         <ThreeScene />
-        <div className="absolute z-10 text-center pointer-events-none">
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4">
+        
+        {/* Content Overlay */}
+        <div className="relative z-10 text-center px-8 max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-6 drop-shadow-[0_0_30px_rgba(0,240,255,0.3)]">
             Experience Innovation
           </h2>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-400">
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 leading-relaxed mb-8">
             Where code meets creativity in three dimensions
           </p>
+          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
+            Interact with the particles by moving your mouse or touching the screen. 
+            Watch as technology and artistry blend together in real-time.
+          </p>
         </div>
+
+        {/* Gradient overlays for smooth transition */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#0a0a0f] to-transparent pointer-events-none z-5"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none z-5"></div>
       </section>
 
       {/* About Preview Section */}
@@ -185,7 +201,7 @@ const Home = () => {
       {/* Events Highlight Section */}
       <section 
         ref={eventsRef}
-        className="py-32 px-8 bg-[#12121a] opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-32 px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
