@@ -679,10 +679,9 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
               <p className="text-gray-400">
-                Build practical expertise through hands-on projects and structured learning in Machine Learning,
-                Cloud Computing, Cybersecurity, and Data Analytics using industry-relevant tools and workflows.
+                Develop strong technical thinking by understanding core concepts, problem-solving approaches,
+                and real-world applications across Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
               </p>
-
             </div>
 
             <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
