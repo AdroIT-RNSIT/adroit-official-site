@@ -1,6 +1,271 @@
 import React, { useEffect, useRef } from 'react';
 import ThreeScene from '../home/ThreeScene';
 
+const InteractiveBall = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [velocity, setVelocity] = useState({ x: 0.5, y: 0.5 });
+  const [color, setColor] = useState('from-cyan-400 to-purple-600');
+  const [hitColor, setHitColor] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const ballRef = useRef(null);
+  const containerSize = 325; // Half of 650px container
+
+  const colors = [
+    'from-cyan-400 to-purple-600',
+    'from-green-400 to-blue-600',
+    'from-yellow-400 to-red-600',
+    'from-pink-400 to-indigo-600',
+    'from-orange-400 to-cyan-600',
+    'from-teal-400 to-pink-600'
+  ];
+
+  const hitEffectColors = [
+    'bg-gradient-to-r from-cyan-400 to-purple-600',
+    'bg-gradient-to-r from-green-400 to-blue-600',
+    'bg-gradient-to-r from-yellow-400 to-red-600',
+    'bg-gradient-to-r from-pink-400 to-indigo-600',
+    'bg-gradient-to-r from-orange-400 to-cyan-600',
+    'bg-gradient-to-r from-teal-400 to-pink-600'
+  ];
+
+  // Track mouse position
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const container = document.querySelector('.relative.min-h-screen');
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        setMousePosition({ x, y });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Ball movement animation
+  useEffect(() => {
+    const moveBall = () => {
+      setPosition(prev => {
+        let newX = prev.x + velocity.x;
+        let newY = prev.y + velocity.y;
+        let newVx = velocity.x;
+        let newVy = velocity.y;
+
+        // Bounce off container walls
+        if (newX > containerSize - 15 || newX < -containerSize + 15) {
+          newVx = -newVx * (0.9 + Math.random() * 0.2); // Dampen with randomness
+          newX = newX > 0 ? containerSize - 15 : -containerSize + 15;
+        }
+        if (newY > containerSize - 15 || newY < -containerSize + 15) {
+          newVy = -newVy * (0.9 + Math.random() * 0.2);
+          newY = newY > 0 ? containerSize - 15 : -containerSize + 15;
+        }
+
+        // Occasionally change direction randomly
+        if (Math.random() < 0.01) {
+          newVx += (Math.random() - 0.5) * 0.5;
+          newVy += (Math.random() - 0.5) * 0.5;
+        }
+
+        // Limit max speed
+        const speed = Math.sqrt(newVx * newVx + newVy * newVy);
+        if (speed > 2) {
+          newVx = (newVx / speed) * 2;
+          newVy = (newVy / speed) * 2;
+        }
+
+        // Check for cursor collision
+        const ballX = newX + containerSize;
+        const ballY = newY + containerSize;
+        const cursorX = mousePosition.x + containerSize;
+        const cursorY = mousePosition.y + containerSize;
+        
+        const distance = Math.sqrt(
+          Math.pow(ballX - cursorX, 2) + Math.pow(ballY - cursorY, 2)
+        );
+
+        if (distance < 50 && !hitColor) { // 50px collision radius
+          // Change ball color
+          const newColor = colors[Math.floor(Math.random() * colors.length)];
+          setColor(newColor);
+          
+          // Set hit effect color
+          const effectColor = hitEffectColors[Math.floor(Math.random() * hitEffectColors.length)];
+          setHitColor(effectColor);
+          
+          // Reverse and boost velocity
+          newVx = -newVx * 1.5;
+          newVy = -newVy * 1.5;
+          
+          // Remove hit effect after 2-3 seconds
+          setTimeout(() => {
+            setHitColor(null);
+          }, 2000 + Math.random() * 1000);
+        }
+
+        setVelocity({ x: newVx, y: newVy });
+        return { x: newX, y: newY };
+      });
+    };
+
+    const animationId = requestAnimationFrame(() => {
+      moveBall();
+      const interval = setInterval(moveBall, 16); // ~60fps
+      return () => clearInterval(interval);
+    });
+
+    return () => cancelAnimationFrame(animationId);
+  }, [velocity, mousePosition, hitColor]);
+
+  return (
+    <>
+      {/* Interactive Ball */}
+      <div 
+        ref={ballRef}
+        className={`absolute w-6 h-6 rounded-full bg-gradient-to-r ${color} shadow-[0_0_20px_8px_rgba(34,211,238,0.4)] transition-all duration-300 pointer-events-auto cursor-pointer`}
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px)`,
+          left: '50%',
+          top: '50%',
+          zIndex: 20,
+        }}
+      >
+        {/* Blinking Core */}
+        <div className="absolute inset-0 rounded-full bg-white animate-ping opacity-60"></div>
+        
+        {/* Glow effect */}
+        <div className="absolute -inset-3 rounded-full bg-current opacity-20 blur-md"></div>
+      </div>
+
+      {/* Hit Effect Particles */}
+      {hitColor && (
+        <>
+          {[...Array(8)].map((_, i) => {
+            const angle = (i * 45) * (Math.PI / 180);
+            const distance = 30 + Math.random() * 20;
+            return (
+              <div
+                key={i}
+                className={`absolute w-2 h-2 rounded-full ${hitColor} animate-hit-particle`}
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  transform: `translate(${position.x + Math.cos(angle) * distance}px, ${position.y + Math.sin(angle) * distance}px)`,
+                  animationDelay: `${i * 0.1}s`,
+                  opacity: 0.7,
+                }}
+              />
+            );
+          })}
+          
+          {/* Ripple Effect */}
+          <div 
+            className={`absolute rounded-full border-2 ${hitColor.replace('bg-gradient-to-r', 'border-gradient-to-r')} animate-ripple`}
+            style={{
+              left: '50%',
+              top: '50%',
+              transform: `translate(${position.x}px, ${position.y}px)`,
+              width: '0px',
+              height: '0px',
+            }}
+          />
+        </>
+      )}
+
+      {/* Trail Particles */}
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={`trail-${i}`}
+          className={`absolute w-${2 - i} h-${2 - i} rounded-full bg-gradient-to-r ${color} opacity-${30 - i * 10} animate-trail`}
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: `translate(${position.x - velocity.x * (i + 1) * 10}px, ${position.y - velocity.y * (i + 1) * 10}px)`,
+            animationDelay: `${i * 0.05}s`,
+            zIndex: 19 - i,
+          }}
+        />
+      ))}
+
+      {/* Connection Lines */}
+      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <defs>
+          <linearGradient id="spiralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
+          </linearGradient>
+        </defs>
+        {/* Spiral line path */}
+        <path
+          d="M325,325 Q200,200 400,100 Q500,200 250,400 Q100,500 300,300"
+          fill="none"
+          stroke="url(#spiralGradient)"
+          strokeWidth="0.5"
+          strokeDasharray="2 3"
+        />
+      </svg>
+
+      {/* Add particle animations */}
+      <style jsx>{`
+        @keyframes hit-particle {
+          0% {
+            transform: translate(var(--tx), var(--ty)) scale(1);
+            opacity: 0.7;
+          }
+          100% {
+            transform: translate(
+              calc(var(--tx) + var(--dx) * 50px),
+              calc(var(--ty) + var(--dy) * 50px)
+            ) scale(0);
+            opacity: 0;
+          }
+        }
+
+        @keyframes ripple {
+          0% {
+            width: 0px;
+            height: 0px;
+            opacity: 0.8;
+          }
+          100% {
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+          }
+        }
+
+        @keyframes trail {
+          0% {
+            opacity: 0.3;
+            transform: translate(var(--tx), var(--ty)) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(
+              calc(var(--tx) + var(--dx) * 20px),
+              calc(var(--ty) + var(--dy) * 20px)
+            ) scale(0.5);
+          }
+        }
+
+        .animate-hit-particle {
+          animation: hit-particle 0.8s ease-out forwards;
+        }
+
+        .animate-ripple {
+          animation: ripple 1.5s ease-out forwards;
+        }
+
+        .animate-trail {
+          animation: trail 0.5s linear forwards;
+        }
+      `}</style>
+    </>
+  );
+};
+
 const Home = () => {
   const heroRef = useRef(null);
   const missionRef = useRef(null);
@@ -317,9 +582,7 @@ const Home = () => {
                   <h3 className="text-2xl font-bold text-white">Practical Skill Development</h3>
                 </div>
                 <p className="text-gray-400">
-                  Move beyond textbooks and lectures. At AdroIT, you'll work on real-world projects, 
-                  learn industry-standard tools, and develop skills that employers actually value. 
-                  From web development to AI/ML, we cover the technologies shaping tomorrow.
+                  Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
                 </p>
               </div>
 
@@ -331,9 +594,7 @@ const Home = () => {
                   <h3 className="text-2xl font-bold text-white">Industry Exposure</h3>
                 </div>
                 <p className="text-gray-400">
-                  Connect with alumni working at top tech companies, attend workshops by industry experts, 
-                  and participate in hackathons sponsored by leading organizations. We provide the network 
-                  and exposure you need to launch your career.
+                  Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
                 </p>
               </div>
 
@@ -388,12 +649,11 @@ const Home = () => {
       >
         <ThreeScene />
         <div className="relative z-10 text-center px-8">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
             Our Learning Philosophy
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Just as these particles react dynamically, we believe in adaptive, hands-on learning. 
-            We don't just teach technology—we teach you how to <span className="text-cyan-400">think</span>, 
+            Like dynamic particles, we believe in adaptive, hands-on learning — not just teaching technology, but building how you <span className="text-cyan-400">think</span>, 
             <span className="text-purple-400"> innovate</span>, and <span className="text-pink-400">create</span>.
           </p>
         </div>
@@ -419,9 +679,10 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
               <p className="text-gray-400">
-                Master full-stack development, cloud computing, AI/ML, and more through 
-                structured learning paths and project-based practice.
+                Build practical expertise through hands-on projects and structured learning in Machine Learning,
+                Cloud Computing, Cybersecurity, and Data Analytics using industry-relevant tools and workflows.
               </p>
+
             </div>
 
             <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
@@ -432,8 +693,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-bold mb-4 text-purple-400">Professional Network</h3>
               <p className="text-gray-400">
-                Connect with alumni at FAANG companies, startups, and established enterprises. 
-                Get referrals, internship opportunities, and career guidance.
+                Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.
               </p>
             </div>
 
@@ -454,74 +714,78 @@ const Home = () => {
       </section>
 
       {/* Club Activities */}
-      <section 
-        ref={activitiesRef}
-        className="py-24 px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // What We Do</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Join Our Thriving Community</h2>
-            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
-              From weekly workshops to annual hackathons, we create opportunities for 
-              continuous learning and innovation
-            </p>
-          </div>
+   <section 
+  ref={activitiesRef}
+  className="py-24 px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
+>
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16">
+      <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // What We Do</span>
+      <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Join the AdroIT Community</h2>
+      <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+        Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
+        in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
+      </p>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
-              <p className="text-gray-400 mb-4">
-                Hands-on workshops covering the latest technologies, tools, and frameworks.
-              </p>
-              <ul className="space-y-2 text-gray-300">
-                <li>• Web Development Bootcamps</li>
-                <li>• AI/ML Implementation</li>
-                <li>• Cloud & DevOps</li>
-                <li>• Competitive Programming</li>
-              </ul>
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
-              <p className="text-gray-400 mb-4">
-                Collaborative development of real-world applications in 4-6 week cycles.
-              </p>
-              <ul className="space-y-2 text-gray-300">
-                <li>• Open Source Contributions</li>
-                <li>• Startup Ideas Implementation</li>
-                <li>• Community Service Tech Solutions</li>
-                <li>• Research Projects</li>
-              </ul>
-            </div>
+      <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
+        <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
+        <p className="text-gray-400 mb-4">
+          Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
+        </p>
+        <ul className="space-y-2 text-gray-300">
+          <li>• Machine Learning Fundamentals & Projects</li>
+          <li>• Cloud Computing Concepts & Deployment</li>
+          <li>• Cybersecurity Basics & Practices</li>
+          <li>• Data Analytics Tools & Workflows</li>
+        </ul>
+      </div>
 
-            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-pink-400">Annual Events</h3>
-              <p className="text-gray-400 mb-4">
-                Flagship events that put your skills to the test and connect you with industry.
-              </p>
-              <ul className="space-y-2 text-gray-300">
-                <li>• HackAdroit (24-hour Hackathon)</li>
-                <li>• Tech Summit with Industry Leaders</li>
-                <li>• Project Expo & Demo Day</li>
-                <li>• Alumni Interaction Sessions</li>
-              </ul>
-            </div>
-          </div>
+      <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
+        <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
+        <p className="text-gray-400 mb-4">
+          Team-based project cycles designed to apply skills through real-world problem solving.
+        </p>
+        <ul className="space-y-2 text-gray-300">
+          <li>• ML Model Development</li>
+          <li>• Cloud-based Application Deployment</li>
+          <li>• Security Analysis & Testing</li>
+          <li>• Data-driven Insights Projects</li>
+        </ul>
+      </div>
 
-          <div className="text-center mt-16">
-            <button className="group px-10 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 mx-auto">
-              <span>Ready to Transform Your College Journey?</span>
-              <svg width="24" height="24" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-2 transition-transform duration-300">
-                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <p className="text-gray-500 mt-4 text-sm">
-              Applications open for the 2024-25 academic year. Limited seats available.
-            </p>
-          </div>
-        </div>
-      </section>
+      <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
+        <h3 className="text-2xl font-bold mb-4 text-pink-400">Community & Events</h3>
+        <p className="text-gray-400 mb-4">
+          Events that encourage collaboration, innovation, and exposure to industry practices.
+        </p>
+        <ul className="space-y-2 text-gray-300">
+          <li>• HackAdroIT Hackathon</li>
+          <li>• Industry Talks & Expert Sessions</li>
+          <li>• Project Demo Days</li>
+          <li>• Peer Learning & Networking Events</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div className="text-center mt-16">
+      <button className="group px-10 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 mx-auto">
+        <span>Join AdroIT and Start Building</span>
+        <svg width="24" height="24" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-2 transition-transform duration-300">
+          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <p className="text-gray-500 mt-4 text-sm">
+        Recruitment for this cycle is closed. Next recruitment opens later this year.
+      </p>
+    </div>
+
+  </div>
+</section>
+
 
       <style jsx>{`
         .animate-spin-slow { animation: spin 20s linear infinite; }
