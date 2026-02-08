@@ -3,9 +3,10 @@ import ThreeScene from '../home/ThreeScene';
 
 const Home = () => {
   const heroRef = useRef(null);
-  const interactiveRef = useRef(null);
-  const aboutRef = useRef(null);
-  const eventsRef = useRef(null);
+  const missionRef = useRef(null);
+  const approachRef = useRef(null);
+  const benefitsRef = useRef(null);
+  const activitiesRef = useRef(null);
 
   useEffect(() => {
     const observerOptions = {
@@ -22,37 +23,33 @@ const Home = () => {
       });
     }, observerOptions);
 
-    if (heroRef.current) observer.observe(heroRef.current);
-    if (interactiveRef.current) observer.observe(interactiveRef.current);
-    if (aboutRef.current) observer.observe(aboutRef.current);
-    if (eventsRef.current) observer.observe(eventsRef.current);
+    const refs = [heroRef, missionRef, approachRef, benefitsRef, activitiesRef];
+    refs.forEach(ref => {
+      if (ref.current) observer.observe(ref.current);
+    });
 
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#0a0a0f] to-[#1a0a2e] text-white font-sans overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip">
       {/* Background gradients */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]"></div>
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[150px]"></div>
       </div>
 
-      {/* Navbar and Sidebar moved to MainLayout */}
-      
       {/* Hero Section */}
       <section 
         ref={heroRef}
-        className="min-h-screen flex items-center justify-center relative px-8 py-20 opacity-0 translate-y-12 transition-all duration-1000"
+        className="min-h-screen flex items-center justify-center relative px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out"
       >
-        <div className="max-w-4xl text-center z-10 relative">
-          {/* Badge */}
+        <div className="max-w-5xl text-center z-10 relative">
           <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></span>
-            <span>CSE Innovation Hub</span>
+            <span>Department of Computer Science & Engineering</span>
           </div>
 
-          {/* Title */}
           <h1 className="mb-6">
             <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
               Welcome to
@@ -62,256 +59,268 @@ const Home = () => {
             </span>
           </h1>
 
-          {/* Tagline */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-3xl mx-auto mb-12">
-            Pioneering low-code development and empowering skill mastery
-            <br />
-            through hands-on innovation and collaborative growth
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
+            The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
+            cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto">
-              <span className="relative z-10">Join the Club</span>
+              <span className="relative z-10">Join AdroIT Now</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             </button>
-            
-            <button className="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:-translate-y-1 hover:border-white/20 transition-all duration-300 w-full sm:w-auto">
-              Explore Events
+            <button className="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
+              Explore Our Projects
             </button>
           </div>
         </div>
 
         {/* Decorative Rings */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-cyan-500/10 rounded-full animate-spin-slow"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] border border-purple-500/10 rounded-full animate-spin-slower-reverse"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] border border-pink-500/10 rounded-full animate-spin-slowest"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none z-0 opacity-20">
+          <div className="absolute w-full h-full border border-cyan-500/20 rounded-full animate-spin-slow"></div>
+          <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/20 rounded-full animate-spin-slower-reverse"></div>
         </div>
       </section>
 
-      {/* Three.js Interactive Section - Seamlessly Blended */}
+      {/* Why AdroIT Section */}
       <section 
-        ref={interactiveRef}
-        className="min-h-[70vh] relative flex items-center justify-center py-20 opacity-0 translate-y-12 transition-all duration-1000"
+        ref={missionRef}
+        className="py-24 px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
-        {/* Three.js Canvas Background */}
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Why Join AdroIT?</h2>
+            <p className="text-gray-400 text-xl max-w-4xl mx-auto">
+              We bridge the gap between academic theory and industry demands, creating 
+              <span className="text-cyan-400"> future-ready professionals</span> through practical learning and innovation
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-cyan-500/30 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
+                    <span className="text-xl font-bold">01</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Practical Skill Development</h3>
+                </div>
+                <p className="text-gray-400">
+                  Move beyond textbooks and lectures. At AdroIT, you'll work on real-world projects, 
+                  learn industry-standard tools, and develop skills that employers actually value. 
+                  From web development to AI/ML, we cover the technologies shaping tomorrow.
+                </p>
+              </div>
+
+              <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-purple-500/30 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                    <span className="text-xl font-bold">02</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Industry Exposure</h3>
+                </div>
+                <p className="text-gray-400">
+                  Connect with alumni working at top tech companies, attend workshops by industry experts, 
+                  and participate in hackathons sponsored by leading organizations. We provide the network 
+                  and exposure you need to launch your career.
+                </p>
+              </div>
+
+              <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-pink-500/30 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                    <span className="text-xl font-bold">03</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Collaborative Environment</h3>
+                </div>
+                <p className="text-gray-400">
+                  Join a community of passionate learners and innovators. Collaborate on projects, 
+                  share knowledge, and grow together. Our senior-junior mentorship model ensures 
+                  everyone gets the guidance they need to succeed.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+              <div className="relative bg-black/40 backdrop-blur-3xl border border-white/10 p-10 rounded-3xl">
+                <h3 className="text-3xl font-bold mb-6 text-center text-cyan-400">The AdroIT Advantage</h3>
+                <div className="space-y-6">
+                  {[
+                    "Build an impressive portfolio with real projects",
+                    "Master in-demand technologies before they're in your syllabus",
+                    "Network with industry professionals and alumni",
+                    "Develop leadership and teamwork skills",
+                    "Gain confidence through regular presentations and demos",
+                    "Access exclusive learning resources and workshops"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M20 6L9 17L4 12"/>
+                        </svg>
+                      </div>
+                      <span className="text-gray-300">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Canvas Section */}
+      <section 
+        ref={approachRef}
+        className="min-h-[60vh] relative flex items-center justify-center py-20 opacity-0 translate-y-12 transition-all duration-1000"
+      >
         <ThreeScene />
-        
-        {/* Content Overlay */}
-        <div className="relative z-10 text-center px-8 max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-6 drop-shadow-[0_0_30px_rgba(0,240,255,0.3)]">
-            Experience Innovation
+        <div className="relative z-10 text-center px-8">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4">
+            Our Learning Philosophy
           </h2>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 leading-relaxed mb-8">
-            Where code meets creativity in three dimensions
-          </p>
-          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
-            Interact with the particles by moving your mouse or touching the screen. 
-            Watch as technology and artistry blend together in real-time.
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Just as these particles react dynamically, we believe in adaptive, hands-on learning. 
+            We don't just teach technology—we teach you how to <span className="text-cyan-400">think</span>, 
+            <span className="text-purple-400"> innovate</span>, and <span className="text-pink-400">create</span>.
           </p>
         </div>
-
-        {/* Gradient overlays for smooth transition */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#0a0a0f] to-transparent pointer-events-none z-5"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none z-5"></div>
       </section>
 
-      {/* About Preview Section */}
+      {/* Benefits of Joining */}
       <section 
-        ref={aboutRef}
-        className="py-32 px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        ref={benefitsRef}
+        className="py-24 px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-cyan-400 uppercase tracking-wider mb-4">
-              Our Mission
-            </span>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Building Tomorrow's Developers
-            </h2>
+            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Your Growth</span>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">How AdroIT Will Transform You</h2>
           </div>
 
-          {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1 */}
-            <div className="group p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="relative z-10">
-                <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-cyan-400/30 to-purple-600/20 rounded-2xl mb-6 text-cyan-400">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">Low-Code Excellence</h3>
-                <p className="text-gray-400 leading-relaxed">
-                  Master rapid development frameworks and build powerful applications with minimal coding complexity
-                </p>
+            <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-cyan-500/50 hover:translate-y-[-8px] transition-all duration-500">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/>
+                </svg>
               </div>
+              <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
+              <p className="text-gray-400">
+                Master full-stack development, cloud computing, AI/ML, and more through 
+                structured learning paths and project-based practice.
+              </p>
             </div>
 
-            {/* Card 2 */}
-            <div className="group p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="relative z-10">
-                <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-cyan-400/30 to-purple-600/20 rounded-2xl mb-6 text-cyan-400">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">Collaborative Growth</h3>
-                <p className="text-gray-400 leading-relaxed">
-                  Join a vibrant community of learners, innovators, and builders working together on real-world projects
-                </p>
+            <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/>
+                </svg>
               </div>
+              <h3 className="text-xl font-bold mb-4 text-purple-400">Professional Network</h3>
+              <p className="text-gray-400">
+                Connect with alumni at FAANG companies, startups, and established enterprises. 
+                Get referrals, internship opportunities, and career guidance.
+              </p>
             </div>
 
-            {/* Card 3 */}
-            <div className="group p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="relative z-10">
-                <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-cyan-400/30 to-purple-600/20 rounded-2xl mb-6 text-cyan-400">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                    <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">Skill Development</h3>
-                <p className="text-gray-400 leading-relaxed">
-                  Enhance your technical expertise through workshops, hackathons, and mentorship from industry professionals
-                </p>
+            <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-pink-500/50 hover:translate-y-[-8px] transition-all duration-500">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+                </svg>
               </div>
+              <h3 className="text-xl font-bold mb-4 text-pink-400">Leadership Skills</h3>
+              <p className="text-gray-400">
+                Take ownership of projects, lead teams in hackathons, and organize events. 
+                Develop the soft skills that complement your technical expertise.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Events Highlight Section */}
+      {/* Club Activities */}
       <section 
-        ref={eventsRef}
-        className="py-32 px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        ref={activitiesRef}
+        className="py-24 px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-cyan-400 uppercase tracking-wider mb-4">
-              What's Happening
-            </span>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Upcoming Events
-            </h2>
+            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // What We Do</span>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Join Our Thriving Community</h2>
+            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+              From weekly workshops to annual hackathons, we create opportunities for 
+              continuous learning and innovation
+            </p>
           </div>
 
-          {/* Events Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Featured Event Card */}
-            <div className="relative group p-8 bg-gradient-to-br from-cyan-400/10 to-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 flex flex-col md:flex-row lg:flex-col gap-6">
-              <div className="absolute top-4 right-4 px-3 py-1 bg-cyan-400 text-black text-xs font-bold rounded-full uppercase">
-                Featured
-              </div>
-              
-              <div className="flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl text-black">
-                <span className="text-3xl font-bold leading-none">24</span>
-                <span className="text-xs font-semibold uppercase tracking-wider">FEB</span>
-              </div>
-              
-              <div className="flex-grow">
-                <h3 className="text-xl font-semibold mb-3 text-white">Low-Code Hackathon 2026</h3>
-                <p className="text-gray-400 leading-relaxed mb-4">
-                  48-hour innovation challenge to build impactful applications using modern low-code platforms
-                </p>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                  <span className="flex items-center gap-2">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                    Hybrid Event
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                    2 Days
-                  </span>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
+              <p className="text-gray-400 mb-4">
+                Hands-on workshops covering the latest technologies, tools, and frameworks.
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li>• Web Development Bootcamps</li>
+                <li>• AI/ML Implementation</li>
+                <li>• Cloud & DevOps</li>
+                <li>• Competitive Programming</li>
+              </ul>
             </div>
 
-            {/* Event Card 2 */}
-            <div className="group p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 flex flex-col md:flex-row lg:flex-col gap-6">
-              <div className="flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl text-black">
-                <span className="text-3xl font-bold leading-none">15</span>
-                <span className="text-xs font-semibold uppercase tracking-wider">MAR</span>
-              </div>
-              
-              <div className="flex-grow">
-                <h3 className="text-xl font-semibold mb-3 text-white">AI & Automation Workshop</h3>
-                <p className="text-gray-400 leading-relaxed">
-                  Learn to integrate AI capabilities into your low-code applications
-                </p>
-              </div>
+            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
+              <p className="text-gray-400 mb-4">
+                Collaborative development of real-world applications in 4-6 week cycles.
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li>• Open Source Contributions</li>
+                <li>• Startup Ideas Implementation</li>
+                <li>• Community Service Tech Solutions</li>
+                <li>• Research Projects</li>
+              </ul>
             </div>
 
-            {/* Event Card 3 */}
-            <div className="group p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 flex flex-col md:flex-row lg:flex-col gap-6">
-              <div className="flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl text-black">
-                <span className="text-3xl font-bold leading-none">05</span>
-                <span className="text-xs font-semibold uppercase tracking-wider">APR</span>
-              </div>
-              
-              <div className="flex-grow">
-                <h3 className="text-xl font-semibold mb-3 text-white">Industry Expert Talk</h3>
-                <p className="text-gray-400 leading-relaxed">
-                  Guest lecture on the future of rapid application development
-                </p>
-              </div>
+            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-pink-400">Annual Events</h3>
+              <p className="text-gray-400 mb-4">
+                Flagship events that put your skills to the test and connect you with industry.
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li>• HackAdroit (24-hour Hackathon)</li>
+                <li>• Tech Summit with Industry Leaders</li>
+                <li>• Project Expo & Demo Day</li>
+                <li>• Alumni Interaction Sessions</li>
+              </ul>
             </div>
+          </div>
+
+          <div className="text-center mt-16">
+            <button className="group px-10 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 mx-auto">
+              <span>Ready to Transform Your College Journey?</span>
+              <svg width="24" height="24" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-2 transition-transform duration-300">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <p className="text-gray-500 mt-4 text-sm">
+              Applications open for the 2024-25 academic year. Limited seats available.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Footer moved to MainLayout */}
-
-      {/* Custom animations in style tag */}
       <style jsx>{`
-        @keyframes spin-slow {
+        .animate-spin-slow { animation: spin 20s linear infinite; }
+        .animate-spin-slower-reverse { animation: spin 25s linear infinite reverse; }
+        @keyframes spin {
           from { transform: translate(-50%, -50%) rotate(0deg); }
           to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        @keyframes spin-slower-reverse {
-          from { transform: translate(-50%, -50%) rotate(360deg); }
-          to { transform: translate(-50%, -50%) rotate(0deg); }
-        }
-        
-        @keyframes spin-slowest {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
-        }
-        
-        .animate-spin-slower-reverse {
-          animation: spin-slower-reverse 15s linear infinite;
-        }
-        
-        .animate-spin-slowest {
-          animation: spin-slowest 25s linear infinite;
         }
       `}</style>
     </div>
