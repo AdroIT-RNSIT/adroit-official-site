@@ -10,8 +10,8 @@ import {
 
 const router = Router();
 
-router.get("/", requireAuth, getEvents);
-router.get("/:id", requireAuth, getEventById);
+router.get("/", getEvents);
+router.get("/:id", getEventById);
 router.post("/", requireAuth, requireAdmin, createEvent);
 router.put("/:id", requireAuth, requireAdmin, updateEvent);
 router.delete("/:id", requireAuth, requireAdmin, deleteEvent);
