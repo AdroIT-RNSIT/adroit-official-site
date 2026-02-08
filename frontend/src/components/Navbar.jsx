@@ -35,11 +35,13 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer group">
             <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" className="text-black">
-                <path d="M16 4L4 10L16 16L28 10L16 4Z" fill="currentColor" opacity="0.6"/>
-                <path d="M4 16L16 22L28 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M4 22L16 28L28 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
+                <img
+                  src="/ADROIT-logo.webp"
+                  alt="AdroIT"
+                  className="w-full h-full object-cover opacity-60"
+                />
+              </div>
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-tight">
               AdroIT
