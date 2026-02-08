@@ -56,9 +56,7 @@ export default function App() {
         path="/events"
         element={
           <WithLayout>
-            <ProtectedRoute>
-              <Events />
-            </ProtectedRoute>
+            <Events />
           </WithLayout>
         }
       />

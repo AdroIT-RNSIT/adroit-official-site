@@ -31,7 +31,7 @@ const Navbar = () => {
     { name: "Home", href: "#" },
     { name: "About", href: "#about" },
     { name: "Why Join", href: "#why-join" },
-    { name: "Events", href: "#events" },
+    { name: "Events", href: "/events" },
     { name: "Team", href: "#team" },
     { name: "Contact", href: "#contact" },
   ];
@@ -108,33 +108,31 @@ const Navbar = () => {
                     Members
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/events"
+                    className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
+                      isActive("/events")
+                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                        : "text-gray-300 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    Events
+                  </Link>
+                </li>
                 {isLoggedIn && (
-                  <>
-                    <li>
-                      <Link
-                        to="/resources"
-                        className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                          isActive("/resources")
-                            ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                            : "text-gray-300 hover:text-white hover:bg-white/5"
-                        }`}
-                      >
-                        Resources
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/events"
-                        className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                          isActive("/events")
-                            ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                            : "text-gray-300 hover:text-white hover:bg-white/5"
-                        }`}
-                      >
-                        Events
-                      </Link>
-                    </li>
-                  </>
+                  <li>
+                    <Link
+                      to="/resources"
+                      className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
+                        isActive("/resources")
+                          ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                          : "text-gray-300 hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      Resources
+                    </Link>
+                  </li>
                 )}
                 {isAdmin && (
                   <li>
@@ -162,21 +160,19 @@ const Navbar = () => {
                 >
                   Members
                 </Link>
+                <Link
+                  to="/events"
+                  className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
+                >
+                  Events
+                </Link>
                 {isLoggedIn && (
-                  <>
-                    <Link
-                      to="/resources"
-                      className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
-                    >
-                      Resources
-                    </Link>
-                    <Link
-                      to="/events"
-                      className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
-                    >
-                      Events
-                    </Link>
-                  </>
+                  <Link
+                    to="/resources"
+                    className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
+                  >
+                    Resources
+                  </Link>
                 )}
                 {isAdmin && (
                   <Link
@@ -402,65 +398,64 @@ const Navbar = () => {
               </Link>
             </li>
 
+            <li>
+              <Link
+                to="/events"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
+                  isActive("/events")
+                    ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
+                    : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
+                }`}
+              >
+                <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                  <svg
+                    className="w-4 h-4 text-cyan-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <span>Events</span>
+              </Link>
+            </li>
+
             {isLoggedIn && (
-              <>
-                <li>
-                  <Link
-                    to="/resources"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
-                      isActive("/resources")
-                        ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
-                        : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
-                    }`}
-                  >
-                    <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                      <svg
-                        className="w-4 h-4 text-cyan-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                        />
-                      </svg>
-                    </div>
-                    <span>Resources</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/events"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
-                      isActive("/events")
-                        ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
-                        : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
-                    }`}
-                  >
-                    <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                      <svg
-                        className="w-4 h-4 text-cyan-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <span>Events</span>
-                  </Link>
-                </li>
-              </>
+              <li>
+                <Link
+                  to="/resources"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
+                    isActive("/resources")
+                      ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
+                      : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
+                  }`}
+                >
+                  <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                    <svg
+                      className="w-4 h-4 text-cyan-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <span>Resources</span>
+                </Link>
+              </li>
             )}
 
             {isAdmin && (

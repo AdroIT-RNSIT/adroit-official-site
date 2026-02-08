@@ -156,10 +156,10 @@ export default function AdminDashboard() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-gray-500 mt-1">
+        <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+        <p className="text-gray-400 mt-1">
           Welcome,{" "}
-          <span className="font-medium text-gray-700">
+          <span className="font-medium text-gray-300">
             {session?.user?.name}
           </span>
           . Manage resources and events.
@@ -237,8 +237,8 @@ export default function AdminDashboard() {
         <div
           className={`mb-6 p-4 rounded-xl border text-sm font-medium ${
             message.type === "success"
-              ? "bg-green-50 border-green-200 text-green-700"
-              : "bg-red-50 border-red-200 text-red-700"
+              ? "bg-green-500/10 border-green-500/20 text-green-400"
+              : "bg-red-500/10 border-red-500/20 text-red-400"
           }`}
         >
           {message.text}
@@ -268,16 +268,16 @@ export default function AdminDashboard() {
       </div>
 
       {/* Forms */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-gray-100">
+      <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-6 border border-white/10">
         {activeTab === "resources" ? (
           <form onSubmit={handleCreateResource} className="space-y-5">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl font-bold text-white mb-4">
               Create Resource
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-1">
                   Title *
                 </label>
                 <input
@@ -286,12 +286,12 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="React Fundamentals"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-1">
                   Type
                 </label>
                 <select
@@ -299,7 +299,7 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 >
                   <option value="article">Article</option>
                   <option value="video">Video</option>
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Description *
               </label>
               <textarea
@@ -324,13 +324,13 @@ export default function AdminDashboard() {
                     description: e.target.value,
                   })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
                 placeholder="A comprehensive guide to React..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 URL
               </label>
               <input
@@ -339,7 +339,7 @@ export default function AdminDashboard() {
                 onChange={(e) =>
                   setResourceForm({ ...resourceForm, url: e.target.value })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 placeholder="https://example.com/resource"
               />
             </div>
@@ -354,13 +354,11 @@ export default function AdminDashboard() {
           </form>
         ) : activeTab === "events" ? (
           <form onSubmit={handleCreateEvent} className="space-y-5">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Create Event
-            </h2>
+            <h2 className="text-xl font-bold text-white mb-4">Create Event</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-1">
                   Title *
                 </label>
                 <input
@@ -369,12 +367,12 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="React Workshop"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-1">
                   Type
                 </label>
                 <select
@@ -382,7 +380,7 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 >
                   <option value="workshop">Workshop</option>
                   <option value="seminar">Seminar</option>
@@ -394,7 +392,7 @@ export default function AdminDashboard() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Description *
               </label>
               <textarea
@@ -404,14 +402,14 @@ export default function AdminDashboard() {
                 onChange={(e) =>
                   setEventForm({ ...eventForm, description: e.target.value })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
                 placeholder="Join us for a hands-on workshop..."
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-1">
                   Date & Time *
                 </label>
                 <input
@@ -421,11 +419,11 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, date: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-1">
                   Location
                 </label>
                 <input
@@ -433,7 +431,7 @@ export default function AdminDashboard() {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, location: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="Room 201, CS Building"
                 />
               </div>
@@ -449,17 +447,15 @@ export default function AdminDashboard() {
           </form>
         ) : activeTab === "users" ? (
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Manage Users
-            </h2>
-            <p className="text-sm text-gray-500 mb-6">
+            <h2 className="text-xl font-bold text-white mb-4">Manage Users</h2>
+            <p className="text-sm text-gray-400 mb-6">
               Approve or reject users who signed in via Google. Only approved
               users can access protected pages.
             </p>
 
             {usersLoading ? (
               <div className="flex justify-center py-8">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
               </div>
             ) : users.length === 0 ? (
               <p className="text-gray-400 text-center py-8">No users found.</p>
@@ -468,7 +464,7 @@ export default function AdminDashboard() {
                 {users.map((user) => (
                   <div
                     key={user.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-white/10 hover:border-white/20 transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       {user.image ? (
@@ -483,10 +479,10 @@ export default function AdminDashboard() {
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="font-medium text-gray-900 truncate">
+                        <p className="font-medium text-white truncate">
                           {user.name}
                         </p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="text-sm text-gray-400 truncate">
                           {user.email}
                         </p>
                       </div>
@@ -494,24 +490,24 @@ export default function AdminDashboard() {
 
                     <div className="flex items-center gap-3 flex-shrink-0">
                       {user.role === "admin" ? (
-                        <span className="inline-flex px-3 py-1 rounded-lg text-xs font-medium bg-indigo-100 text-indigo-700">
+                        <span className="inline-flex px-3 py-1 rounded-lg text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
                           Admin
                         </span>
                       ) : user.approved ? (
                         <div className="flex items-center gap-2">
-                          <span className="inline-flex px-3 py-1 rounded-lg text-xs font-medium bg-green-100 text-green-700">
+                          <span className="inline-flex px-3 py-1 rounded-lg text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
                             Approved
                           </span>
                           <button
                             onClick={() => toggleApproval(user.id, false)}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-colors"
                           >
                             Revoke
                           </button>
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <span className="inline-flex px-3 py-1 rounded-lg text-xs font-medium bg-amber-100 text-amber-700">
+                          <span className="inline-flex px-3 py-1 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
                             Pending
                           </span>
                           <button
@@ -536,7 +532,7 @@ export default function AdminDashboard() {
 
 function StatCard({ title, value, gradient, icon }) {
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-md border border-gray-100">
+    <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-5 border border-white/10">
       <div className="flex items-center gap-3">
         <div
           className={`p-2.5 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}
@@ -544,8 +540,8 @@ function StatCard({ title, value, gradient, icon }) {
           {icon}
         </div>
         <div>
-          <p className="text-sm text-gray-500 font-medium">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm text-gray-400 font-medium">{title}</p>
+          <p className="text-2xl font-bold text-white">{value}</p>
         </div>
       </div>
     </div>
@@ -558,8 +554,8 @@ function TabButton({ active, onClick, children }) {
       onClick={onClick}
       className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
         active
-          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30"
-          : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+          ? "bg-gradient-to-r from-cyan-400 to-purple-600 text-white shadow-lg shadow-cyan-400/20"
+          : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white"
       }`}
     >
       {children}

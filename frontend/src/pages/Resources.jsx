@@ -44,11 +44,11 @@ export default function Resources() {
   };
 
   const typeColors = {
-    article: "bg-blue-100 text-blue-700",
-    video: "bg-red-100 text-red-700",
-    document: "bg-green-100 text-green-700",
-    link: "bg-purple-100 text-purple-700",
-    other: "bg-gray-100 text-gray-700",
+    article: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+    video: "bg-red-500/10 text-red-400 border border-red-500/20",
+    document: "bg-green-500/10 text-green-400 border border-green-500/20",
+    link: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+    other: "bg-gray-500/10 text-gray-400 border border-gray-500/20",
   };
 
   const typeIcons = {
@@ -139,8 +139,8 @@ export default function Resources() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 font-medium">Loading resources...</p>
+          <div className="w-10 h-10 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-400 font-medium">Loading resources...</p>
         </div>
       </div>
     );
@@ -151,24 +151,24 @@ export default function Resources() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Resources</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-3xl font-bold text-white">Resources</h1>
+          <p className="text-gray-400 mt-1">
             Browse learning materials and links shared by the team
           </p>
         </div>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700">
+        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400">
           {error}
         </div>
       )}
 
       {resources.length === 0 ? (
         <div className="text-center py-20">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/5 border border-white/10 rounded-full mb-4">
             <svg
-              className="w-8 h-8 text-gray-400"
+              className="w-8 h-8 text-gray-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -181,9 +181,7 @@ export default function Resources() {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900">
-            No resources yet
-          </h3>
+          <h3 className="text-lg font-semibold text-white">No resources yet</h3>
           <p className="text-gray-500 mt-1">
             Resources added by the admin will appear here.
           </p>
@@ -193,7 +191,7 @@ export default function Resources() {
           {resources.map((resource) => (
             <div
               key={resource._id}
-              className="group bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200"
+              className="group bg-white/[0.03] backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/5"
             >
               <div className="flex items-start justify-between mb-3">
                 <span
@@ -224,10 +222,10 @@ export default function Resources() {
                   </button>
                 )}
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
                 {resource.title}
               </h3>
-              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
                 {resource.description}
               </p>
               {resource.url && (
@@ -235,7 +233,7 @@ export default function Resources() {
                   href={resource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors"
                 >
                   Open Link
                   <svg
