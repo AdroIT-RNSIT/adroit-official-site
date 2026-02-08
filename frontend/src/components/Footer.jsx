@@ -55,10 +55,10 @@ const Footer = ({ showSocial = false }) => {
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
                 <a 
-                  href="mailto:adroit@college.edu" 
+                  href="mailto:adroit.rnsit@gmail.com" 
                   className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 text-sm"
                 >
-                  adroit@college.edu
+                  adroit.rnsit@gmail.com
                 </a>
               </div>
 
@@ -69,7 +69,7 @@ const Footer = ({ showSocial = false }) => {
                 </svg>
                 <p className="text-gray-400 text-sm">
                   Computer Science Department<br />
-                  College Campus, City
+                  RNSIT, Bangalore, India
                 </p>
               </div>
             </div>
