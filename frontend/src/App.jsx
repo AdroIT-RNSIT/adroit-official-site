@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Members from "./pages/Members";
@@ -13,6 +14,10 @@ function WithLayout({ children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Routes>
       {/* Login — standalone, no layout */}

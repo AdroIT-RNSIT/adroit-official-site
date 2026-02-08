@@ -2,9 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="public/ADROIT-logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Club Platform | Open Source Ready</title>
+    <style>
+      /* Prevent initial white flash */
+html {
+  background-color: #0d1117; /* Same as your page background */
+}
+
+body {
+  background-color: #0d1117;
+  color: white;
+  transition: none; /* Prevent transition on initial load */
+}
+  /* Prevent white flash before React loads */
+  body {
+    background-color: #0d1117 !important;
+    color: white !important;
+    transition: none !important;
+  }
+</style>
   </head>
   <body>
     <div id="root"></div>
