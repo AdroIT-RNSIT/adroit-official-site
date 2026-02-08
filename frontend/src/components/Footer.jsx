@@ -27,19 +27,17 @@ const Footer = ({ showSocial = false }) => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Main Footer Content */}
+        {/* Main Footer Content with Map on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
-          {/* Brand Section */}
+          {/* Brand & Contact Section */}
           <div className="lg:col-span-5 px-4">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl">
-                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
-                    <img
-                        src="/ADROIT-logo.webp"
-                        alt="AdroIT"
-                        className="w-full h-full object-cover opacity-60"
-                    />
-                </div>
+              <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
+                <img
+                  src="/ADROIT-logo.webp"
+                  alt="AdroIT"
+                  className="w-full h-full object-cover opacity-60"
+                />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-tight">
                 AdroIT
@@ -49,6 +47,33 @@ const Footer = ({ showSocial = false }) => {
               Empowering the next generation of developers through low-code innovation and hands-on skill development.
             </p>
             
+            {/* Minimal Contact Info */}
+            <div className="space-y-3 mb-6">
+              <div className="flex items-start gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400 mt-1 flex-shrink-0">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <a 
+                  href="mailto:adroit@college.edu" 
+                  className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 text-sm"
+                >
+                  adroit@college.edu
+                </a>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-400 mt-1 flex-shrink-0">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <p className="text-gray-400 text-sm">
+                  Computer Science Department<br />
+                  College Campus, City
+                </p>
+              </div>
+            </div>
+
             {/* Social Icons - Conditionally rendered */}
             {showSocial && (
               <div className="flex items-center gap-4">
@@ -79,50 +104,100 @@ const Footer = ({ showSocial = false }) => {
             )}
           </div>
 
-          {/* Links Sections */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8 px-4">
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-base font-semibold text-white mb-5 tracking-wide">
-                Quick Links
-              </h3>
-              <ul className="space-y-3">
-                {footerLinks.company.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="group inline-flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 relative pb-1"
-                    >
-                      <span className="group-hover:translate-x-1 transition-transform duration-300">
-                        {link.name}
-                      </span>
-                      <span className="absolute bottom-0 left-0 w-0 group-hover:w-full h-px bg-gradient-to-r from-cyan-400 to-purple-600 transition-all duration-300"></span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+          {/* Links & Map Section - Right Side */}
+          <div className="lg:col-span-7 px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+              {/* Quick Links */}
+              <div>
+                <h3 className="text-base font-semibold text-white mb-5 tracking-wide">
+                  Quick Links
+                </h3>
+                <ul className="space-y-3">
+                  {footerLinks.company.map((link, index) => (
+                    <li key={index}>
+                      <a
+                        href={link.href}
+                        className="group inline-flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 relative pb-1"
+                      >
+                        <span className="group-hover:translate-x-1 transition-transform duration-300">
+                          {link.name}
+                        </span>
+                        <span className="absolute bottom-0 left-0 w-0 group-hover:w-full h-px bg-gradient-to-r from-cyan-400 to-purple-600 transition-all duration-300"></span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Resources Links */}
+              <div>
+                <h3 className="text-base font-semibold text-white mb-5 tracking-wide">
+                  Resources
+                </h3>
+                <ul className="space-y-3">
+                  {footerLinks.resources.map((link, index) => (
+                    <li key={index}>
+                      <a
+                        href={link.href}
+                        className="group inline-flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 relative pb-1"
+                      >
+                        <span className="group-hover:translate-x-1 transition-transform duration-300">
+                          {link.name}
+                        </span>
+                        <span className="absolute bottom-0 left-0 w-0 group-hover:w-full h-px bg-gradient-to-r from-cyan-400 to-purple-600 transition-all duration-300"></span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            {/* Resources Links */}
-            <div>
-              <h3 className="text-base font-semibold text-white mb-5 tracking-wide">
-                Resources
-              </h3>
-              <ul className="space-y-3">
-                {footerLinks.resources.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="group inline-flex items-center text-gray-400 hover:text-cyan-400 transition-all duration-300 relative pb-1"
-                    >
-                      <span className="group-hover:translate-x-1 transition-transform duration-300">
-                        {link.name}
-                      </span>
-                      <span className="absolute bottom-0 left-0 w-0 group-hover:w-full h-px bg-gradient-to-r from-cyan-400 to-purple-600 transition-all duration-300"></span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            {/* Map Section - Below Links */}
+            <div className="mt-4">
+              <div className="flex items-center gap-2 mb-3">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <h4 className="text-white font-semibold text-sm">Find Our Campus</h4>
+              </div>
+              
+              <div className="relative h-56 sm:h-64 rounded-lg overflow-hidden border border-white/10 shadow-lg">
+                {/* Replace with your actual Google Maps embed URL */}
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3519.4201134668556!2d77.51600707454556!3d12.902195416397204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3fa747acf84b%3A0x97a5cf1952c2fe3a!2sRNSIT%20CSE%20Department!5e1!3m2!1sen!2sin!4v1770548920832!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                  title="College Location Map"
+                ></iframe>
+                
+                {/* Map Overlay Effect */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
+                
+                {/* Map Controls */}
+                <a 
+                  href="https://www.google.com/maps"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg hover:bg-black/90 transition-colors duration-300 flex items-center gap-1"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  Open Maps
+                </a>
+              </div>
+              
+              <p className="text-gray-500 text-xs mt-2">
+                Visit us in the Computer Science Department building, Room 205
+              </p>
             </div>
           </div>
         </div>
@@ -187,13 +262,3 @@ const Footer = ({ showSocial = false }) => {
 };
 
 export default Footer;
-
-
-// // Home Page - No social icons
-// <Footer />
-
-// // About Page - With social icons
-// <Footer showSocial={true} />
-
-// // Events Page - With social icons  
-// <Footer showSocial={true} />
