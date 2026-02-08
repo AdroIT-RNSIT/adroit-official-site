@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 export default function MainLayout({ children }) {
   return (
-    <div className="min-h-screen bg-[#0d1117] overflow-x-hidden">
+    <div className="min-h-screen bg-[#0d1117] overflow-hidden">
       <Navbar />
       <Sidebar />
       <main className="pt-16">{children}</main>
