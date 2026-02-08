@@ -1,15 +1,74 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Members from "./pages/Members";
+import Login from "./pages/Login";
+import Resources from "./pages/Resources";
+import Events from "./pages/Events";
+import AdminDashboard from "./pages/AdminDashboard";
 import MainLayout from "./layout/MainLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+function WithLayout({ children }) {
+  return <MainLayout>{children}</MainLayout>;
+}
 
 export default function App() {
   return (
-    <MainLayout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/members" element={<Members />} />
-      </Routes>
-    </MainLayout>
+    <Routes>
+      {/* Login — standalone, no layout */}
+      <Route path="/login" element={<Login />} />
+
+      {/* Public pages with layout */}
+      <Route
+        path="/"
+        element={
+          <WithLayout>
+            <Home />
+          </WithLayout>
+        }
+      />
+      <Route
+        path="/members"
+        element={
+          <WithLayout>
+            <Members />
+          </WithLayout>
+        }
+      />
+
+      {/* Protected: logged-in users */}
+      <Route
+        path="/resources"
+        element={
+          <WithLayout>
+            <ProtectedRoute>
+              <Resources />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+      <Route
+        path="/events"
+        element={
+          <WithLayout>
+            <ProtectedRoute>
+              <Events />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+
+      {/* Protected: admin only */}
+      <Route
+        path="/admin"
+        element={
+          <WithLayout>
+            <ProtectedRoute adminOnly>
+              <AdminDashboard />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+    </Routes>
   );
 }
