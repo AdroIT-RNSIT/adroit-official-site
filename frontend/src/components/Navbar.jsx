@@ -29,8 +29,8 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ease-in-out ${
         scrolled
-          ? 'bg-white/5 backdrop-blur-xl py-2'
-          : 'bg-transparent py-5'
+          ? 'bg-white/5 backdrop-blur-xl h-16'
+          : 'bg-transparent py-3'
       }`}
     >
       <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
