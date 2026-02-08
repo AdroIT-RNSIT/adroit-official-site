@@ -1,168 +1,305 @@
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef } from 'react';
+import ThreeScene from '../home/ThreeScene';
 
-export default function Home() {
+const Home = () => {
+  const heroRef = useRef(null);
+  const aboutRef = useRef(null);
+  const eventsRef = useRef(null);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-12');
+        }
+      });
+    }, observerOptions);
+
+    if (heroRef.current) observer.observe(heroRef.current);
+    if (aboutRef.current) observer.observe(aboutRef.current);
+    if (eventsRef.current) observer.observe(eventsRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-40 -left-40 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-0 right-1/3 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        </div>
+    <div className="relative min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#0a0a0f] to-[#1a0a2e] text-white font-sans overflow-x-hidden">
+      {/* Background gradients */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]"></div>
+      </div>
 
-        {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
-          {/* Header */}
-          <div className="text-center mb-16 animate-fade-in">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-gray-200 mb-6">
-              <span className="text-2xl">👋</span>
-              <span className="text-sm font-medium text-gray-700">Hello Guys</span>
-            </div>
-            
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 tracking-tight">
-              Welcome to the{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Club Members
-              </span>
-              <br />
-              Platform
-            </h1>
-            
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              This project is designed to help teams manage members, showcase events, 
-              and collaborate like a real open-source system.
-            </p>
+      {/* Navbar and Sidebar moved to MainLayout */}
+      
+      {/* Hero Section */}
+      <section 
+        ref={heroRef}
+        className="min-h-screen flex items-center justify-center relative px-8 py-20 opacity-0 translate-y-12 transition-all duration-1000"
+      >
+        <div className="max-w-4xl text-center z-10 relative">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></span>
+            <span>CSE Innovation Hub</span>
           </div>
+
+          {/* Title */}
+          <h1 className="mb-6">
+            <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
+              Welcome to
+            </span>
+            <span className="block text-6xl md:text-8xl lg:text-9xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-tight drop-shadow-[0_0_30px_rgba(0,240,255,0.3)]">
+              AdroIT
+            </span>
+          </h1>
+
+          {/* Tagline */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-3xl mx-auto mb-12">
+            Pioneering low-code development and empowering skill mastery
+            <br />
+            through hands-on innovation and collaborative growth
+          </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
-            <Link
-              to="/members"
-              className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto">
+              <span className="relative z-10">Join the Club</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              View Members
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            </button>
             
-            <a
-              href="https://github.com/AdroIT-RNSIT/adroit-official-site"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 bg-white text-gray-700 px-8 py-4 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-              </svg>
-              Clone Project
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <Feature
-              icon={
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              }
-              title="Member Management"
-              desc="Efficiently organize and track all club members in one centralized platform"
-              gradient="from-blue-500 to-cyan-500"
-            />
-            <Feature
-              icon={
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              }
-              title="Event Showcase"
-              desc="Display upcoming events and activities with beautiful, engaging layouts"
-              gradient="from-indigo-500 to-purple-500"
-            />
-            <Feature
-              icon={
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              }
-              title="Open Source"
-              desc="Built with transparency and collaboration at its core, just like real OSS projects"
-              gradient="from-purple-500 to-pink-500"
-            />
-            <Feature
-              icon={
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              }
-              title="Fast & Modern"
-              desc="Powered by React and modern web technologies for blazing-fast performance"
-              gradient="from-pink-500 to-rose-500"
-            />
+            <button className="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:-translate-y-1 hover:border-white/20 transition-all duration-300 w-full sm:w-auto">
+              Explore Events
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <div className="relative bg-white/50 backdrop-blur-sm border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-600 flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-2xl">🚀</span>
-            <span className="font-semibold">All the best</span>
-            <span className="text-gray-400">—</span>
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold">
-              Happy Coding & Cloning!
-            </span>
+        {/* Decorative Rings */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-cyan-500/10 rounded-full animate-spin-slow"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] border border-purple-500/10 rounded-full animate-spin-slower-reverse"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] border border-pink-500/10 rounded-full animate-spin-slowest"></div>
+        </div>
+      </section>
+
+      {/* Three.js Interactive Section */}
+      <section className="min-h-[70vh] relative flex items-center justify-center bg-[#12121a] border-y border-white/10">
+        <ThreeScene />
+        <div className="absolute z-10 text-center pointer-events-none">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4">
+            Experience Innovation
+          </h2>
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-400">
+            Where code meets creativity in three dimensions
           </p>
         </div>
-      </div>
+      </section>
 
+      {/* About Preview Section */}
+      <section 
+        ref={aboutRef}
+        className="py-32 px-8 opacity-0 translate-y-12 transition-all duration-1000"
+      >
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-cyan-400 uppercase tracking-wider mb-4">
+              Our Mission
+            </span>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+              Building Tomorrow's Developers
+            </h2>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Card 1 */}
+            <div className="group p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-cyan-400/30 to-purple-600/20 rounded-2xl mb-6 text-cyan-400">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-semibold mb-4 text-white">Low-Code Excellence</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Master rapid development frameworks and build powerful applications with minimal coding complexity
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="group p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-cyan-400/30 to-purple-600/20 rounded-2xl mb-6 text-cyan-400">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-semibold mb-4 text-white">Collaborative Growth</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Join a vibrant community of learners, innovators, and builders working together on real-world projects
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="group p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-cyan-400/30 to-purple-600/20 rounded-2xl mb-6 text-cyan-400">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-semibold mb-4 text-white">Skill Development</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Enhance your technical expertise through workshops, hackathons, and mentorship from industry professionals
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Events Highlight Section */}
+      <section 
+        ref={eventsRef}
+        className="py-32 px-8 bg-[#12121a] opacity-0 translate-y-12 transition-all duration-1000"
+      >
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-cyan-400 uppercase tracking-wider mb-4">
+              What's Happening
+            </span>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+              Upcoming Events
+            </h2>
+          </div>
+
+          {/* Events Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Featured Event Card */}
+            <div className="relative group p-8 bg-gradient-to-br from-cyan-400/10 to-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 flex flex-col md:flex-row lg:flex-col gap-6">
+              <div className="absolute top-4 right-4 px-3 py-1 bg-cyan-400 text-black text-xs font-bold rounded-full uppercase">
+                Featured
+              </div>
+              
+              <div className="flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl text-black">
+                <span className="text-3xl font-bold leading-none">24</span>
+                <span className="text-xs font-semibold uppercase tracking-wider">FEB</span>
+              </div>
+              
+              <div className="flex-grow">
+                <h3 className="text-xl font-semibold mb-3 text-white">Low-Code Hackathon 2026</h3>
+                <p className="text-gray-400 leading-relaxed mb-4">
+                  48-hour innovation challenge to build impactful applications using modern low-code platforms
+                </p>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                  <span className="flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    Hybrid Event
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    2 Days
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Event Card 2 */}
+            <div className="group p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 flex flex-col md:flex-row lg:flex-col gap-6">
+              <div className="flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl text-black">
+                <span className="text-3xl font-bold leading-none">15</span>
+                <span className="text-xs font-semibold uppercase tracking-wider">MAR</span>
+              </div>
+              
+              <div className="flex-grow">
+                <h3 className="text-xl font-semibold mb-3 text-white">AI & Automation Workshop</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Learn to integrate AI capabilities into your low-code applications
+                </p>
+              </div>
+            </div>
+
+            {/* Event Card 3 */}
+            <div className="group p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:-translate-y-3 hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-500 flex flex-col md:flex-row lg:flex-col gap-6">
+              <div className="flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-xl text-black">
+                <span className="text-3xl font-bold leading-none">05</span>
+                <span className="text-xs font-semibold uppercase tracking-wider">APR</span>
+              </div>
+              
+              <div className="flex-grow">
+                <h3 className="text-xl font-semibold mb-3 text-white">Industry Expert Talk</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Guest lecture on the future of rapid application development
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer moved to MainLayout */}
+
+      {/* Custom animations in style tag */}
       <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        @keyframes spin-slow {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
         }
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out;
+        
+        @keyframes spin-slower-reverse {
+          from { transform: translate(-50%, -50%) rotate(360deg); }
+          to { transform: translate(-50%, -50%) rotate(0deg); }
+        }
+        
+        @keyframes spin-slowest {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 20s linear infinite;
+        }
+        
+        .animate-spin-slower-reverse {
+          animation: spin-slower-reverse 15s linear infinite;
+        }
+        
+        .animate-spin-slowest {
+          animation: spin-slowest 25s linear infinite;
         }
       `}</style>
     </div>
   );
-}
+};
 
-function Feature({ icon, title, desc, gradient }) {
-  return (
-    <div className="group relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100 overflow-hidden">
-      {/* Gradient overlay on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-      
-      <div className="relative">
-        <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${gradient} text-white mb-4 shadow-lg`}>
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-300">
-          {title}
-        </h3>
-        <p className="text-gray-600 leading-relaxed">
-          {desc}
-        </p>
-      </div>
-    </div>
-  );
-}
+export default Home;
