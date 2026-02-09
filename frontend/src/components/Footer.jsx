@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Footer = ({ showSocial = false }) => {
+const Footer = ({ showSocial = false, showMap = false}) => {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
@@ -153,6 +153,7 @@ const Footer = ({ showSocial = false }) => {
             </div>
 
             {/* Map Section - Below Links */}
+            {showMap && (
             <div className="mt-4">
               <div className="flex items-center gap-2 mb-3">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400">
@@ -199,6 +200,7 @@ const Footer = ({ showSocial = false }) => {
                 Visit us in the Computer Science Department building, Room 205
               </p>
             </div>
+            )}
           </div>
         </div>
 

@@ -31,7 +31,7 @@ const Navbar = () => {
     { name: "Home", href: "#" },
     { name: "Why Join", href: "#why-join" },
     { name: "Events", href: "/events" },
-    { name: "Team", href: "#team" },
+    { name: "Team", href: "/team" },
     { name: "Contact", href: "#contact" },
   ];
 

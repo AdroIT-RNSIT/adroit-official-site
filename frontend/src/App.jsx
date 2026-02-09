@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Members from "./pages/Members";
 import Login from "./pages/Login";
 import Resources from "./pages/Resources";
 import Events from "./pages/Events";
 import AdminDashboard from "./pages/AdminDashboard";
 import MainLayout from "./layout/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Team from "./pages/Team.jsx";
 
 function WithLayout({ children }) {
   return <MainLayout>{children}</MainLayout>;
@@ -33,10 +33,10 @@ export default function App() {
         }
       />
       <Route
-        path="/members"
+        path="/team"
         element={
           <WithLayout>
-            <Members />
+            <Team />
           </WithLayout>
         }
       />
