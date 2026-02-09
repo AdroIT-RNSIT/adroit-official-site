@@ -29,10 +29,9 @@ const Navbar = () => {
 
   const sectionLinks = [
     { name: "Home", href: "#" },
-    { name: "About", href: "#about" },
     { name: "Why Join", href: "#why-join" },
     { name: "Events", href: "/events" },
-    { name: "Team", href: "#team" },
+    { name: "Team", href: "/team" },
     { name: "Contact", href: "#contact" },
   ];
 
