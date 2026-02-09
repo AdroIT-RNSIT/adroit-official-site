@@ -25,6 +25,10 @@ const eventSchema = new mongoose.Schema(
       enum: ["workshop", "seminar", "hackathon", "meetup", "other"],
       default: "other",
     },
+    imageUrl: {
+      type: String,
+      default: "",
+    },
     createdBy: {
       type: String,
       required: true,

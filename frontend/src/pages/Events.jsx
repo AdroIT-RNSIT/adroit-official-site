@@ -253,10 +253,21 @@ function EventCard({
           : "border-white/10 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5"
       }`}
     >
-      {/* Gradient top bar */}
-      <div
-        className={`h-1 bg-gradient-to-r ${typeGradients[event.type] || typeGradients.other}`}
-      ></div>
+      {/* Event image or gradient top bar */}
+      {event.imageUrl ? (
+        <div className="relative h-44 overflow-hidden">
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-transparent"></div>
+        </div>
+      ) : (
+        <div
+          className={`h-1 bg-gradient-to-r ${typeGradients[event.type] || typeGradients.other}`}
+        ></div>
+      )}
 
       <div className="p-6">
         {/* Date + Type row */}
