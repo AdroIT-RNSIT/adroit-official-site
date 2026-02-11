@@ -8,6 +8,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import MainLayout from "./layout/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Team from "./pages/Team.jsx";
+import Contact from "./pages/Contact";
+
 
 function WithLayout({ children }) {
   return <MainLayout>{children}</MainLayout>;
@@ -60,6 +62,16 @@ export default function App() {
           </WithLayout>
         }
       />
+      <Route
+        path="/contact"
+        element={
+          <WithLayout>
+            <Contact />
+           </WithLayout>
+         }
+      />
+
+
 
       {/* Protected: admin only */}
       <Route

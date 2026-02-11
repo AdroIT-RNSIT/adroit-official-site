@@ -8,7 +8,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
-
   const isActive = (path) => pathname === path;
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
@@ -32,7 +31,7 @@ const Navbar = () => {
     { name: "Why Join", href: "#why-join" },
     { name: "Events", href: "/events" },
     { name: "Team", href: "/team" },
-    { name: "Contact", href: "#contact" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
