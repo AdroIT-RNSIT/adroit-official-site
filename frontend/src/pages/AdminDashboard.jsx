@@ -3,10 +3,10 @@ import { useSession } from "../lib/auth-client";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ initialTab = "resources" }) {
   const { data: session } = useSession();
   const [stats, setStats] = useState(null);
-  const [activeTab, setActiveTab] = useState("resources");
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   // Users list
   const [users, setUsers] = useState([]);
