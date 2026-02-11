@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ThreeScene from '../home/ThreeScene';
+import { Link } from "react-router-dom";
+
 
 const InteractiveBall = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -330,15 +332,15 @@ const Home = () => {
     </p>
 
     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <button className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto">
+      <Link
+        to="/login"
+        className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto"
+      >
         <span className="relative z-10">Join AdroIT Now</span>
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
           <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      </button>
-      <button className="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-        Explore Our Projects
-      </button>
+      </Link>
     </div>
   </div>
 
@@ -771,12 +773,6 @@ const Home = () => {
     </div>
 
     <div className="text-center mt-16">
-      <button className="group px-10 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 mx-auto">
-        <span>Join AdroIT and Start Building</span>
-        <svg width="24" height="24" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-2 transition-transform duration-300">
-          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
       <p className="text-gray-500 mt-4 text-sm">
         Recruitment for this cycle is closed. Next recruitment opens later this year.
       </p>

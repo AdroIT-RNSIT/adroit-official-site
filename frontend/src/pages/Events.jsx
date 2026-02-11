@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
-import Navbar from "../components/Navbar";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
