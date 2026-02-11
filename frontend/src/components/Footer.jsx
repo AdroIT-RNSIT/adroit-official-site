@@ -8,7 +8,7 @@ const Footer = ({ showSocial = false, showMap = false}) => {
       { name: 'About Us', href: '#about' },
       { name: 'Our Team', href: '#team' },
       { name: 'Events', href: '#events' },
-      { name: 'Contact', href: '#contact' }
+      { name: 'Contact', href: '/contact' }
     ],
     resources: [
       { name: 'Blog', href: '#blog' },
