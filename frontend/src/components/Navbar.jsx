@@ -8,6 +8,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
+
   const isActive = (path) => pathname === path;
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
@@ -26,12 +27,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Common navigation links - same for all pages
+  // Common navigation links - visible to all users on all pages
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Members", path: "/members" },
     { name: "Events", path: "/events" },
     { name: "Team", path: "/team" },
+    { name: "Contact", path: "/contact" }
   ];
 
   return (
@@ -58,9 +60,9 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation - Same structure for all pages */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2">
-            {/* Main navigation links */}
+            {/* Main navigation links - Always visible */}
             <ul className="flex items-center gap-2 mr-4">
               {navLinks.map((link) => (
                 <li key={link.path}>
@@ -77,7 +79,7 @@ const Navbar = () => {
                 </li>
               ))}
               
-              {/* Resources - Only shown when logged in */}
+              {/* Resources - Only visible after login (verified by backend) */}
               {isLoggedIn && (
                 <li>
                   <Link
@@ -93,7 +95,7 @@ const Navbar = () => {
                 </li>
               )}
               
-              {/* Admin - Only shown for admin users */}
+              {/* Admin - Only visible for admin users (verified by backend) */}
               {isAdmin && (
                 <li>
                   <Link
@@ -183,7 +185,7 @@ const Navbar = () => {
         />
       )}
 
-      {/* Mobile Menu - Simplified and consistent */}
+      {/* Mobile Menu */}
       <div
         className={`md:hidden fixed top-0 right-0 w-80 h-full z-[1000] bg-[#0d1117] shadow-2xl transform transition-all duration-500 ease-out ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
@@ -213,13 +215,13 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu Items - Consistent for all pages */}
+        {/* Mobile Menu Items */}
         <div className="p-6 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
           <p className="text-gray-500 text-xs uppercase tracking-wider px-6 mb-2">
             Navigation
           </p>
           <ul className="space-y-2">
-            {/* Main navigation links */}
+            {/* Main navigation links - Always visible */}
             {navLinks.map((link) => (
               <li key={link.path}>
                 <Link
@@ -232,7 +234,6 @@ const Navbar = () => {
                   }`}
                 >
                   <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                    {/* Icons for each link - add appropriate icons */}
                     <span className="text-sm font-bold text-cyan-400">
                       {link.name.charAt(0)}
                     </span>
@@ -242,7 +243,7 @@ const Navbar = () => {
               </li>
             ))}
 
-            {/* Resources - Only when logged in */}
+            {/* Resources - Only visible after login */}
             {isLoggedIn && (
               <li>
                 <Link
@@ -274,7 +275,7 @@ const Navbar = () => {
               </li>
             )}
 
-            {/* Admin - Only when admin */}
+            {/* Admin - Only visible for admin users */}
             {isAdmin && (
               <li>
                 <Link
