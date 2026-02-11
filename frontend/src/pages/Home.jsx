@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
 
-
+// ============================================
+// FIXED INTERACTIVE BALL COMPONENT
+// ============================================
 const InteractiveBall = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [velocity, setVelocity] = useState({ x: 0.5, y: 0.5 });
@@ -10,7 +12,9 @@ const InteractiveBall = () => {
   const [hitColor, setHitColor] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const ballRef = useRef(null);
-  const containerSize = 325; // Half of 650px container
+  const [containerSize, setContainerSize] = useState(325);
+  const animationRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   const colors = [
     'from-cyan-400 to-purple-600',
@@ -30,6 +34,21 @@ const InteractiveBall = () => {
     'bg-gradient-to-r from-teal-400 to-pink-600'
   ];
 
+  // Update container size on resize
+  useEffect(() => {
+    const updateSize = () => {
+      const container = document.querySelector('.hero-ring-container');
+      if (container) {
+        const width = container.clientWidth;
+        setContainerSize(width / 2);
+      }
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   // Track mouse position
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -46,80 +65,92 @@ const InteractiveBall = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Ball movement animation
+  // FIXED: Clean animation loop - removed setInterval conflict
   useEffect(() => {
-    const moveBall = () => {
-      setPosition(prev => {
-        let newX = prev.x + velocity.x;
-        let newY = prev.y + velocity.y;
-        let newVx = velocity.x;
-        let newVy = velocity.y;
+    let lastTime = 0;
+    const FPS = 60;
+    const interval = 1000 / FPS;
 
-        // Bounce off container walls
-        if (newX > containerSize - 15 || newX < -containerSize + 15) {
-          newVx = -newVx * (0.9 + Math.random() * 0.2); // Dampen with randomness
-          newX = newX > 0 ? containerSize - 15 : -containerSize + 15;
-        }
-        if (newY > containerSize - 15 || newY < -containerSize + 15) {
-          newVy = -newVy * (0.9 + Math.random() * 0.2);
-          newY = newY > 0 ? containerSize - 15 : -containerSize + 15;
-        }
+    const moveBall = (time) => {
+      if (time - lastTime >= interval) {
+        setPosition(prev => {
+          let newX = prev.x + velocity.x;
+          let newY = prev.y + velocity.y;
+          let newVx = velocity.x;
+          let newVy = velocity.y;
 
-        // Occasionally change direction randomly
-        if (Math.random() < 0.01) {
-          newVx += (Math.random() - 0.5) * 0.5;
-          newVy += (Math.random() - 0.5) * 0.5;
-        }
+          // Bounce off container walls
+          if (newX > containerSize - 15 || newX < -containerSize + 15) {
+            newVx = -newVx * (0.9 + Math.random() * 0.2);
+            newX = newX > 0 ? containerSize - 15 : -containerSize + 15;
+          }
+          if (newY > containerSize - 15 || newY < -containerSize + 15) {
+            newVy = -newVy * (0.9 + Math.random() * 0.2);
+            newY = newY > 0 ? containerSize - 15 : -containerSize + 15;
+          }
 
-        // Limit max speed
-        const speed = Math.sqrt(newVx * newVx + newVy * newVy);
-        if (speed > 2) {
-          newVx = (newVx / speed) * 2;
-          newVy = (newVy / speed) * 2;
-        }
+          // Occasionally change direction
+          if (Math.random() < 0.01) {
+            newVx += (Math.random() - 0.5) * 0.5;
+            newVy += (Math.random() - 0.5) * 0.5;
+          }
 
-        // Check for cursor collision
-        const ballX = newX + containerSize;
-        const ballY = newY + containerSize;
-        const cursorX = mousePosition.x + containerSize;
-        const cursorY = mousePosition.y + containerSize;
-        
-        const distance = Math.sqrt(
-          Math.pow(ballX - cursorX, 2) + Math.pow(ballY - cursorY, 2)
-        );
+          // Limit max speed
+          const speed = Math.sqrt(newVx * newVx + newVy * newVy);
+          if (speed > 2) {
+            newVx = (newVx / speed) * 2;
+            newVy = (newVy / speed) * 2;
+          }
 
-        if (distance < 50 && !hitColor) { // 50px collision radius
-          // Change ball color
-          const newColor = colors[Math.floor(Math.random() * colors.length)];
-          setColor(newColor);
+          // Check for cursor collision
+          const ballX = newX + containerSize;
+          const ballY = newY + containerSize;
+          const cursorX = mousePosition.x + containerSize;
+          const cursorY = mousePosition.y + containerSize;
           
-          // Set hit effect color
-          const effectColor = hitEffectColors[Math.floor(Math.random() * hitEffectColors.length)];
-          setHitColor(effectColor);
-          
-          // Reverse and boost velocity
-          newVx = -newVx * 1.5;
-          newVy = -newVy * 1.5;
-          
-          // Remove hit effect after 2-3 seconds
-          setTimeout(() => {
-            setHitColor(null);
-          }, 2000 + Math.random() * 1000);
-        }
+          const distance = Math.sqrt(
+            Math.pow(ballX - cursorX, 2) + Math.pow(ballY - cursorY, 2)
+          );
 
-        setVelocity({ x: newVx, y: newVy });
-        return { x: newX, y: newY };
-      });
+          if (distance < 50 && !hitColor) {
+            const newColor = colors[Math.floor(Math.random() * colors.length)];
+            setColor(newColor);
+            
+            const effectColor = hitEffectColors[Math.floor(Math.random() * hitEffectColors.length)];
+            setHitColor(effectColor);
+            
+            newVx = -newVx * 1.5;
+            newVy = -newVy * 1.5;
+            
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            timeoutRef.current = setTimeout(() => {
+              setHitColor(null);
+            }, 2000 + Math.random() * 1000);
+          }
+
+          setVelocity({ x: newVx, y: newVy });
+          return { x: newX, y: newY };
+        });
+        lastTime = time;
+      }
+      animationRef.current = requestAnimationFrame(moveBall);
     };
 
-    const animationId = requestAnimationFrame(() => {
-      moveBall();
-      const interval = setInterval(moveBall, 16); // ~60fps
-      return () => clearInterval(interval);
-    });
+    animationRef.current = requestAnimationFrame(moveBall);
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [velocity, mousePosition, hitColor, containerSize]);
 
-    return () => cancelAnimationFrame(animationId);
-  }, [velocity, mousePosition, hitColor]);
+  // FIXED: Static classes instead of dynamic Tailwind
+  const trailSizes = ['w-2 h-2', 'w-1.5 h-1.5', 'w-1 h-1'];
+  const trailOpacities = ['opacity-30', 'opacity-20', 'opacity-10'];
 
   return (
     <>
@@ -134,10 +165,7 @@ const InteractiveBall = () => {
           zIndex: 20,
         }}
       >
-        {/* Blinking Core */}
         <div className="absolute inset-0 rounded-full bg-white animate-ping opacity-60"></div>
-        
-        {/* Glow effect */}
         <div className="absolute -inset-3 rounded-full bg-current opacity-20 blur-md"></div>
       </div>
 
@@ -162,7 +190,6 @@ const InteractiveBall = () => {
             );
           })}
           
-          {/* Ripple Effect */}
           <div 
             className={`absolute rounded-full border-2 ${hitColor.replace('bg-gradient-to-r', 'border-gradient-to-r')} animate-ripple`}
             style={{
@@ -176,11 +203,11 @@ const InteractiveBall = () => {
         </>
       )}
 
-      {/* Trail Particles */}
+      {/* FIXED: Trail Particles - Static classes instead of dynamic */}
       {[...Array(3)].map((_, i) => (
         <div
           key={`trail-${i}`}
-          className={`absolute w-${2 - i} h-${2 - i} rounded-full bg-gradient-to-r ${color} opacity-${30 - i * 10} animate-trail`}
+          className={`absolute ${trailSizes[i]} rounded-full bg-gradient-to-r ${color} ${trailOpacities[i]} animate-trail`}
           style={{
             left: '50%',
             top: '50%',
@@ -199,7 +226,6 @@ const InteractiveBall = () => {
             <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
           </linearGradient>
         </defs>
-        {/* Spiral line path */}
         <path
           d="M325,325 Q200,200 400,100 Q500,200 250,400 Q100,500 300,300"
           fill="none"
@@ -208,69 +234,43 @@ const InteractiveBall = () => {
           strokeDasharray="2 3"
         />
       </svg>
-
-      {/* Add particle animations */}
-      <style jsx>{`
-        @keyframes hit-particle {
-          0% {
-            transform: translate(var(--tx), var(--ty)) scale(1);
-            opacity: 0.7;
-          }
-          100% {
-            transform: translate(
-              calc(var(--tx) + var(--dx) * 50px),
-              calc(var(--ty) + var(--dy) * 50px)
-            ) scale(0);
-            opacity: 0;
-          }
-        }
-
-        @keyframes ripple {
-          0% {
-            width: 0px;
-            height: 0px;
-            opacity: 0.8;
-          }
-          100% {
-            width: 100px;
-            height: 100px;
-            opacity: 0;
-          }
-        }
-
-        @keyframes trail {
-          0% {
-            opacity: 0.3;
-            transform: translate(var(--tx), var(--ty)) scale(1);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(
-              calc(var(--tx) + var(--dx) * 20px),
-              calc(var(--ty) + var(--dy) * 20px)
-            ) scale(0.5);
-          }
-        }
-
-        .animate-hit-particle {
-          animation: hit-particle 0.8s ease-out forwards;
-        }
-
-        .animate-ripple {
-          animation: ripple 1.5s ease-out forwards;
-        }
-
-        .animate-trail {
-          animation: trail 0.5s linear forwards;
-        }
-      `}</style>
     </>
   );
 };
 
+// ============================================
+// DOMAIN CARD COMPONENT - NEW!
+// ============================================
+const DomainCard = ({ icon, title, description, color, link }) => (
+  <Link 
+    to={link}
+    className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300 hover:scale-105"
+  >
+    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
+      {icon}
+    </div>
+    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+      {title}
+    </h3>
+    <p className="text-gray-400 text-sm leading-relaxed">
+      {description}
+    </p>
+    <div className="mt-4 inline-flex items-center gap-1 text-cyan-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+      Explore Resources
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
+  </Link>
+);
+
+// ============================================
+// MAIN HOME COMPONENT
+// ============================================
 const Home = () => {
   const heroRef = useRef(null);
   const missionRef = useRef(null);
+  const domainsRef = useRef(null);
   const approachRef = useRef(null);
   const benefitsRef = useRef(null);
   const activitiesRef = useRef(null);
@@ -290,7 +290,7 @@ const Home = () => {
       });
     }, observerOptions);
 
-    const refs = [heroRef, missionRef, approachRef, benefitsRef, activitiesRef];
+    const refs = [heroRef, missionRef, domainsRef, approachRef, benefitsRef, activitiesRef];
     refs.forEach(ref => {
       if (ref.current) observer.observe(ref.current);
     });
@@ -298,273 +298,130 @@ const Home = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Domain data for your 4 core domains
+  const domains = [
+    {
+      icon: '🤖',
+      title: 'Machine Learning',
+      description: 'Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.',
+      color: 'from-cyan-500 to-cyan-600',
+      link: '/resources/ml'
+    },
+    {
+      icon: '☁️',
+      title: 'Cloud Computing',
+      description: 'Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.',
+      color: 'from-purple-500 to-purple-600',
+      link: '/resources/cc'
+    },
+    {
+      icon: '🔒',
+      title: 'Cybersecurity',
+      description: 'Protect systems from threats. Learn ethical hacking, network security, and cryptography.',
+      color: 'from-pink-500 to-pink-600',
+      link: '/resources/cy'
+    },
+    {
+      icon: '📊',
+      title: 'Data Analytics',
+      description: 'Extract insights from data. Master visualization, SQL, Python, and business intelligence.',
+      color: 'from-green-500 to-green-600',
+      link: '/resources/da'
+    }
+  ];
+
   return (
     <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip">
+      
       {/* Background gradients */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[150px]"></div>
       </div>
 
-     {/* Hero Section */}
-<section 
-  ref={heroRef}
-  className="min-h-screen flex items-center justify-center relative px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
->
-  <div className="max-w-5xl text-center z-10 relative">
-    <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
-      <span className="w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></span>
-      <span>Department of Computer Science & Engineering</span>
-    </div>
-
-    <h1 className="mb-6">
-      <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
-        Welcome to
-      </span>
-      <span className="block text-6xl md:text-8xl lg:text-9xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-tight">
-        AdroIT
-      </span>
-    </h1>
-
-    <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
-      The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
-      cutting-edge technology, collaborative projects, and industry-ready skills
-    </p>
-
-    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <Link
-        to="/login"
-        className="group px-8 py-4 bg-gradient-to-r from-cyan-400 to-cyan-600 text-black font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-400/30 hover:shadow-cyan-400/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden w-full sm:w-auto"
-      >
-        <span className="relative z-10">Join AdroIT Now</span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
-          <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </Link>
-    </div>
-  </div>
-
-  {/* Enhanced Decorative Rings with Glowing Effect and Moving Dot */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] pointer-events-none z-0">
-    
-    {/* Outer Glow Effect */}
-    <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-r from-cyan-400/5 to-purple-600/5 blur-[20px] animate-pulse-glow"></div>
-    
-    {/* Main Rings with Glow */}
-    <div className="absolute w-full h-full border border-cyan-500/30 rounded-full animate-spin-slow shadow-[0_0_30px_5px_rgba(34,211,238,0.15)]"></div>
-    <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/25 rounded-full animate-spin-slower-reverse shadow-[0_0_25px_5px_rgba(168,85,247,0.1)]"></div>
-    
-    {/* Inner Ring */}
-    <div className="absolute w-[40%] h-[40%] top-[30%] left-[30%] border border-cyan-400/20 rounded-full animate-spin-slowest shadow-[0_0_20px_3px_rgba(34,211,238,0.1)]"></div>
-
-    {/* Moving Dot from the "i" in AdroIT */}
-    <div className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_15px_5px_rgba(34,211,238,0.4)] animate-move-spiral">
-      {/* Blinking Core */}
-      <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
-    </div>
-
-    {/* Trail Effect Dots */}
-    <div className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400/50 shadow-[0_0_8px_2px_rgba(34,211,238,0.3)] animate-move-spiral-trail-1"></div>
-    <div className="absolute w-1 h-1 rounded-full bg-purple-500/40 shadow-[0_0_6px_1px_rgba(168,85,247,0.3)] animate-move-spiral-trail-2"></div>
-    <div className="absolute w-0.5 h-0.5 rounded-full bg-cyan-400/30 shadow-[0_0_4px_1px_rgba(34,211,238,0.3)] animate-move-spiral-trail-3"></div>
-
-    {/* Connection Lines */}
-    <svg className="absolute top-0 left-0 w-full h-full">
-      <defs>
-        <linearGradient id="spiralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
-        </linearGradient>
-      </defs>
-      {/* Spiral line path */}
-      <path
-        d="M325,325 Q200,200 400,100 Q500,200 250,400 Q100,500 300,300"
-        fill="none"
-        stroke="url(#spiralGradient)"
-        strokeWidth="0.5"
-        strokeDasharray="2 3"
-      />
-    </svg>
-
-    {/* Floating Particles Along the Path */}
-    {[...Array(8)].map((_, i) => (
-      <div
-        key={i}
-        className="absolute w-1 h-1 rounded-full bg-cyan-400/30 animate-float-particle"
-        style={{
-          animationDelay: `${i * 0.5}s`,
-          animationDuration: `${3 + i}s`
-        }}
-      />
-    ))}
-  </div>
-
-  {/* Add custom animations */}
-  <style jsx>{`
-    @keyframes pulse-glow {
-      0%, 100% {
-        opacity: 0.3;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.5;
-        transform: scale(1.02);
-      }
-    }
-
-    @keyframes spin-slowest {
-      from {
-        transform: translate(-50%, -50%) rotate(0deg);
-      }
-      to {
-        transform: translate(-50%, -50%) rotate(360deg);
-      }
-    }
-
-    @keyframes move-spiral {
-      0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-      }
-      25% {
-        transform: translate(-120px, -120px) scale(1.2);
-        opacity: 0.8;
-      }
-      50% {
-        transform: translate(120px, -120px) scale(1);
-        opacity: 1;
-      }
-      75% {
-        transform: translate(120px, 120px) scale(1.2);
-        opacity: 0.8;
-      }
-      100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    @keyframes move-spiral-trail-1 {
-      0% {
-        transform: translate(0, 0);
-        opacity: 0;
-      }
-      10% {
-        transform: translate(-40px, -40px);
-        opacity: 0.5;
-      }
-      20% {
-        transform: translate(-80px, -80px);
-        opacity: 0.3;
-      }
-      30% {
-        transform: translate(-120px, -120px);
-        opacity: 0.1;
-      }
-      100% {
-        transform: translate(-120px, -120px);
-        opacity: 0;
-      }
-    }
-
-    @keyframes move-spiral-trail-2 {
-      0% {
-        transform: translate(0, 0);
-        opacity: 0;
-      }
-      20% {
-        transform: translate(60px, -60px);
-        opacity: 0.5;
-      }
-      40% {
-        transform: translate(120px, -120px);
-        opacity: 0.3;
-      }
-      60% {
-        transform: translate(180px, -180px);
-        opacity: 0.1;
-      }
-      100% {
-        transform: translate(180px, -180px);
-        opacity: 0;
-      }
-    }
-
-    @keyframes move-spiral-trail-3 {
-      0% {
-        transform: translate(0, 0);
-        opacity: 0;
-      }
-      30% {
-        transform: translate(60px, 60px);
-        opacity: 0.5;
-      }
-      60% {
-        transform: translate(120px, 120px);
-        opacity: 0.3;
-      }
-      90% {
-        transform: translate(180px, 180px);
-        opacity: 0.1;
-      }
-      100% {
-        transform: translate(180px, 180px);
-        opacity: 0;
-      }
-    }
-
-    @keyframes float-particle {
-      0%, 100% {
-        transform: translate(0, 0);
-        opacity: 0;
-      }
-      10%, 90% {
-        opacity: 0.3;
-      }
-      50% {
-        opacity: 0.6;
-        transform: translate(20px, -20px);
-      }
-    }
-
-    .animate-pulse-glow {
-      animation: pulse-glow 4s ease-in-out infinite;
-    }
-
-    .animate-spin-slowest {
-      animation: spin-slowest 40s linear infinite;
-    }
-
-    .animate-move-spiral {
-      animation: move-spiral 6s ease-in-out infinite;
-    }
-
-    .animate-move-spiral-trail-1 {
-      animation: move-spiral-trail-1 6s ease-out infinite;
-    }
-
-    .animate-move-spiral-trail-2 {
-      animation: move-spiral-trail-2 6s ease-out infinite;
-      animation-delay: 0.3s;
-    }
-
-    .animate-move-spiral-trail-3 {
-      animation: move-spiral-trail-3 6s ease-out infinite;
-      animation-delay: 0.6s;
-    }
-
-    .animate-float-particle {
-      animation: float-particle var(--duration) ease-in-out infinite;
-    }
-  `}</style>
-</section>
-
-      {/* Why AdroIT Section */}
+      {/* ===== HERO SECTION - YOUR ORIGINAL DESIGN ===== */}
       <section 
-        ref={missionRef}
-        className="py-24 px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        ref={heroRef}
+        className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
       >
+        <div className="max-w-5xl text-center z-10 relative">
+          
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></span>
+            <span>Department of Computer Science & Engineering</span>
+          </div>
+
+          {/* Title */}
+          <h1 className="mb-6">
+            <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
+              Welcome to
+            </span>
+            <span className="block text-6xl md:text-8xl lg:text-9xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-tight">
+              AdroIT
+            </span>
+          </h1>
+
+          {/* Tagline */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
+            The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
+            cutting-edge technology, collaborative projects, and industry-ready skills
+          </p>
+
+          {/* SINGLE CTA BUTTON - Removed duplicate */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              to="/login"
+              className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+            >
+              <span className="relative z-10">Join AdroIT Now</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10 group-hover:translate-x-1 transition-transform">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+          </div>
+        </div>
+
+        {/* FIXED: Responsive rings container */}
+        <div className="hero-ring-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[650px] aspect-square pointer-events-none z-0 px-4">
+          <div className="relative w-full h-full">
+            
+            {/* Outer Glow */}
+            <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-r from-cyan-400/5 to-purple-600/5 blur-[20px] animate-pulse-glow"></div>
+            
+            {/* Main Rings */}
+            <div className="absolute w-full h-full border border-cyan-500/30 rounded-full animate-spin-slow shadow-[0_0_30px_5px_rgba(34,211,238,0.15)]"></div>
+            <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/25 rounded-full animate-spin-slower-reverse shadow-[0_0_25px_5px_rgba(168,85,247,0.1)]"></div>
+            <div className="absolute w-[40%] h-[40%] top-[30%] left-[30%] border border-cyan-400/20 rounded-full animate-spin-slowest shadow-[0_0_20px_3px_rgba(34,211,238,0.1)]"></div>
+
+            {/* Moving Dot */}
+            <div className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_15px_5px_rgba(34,211,238,0.4)] animate-move-spiral">
+              <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
+            </div>
+
+            {/* Trail Dots */}
+            <div className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400/50 shadow-[0_0_8px_2px_rgba(34,211,238,0.3)] animate-move-spiral-trail-1"></div>
+            <div className="absolute w-1 h-1 rounded-full bg-purple-500/40 shadow-[0_0_6px_1px_rgba(168,85,247,0.3)] animate-move-spiral-trail-2"></div>
+            <div className="absolute w-0.5 h-0.5 rounded-full bg-cyan-400/30 shadow-[0_0_4px_1px_rgba(34,211,238,0.3)] animate-move-spiral-trail-3"></div>
+
+            {/* Interactive Ball */}
+            <InteractiveBall />
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+          <span className="text-xs text-gray-500">Scroll</span>
+          <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
+          </svg>
+        </div>
+      </section>
+
+      {/* ===== WHY JOIN SECTION ===== */}
+      <section id="why-join" ref={missionRef} className="py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000">
         <div className="max-w-7xl mx-auto">
+          
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
             <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Why Join AdroIT?</h2>
@@ -574,8 +431,12 @@ const Home = () => {
             </p>
           </div>
 
+          {/* YOUR ORIGINAL 3-COLUMN LAYOUT */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left Column - 3 Cards */}
             <div className="space-y-8">
+              
               <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-cyan-500/30 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
@@ -615,6 +476,7 @@ const Home = () => {
               </div>
             </div>
 
+            {/* Right Column - Advantage Card */}
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
               <div className="relative bg-black/40 backdrop-blur-3xl border border-white/10 p-10 rounded-3xl">
@@ -644,13 +506,47 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Interactive Canvas Section */}
+      {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
+      <section ref={domainsRef} className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-12 transition-all duration-1000">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="text-center mb-16">
+            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Technical Domains</h2>
+            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+              Four pillars of technical excellence driving innovation at AdroIT
+            </p>
+          </div>
+
+          {/* 4-Column Grid for Domains */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {domains.map((domain, index) => (
+              <DomainCard key={index} {...domain} />
+            ))}
+          </div>
+
+          {/* Domain CTA */}
+          <div className="text-center mt-12">
+            <Link
+              to="/domains"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-cyan-400 hover:text-white hover:border-cyan-500/30 transition-all duration-300 group"
+            >
+              <span>Explore All Domains</span>
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== INTERACTIVE CANVAS SECTION ===== */}
       <section 
         ref={approachRef}
-        className="min-h-[60vh] relative flex items-center justify-center py-20 opacity-0 translate-y-12 transition-all duration-1000"
+        className="min-h-[60vh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
         <ThreeScene />
-        <div className="relative z-10 text-center px-8">
+        <div className="relative z-10 text-center">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
             Our Learning Philosophy
           </h2>
@@ -661,18 +557,19 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Benefits of Joining */}
+      {/* ===== BENEFITS SECTION ===== */}
       <section 
         ref={benefitsRef}
-        className="py-24 px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Your Growth</span>
+            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
             <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">How AdroIT Will Transform You</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
             <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-cyan-500/50 hover:translate-y-[-8px] transition-all duration-500">
               <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -682,7 +579,7 @@ const Home = () => {
               <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
               <p className="text-gray-400">
                 Develop strong technical thinking by understanding core concepts, problem-solving approaches,
-                and real-world applications across Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
+                and real-world applications across all four domains.
               </p>
             </div>
 
@@ -714,81 +611,148 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Club Activities */}
-   <section 
-  ref={activitiesRef}
-  className="py-24 px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
->
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16">
-      <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // What We Do</span>
-      <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Join the AdroIT Community</h2>
-      <p className="text-gray-400 text-xl max-w-3xl mx-auto">
-        Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
-        in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
-      </p>
-    </div>
+      {/* ===== CLUB ACTIVITIES ===== */}
+      <section 
+        ref={activitiesRef}
+        className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
+      >
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="text-center mb-16">
+            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Join the AdroIT Community</h2>
+            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+              Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
+              in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
+            </p>
+          </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-      <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
-        <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
-        <p className="text-gray-400 mb-4">
-          Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
-        </p>
-        <ul className="space-y-2 text-gray-300">
-          <li>• Machine Learning Fundamentals & Projects</li>
-          <li>• Cloud Computing Concepts & Deployment</li>
-          <li>• Cybersecurity Basics & Practices</li>
-          <li>• Data Analytics Tools & Workflows</li>
-        </ul>
-      </div>
+            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
+              <p className="text-gray-400 mb-4">
+                Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li>• Machine Learning Fundamentals & Projects</li>
+                <li>• Cloud Computing Concepts & Deployment</li>
+                <li>• Cybersecurity Basics & Practices</li>
+                <li>• Data Analytics Tools & Workflows</li>
+              </ul>
+            </div>
 
-      <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
-        <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
-        <p className="text-gray-400 mb-4">
-          Team-based project cycles designed to apply skills through real-world problem solving.
-        </p>
-        <ul className="space-y-2 text-gray-300">
-          <li>• ML Model Development</li>
-          <li>• Cloud-based Application Deployment</li>
-          <li>• Security Analysis & Testing</li>
-          <li>• Data-driven Insights Projects</li>
-        </ul>
-      </div>
+            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
+              <p className="text-gray-400 mb-4">
+                Team-based project cycles designed to apply skills through real-world problem solving.
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li>• ML Model Development</li>
+                <li>• Cloud-based Application Deployment</li>
+                <li>• Security Analysis & Testing</li>
+                <li>• Data-driven Insights Projects</li>
+              </ul>
+            </div>
 
-      <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
-        <h3 className="text-2xl font-bold mb-4 text-pink-400">Community & Events</h3>
-        <p className="text-gray-400 mb-4">
-          Events that encourage collaboration, innovation, and exposure to industry practices.
-        </p>
-        <ul className="space-y-2 text-gray-300">
-          <li>• HackAdroIT Hackathon</li>
-          <li>• Industry Talks & Expert Sessions</li>
-          <li>• Project Demo Days</li>
-          <li>• Peer Learning & Networking Events</li>
-        </ul>
-      </div>
+            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-pink-400">Community & Events</h3>
+              <p className="text-gray-400 mb-4">
+                Events that encourage collaboration, innovation, and exposure to industry practices.
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li>• HackAdroIT Hackathon</li>
+                <li>• Industry Talks & Expert Sessions</li>
+                <li>• Project Demo Days</li>
+                <li>• Peer Learning & Networking Events</li>
+              </ul>
+            </div>
+          </div>
 
-    </div>
+          {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}
+          <div className="text-center mt-16">
+            <p className="text-gray-500 text-sm">
+              Recruitment for this cycle is closed. Next recruitment opens later this year.
+            </p>
+          </div>
+        </div>
+      </section>
 
-    <div className="text-center mt-16">
-      <p className="text-gray-500 mt-4 text-sm">
-        Recruitment for this cycle is closed. Next recruitment opens later this year.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
-      <style jsx>{`
-        .animate-spin-slow { animation: spin 20s linear infinite; }
-        .animate-spin-slower-reverse { animation: spin 25s linear infinite reverse; }
-        @keyframes spin {
+      {/* ===== FIXED: Global Styles - Replaced style jsx with regular style ===== */}
+      <style>{`
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.02); }
+        }
+        @keyframes spin-slow {
           from { transform: translate(-50%, -50%) rotate(0deg); }
           to { transform: translate(-50%, -50%) rotate(360deg); }
         }
+        @keyframes spin-slower-reverse {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(-360deg); }
+        }
+        @keyframes spin-slowest {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(720deg); }
+        }
+        @keyframes move-spiral {
+          0% { transform: translate(0, 0) scale(1); opacity: 1; }
+          25% { transform: translate(-120px, -120px) scale(1.2); opacity: 0.8; }
+          50% { transform: translate(120px, -120px) scale(1); opacity: 1; }
+          75% { transform: translate(120px, 120px) scale(1.2); opacity: 0.8; }
+          100% { transform: translate(0, 0) scale(1); opacity: 1; }
+        }
+        @keyframes move-spiral-trail-1 {
+          0% { transform: translate(0, 0); opacity: 0; }
+          10% { transform: translate(-40px, -40px); opacity: 0.5; }
+          20% { transform: translate(-80px, -80px); opacity: 0.3; }
+          30% { transform: translate(-120px, -120px); opacity: 0.1; }
+          100% { transform: translate(-120px, -120px); opacity: 0; }
+        }
+        @keyframes move-spiral-trail-2 {
+          0% { transform: translate(0, 0); opacity: 0; }
+          20% { transform: translate(60px, -60px); opacity: 0.5; }
+          40% { transform: translate(120px, -120px); opacity: 0.3; }
+          60% { transform: translate(180px, -180px); opacity: 0.1; }
+          100% { transform: translate(180px, -180px); opacity: 0; }
+        }
+        @keyframes move-spiral-trail-3 {
+          0% { transform: translate(0, 0); opacity: 0; }
+          30% { transform: translate(60px, 60px); opacity: 0.5; }
+          60% { transform: translate(120px, 120px); opacity: 0.3; }
+          90% { transform: translate(180px, 180px); opacity: 0.1; }
+          100% { transform: translate(180px, 180px); opacity: 0; }
+        }
+        @keyframes float-particle {
+          0%, 100% { transform: translate(0, 0); opacity: 0; }
+          10%, 90% { opacity: 0.3; }
+          50% { opacity: 0.6; transform: translate(20px, -20px); }
+        }
+        @keyframes hit-particle {
+          0% { transform: scale(1); opacity: 0.7; }
+          100% { transform: scale(0); opacity: 0; }
+        }
+        @keyframes ripple {
+          0% { width: 0px; height: 0px; opacity: 0.8; }
+          100% { width: 100px; height: 100px; opacity: 0; }
+        }
+        @keyframes trail {
+          0% { opacity: 0.3; transform: scale(1); }
+          100% { opacity: 0; transform: scale(0.5); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+        .animate-spin-slower-reverse { animation: spin-slower-reverse 25s linear infinite; }
+        .animate-spin-slowest { animation: spin-slowest 40s linear infinite; }
+        .animate-move-spiral { animation: move-spiral 6s ease-in-out infinite; }
+        .animate-move-spiral-trail-1 { animation: move-spiral-trail-1 6s ease-out infinite; }
+        .animate-move-spiral-trail-2 { animation: move-spiral-trail-2 6s ease-out infinite; animation-delay: 0.3s; }
+        .animate-move-spiral-trail-3 { animation: move-spiral-trail-3 6s ease-out infinite; animation-delay: 0.6s; }
+        .animate-float-particle { animation: float-particle var(--duration) ease-in-out infinite; }
+        .animate-hit-particle { animation: hit-particle 0.8s ease-out forwards; }
+        .animate-ripple { animation: ripple 1.5s ease-out forwards; }
+        .animate-trail { animation: trail 0.5s linear forwards; }
       `}</style>
     </div>
   );
