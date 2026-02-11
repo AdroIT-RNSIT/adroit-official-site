@@ -1,137 +1,193 @@
-# ☁️ AdroIT Cloud Computing Project
+# ☁️ AdroIT Official Site — MERN Stack (Cloud Computing Domain)
 
-This repository contains a full-stack application structured with separate **frontend** and **backend** directories under the **Cloud Computing Domain**.
-
-🚧 **Current Status:**  
-Only the **frontend** is active at the moment. Backend setup will be added later.
+This repository contains the official AdroIT platform built using the **MERN Stack** (MongoDB, Express.js, React, Node.js) following scalable cloud-native architecture principles. The project is designed for collaborative development with structured workflows and open-source standards.
 
 ---
 
-## 📁 Project Structure
+## 🚀 Project Overview
+
+The AdroIT Official Site is a full-stack web application developed under the Cloud Computing Domain. The architecture separates frontend and backend services to ensure maintainability, scalability, and smooth team collaboration.
+
+---
+
+## 🧱 Tech Stack
+
+### Frontend
+
+* React.js
+* Vite
+* JavaScript / TypeScript
+* Modern CSS tooling
+
+### Backend (In Progress)
+
+* Node.js
+* Express.js
+* MongoDB
+* REST APIs
+
+### Dev Tools
+
+* Git & GitHub
+* npm
+
+---
+
+## 📁 Repository Structure
 
 ```
 .
-├── frontend/   # Frontend application (currently active)
-├── backend/    # Backend application (coming soon)
-└── README.md
+├── frontend/        # React frontend application
+├── backend/         # Node + Express backend (under development)
+├── .github/         # Templates, community standards
+├── README.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
 ```
 
 ---
 
 ## ⚙️ Prerequisites
 
-Ensure you have the following installed:
+Install the following:
 
-- Node.js (v16 or above)
-- npm
-- Git
+* Node.js (v16 or higher)
+* npm
+* Git
+* MongoDB (local or cloud instance later)
 
-**Check versions:**
+Check versions:
 
-```bash
-node -v  
-npm -v  
+```
+node -v
+npm -v
 git --version
 ```
 
 ---
 
-## 🤝 Collaboration Access
+## 📥 Getting Started
 
-You will be added as a **collaborator** to this repository.  
-Once added, you can clone, push, and create branches directly.
+Clone the repository:
 
-**Repository Link:**  
-[https://github.com/AdroIT-RNSIT/adroit-official-site.git](https://github.com/AdroIT-RNSIT/adroit-official-site.git)
-
----
-
-## 📥 Clone the Repository
-
-```bash
-git clone https://github.com/AdroIT-RNSIT/adroit-official-site.git
 ```
-
-Move into the project directory:
-
-```bash
+git clone https://github.com/AdroIT-RNSIT/adroit-official-site.git
 cd adroit-official-site
 ```
 
 ---
 
-## 📂 Frontend Setup
+## 💻 Local Development Setup
 
-Navigate to the frontend folder:
+### Frontend
 
-```bash
+```
 cd frontend
-```
-
-Install dependencies:
-
-```bash
 npm install
-```
-
----
-
-## ▶️ Run Frontend Locally
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
----
-
-## 🌐 Access the Application
-
-Open your browser and visit:
+Open browser:
 
 ```
 http://localhost:5173
 ```
 
-(The port is fixed for this project unless changed in config.)
+---
+
+### Backend (Coming Soon)
+
+Backend setup instructions will be added once API structure is finalized.
+
+---
+
+## 🌿 Development Workflow
+
+### Branch Strategy
+
+Do NOT push directly to `main`.
+
+Create feature branches:
+
+```
+git checkout -b feature/<feature-name>
+```
+
+Examples:
+
+* feature/team-page
+* fix/navbar-alignment
+* docs/update-readme
+
+Submit changes via Pull Requests.
+
+---
+
+## 🤝 Contributing
+
+Before contributing:
+
+1. Read `CONTRIBUTING.md`
+2. Follow commit message conventions
+3. Test changes locally
+4. Ensure clean and readable code
+
+---
+
+## 🧪 Coding Guidelines
+
+* Follow MERN best practices.
+* Maintain separation between frontend and backend logic.
+* Avoid unnecessary dependencies.
+* Keep components modular and reusable.
 
 ---
 
 ## 🧹 Troubleshooting
 
-**If you face dependency issues:**
+Dependency issues:
 
-```bash
-npm cache clean --force  
+```
+npm cache clean --force
 npm install
 ```
 
-**If the port is already in use:**
+Port already in use:
 
-```bash
+```
 npm run dev -- --port 5173
 ```
 
 ---
 
-## 🚀 Roadmap
+## 🗺️ Roadmap
 
-- [x] Frontend project setup
-- [ ] Backend setup
-- [ ] API integration
-- [ ] Authentication
-- [ ] Cloud deployment (AWS / Azure / GCP)
+*  Frontend foundation (React + Vite)
+*  Backend API structure (Node + Express)
+*  MongoDB integration
+*  Authentication system
+*  API integration
+*  Cloud deployment (AWS / Azure / GCP)
+*  CI/CD pipeline
 
 ---
 
-## 📬 Contact
+## 📬 Communication
 
-Maintained by **AdroIT Cloud Computing Domain**  
-For queries or contributions, feel free to open an issue or contact the project lead.
+Maintained by **AdroIT Cloud Computing Domain**.
+
+For bugs or feature requests:
+
+👉 Open a GitHub Issue.
 
 ---
 
 ## 📄 License
 
-This project is maintained by AdroIT-RNSIT. All rights reserved.
+License details available in the LICENSE file.
+
+---
+
+## ⭐ Project Vision
+
+Build a scalable MERN-stack platform aligned with modern cloud engineering practices and collaborative open-source development.

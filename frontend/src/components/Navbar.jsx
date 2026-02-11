@@ -8,7 +8,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
-
   const isActive = (path) => pathname === path;
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
