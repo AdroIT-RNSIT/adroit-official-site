@@ -28,6 +28,8 @@ export default function AdminDashboard() {
     location: "",
     type: "other",
   });
+  const [eventImage, setEventImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [message, setMessage] = useState({ type: "", text: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -126,11 +128,20 @@ export default function AdminDashboard() {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const formData = new FormData();
+      formData.append("title", eventForm.title);
+      formData.append("description", eventForm.description);
+      formData.append("date", eventForm.date);
+      formData.append("location", eventForm.location);
+      formData.append("type", eventForm.type);
+      if (eventImage) {
+        formData.append("image", eventImage);
+      }
+
       const res = await fetch(`${API_URL}/api/events`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(eventForm),
+        body: formData,
       });
       if (!res.ok) {
         const err = await res.json();
@@ -143,6 +154,8 @@ export default function AdminDashboard() {
         location: "",
         type: "other",
       });
+      setEventImage(null);
+      setImagePreview(null);
       showMessage("success", "Event created successfully!");
       fetchStats();
     } catch (err) {
@@ -150,6 +163,23 @@ export default function AdminDashboard() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        showMessage("error", "Image must be smaller than 5 MB");
+        return;
+      }
+      setEventImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removeImage = () => {
+    setEventImage(null);
+    setImagePreview(null);
   };
 
   return (
@@ -435,6 +465,70 @@ export default function AdminDashboard() {
                   placeholder="Room 201, CS Building"
                 />
               </div>
+            </div>
+
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Event Image
+              </label>
+              {imagePreview ? (
+                <div className="relative inline-block">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full max-w-xs h-40 object-cover rounded-xl border border-white/10"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute top-2 right-2 p-1.5 bg-red-500/80 hover:bg-red-500 text-white rounded-lg transition-colors"
+                    title="Remove image"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
+                  <svg
+                    className="w-8 h-8 text-gray-500 mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span className="text-sm text-gray-400">
+                    Click to upload an image
+                  </span>
+                  <span className="text-xs text-gray-500 mt-1">
+                    JPEG, PNG, WebP, GIF — max 5 MB
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
+              )}
             </div>
 
             <button
