@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 // ===== PROTECTED PAGES (Login Required + Approval) =====
 import Resources from "./pages/Resources";
 import Members from "./pages/Members";
+import Profile from "./pages/Profile";
 
 // ===== ADMIN ONLY PAGES =====
 import AdminDashboard from "./pages/AdminDashboard";
@@ -132,6 +133,18 @@ export default function App() {
           <WithLayout>
             <ProtectedRoute>
               <Members />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+
+      {/* User Profile - Protected (must be approved) */}
+      <Route
+        path="/profile"
+        element={
+          <WithLayout>
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           </WithLayout>
         }
