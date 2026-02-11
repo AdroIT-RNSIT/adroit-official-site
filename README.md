@@ -1,4 +1,4 @@
-# ☁️ AdroIT Official Site — MERN Stack (Cloud Computing Domain)
+# ☁️ AdroIT Official Site
 
 This repository contains the official AdroIT platform built using the **MERN Stack** (MongoDB, Express.js, React, Node.js) following scalable cloud-native architecture principles. The project is designed for collaborative development with structured workflows and open-source standards.
 
@@ -191,3 +191,4 @@ License details available in the LICENSE file.
 ## ⭐ Project Vision
 
 Build a scalable MERN-stack platform aligned with modern cloud engineering practices and collaborative open-source development.
+
