@@ -26,12 +26,12 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const sectionLinks = [
-    { name: "Home", href: "#" },
-    { name: "Why Join", href: "#why-join" },
-    { name: "Events", href: "/events" },
-    { name: "Team", href: "/team" },
-    { name: "Contact", href: "/contact" },
+  // Common navigation links - same for all pages
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Members", path: "/members" },
+    { name: "Events", path: "/events" },
+    { name: "Team", path: "/team" },
   ];
 
   return (
@@ -46,142 +46,69 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between h-full">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 cursor-pointer group">
-            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
-              <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
-                <img
-                  src="/ADROIT-logo.webp"
-                  alt="AdroIT"
-                  className="w-full h-full object-cover opacity-60"
-                />
-              </div>
+            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
+              <img
+                src="/ADROIT-logo.webp"
+                alt="AdroIT"
+                className="w-full h-full object-cover opacity-60"
+              />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-tight">
               AdroIT
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Same structure for all pages */}
           <div className="hidden md:flex items-center gap-2">
-            {/* Section anchor links (visible on home page) */}
-            {pathname === "/" && (
-              <ul className="flex items-center gap-8 mr-4">
-                {sectionLinks.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="relative text-gray-300 hover:text-white font-medium text-[15px] tracking-wide py-1 transition-colors duration-200 group"
-                    >
-                      {link.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-600 group-hover:w-full transition-all duration-200 ease-out shadow-lg shadow-cyan-400/50"></span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {/* Route-based links (visible when not on home page) */}
-            {pathname !== "/" && (
-              <ul className="flex items-center gap-2 mr-4">
-                <li>
+            {/* Main navigation links */}
+            <ul className="flex items-center gap-2 mr-4">
+              {navLinks.map((link) => (
+                <li key={link.path}>
                   <Link
-                    to="/"
+                    to={link.path}
                     className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                      isActive("/")
+                      isActive(link.path)
                         ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
                         : "text-gray-300 hover:text-white hover:bg-white/5"
                     }`}
                   >
-                    Home
+                    {link.name}
                   </Link>
                 </li>
+              ))}
+              
+              {/* Resources - Only shown when logged in */}
+              {isLoggedIn && (
                 <li>
-                  <Link
-                    to="/members"
-                    className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                      isActive("/members")
-                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-gray-300 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    Members
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/events"
-                    className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                      isActive("/events")
-                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-gray-300 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    Events
-                  </Link>
-                </li>
-                {isLoggedIn && (
-                  <li>
-                    <Link
-                      to="/resources"
-                      className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                        isActive("/resources")
-                          ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-gray-300 hover:text-white hover:bg-white/5"
-                      }`}
-                    >
-                      Resources
-                    </Link>
-                  </li>
-                )}
-                {isAdmin && (
-                  <li>
-                    <Link
-                      to="/admin"
-                      className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
-                        isActive("/admin")
-                          ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-gray-300 hover:text-white hover:bg-white/5"
-                      }`}
-                    >
-                      Admin
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            )}
-
-            {/* App page links on home page */}
-            {pathname === "/" && (
-              <div className="flex items-center gap-2 ml-2 pl-2 border-l border-white/10">
-                <Link
-                  to="/members"
-                  className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
-                >
-                  Members
-                </Link>
-                <Link
-                  to="/events"
-                  className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
-                >
-                  Events
-                </Link>
-                {isLoggedIn && (
                   <Link
                     to="/resources"
-                    className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
+                    className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
+                      isActive("/resources")
+                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                        : "text-gray-300 hover:text-white hover:bg-white/5"
+                    }`}
                   >
                     Resources
                   </Link>
-                )}
-                {isAdmin && (
+                </li>
+              )}
+              
+              {/* Admin - Only shown for admin users */}
+              {isAdmin && (
+                <li>
                   <Link
                     to="/admin"
-                    className="text-gray-300 hover:text-white font-medium text-[15px] px-3 py-2 rounded-lg hover:bg-white/5 transition-all duration-200"
+                    className={`relative px-4 py-2 rounded-lg font-medium text-[15px] tracking-wide transition-all duration-200 ${
+                      isActive("/admin")
+                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                        : "text-gray-300 hover:text-white hover:bg-white/5"
+                    }`}
                   >
                     Admin
                   </Link>
-                )}
-              </div>
-            )}
+                </li>
+              )}
+            </ul>
 
             {/* Auth button */}
             <div className="ml-2 pl-2 border-l border-white/10">
@@ -256,7 +183,7 @@ const Navbar = () => {
         />
       )}
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Simplified and consistent */}
       <div
         className={`md:hidden fixed top-0 right-0 w-80 h-full z-[1000] bg-[#0d1117] shadow-2xl transform transition-all duration-500 ease-out ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
@@ -286,145 +213,36 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Menu Items */}
+        {/* Mobile Menu Items - Consistent for all pages */}
         <div className="p-6 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
-          {/* Section links (anchor-based, for landing page) */}
-          {pathname === "/" && (
-            <>
-              <p className="text-gray-500 text-xs uppercase tracking-wider px-6 mb-2">
-                Sections
-              </p>
-              <ul className="space-y-2 mb-4">
-                {sectionLinks.map((link, index) => (
-                  <li
-                    key={index}
-                    className="transform transition-all duration-300"
-                    style={{ transitionDelay: `${index * 50}ms` }}
-                  >
-                    <a
-                      href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-4 px-6 py-4 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl border border-white/5 text-lg font-medium transition-all duration-300 hover:translate-x-2 hover:border-cyan-500/30 group"
-                    >
-                      <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                        <span className="text-sm font-bold text-cyan-400">
-                          {index + 1}
-                        </span>
-                      </div>
-                      <span>{link.name}</span>
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        className="ml-auto text-gray-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-300"
-                      >
-                        <path
-                          d="M4 10H16M16 10L11 5M16 10L11 15"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {/* App page links (route-based) */}
           <p className="text-gray-500 text-xs uppercase tracking-wider px-6 mb-2">
-            Pages
+            Navigation
           </p>
           <ul className="space-y-2">
-            <li>
-              <Link
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
-                  isActive("/")
-                    ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
-                }`}
-              >
-                <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg
-                    className="w-4 h-4 text-cyan-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                </div>
-                <span>Home</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/members"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
-                  isActive("/members")
-                    ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
-                }`}
-              >
-                <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg
-                    className="w-4 h-4 text-cyan-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                    />
-                  </svg>
-                </div>
-                <span>Members</span>
-              </Link>
-            </li>
+            {/* Main navigation links */}
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <Link
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
+                    isActive(link.path)
+                      ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
+                      : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
+                  }`}
+                >
+                  <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                    {/* Icons for each link - add appropriate icons */}
+                    <span className="text-sm font-bold text-cyan-400">
+                      {link.name.charAt(0)}
+                    </span>
+                  </div>
+                  <span>{link.name}</span>
+                </Link>
+              </li>
+            ))}
 
-            <li>
-              <Link
-                to="/events"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-4 px-6 py-4 rounded-xl border text-lg font-medium transition-all duration-300 hover:translate-x-2 group ${
-                  isActive("/events")
-                    ? "text-white bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-cyan-500/30"
-                    : "text-gray-300 hover:text-white hover:bg-white/5 border-white/5 hover:border-cyan-500/30"
-                }`}
-              >
-                <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg
-                    className="w-4 h-4 text-cyan-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <span>Events</span>
-              </Link>
-            </li>
-
+            {/* Resources - Only when logged in */}
             {isLoggedIn && (
               <li>
                 <Link
@@ -456,6 +274,7 @@ const Navbar = () => {
               </li>
             )}
 
+            {/* Admin - Only when admin */}
             {isAdmin && (
               <li>
                 <Link
