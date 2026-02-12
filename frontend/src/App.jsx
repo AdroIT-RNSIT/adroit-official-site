@@ -138,7 +138,7 @@ export default function App() {
         }
       />
 
-      {/* 👤 PROFILE PAGE - Protected (must be approved) */}
+      {/* PROFILE PAGE - Protected (must be approved) */}
       <Route
         path="/profile"
         element={
@@ -149,8 +149,7 @@ export default function App() {
           </WithLayout>
         }
       />
-
-
+      
 
       {/* ============================================ */}
       {/* ===== 4. ADMIN ONLY PAGES ================= */}
