@@ -12,14 +12,14 @@ export default function Team() {
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
   const [selectedMember, setSelectedMember] = useState(null);
   
   const sectionRefs = {
     hero: useRef(null),
     leadership: useRef(null),
-    domains: useRef(null),
-    core: useRef(null)
+    domainHeads: useRef(null),
+    operations: useRef(null),
+    seniorCore: useRef(null)
   };
 
   // ===== SVG ICONS =====
@@ -66,9 +66,19 @@ export default function Team() {
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none"/>
       </svg>
     ),
-    star: (
-      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor"/>
+    project: (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z" fill="currentColor"/>
+      </svg>
+    ),
+    events: (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" fill="currentColor"/>
+      </svg>
+    ),
+    social: (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-4l-3 2-3-2v4h-2v-9h2l3 2 3-2h2v9h-2z" fill="currentColor"/>
       </svg>
     ),
     arrow: (
@@ -80,17 +90,15 @@ export default function Team() {
 
   // ===== DOMAIN CONFIGURATION =====
   const domains = [
-    { id: 'all', name: 'All Members', icon: '👥', color: 'from-gray-500 to-gray-600' },
-    { id: 'ml', name: 'Machine Learning', icon: icons.ml, color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
-    { id: 'cc', name: 'Cloud Computing', icon: icons.cc, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
-    { id: 'cy', name: 'Cybersecurity', icon: icons.cy, color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
-    { id: 'da', name: 'Data Analytics', icon: icons.da, color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
+    { id: 'ml', name: 'Machine Learning', icon: icons.ml, color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30', lightColor: 'from-cyan-400/20 to-cyan-600/20' },
+    { id: 'cc', name: 'Cloud Computing', icon: icons.cc, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30', lightColor: 'from-purple-400/20 to-purple-600/20' },
+    { id: 'cy', name: 'Cybersecurity', icon: icons.cy, color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30', lightColor: 'from-pink-400/20 to-pink-600/20' },
+    { id: 'da', name: 'Data Analytics', icon: icons.da, color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30', lightColor: 'from-green-400/20 to-green-600/20' }
   ];
 
-  // ===== CLOUDINARY IMAGE URL BUILDER =====
+  // ===== CLOUDINARY URL BUILDER =====
   const getCloudinaryUrl = (publicId, width = 200, height = 200, crop = 'fill', quality = 'auto') => {
     if (!publicId) return null;
-    // Cloudinary URL format: https://res.cloudinary.com/<cloud_name>/image/upload/c_fill,w_200,h_200,q_auto/f_auto/<public_id>
     return `https://res.cloudinary.com/adroit/image/upload/c_${crop},w_${width},h_${height},q_${quality}/f_auto/${publicId}`;
   };
 
@@ -115,27 +123,47 @@ export default function Team() {
     }
   };
 
-  // ===== FILTER MEMBERS BY DOMAIN =====
-  const filteredMembers = activeTab === 'all' 
-    ? teamMembers 
-    : teamMembers.filter(m => m.domain === activeTab);
+  // ===== EXACT HIERARCHY AS SPECIFIED =====
 
-  // ===== GROUP MEMBERS BY ROLE =====
+  // 1. LEADERSHIP - 2 Heads (President + Vice President)
   const leadership = teamMembers.filter(m => 
-    m.role === 'President' || m.role === 'Vice President' || m.role === 'General Secretary'
+    m.role === 'President' || m.role === 'Vice President'
   );
 
-  const domainLeads = teamMembers.filter(m => 
-    m.role === 'Domain Lead' || m.role?.includes('Head')
+  // 2. DOMAIN HEADS - 4 Domain Heads (ML, Cloud, Cyber, DA)
+  const domainHeads = domains.map(domain => {
+    const head = teamMembers.find(m => 
+      m.domain === domain.id && m.role === 'Domain Head'
+    );
+    return head;
+  }).filter(Boolean);
+
+  // 3. OPERATIONS TEAM - 4 Members
+  //    - 2 Project & Development Heads
+  //    - 1 Events & Outreach Head
+  //    - 1 Social Media Lead
+  const projectDevHeads = teamMembers.filter(m => 
+    m.role === 'Project & Development Head'
+  ).slice(0, 2); // Ensure max 2
+
+  const eventsHead = teamMembers.find(m => 
+    m.role === 'Events & Outreach Head'
   );
 
-  const coreMembers = teamMembers.filter(m => 
-    m.role === 'Core Member' || m.role === 'Senior Member'
+  const socialMediaLead = teamMembers.find(m => 
+    m.role === 'Social Media Lead'
   );
 
-  const regularMembers = teamMembers.filter(m => 
-    !['President', 'Vice President', 'General Secretary', 'Domain Lead', 'Core Member', 'Senior Member'].includes(m.role)
-  );
+  const operations = [
+    ...projectDevHeads,
+    eventsHead,
+    socialMediaLead
+  ].filter(Boolean);
+
+  // 4. SENIOR CORE MEMBERS - 7 Senior Core Members
+  const seniorCoreMembers = teamMembers
+    .filter(m => m.role === 'Senior Core Member')
+    .slice(0, 7); // Ensure max 7
 
   // ===== INTERSECTION OBSERVER =====
   useEffect(() => {
@@ -162,11 +190,12 @@ export default function Team() {
   const MemberModal = ({ member, onClose }) => {
     if (!member) return null;
 
+    const domain = domains.find(d => d.id === member.domain) || domains[0];
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={onClose}>
         <div className="relative max-w-2xl w-full bg-[#0d1117] border border-white/10 rounded-2xl shadow-2xl" onClick={e => e.stopPropagation()}>
           
-          {/* Close button */}
           <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -176,10 +205,9 @@ export default function Team() {
           <div className="p-8">
             <div className="flex flex-col md:flex-row gap-8">
               
-              {/* Profile Image - Cloudinary */}
               <div className="flex-shrink-0">
                 <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${domains.find(d => d.id === member.domain)?.color || 'from-gray-500 to-gray-600'} rounded-2xl blur-xl opacity-50`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${domain.color} rounded-2xl blur-xl opacity-50`}></div>
                   {member.imagePublicId ? (
                     <img
                       src={getCloudinaryUrl(member.imagePublicId, 400, 400)}
@@ -188,14 +216,13 @@ export default function Team() {
                       loading="lazy"
                     />
                   ) : (
-                    <div className={`relative w-full h-full rounded-2xl bg-gradient-to-br ${domains.find(d => d.id === member.domain)?.color || 'from-gray-500 to-gray-600'} flex items-center justify-center text-4xl md:text-5xl font-bold text-white`}>
+                    <div className={`relative w-full h-full rounded-2xl bg-gradient-to-br ${domain.color} flex items-center justify-center text-4xl md:text-5xl font-bold text-white`}>
                       {member.name?.charAt(0).toUpperCase()}
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Member Details */}
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <h2 className="text-2xl md:text-3xl font-bold text-white">{member.name}</h2>
@@ -206,13 +233,13 @@ export default function Team() {
                   )}
                 </div>
 
-                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg ${domains.find(d => d.id === member.domain)?.bgColor} ${domains.find(d => d.id === member.domain)?.textColor} border ${domains.find(d => d.id === member.domain)?.borderColor} mb-4`}>
-                  <span className="w-4 h-4">{domains.find(d => d.id === member.domain)?.icon}</span>
-                  <span className="text-sm font-medium">{domains.find(d => d.id === member.domain)?.name}</span>
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg ${domain.bgColor} ${domain.textColor} border ${domain.borderColor} mb-4`}>
+                  <span className="w-4 h-4">{domain.icon}</span>
+                  <span className="text-sm font-medium">{domain.name}</span>
                 </div>
 
                 <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                  {member.bio || `${member.name} is a ${member.role} in the ${domains.find(d => d.id === member.domain)?.name} domain at AdroIT. Passionate about technology and innovation.`}
+                  {member.bio || `${member.name} is the ${member.role} at AdroIT. Passionate about technology and innovation.`}
                 </p>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -230,7 +257,6 @@ export default function Team() {
                   )}
                 </div>
 
-                {/* Social Links */}
                 <div className="flex items-center gap-3">
                   {member.linkedin && (
                     <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-gray-400 hover:text-cyan-400 transition-colors">
@@ -297,7 +323,6 @@ export default function Team() {
   return (
     <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip pt-20 pb-16">
       
-      {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-20 left-20 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
         <div className="absolute bottom-20 right-20 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
@@ -313,7 +338,7 @@ export default function Team() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-            <span className="text-sm text-gray-400">AdroIT Team Directory</span>
+            <span className="text-sm text-gray-400">AdroIT Leadership</span>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6">
@@ -330,70 +355,49 @@ export default function Team() {
             <span className="text-green-400"> Data Analytics</span>
           </p>
 
-          {/* Stats */}
+          {/* Stats - Exact Hierarchy Counts */}
           <div className="flex flex-wrap justify-center gap-6 mt-12">
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
-              <span className="text-3xl">👥</span>
+              <span className="text-3xl">👑</span>
               <div>
-                <span className="text-2xl font-bold text-white">{teamMembers.length}</span>
-                <span className="text-gray-400 text-sm ml-2">Total Members</span>
+                <span className="text-2xl font-bold text-white">{leadership.length}</span>
+                <span className="text-gray-400 text-sm ml-2">Leadership</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
               <span className="text-3xl">🎯</span>
               <div>
-                <span className="text-2xl font-bold text-white">4</span>
-                <span className="text-gray-400 text-sm ml-2">Domains</span>
+                <span className="text-2xl font-bold text-white">{domainHeads.length}</span>
+                <span className="text-gray-400 text-sm ml-2">Domain Heads</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
-              <span className="text-3xl">🚀</span>
+              <span className="text-3xl">⚙️</span>
               <div>
-                <span className="text-2xl font-bold text-white">{domainLeads.length}</span>
-                <span className="text-gray-400 text-sm ml-2">Domain Leads</span>
+                <span className="text-2xl font-bold text-white">{operations.length}</span>
+                <span className="text-gray-400 text-sm ml-2">Operations</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
+              <span className="text-3xl">⭐</span>
+              <div>
+                <span className="text-2xl font-bold text-white">{seniorCoreMembers.length}</span>
+                <span className="text-gray-400 text-sm ml-2">Senior Core</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ===== DOMAIN FILTER TABS ===== */}
-        <section className="mb-12">
-          <div className="flex flex-wrap justify-center gap-3">
-            {domains.map((domain) => (
-              <button
-                key={domain.id}
-                onClick={() => setActiveTab(domain.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
-                  activeTab === domain.id
-                    ? `bg-gradient-to-r ${domain.color} text-white shadow-lg scale-105`
-                    : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                {typeof domain.icon === 'string' ? (
-                  <span>{domain.icon}</span>
-                ) : (
-                  <span className="w-4 h-4">{domain.icon}</span>
-                )}
-                <span>{domain.name}</span>
-                {domain.id !== 'all' && (
-                  <span className="ml-1 text-xs opacity-80">
-                    ({teamMembers.filter(m => m.domain === domain.id).length})
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* ===== LEADERSHIP SECTION ===== */}
-        {activeTab === 'all' && leadership.length > 0 && (
-          <section ref={sectionRefs.leadership} className="mb-16 opacity-0 translate-y-8 transition-all duration-1000">
+        {/* ===== 1. LEADERSHIP SECTION - 2 Heads ===== */}
+        {leadership.length > 0 && (
+          <section ref={sectionRefs.leadership} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-yellow-400 rounded-full"></div>
               <h2 className="text-2xl font-bold text-white">Club Leadership</h2>
+              <span className="text-sm text-gray-500">{leadership.length}/2</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {leadership.map((member) => (
                 <MemberCard 
                   key={member._id} 
@@ -409,148 +413,115 @@ export default function Team() {
           </section>
         )}
 
-        {/* ===== DOMAIN LEADS SECTION ===== */}
-        {activeTab === 'all' ? (
-          // Group by domain for "All Members" view
-          domains.filter(d => d.id !== 'all').map((domain) => {
-            const domainMembers = teamMembers.filter(m => m.domain === domain.id);
-            if (domainMembers.length === 0) return null;
+        {/* ===== 2. DOMAIN HEADS SECTION - 4 Heads ===== */}
+        {domainHeads.length > 0 && (
+          <section ref={sectionRefs.domainHeads} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-purple-400 rounded-full"></div>
+              <h2 className="text-2xl font-bold text-white">Domain Heads</h2>
+              <span className="text-sm text-gray-500">{domainHeads.length}/4</span>
+            </div>
 
-            const domainLeadsList = domainMembers.filter(m => m.role === 'Domain Lead' || m.role?.includes('Head'));
-            const otherMembers = domainMembers.filter(m => !(m.role === 'Domain Lead' || m.role?.includes('Head')));
-
-            return (
-              <section key={domain.id} ref={sectionRefs.domains} className="mb-16 opacity-0 translate-y-8 transition-all duration-1000">
-                {/* Domain Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${domain.color} flex items-center justify-center text-2xl`}>
-                    <span className="w-6 h-6">{domain.icon}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {domainHeads.map((member) => {
+                const domain = domains.find(d => d.id === member.domain);
+                return (
+                  <div key={member._id} className="relative group">
+                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${domain?.color} rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300`}></div>
+                    <MemberCard 
+                      member={member} 
+                      variant="lead"
+                      domainColor={domain?.color}
+                      onClick={() => setSelectedMember(member)}
+                      getCloudinaryUrl={getCloudinaryUrl}
+                      icons={icons}
+                    />
                   </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">{domain.name}</h2>
-                    <p className="text-gray-500 text-sm">{domainMembers.length} members</p>
-                  </div>
-                </div>
-
-                {/* Domain Leads */}
-                {domainLeadsList.length > 0 && (
-                  <div className="mb-8">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-yellow-400 mb-4 flex items-center gap-2">
-                      {icons.crown} Domain Leads
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                      {domainLeadsList.map((member) => (
-                        <MemberCard 
-                          key={member._id} 
-                          member={member} 
-                          variant="lead"
-                          domainColor={domain.color}
-                          onClick={() => setSelectedMember(member)}
-                          getCloudinaryUrl={getCloudinaryUrl}
-                          icons={icons}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Other Members */}
-                {otherMembers.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
-                      Team Members
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                      {otherMembers.map((member) => (
-                        <MemberCard 
-                          key={member._id} 
-                          member={member} 
-                          variant="compact"
-                          domainColor={domain.color}
-                          onClick={() => setSelectedMember(member)}
-                          getCloudinaryUrl={getCloudinaryUrl}
-                          icons={icons}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </section>
-            );
-          })
-        ) : (
-          // Single domain view
-          <section className="space-y-8">
-            {/* Domain Hero */}
-            {(() => {
-              const domain = domains.find(d => d.id === activeTab);
-              const domainMembers = teamMembers.filter(m => m.domain === activeTab);
-              const domainLeadsList = domainMembers.filter(m => m.role === 'Domain Lead' || m.role?.includes('Head'));
-              const otherMembers = domainMembers.filter(m => !(m.role === 'Domain Lead' || m.role?.includes('Head')));
-
-              return (
-                <>
-                  <div className={`relative rounded-3xl overflow-hidden bg-gradient-to-br ${domain.lightColor} border ${domain.borderColor} p-8`}>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${domain.color}/10`}></div>
-                    <div className="relative z-10 flex items-center gap-6">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${domain.color} flex items-center justify-center text-3xl`}>
-                        <span className="w-8 h-8">{domain.icon}</span>
-                      </div>
-                      <div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-white">{domain.name}</h2>
-                        <p className="text-gray-400">{domainMembers.length} members</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Domain Leads */}
-                  {domainLeadsList.length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-semibold uppercase tracking-wider text-yellow-400 mb-4 flex items-center gap-2">
-                        {icons.crown} Domain Leads
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {domainLeadsList.map((member) => (
-                          <MemberCard 
-                            key={member._id} 
-                            member={member} 
-                            variant="lead"
-                            domainColor={domain.color}
-                            onClick={() => setSelectedMember(member)}
-                            getCloudinaryUrl={getCloudinaryUrl}
-                            icons={icons}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Other Members */}
-                  {otherMembers.length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
-                        Team Members
-                      </h3>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                        {otherMembers.map((member) => (
-                          <MemberCard 
-                            key={member._id} 
-                            member={member} 
-                            variant="compact"
-                            domainColor={domain.color}
-                            onClick={() => setSelectedMember(member)}
-                            getCloudinaryUrl={getCloudinaryUrl}
-                            icons={icons}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
-              );
-            })()}
+                );
+              })}
+            </div>
           </section>
         )}
+
+        {/* ===== 3. OPERATIONS TEAM SECTION - 4 Members ===== */}
+        {operations.length > 0 && (
+          <section ref={sectionRefs.operations} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-blue-400 rounded-full"></div>
+              <h2 className="text-2xl font-bold text-white">Operations Team</h2>
+              <span className="text-sm text-gray-500">{operations.length}/4</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {operations.map((member) => {
+                // Determine icon based on role
+                let roleIcon = icons.project;
+                let roleColor = 'from-blue-500 to-blue-600';
+                
+                if (member.role === 'Events & Outreach Head') {
+                  roleIcon = icons.events;
+                  roleColor = 'from-orange-500 to-orange-600';
+                } else if (member.role === 'Social Media Lead') {
+                  roleIcon = icons.social;
+                  roleColor = 'from-pink-500 to-pink-600';
+                }
+
+                return (
+                  <div key={member._id} className="relative group">
+                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${roleColor} rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300`}></div>
+                    <MemberCard 
+                      member={member} 
+                      variant="lead"
+                      domainColor={roleColor}
+                      onClick={() => setSelectedMember(member)}
+                      getCloudinaryUrl={getCloudinaryUrl}
+                      icons={icons}
+                      roleIcon={roleIcon}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ===== 4. SENIOR CORE MEMBERS SECTION - 7 Members ===== */}
+        {seniorCoreMembers.length > 0 && (
+          <section ref={sectionRefs.seniorCore} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-cyan-400 rounded-full"></div>
+              <h2 className="text-2xl font-bold text-white">Senior Core Members</h2>
+              <span className="text-sm text-gray-500">{seniorCoreMembers.length}/7</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+              {seniorCoreMembers.map((member) => (
+                <MemberCard 
+                  key={member._id} 
+                  member={member} 
+                  variant="compact"
+                  domainColor={domains.find(d => d.id === member.domain)?.color}
+                  onClick={() => setSelectedMember(member)}
+                  getCloudinaryUrl={getCloudinaryUrl}
+                  icons={icons}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ===== LINK TO FULL MEMBERS DIRECTORY ===== */}
+        <div className="text-center mt-8">
+          <Link
+            to="/members"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-400 hover:text-white transition-all duration-300 group"
+          >
+            <span>View all members in directory</span>
+            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
 
         {/* ===== JOIN CTA ===== */}
         {!isLoggedIn && (
@@ -584,10 +555,8 @@ export default function Team() {
         )}
       </div>
 
-      {/* ===== MEMBER DETAIL MODAL ===== */}
       <MemberModal member={selectedMember} onClose={() => setSelectedMember(null)} />
 
-      {/* ===== STYLES ===== */}
       <style>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.3; transform: scale(1); }
@@ -607,11 +576,10 @@ export default function Team() {
 // ============================================
 // MEMBER CARD COMPONENT - 3 VARIANTS
 // ============================================
-function MemberCard({ member, variant = 'compact', domainColor, onClick, getCloudinaryUrl, icons }) {
+function MemberCard({ member, variant = 'compact', domainColor, onClick, getCloudinaryUrl, icons, roleIcon }) {
   
   const variants = {
     leadership: {
-      container: 'col-span-1 md:col-span-1',
       card: 'p-6 md:p-8',
       avatar: 'w-24 h-24 md:w-28 md:h-28',
       name: 'text-xl md:text-2xl',
@@ -639,7 +607,6 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
 
   const style = variants[variant] || variants.compact;
 
-  // Get domain details
   const domainColors = {
     ml: 'from-cyan-500 to-cyan-600',
     cc: 'from-purple-500 to-purple-600',
@@ -649,17 +616,26 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
 
   const domainColor_ = domainColor || domainColors[member.domain] || 'from-gray-500 to-gray-600';
 
+  // Role badge colors
+  const getRoleBadgeColor = (role) => {
+    if (role === 'President' || role === 'Vice President') return 'bg-yellow-500/20 text-yellow-400';
+    if (role === 'Domain Head') return 'bg-purple-500/20 text-purple-400';
+    if (role === 'Project & Development Head') return 'bg-blue-500/20 text-blue-400';
+    if (role === 'Events & Outreach Head') return 'bg-orange-500/20 text-orange-400';
+    if (role === 'Social Media Lead') return 'bg-pink-500/20 text-pink-400';
+    if (role === 'Senior Core Member') return 'bg-cyan-500/20 text-cyan-400';
+    return 'bg-white/10 text-gray-300';
+  };
+
   return (
     <div
       onClick={onClick}
       className={`group relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl ${style.card} transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/10 cursor-pointer`}
     >
-      {/* Glow effect on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       
       <div className="relative z-10 flex flex-col items-center text-center">
         
-        {/* Avatar with Cloudinary image */}
         <div className={`relative ${style.avatar} mb-4`}>
           <div className={`absolute inset-0 bg-gradient-to-br ${domainColor_} rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity`}></div>
           
@@ -676,7 +652,6 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
             </div>
           )}
 
-          {/* Role badge for leadership */}
           {variant === 'leadership' && member.role === 'President' && (
             <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center border-2 border-[#0d1117]">
               <span className="text-white text-xs">{icons.crown}</span>
@@ -684,19 +659,17 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
           )}
         </div>
 
-        {/* Member info */}
         <h3 className={`${style.name} font-bold text-white group-hover:text-cyan-400 transition-colors mb-1`}>
           {member.name}
         </h3>
         
         <div className="flex items-center gap-1 mb-2">
-          <span className={`inline-flex px-2 py-1 rounded-lg text-xs font-medium ${
-            member.role === 'President' ? 'bg-yellow-500/20 text-yellow-400' :
-            member.role === 'Domain Lead' ? 'bg-purple-500/20 text-purple-400' :
-            member.role === 'Core Member' ? 'bg-blue-500/20 text-blue-400' :
-            'bg-white/10 text-gray-300'
-          }`}>
-            {member.role}
+          <span className={`inline-flex px-2 py-1 rounded-lg text-xs font-medium ${getRoleBadgeColor(member.role)}`}>
+            {member.role === 'Project & Development Head' ? 'Project & Dev Head' :
+             member.role === 'Events & Outreach Head' ? 'Events Head' :
+             member.role === 'Social Media Lead' ? 'Social Media Lead' :
+             member.role === 'Senior Core Member' ? 'Senior Core' :
+             member.role}
           </span>
         </div>
 
@@ -706,7 +679,6 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
           </p>
         )}
 
-        {/* Social links - only for leadership variant */}
         {style.showSocial && (
           <div className="flex items-center justify-center gap-2 mt-2">
             {member.linkedin && (
@@ -727,7 +699,6 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
           </div>
         )}
 
-        {/* View profile indicator */}
         <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <span className="text-xs text-cyan-400 flex items-center gap-1">
             View {icons.arrow}

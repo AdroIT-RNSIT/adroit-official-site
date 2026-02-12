@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 // ===== LAYOUT =====
 import MainLayout from "./layout/MainLayout";
@@ -67,7 +67,7 @@ export default function App() {
         }
       />
 
-      {/* Team - Public */}
+      {/* Team - Public Showcase (Leadership, Domain Heads, Operations, Senior Core) */}
       <Route
         path="/team"
         element={
@@ -77,7 +77,7 @@ export default function App() {
         }
       />
 
-      {/* Domains - NEW: Showcase your 4 core domains */}
+      {/* Domains - 4 Core Domains Showcase */}
       <Route
         path="/domains"
         element={
@@ -87,7 +87,7 @@ export default function App() {
         }
       />
 
-      {/* Contact - Public */}
+      {/* Contact - Public Contact Form */}
       <Route
         path="/contact"
         element={
@@ -102,7 +102,7 @@ export default function App() {
       {/* ===== 3. PROTECTED PAGES - LOGIN ONLY ===== */}
       {/* ============================================ */}
       
-      {/* Resources - Protected (must be approved) */}
+      {/* Resources - Learning Hub (Protected) */}
       <Route
         path="/resources"
         element={
@@ -126,7 +126,7 @@ export default function App() {
         }
       />
 
-      {/* Members Directory - Protected (must be approved) */}
+      {/* Members Directory - Complete Club Roster (Protected) */}
       <Route
         path="/members"
         element={
@@ -138,7 +138,7 @@ export default function App() {
         }
       />
 
-      {/* PROFILE PAGE - Protected (must be approved) */}
+      {/* Profile Page - User Account Management (Protected) */}
       <Route
         path="/profile"
         element={
@@ -155,7 +155,7 @@ export default function App() {
       {/* ===== 4. ADMIN ONLY PAGES ================= */}
       {/* ============================================ */}
       
-      {/* Admin Dashboard - Admin Only */}
+      {/* Admin Dashboard - Full Control Panel */}
       <Route
         path="/admin"
         element={
@@ -167,14 +167,49 @@ export default function App() {
         }
       />
 
-      {/* Optional: Admin Members Management - if you want separate page */}
+      {/* Admin Dashboard - Members Management Tab */}
       <Route
         path="/admin/members"
         element={
           <WithLayout>
             <ProtectedRoute adminOnly>
-              {/* You can create a separate AdminMembers component or use AdminDashboard with tab */}
               <AdminDashboard initialTab="members" />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+
+      {/* Admin Dashboard - Resources Management Tab */}
+      <Route
+        path="/admin/resources"
+        element={
+          <WithLayout>
+            <ProtectedRoute adminOnly>
+              <AdminDashboard initialTab="resources" />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+
+      {/* Admin Dashboard - Events Management Tab */}
+      <Route
+        path="/admin/events"
+        element={
+          <WithLayout>
+            <ProtectedRoute adminOnly>
+              <AdminDashboard initialTab="events" />
+            </ProtectedRoute>
+          </WithLayout>
+        }
+      />
+
+      {/* Admin Dashboard - Users Management Tab */}
+      <Route
+        path="/admin/users"
+        element={
+          <WithLayout>
+            <ProtectedRoute adminOnly>
+              <AdminDashboard initialTab="users" />
             </ProtectedRoute>
           </WithLayout>
         }
@@ -188,24 +223,41 @@ export default function App() {
         path="*"
         element={
           <WithLayout>
-            <div className="min-h-screen bg-[#0d1117] flex items-center justify-center pt-16">
-              <div className="text-center px-4">
+            <div className="min-h-screen bg-[#0d1117] flex items-center justify-center pt-16 px-4">
+              <div className="text-center max-w-md">
                 <div className="inline-flex items-center justify-center w-24 h-24 bg-white/5 border border-white/10 rounded-full mb-6">
-                  <span className="text-4xl">404</span>
+                  <span className="text-4xl font-bold text-gray-400">404</span>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">Page Not Found</h1>
-                <p className="text-gray-400 mb-8 max-w-md mx-auto">
+                
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  Page Not Found
+                </h1>
+                
+                <p className="text-gray-400 mb-8">
                   The page you're looking for doesn't exist or has been moved.
                 </p>
-                <a
-                  href="/"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl hover:scale-105 transition-all duration-300"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  Return Home
-                </a>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link
+                    to="/"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Return Home
+                  </Link>
+                  
+                  <Link
+                    to="/domains"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+                  >
+                    Explore Domains
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
               </div>
             </div>
           </WithLayout>
