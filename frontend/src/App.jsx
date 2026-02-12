@@ -138,7 +138,7 @@ export default function App() {
         }
       />
 
-      {/* User Profile - Protected (must be approved) */}
+      {/* 👤 PROFILE PAGE - Protected (must be approved) */}
       <Route
         path="/profile"
         element={
@@ -149,6 +149,7 @@ export default function App() {
           </WithLayout>
         }
       />
+
 
 
       {/* ============================================ */}
