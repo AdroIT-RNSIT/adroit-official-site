@@ -6,9 +6,11 @@ import mongoose from "mongoose";
 import { auth } from "./lib/auth.js";
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
+import contactRoutes from "./routes/contact.js";
 import eventRoutes from "./routes/events.js";
 import memberRoutes from "./routes/members.js";
 import resourceRoutes from "./routes/resources.js";
+import userRoutes from "./routes/users.js";
 
 const app = express();
 
@@ -36,6 +38,8 @@ app.use("/api/members", memberRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/users", userRoutes);
 
 // ─── Start ────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;

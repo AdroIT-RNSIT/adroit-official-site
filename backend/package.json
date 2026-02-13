@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "better-auth": "^1.4.18",
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",

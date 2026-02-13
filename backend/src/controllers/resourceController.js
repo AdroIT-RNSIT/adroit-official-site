@@ -2,7 +2,20 @@ import Resource from "../models/resource.js";
 
 export const getResources = async (req, res) => {
   try {
-    const resources = await Resource.find().sort({ createdAt: -1 });
+    const { domain, type, difficulty, search } = req.query;
+    const filter = {};
+
+    if (domain) filter.domain = domain;
+    if (type) filter.type = type;
+    if (difficulty) filter.difficulty = difficulty;
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const resources = await Resource.find(filter).sort({ createdAt: -1 });
     res.json(resources);
   } catch (error) {
     res.status(500).json({ error: error.message });
