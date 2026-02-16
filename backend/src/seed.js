@@ -20,12 +20,14 @@ async function seed() {
       .catch(() => null);
 
     if (existing) {
-      console.log("✅ Admin user already exists. Skipping.\n");
+      console.log("✅ Admin user already exists — ensured role=admin & approved=true.\n");
+      const adminId = existing.user?.id || existing.id || existing._id;
+      console.log(`   Admin ID: ${adminId}`);
       console.log(`   Email:    ${ADMIN_EMAIL}`);
       console.log(`   Password: ${ADMIN_PASSWORD}`);
       process.exit(0);
     }
-  } catch {}
+  } catch { }
 
   try {
     const result = await auth.api.signUpEmail({

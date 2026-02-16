@@ -39,7 +39,8 @@ export default function Profile() {
     emailNotifications: true,
     eventReminders: true,
     resourceUpdates: true,
-    profileVisibility: 'members' // 'public', 'members', 'private'
+    profileVisibility: 'members', // 'public', 'members', 'private'
+    geminiApiKey: ''
   });
 
   // ===== LOAD USER DATA FROM SESSION =====
@@ -57,7 +58,7 @@ export default function Profile() {
       });
       if (!res.ok) throw new Error('Failed to fetch profile');
       const data = await res.json();
-      
+
       setProfile({
         name: data.name || session?.user?.name || '',
         email: data.email || session?.user?.email || '',
@@ -77,6 +78,10 @@ export default function Profile() {
       if (data.settings) {
         setSettings(prev => ({ ...prev, ...data.settings }));
       }
+      // Fetch status of API Key (we don't get the key back for security, just knowing if we have it)
+      if (data.hasApiKey) {
+        setSettings(prev => ({ ...prev, hasApiKey: true }));
+      }
     } catch (err) {
       showMessage('error', err.message);
     } finally {
@@ -85,6 +90,38 @@ export default function Profile() {
   };
 
   // ===== CLOUDINARY UPLOAD =====
+  const [fileStart, setFileStart] = useState(null);
+  const [fileUploading, setFileUploading] = useState(false); // Renamed to avoid conflict
+
+  const handleFileUpload = async () => {
+    if (!fileStart || !session?.user) return; // Use session.user instead of user
+
+    setFileUploading(true); // Use the new state
+    const formData = new FormData();
+    formData.append("userId", session.user.id); // Use session.user.id
+    formData.append("file", fileStart);
+
+    try {
+      const res = await fetch("http://localhost:8000/user/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        showMessage('success', "File uploaded and indexed successfully! You can now ask questions about it.");
+        setFileStart(null);
+      } else {
+        throw new Error(data.detail || "Upload failed");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      showMessage('error', "Failed to upload file: " + error.message);
+    } finally {
+      setFileUploading(false); // Use the new state
+    }
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -115,7 +152,7 @@ export default function Profile() {
         }
       );
       const data = await res.json();
-      
+
       setProfile(prev => ({
         ...prev,
         imagePublicId: data.public_id,
@@ -127,6 +164,29 @@ export default function Profile() {
       showMessage('error', 'Failed to upload image');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleSaveApiKey = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:8000/user/apikey", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.user.id,
+          apiKey: settings.geminiApiKey
+        })
+      });
+
+      if (!res.ok) throw new Error('Failed to save API Key');
+
+      showMessage('success', 'API Key saved successfully! Personalization active.');
+      setSettings(prev => ({ ...prev, hasApiKey: true }));
+    } catch (err) {
+      showMessage('error', err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -154,9 +214,9 @@ export default function Profile() {
       });
 
       if (!res.ok) throw new Error('Failed to update profile');
-      
+
       const updatedUser = await res.json();
-      
+
       // Update session
       await updateSession({
         user: {
@@ -289,7 +349,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[#0d1117] text-white font-sans pt-20 pb-16">
-      
+
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-20 left-20 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[120px]"></div>
@@ -297,7 +357,7 @@ export default function Profile() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* ===== HEADER ===== */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
@@ -310,11 +370,10 @@ export default function Profile() {
 
         {/* ===== MESSAGE ===== */}
         {message.text && (
-          <div className={`mb-6 p-4 rounded-xl border ${
-            message.type === 'success'
-              ? 'bg-green-500/10 border-green-500/20 text-green-400'
-              : 'bg-red-500/10 border-red-500/20 text-red-400'
-          }`}>
+          <div className={`mb-6 p-4 rounded-xl border ${message.type === 'success'
+            ? 'bg-green-500/10 border-green-500/20 text-green-400'
+            : 'bg-red-500/10 border-red-500/20 text-red-400'
+            }`}>
             {message.text}
           </div>
         )}
@@ -345,15 +404,21 @@ export default function Profile() {
           >
             📊 Activity
           </TabButton>
+          <TabButton
+            active={activeTab === 'ai'}
+            onClick={() => setActiveTab('ai')}
+          >
+            🤖 AI Settings
+          </TabButton>
         </div>
 
         {/* ===== TAB CONTENT ===== */}
         <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6 md:p-8">
-          
+
           {/* ===== TAB 1: PROFILE INFORMATION ===== */}
           {activeTab === 'profile' && (
             <form onSubmit={handleUpdateProfile} className="space-y-8">
-              
+
               {/* Profile Photo Section */}
               <div className="flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex-shrink-0">
@@ -363,7 +428,7 @@ export default function Profile() {
                       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl blur-xl opacity-50"></div>
                       {profile.imagePublicId || profile.imageUrl ? (
                         <img
-                          src={profile.imagePublicId 
+                          src={profile.imagePublicId
                             ? getCloudinaryUrl(profile.imagePublicId, 300, 300)
                             : profile.imageUrl
                           }
@@ -375,7 +440,7 @@ export default function Profile() {
                           {profile.name?.charAt(0).toUpperCase() || session?.user?.name?.charAt(0).toUpperCase() || '?'}
                         </div>
                       )}
-                      
+
                       {/* Upload Overlay */}
                       <label className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                         <div className="text-center">
@@ -393,7 +458,7 @@ export default function Profile() {
                         />
                       </label>
                     </div>
-                    
+
                     {/* Upload Status */}
                     {uploading && (
                       <p className="text-xs text-cyan-400 mt-2 text-center">Uploading...</p>
@@ -407,13 +472,12 @@ export default function Profile() {
                     {profile.name || session?.user?.name}
                   </h2>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      profile.role === 'Admin' ? 'bg-red-500/20 text-red-400' :
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${profile.role === 'Admin' ? 'bg-red-500/20 text-red-400' :
                       profile.role === 'President' ? 'bg-yellow-500/20 text-yellow-400' :
-                      profile.role === 'Domain Lead' ? 'bg-purple-500/20 text-purple-400' :
-                      profile.role === 'Core Member' ? 'bg-blue-500/20 text-blue-400' :
-                      'bg-gray-500/20 text-gray-400'
-                    }`}>
+                        profile.role === 'Domain Lead' ? 'bg-purple-500/20 text-purple-400' :
+                          profile.role === 'Core Member' ? 'bg-blue-500/20 text-blue-400' :
+                            'bg-gray-500/20 text-gray-400'
+                      }`}>
                       {profile.role || 'Member'}
                     </span>
                     <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs font-medium">
@@ -428,7 +492,7 @@ export default function Profile() {
 
               {/* Profile Form Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
+
                 {/* Left Column */}
                 <div className="space-y-4">
                   <div>
@@ -439,7 +503,7 @@ export default function Profile() {
                       type="text"
                       required
                       value={profile.name}
-                      onChange={(e) => setProfile({...profile, name: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="Your full name"
                     />
@@ -453,7 +517,7 @@ export default function Profile() {
                       type="email"
                       required
                       value={profile.email}
-                      onChange={(e) => setProfile({...profile, email: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="your.email@example.com"
                       disabled // Email cannot be changed directly
@@ -467,7 +531,7 @@ export default function Profile() {
                     </label>
                     <select
                       value={profile.domain}
-                      onChange={(e) => setProfile({...profile, domain: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, domain: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                     >
                       {domainOptions.map(opt => (
@@ -482,7 +546,7 @@ export default function Profile() {
                     </label>
                     <select
                       value={profile.year}
-                      onChange={(e) => setProfile({...profile, year: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, year: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                     >
                       {yearOptions.map(opt => (
@@ -498,7 +562,7 @@ export default function Profile() {
                     <input
                       type="text"
                       value={profile.department}
-                      onChange={(e) => setProfile({...profile, department: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, department: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="Computer Science & Engineering"
                     />
@@ -514,7 +578,7 @@ export default function Profile() {
                     <textarea
                       rows={4}
                       value={profile.bio}
-                      onChange={(e) => setProfile({...profile, bio: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
                       placeholder="Tell us about yourself, your interests, and what you're working on..."
                     />
@@ -530,13 +594,13 @@ export default function Profile() {
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                         </svg>
                       </span>
                       <input
                         type="url"
                         value={profile.linkedin}
-                        onChange={(e) => setProfile({...profile, linkedin: e.target.value})}
+                        onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })}
                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="https://linkedin.com/in/username"
                       />
@@ -550,13 +614,13 @@ export default function Profile() {
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.545 1.376.201 2.393.098 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.545 1.376.201 2.393.098 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
                         </svg>
                       </span>
                       <input
                         type="url"
                         value={profile.github}
-                        onChange={(e) => setProfile({...profile, github: e.target.value})}
+                        onChange={(e) => setProfile({ ...profile, github: e.target.value })}
                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="https://github.com/username"
                       />
@@ -570,7 +634,7 @@ export default function Profile() {
                     <input
                       type="tel"
                       value={profile.phone}
-                      onChange={(e) => setProfile({...profile, phone: e.target.value})}
+                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="+91 98765 43210"
                     />
@@ -601,7 +665,7 @@ export default function Profile() {
           {/* ===== TAB 2: SECURITY ===== */}
           {activeTab === 'security' && (
             <div className="space-y-8">
-              
+
               {/* Change Password */}
               <div>
                 <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
@@ -620,7 +684,7 @@ export default function Profile() {
                       type="password"
                       required
                       value={passwordData.currentPassword}
-                      onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                      onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="••••••••"
                     />
@@ -634,7 +698,7 @@ export default function Profile() {
                       type="password"
                       required
                       value={passwordData.newPassword}
-                      onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                      onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="••••••••"
                     />
@@ -649,7 +713,7 @@ export default function Profile() {
                       type="password"
                       required
                       value={passwordData.confirmPassword}
-                      onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                      onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       placeholder="••••••••"
                     />
@@ -686,7 +750,7 @@ export default function Profile() {
           {/* ===== TAB 3: SETTINGS ===== */}
           {activeTab === 'settings' && (
             <div className="space-y-6">
-              
+
               {/* Notification Settings */}
               <div>
                 <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
@@ -704,14 +768,12 @@ export default function Profile() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => setSettings({...settings, emailNotifications: !settings.emailNotifications})}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        settings.emailNotifications ? 'bg-cyan-500' : 'bg-gray-600'
-                      }`}
+                      onClick={() => setSettings({ ...settings, emailNotifications: !settings.emailNotifications })}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.emailNotifications ? 'bg-cyan-500' : 'bg-gray-600'
+                        }`}
                     >
-                      <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                        settings.emailNotifications ? 'translate-x-6' : ''
-                      }`} />
+                      <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.emailNotifications ? 'translate-x-6' : ''
+                        }`} />
                     </button>
                   </label>
 
@@ -722,14 +784,12 @@ export default function Profile() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => setSettings({...settings, eventReminders: !settings.eventReminders})}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        settings.eventReminders ? 'bg-cyan-500' : 'bg-gray-600'
-                      }`}
+                      onClick={() => setSettings({ ...settings, eventReminders: !settings.eventReminders })}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.eventReminders ? 'bg-cyan-500' : 'bg-gray-600'
+                        }`}
                     >
-                      <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                        settings.eventReminders ? 'translate-x-6' : ''
-                      }`} />
+                      <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.eventReminders ? 'translate-x-6' : ''
+                        }`} />
                     </button>
                   </label>
 
@@ -740,14 +800,12 @@ export default function Profile() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => setSettings({...settings, resourceUpdates: !settings.resourceUpdates})}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        settings.resourceUpdates ? 'bg-cyan-500' : 'bg-gray-600'
-                      }`}
+                      onClick={() => setSettings({ ...settings, resourceUpdates: !settings.resourceUpdates })}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.resourceUpdates ? 'bg-cyan-500' : 'bg-gray-600'
+                        }`}
                     >
-                      <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                        settings.resourceUpdates ? 'translate-x-6' : ''
-                      }`} />
+                      <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.resourceUpdates ? 'translate-x-6' : ''
+                        }`} />
                     </button>
                   </label>
                 </div>
@@ -772,7 +830,7 @@ export default function Profile() {
                           name="visibility"
                           value="public"
                           checked={settings.profileVisibility === 'public'}
-                          onChange={(e) => setSettings({...settings, profileVisibility: e.target.value})}
+                          onChange={(e) => setSettings({ ...settings, profileVisibility: e.target.value })}
                           className="w-4 h-4 text-cyan-500 bg-white/5 border-white/10 focus:ring-cyan-500 focus:ring-offset-0"
                         />
                         <span className="text-sm text-gray-300">Public</span>
@@ -783,7 +841,7 @@ export default function Profile() {
                           name="visibility"
                           value="members"
                           checked={settings.profileVisibility === 'members'}
-                          onChange={(e) => setSettings({...settings, profileVisibility: e.target.value})}
+                          onChange={(e) => setSettings({ ...settings, profileVisibility: e.target.value })}
                           className="w-4 h-4 text-cyan-500 bg-white/5 border-white/10 focus:ring-cyan-500 focus:ring-offset-0"
                         />
                         <span className="text-sm text-gray-300">Members Only</span>
@@ -794,7 +852,7 @@ export default function Profile() {
                           name="visibility"
                           value="private"
                           checked={settings.profileVisibility === 'private'}
-                          onChange={(e) => setSettings({...settings, profileVisibility: e.target.value})}
+                          onChange={(e) => setSettings({ ...settings, profileVisibility: e.target.value })}
                           className="w-4 h-4 text-cyan-500 bg-white/5 border-white/10 focus:ring-cyan-500 focus:ring-offset-0"
                         />
                         <span className="text-sm text-gray-300">Private</span>
@@ -864,6 +922,111 @@ export default function Profile() {
               </div>
             </div>
           )}
+
+          {/* ===== TAB 5: AI SETTINGS ===== */}
+          {activeTab === 'ai' && (
+            <div className="space-y-6">
+
+              {/* API Key Section */}
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                  <div className="p-2 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                    </svg>
+                  </div>
+                  Personalization Key
+                </h3>
+                <p className="text-gray-400 text-sm mb-6">
+                  Provide your Google Gemini API Key to enable a personalized assistant that knows your name and context.
+                  Your key is encrypted and stored securely.
+                </p>
+
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <input
+                      type="password"
+                      value={settings.geminiApiKey}
+                      onChange={(e) => setSettings({ ...settings, geminiApiKey: e.target.value })}
+                      placeholder={settings.hasApiKey ? "API Key is set (Hidden)" : "Paste your Gemini API Key here"}
+                      className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-black/20 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                    />
+                  </div>
+                  <button
+                    onClick={handleSaveApiKey}
+                    disabled={loading || !settings.geminiApiKey}
+                    className="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? 'Saving...' : 'Save Key'}
+                  </button>
+                </div>
+                {settings.hasApiKey && (
+                  <p className="text-green-400 text-sm mt-3 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    key configured. Personalization active.
+                  </p>
+                )}
+              </div>
+
+              {/* Knowledge Base Upload Section */}
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-purple-500/30 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-white">Private Knowledge Base</h2>
+                    <p className="text-gray-400 text-sm">Upload documents (PDF, TXT, MD) to train your personal AI assistant.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex gap-3 items-center">
+                    <label className="flex-1 cursor-pointer">
+                      <div className="relative group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl opacity-30 group-hover:opacity-75 transition duration-200 blur"></div>
+                        <div className="relative flex items-center justify-center w-full px-4 py-8 bg-[#0d1117] border border-white/10 rounded-xl">
+                          {fileStart ? (
+                            <span className="text-purple-300 font-medium truncate">{fileStart.name}</span>
+                          ) : (
+                            <div className="text-center">
+                              <p className="text-gray-400 text-sm font-medium">Click to select a file</p>
+                              <p className="text-gray-600 text-xs mt-1">MAX 10MB</p>
+                            </div>
+                          )}
+                        </div>
+                        <input
+                          type="file"
+                          onChange={(e) => setFileStart(e.target.files[0])}
+                          className="hidden"
+                          accept=".txt,.md,.pdf"
+                        />
+                      </div>
+                    </label>
+                    <button
+                      onClick={handleFileUpload}
+                      disabled={fileUploading || !fileStart}
+                      className="px-6 py-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-white font-bold hover:shadow-lg hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      {fileUploading ? (
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                      ) : "Upload"}
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 text-center">
+                    Uploaded files are indexed privately. The AI will prioritize this knowledge when answering you.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -875,11 +1038,10 @@ function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-        active
-          ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/30'
-          : 'text-gray-400 hover:text-white hover:bg-white/5'
-      }`}
+      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${active
+        ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/30'
+        : 'text-gray-400 hover:text-white hover:bg-white/5'
+        }`}
     >
       {children}
     </button>
