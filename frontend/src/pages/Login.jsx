@@ -124,29 +124,14 @@ export default function Login() {
       {/* ===== MAIN CONTAINER ===== */}
       <div className="relative z-10 w-full max-w-md mx-4">
         
-        {/* ===== LOGO - Top Center ===== */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-3 group">
-            <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform duration-300">
-              <img
-                src="/ADROIT-logo.webp"
-                alt="AdroIT"
-                className="w-full h-full object-cover opacity-60"
-              />
-            </div>
-            <span className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
-              AdroIT
-            </span>
-          </Link>
-        </div>
-
+        
         {/* ===== LOGIN CARD ===== */}
         <div className="relative group">
           {/* Animated border glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition duration-500"></div>
           
           {/* Card */}
-          <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-8">
+          <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-4">
             
             {/* Decorative corner accents */}
             <div className="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-3xl"></div>
