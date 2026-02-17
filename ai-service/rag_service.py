@@ -71,28 +71,22 @@ Answer:"""
         retriever = None
         mode = "global_rag"
         
-        # 1. Member Mode (Strict Private RAG)
+        # 1. Member Mode (Strict Private RAG) - Only if they have uploaded documents
         if user_id:
             user_retriever = self.get_user_retriever(user_id)
             if user_retriever:
                 retriever = user_retriever
                 mode = "user_rag"
                 print(f"🔍 Using Private Index for User {user_id}")
-            else:
-                # User is logged in but has no data
-                return {
-                    "answer": "⚠️ **Private Knowledge Base Empty**\n\nYou haven't uploaded any documents yet. To prompt me, please:\n1. Go to **Profile > AI Settings**\n2. Upload your PDF, TXT, or MD files.\n\nOnce indexed, I will answer based on your data.",
-                    "source": "empty_user_rag"
-                }
+            # If no private documents, fall through to global RAG (don't block the user)
         
-        # 2. Guest Mode (Public AdroIT RAG)
-        # Only reached if user_id is None
-        elif not retriever:
+        # 2. Fall back to Global RAG (Public AdroIT Resources)
+        if not retriever:
             if self.retriever:
                 retriever = self.retriever
-                print("🔍 Using Global AdroIT Index (Guest Mode)")
+                print("🔍 Using Global AdroIT Index")
             else:
-                return "Knowledge base is currently unavailable."
+                return {"answer": "Knowledge base is currently unavailable.", "source": "error"}
             
         # Retrieval
         docs = retriever.invoke(query)

@@ -7,6 +7,7 @@ from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from rag_service import RAGService
+from ingest import ingest_docs
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -174,5 +175,29 @@ async def upload_file(
         
         return {"status": "success", "message": f"File '{file.filename}' uploaded and indexed."}
         
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+@app.post("/ingest")
+async def trigger_ingest(background_tasks: BackgroundTasks):
+    """
+    Endpoint to trigger re-ingestion of all documents (markdown + MongoDB resources).
+    Useful when new resources are added to the database.
+    Runs in the background to avoid blocking the response.
+    """
+    try:
+        def ingest_in_background():
+            print("🔄 Starting ingestion in background...")
+            ingest_docs()
+            print("✅ Ingestion completed. Reloading RAG service...")
+            # Reload the RAG service to use the new index
+            global rag_bot
+            try:
+                rag_bot = RAGService()
+                print("✅ RAG service reloaded with new index")
+            except Exception as e:
+                print(f"❌ Error reloading RAG service: {e}")
+        
+        background_tasks.add_task(ingest_in_background)
+        return {"status": "ingestion_started", "message": "Documents are being indexed. This may take a moment."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
