@@ -11,6 +11,7 @@ import eventRoutes from "./routes/events.js";
 import memberRoutes from "./routes/members.js";
 import resourceRoutes from "./routes/resources.js";
 import userRoutes from "./routes/users.js";
+import apikeyRoutes from "./routes/apikey.js";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/apikey", apikeyRoutes);
 
 // ─── Start ────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;

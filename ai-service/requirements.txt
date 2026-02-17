@@ -3,11 +3,7 @@ uvicorn
 python-dotenv
 pymongo
 cryptography
-langchain
-langchain-community
-langchain-google-genai
-langchain-text-splitters
-langchain-huggingface
+pycryptodome
 faiss-cpu
 python-multipart
 sentence-transformers

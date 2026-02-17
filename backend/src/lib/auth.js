@@ -37,6 +37,12 @@ export const auth = betterAuth({
         defaultValue: false,
         input: true,
       },
+      geminiApiKey: {
+        type: "string",
+        required: false,
+        defaultValue: null,
+        input: true, // Allow setting during signup/update
+      },
     },
   },
   trustedOrigins: [process.env.FRONTEND_URL || "http://localhost:5173"],

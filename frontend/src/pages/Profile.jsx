@@ -78,9 +78,20 @@ export default function Profile() {
       if (data.settings) {
         setSettings(prev => ({ ...prev, ...data.settings }));
       }
-      // Fetch status of API Key (we don't get the key back for security, just knowing if we have it)
-      if (data.hasApiKey) {
-        setSettings(prev => ({ ...prev, hasApiKey: true }));
+      
+      // Check if user has API key set
+      try {
+        const keyRes = await fetch(`${API_URL}/api/apikey/check`, {
+          credentials: 'include'
+        });
+        if (keyRes.ok) {
+          const keyData = await keyRes.json();
+          if (keyData.hasApiKey) {
+            setSettings(prev => ({ ...prev, hasApiKey: true }));
+          }
+        }
+      } catch (err) {
+        console.warn('Could not check API key status:', err);
       }
     } catch (err) {
       showMessage('error', err.message);
@@ -170,19 +181,22 @@ export default function Profile() {
   const handleSaveApiKey = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/user/apikey", {
+      const res = await fetch(`${API_URL}/api/apikey`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
-          userId: session.user.id,
           apiKey: settings.geminiApiKey
         })
       });
 
-      if (!res.ok) throw new Error('Failed to save API Key');
+      if (!res.ok) {
+        const error = await res.json().catch(() => ({}));
+        throw new Error(error.error || 'Failed to save API Key');
+      }
 
-      showMessage('success', 'API Key saved successfully! Personalization active.');
-      setSettings(prev => ({ ...prev, hasApiKey: true }));
+      showMessage('success', 'API Key saved successfully! You can now use personalized chat.');
+      setSettings(prev => ({ ...prev, geminiApiKey: '', hasApiKey: true }));
     } catch (err) {
       showMessage('error', err.message);
     } finally {

@@ -5,13 +5,15 @@ import { Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -34,6 +36,57 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      if (!name || !email || !password) {
+        setError("Please fill in all fields");
+        setLoading(false);
+        return;
+      }
+
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters");
+        setLoading(false);
+        return;
+      }
+
+      const result = await authClient.signUp.email({
+        email,
+        password,
+        name,
+      });
+
+      if (result.error) {
+        setError(result.error.message || "Sign up failed.");
+        setLoading(false);
+        return;
+      }
+
+      // After successful signup, auto sign in
+      const signInResult = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (signInResult.error) {
+        setError("Account created but auto-login failed. Please sign in.");
+        setLoading(false);
+        return;
+      }
+
+      navigate("/resources");
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = isSignUp ? handleSignUp : handleSignIn;
 
   return (
     <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-hidden flex items-center justify-center">
@@ -119,11 +172,51 @@ export default function Login() {
                 </svg>
               </div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
-                Welcome Back
+                {isSignUp ? "Join AdroIT" : "Welcome Back"}
               </h1>
               <p className="text-gray-400 mt-2">
-                Sign in to access the AdroIT platform
+                {isSignUp 
+                  ? "Create an account to access the AdroIT platform" 
+                  : "Sign in to access the AdroIT platform"}
               </p>
+            </div>
+
+            {/* ===== TAB TOGGLE ===== */}
+            <div className="mb-6 flex gap-2 bg-white/5 backdrop-blur-sm p-1 rounded-lg border border-white/10">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSignUp(false);
+                  setError("");
+                  setName("");
+                  setEmail("");
+                  setPassword("");
+                }}
+                className={`flex-1 py-2 px-4 rounded-md font-medium transition-all ${
+                  !isSignUp
+                    ? "bg-gradient-to-r from-cyan-500 to-purple-600 text-white"
+                    : "text-gray-400 hover:text-gray-300"
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSignUp(true);
+                  setError("");
+                  setName("");
+                  setEmail("");
+                  setPassword("");
+                }}
+                className={`flex-1 py-2 px-4 rounded-md font-medium transition-all ${
+                  isSignUp
+                    ? "bg-gradient-to-r from-cyan-500 to-purple-600 text-white"
+                    : "text-gray-400 hover:text-gray-300"
+                }`}
+              >
+                Sign Up
+              </button>
             </div>
 
             {/* ===== ERROR MESSAGE ===== */}
@@ -136,7 +229,8 @@ export default function Login() {
               </div>
             )}
 
-            {/* ===== GOOGLE SIGN IN ===== */}
+            {/* ===== GOOGLE SIGN IN (Sign In Only) ===== */}
+            {!isSignUp && (
             <button
               onClick={() => {
                 setError("");
@@ -170,8 +264,10 @@ export default function Login() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
+            )}
 
-            {/* ===== DIVIDER ===== */}
+            {/* ===== DIVIDER (Sign In Only) ===== */}
+            {!isSignUp && (
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/10"></div>
@@ -182,9 +278,35 @@ export default function Login() {
                 </span>
               </div>
             </div>
+            )}
 
             {/* ===== EMAIL FORM ===== */}
             <form onSubmit={handleSubmit} className="space-y-5">
+              
+              {/* Name Field (Sign Up Only) */}
+              {isSignUp && (
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1.5">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <input
+                      id="name"
+                      type="text"
+                      placeholder="John Doe"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={loading}
+                      className="w-full pl-10 pr-4 py-3 bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                  </div>
+                </div>
+              )}
               
               {/* Email Field */}
               <div>
@@ -248,15 +370,17 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Forgot Password Link */}
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="text-sm text-gray-500 hover:text-cyan-400 transition-colors"
-                >
-                  Forgot password?
-                </button>
-              </div>
+              {/* Forgot Password Link (Sign In Only) */}
+              {!isSignUp && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="text-sm text-gray-500 hover:text-cyan-400 transition-colors"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+              )}
 
               {/* Submit Button */}
               <button
@@ -268,11 +392,11 @@ export default function Login() {
                   {loading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Signing in...
+                      {isSignUp ? "Creating account..." : "Signing in..."}
                     </>
                   ) : (
                     <>
-                      Sign In
+                      {isSignUp ? "Create Account" : "Sign In"}
                       <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>

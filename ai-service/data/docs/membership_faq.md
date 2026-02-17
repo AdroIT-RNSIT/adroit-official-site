@@ -16,3 +16,6 @@ A: No, membership is free for all selected students.
 
 **Q: Can I change my domain later?**
 A: Yes, based on your performance and interest, domain changes are allowed after one semester.
+
+**Q: Can non-members access resources?**
+A: No, you'll need to be an AdroIT member to access resources

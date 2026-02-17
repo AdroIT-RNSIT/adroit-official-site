@@ -8,6 +8,11 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from rag_service import RAGService
 from ingest import ingest_docs
+import hashlib
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+import base64
+from bson import ObjectId
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -32,11 +37,9 @@ users_collection = db.user
 # Encryption
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
 if not ENCRYPTION_KEY:
-    # Generate a key if not provided (for dev convenience, but should be static in prod)
-    print("⚠️ WARNING: ENCRYPTION_KEY not set. Generating a temporary one.")
-    ENCRYPTION_KEY = Fernet.generate_key().decode()
-
-cipher = Fernet(ENCRYPTION_KEY.encode())
+    print("❌ ERROR: ENCRYPTION_KEY not set in .env file")
+    print("   Set ENCRYPTION_KEY to a 64-character hex string")
+    exit(1)
 
 # Initialize RAG Service (Global system instance)
 try:
@@ -55,6 +58,88 @@ class ApiKeyRequest(BaseModel):
     userId: str
     apiKey: str
 
+# ===== ENCRYPTION / DECRYPTION =====
+def decrypt_api_key(encrypted_data, encryption_key):
+    """
+    Decrypt API key using AES-256-GCM
+    Format: iv.authTag.encrypted (all hex encoded)
+    """
+    try:
+        parts = encrypted_data.split(".")
+        if len(parts) != 3:
+            return None
+        
+        iv_hex, auth_tag_hex, encrypted_hex = parts
+        iv = bytes.fromhex(iv_hex)
+        auth_tag = bytes.fromhex(auth_tag_hex)
+        encrypted = bytes.fromhex(encrypted_hex)
+        
+        cipher = AES.new(
+            bytes.fromhex(encryption_key),
+            AES.MODE_GCM,
+            nonce=iv
+        )
+        cipher.update(auth_tag)  # For GCM verification
+        
+        decrypted = cipher.decrypt_and_verify(encrypted, auth_tag)
+        return decrypted.decode("utf-8")
+    except Exception as e:
+        print(f"❌ Error decrypting API key: {e}")
+        return None
+
+def get_user_api_key(user_id):
+    """
+    Fetch and decrypt user's API key from MongoDB
+    """
+    try:
+        # Convert string ID to ObjectId
+        try:
+            user_obj_id = ObjectId(user_id)
+        except:
+            user_obj_id = user_id  # Fallback to string if conversion fails
+        
+        user = users_collection.find_one({"_id": user_obj_id})
+        if not user or not user.get("geminiApiKey"):
+            return None
+        
+        encryption_key = os.getenv("ENCRYPTION_KEY")
+        if not encryption_key:
+            print("⚠️ ENCRYPTION_KEY not set")
+            return None
+        
+        decrypted_key = decrypt_api_key(user["geminiApiKey"], encryption_key)
+        return decrypted_key
+    except Exception as e:
+        print(f"❌ Error fetching user API key: {e}")
+        return None
+
+def get_user_approved_status(user_id):
+    """
+    Fetch user's approval status from MongoDB
+    Returns False if user_id is None (logged out)
+    """
+    if not user_id:
+        return False
+    
+    try:
+        # Convert string ID to ObjectId
+        try:
+            user_obj_id = ObjectId(user_id)
+        except:
+            user_obj_id = user_id  # Fallback to string if conversion fails
+        
+        user = users_collection.find_one({"_id": user_obj_id})
+        if not user:
+            print(f"   ⚠️ User not found with ID: {user_id}")
+            return False
+        
+        approved = user.get("approved", False)
+        print(f"   ✅ User found - Approved: {approved}")
+        return approved
+    except Exception as e:
+        print(f"   ❌ Error fetching user approval status: {e}")
+        return False
+
 @app.get("/")
 def home():
     return {"status": "AI Service Running"}
@@ -68,9 +153,16 @@ async def chat(request: ChatRequest):
     if not rag_bot:
         return {"response": "System AI is currently unavailable.", "mode": "error"}
 
-    # 1. Try RAG (User or Global)
-    # We pass user_id so RAGService can check for private index
-    rag_response = rag_bot.ask(user_msg, user_id=user_id)
+    # Get user's API key if they have one
+    user_api_key = None
+    user_approved = False
+    
+    if user_id:
+        user_api_key = get_user_api_key(user_id)
+        user_approved = get_user_approved_status(user_id)
+
+    # 1. Try RAG (User or Global) with user's API key if available
+    rag_response = rag_bot.ask(user_msg, user_id=user_id, user_api_key=user_api_key, user_approved=user_approved)
     
     # If rag_response is a string (error string from old logic handling), wrap it
     if isinstance(rag_response, str):
@@ -89,42 +181,24 @@ async def chat(request: ChatRequest):
         return {"response": rag_response["answer"], "mode": "system_msg"}
         
     # If mode is 'global_rag', we returned answer from public docs.
-    # BUT, if the user is a Member with an API Key (Phase 8 feature), maybe they prefer the "Personalized Chat" 
-    # (which uses their key and acts as a generic assistant) over the "Global RAG" (which is strict documentation).
-    # ...
-    if user_id:
-        user = users_collection.find_one({"_id": user_id})
-        if user and user.get("geminiApiKey"):
+    # BUT, if the user is a Member with an API Key, they can use personalized chat with their own key
+    if user_id and rag_response["source"] == "global_rag":
+        user_api_key = get_user_api_key(user_id)
+        if user_api_key:
             try:
-                # Decrypt User Key
-                encrypted_key = user["geminiApiKey"]
-                user_api_key = cipher.decrypt(encrypted_key.encode()).decode()
+                # Use user's API key for personalized chat
+                user_llm = ChatGoogleGenerativeAI(
+                    model="gemini-2.5-flash", 
+                    google_api_key=user_api_key
+                )
                 
-                # Personalized Generic Chat (Phase 8)
-                # Note: This ignores the RAG answer. 
-                # If the user asks "What is AdroIT?", Global RAG is better.
-                # If they ask "Write me a poem", Personalized Chat is better.
-                # Hard to decide. For now, let's return the RAG answer but maybe enhance it?
-                # Simpler: If Global RAG returned "I don't know", fallback to Personalized?
-                # Or just stick to RAG as the primary "AI Service" feature.
-                
-                # Let's stick to RAG to be consistent. 
-                # Retaining Phase 8 logic strictly:
-                # Phase 8: If Member -> Personalized Chat.
-                # Phase 9: If Member upload -> User RAG.
-                
-                # Hybrid approach:
-                # If User RAG -> Return it.
-                # Else -> Run Personalized Chat (Phase 8).
-                
-                llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=user_api_key)
-                response = llm.invoke(f"You are a helpful assistant for {user.get('name', 'User')}. {user_msg}")
-                return {"response": response.content, "mode": "personalized"}
+                # Still use RAG answer as primary (consistent), but user has their own quota
+                print(f"✅ Using user's personal API key for {user_id}")
+                return {"response": rag_response["answer"], "mode": "rag_with_user_key"}
                 
             except Exception as e:
-                print(f"Error in personalized chat: {e}")
-                # Fallthrough to RAG
-                pass
+                print(f"⚠️ Error with user's API key: {e}")
+                # Fallthrough to global RAG
 
     return {"response": rag_response["answer"], "mode": "rag"}
 
