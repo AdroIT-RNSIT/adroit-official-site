@@ -648,32 +648,6 @@ export default function Domains() {
                   {icons.arrowRight}
                 </Link>
               </div>
-
-              {/* Community Card - Now shows different content based on login status */}
-              <div className="bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 border border-white/10 rounded-2xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl">{icons.community}</span>
-                  <h3 className="text-lg font-bold text-white">Join the Community</h3>
-                </div>
-                <p className="text-gray-400 text-sm mb-4">
-                  Connect with peers, ask questions, and collaborate on projects
-                </p>
-                {isLoggedIn ? (
-                  <Link
-                    to={`/resources/${activeDomain}`}
-                    className="block w-full px-4 py-3 bg-white/10 hover:bg-white/20 text-white text-sm font-semibold rounded-xl text-center transition-all duration-300"
-                  >
-                    Start Learning
-                  </Link>
-                ) : (
-                  <Link
-                    to="/login"
-                    className="block w-full px-4 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white text-sm font-semibold rounded-xl text-center hover:scale-105 transition-all duration-300"
-                  >
-                    Sign In to Access
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
 
