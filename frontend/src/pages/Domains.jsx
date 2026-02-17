@@ -705,37 +705,6 @@ export default function Domains() {
             </table>
           </div>
         </section>
-
-        {/* ===== CTA SECTION - ONLY VISIBLE WHEN NOT LOGGED IN ===== */}
-        {!isLoggedIn && (
-          <section className="mt-16 text-center">
-            <div className="relative group inline-block">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                  Ready to Master Your Domain?
-                </h2>
-                <p className="text-gray-400 mb-6 max-w-lg mx-auto">
-                  Access curated resources, join project teams, and connect with domain experts
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/login"
-                    className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
-                  >
-                    Sign In to Access Resources
-                  </Link>
-                  <Link
-                    to="/members"
-                    className="px-8 py-4 bg-white/5 backdrop-blur border border-white/10 text-white font-semibold rounded-xl hover:bg-white/10 hover:scale-105 transition-all duration-300"
-                  >
-                    Meet the Team
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
       </div>
 
       {/* ===== STYLES ===== */}
