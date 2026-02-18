@@ -529,6 +529,7 @@ const Home = () => {
           <div className="text-center mt-12">
             <Link
               to="/domains"
+              onClick={()=>window.scrollTo(0,0)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-cyan-400 hover:text-white hover:border-cyan-500/30 transition-all duration-300 group"
             >
               <span>Explore All Domains</span>
