@@ -7,3 +7,6 @@ pycryptodome
 faiss-cpu
 python-multipart
 sentence-transformers
+langchain-huggingface
+langchain-google-genai
+langchain-community
