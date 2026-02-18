@@ -22,8 +22,8 @@ app.use(
   }),
 );
 
-// Better Auth handler (must come before express.json)
-app.all("/api/auth/{*splat}", toNodeHandler(auth));
+// Better Auth handler - must come FIRST, before other middleware
+app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use(express.json());
 

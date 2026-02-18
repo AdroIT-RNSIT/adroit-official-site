@@ -9,6 +9,11 @@ const client = new MongoClient(MONGO_URI);
 await client.connect();
 const db = client.db();
 
+console.log("🔐 Google OAuth Config:");
+console.log("  CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "✓ Set" : "✗ Missing");
+console.log("  CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "✓ Set" : "✗ Missing");
+console.log("  BASE_URL:", process.env.BETTER_AUTH_URL || "http://localhost:5000");
+
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5000",
   secret:
@@ -19,8 +24,8 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     },
   },
   user: {
