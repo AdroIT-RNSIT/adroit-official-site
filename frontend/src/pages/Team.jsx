@@ -334,7 +334,7 @@ export default function Team() {
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className="text-center mb-16 opacity-0 translate-y-8 transition-all duration-1000"
+          className="text-center mb-16 translate-y-8 transition-all duration-1000"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
