@@ -128,7 +128,7 @@ def ingest_docs():
     if mongo_documents:
         print("\n👥 Creating RESOURCES index (MongoDB resources only - for members)...")
         print("✂️  Splitting text...")
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
         resource_texts = text_splitter.split_documents(mongo_documents)
         print(f"   Split into {len(resource_texts)} chunks.")
 
