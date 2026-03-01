@@ -2,8 +2,7 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 
-const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/club-members";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/club-members";
 
 const client = new MongoClient(MONGO_URI);
 await client.connect();
@@ -16,8 +15,7 @@ console.log("  BASE_URL:", process.env.BETTER_AUTH_URL || "http://localhost:5000
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5000",
-  secret:
-    process.env.BETTER_AUTH_SECRET || "super-secret-key-change-in-production",
+  secret: process.env.BETTER_AUTH_SECRET || "super-secret-key-change-in-production",
   database: mongodbAdapter(db),
   emailAndPassword: {
     enabled: true,

@@ -9,17 +9,23 @@ export default function Team() {
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
   
-  const [teamMembers, setTeamMembers] = useState([]);
+  const [allMembers, setMembers] = useState([]); // raw collection<members>
+  const [teamMembers, setTeamMembers] = useState({
+      leadership : [],
+      domainHeads : [],
+      operations : [],
+      seniorCore : []
+    }); // filtered members
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedMember, setSelectedMember] = useState(null);
   
   const sectionRefs = {
-    hero: useRef(null),
-    leadership: useRef(null),
-    domainHeads: useRef(null),
-    operations: useRef(null),
-    seniorCore: useRef(null)
+    heroRef: useRef(null),
+    leadershipRef: useRef(null),
+    domainHeadsRef: useRef(null),
+    operationsRef: useRef(null),
+    seniorCoreRef: useRef(null)
   };
 
   // ===== SVG ICONS =====
@@ -88,7 +94,7 @@ export default function Team() {
     )
   };
 
-  // ===== DOMAIN CONFIGURATION =====
+  // ===== CSS : DOMAIN CONFIGURATION =====
   const domains = [
     { id: 'ml', name: 'Machine Learning', icon: icons.ml, color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30', lightColor: 'from-cyan-400/20 to-cyan-600/20' },
     { id: 'cc', name: 'Cloud Computing', icon: icons.cc, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30', lightColor: 'from-purple-400/20 to-purple-600/20' },
@@ -103,11 +109,7 @@ export default function Team() {
   };
 
   // ===== FETCH TEAM MEMBERS FROM BACKEND =====
-  useEffect(() => {
-    fetchTeamMembers();
-  }, []);
-
-  const fetchTeamMembers = async () => {
+  const fetchMembers = async () => {
     setLoading(true);
     try {
       const res = await fetch(`${API_URL}/api/members`, {
@@ -115,7 +117,7 @@ export default function Team() {
       });
       if (!res.ok) throw new Error('Failed to fetch team members');
       const data = await res.json();
-      setTeamMembers(data);
+      setMembers(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -123,47 +125,52 @@ export default function Team() {
     }
   };
 
-  // ===== EXACT HIERARCHY AS SPECIFIED =====
+  useEffect(() => {
+    fetchMembers();
+  }, []);
 
-  // 1. LEADERSHIP - 2 Heads (President + Vice President)
-  const leadership = teamMembers.filter(m => 
-    m.role === 'President' || m.role === 'Vice President'
-  );
-
-  // 2. DOMAIN HEADS - 4 Domain Heads (ML, Cloud, Cyber, DA)
-  const domainHeads = domains.map(domain => {
-    const head = teamMembers.find(m => 
-      m.domain === domain.id && m.role === 'Domain Head'
+  // Update individual member Profiles 
+  useEffect( ()=> {
+    // 1. LEADERSHIP - 2 Heads (President + Vice President) //
+    const leadershipMembers = allMembers.filter(m => 
+      m.role === 'President' || m.role === 'Vice President'
     );
-    return head;
-  }).filter(Boolean);
 
-  // 3. OPERATIONS TEAM - 4 Members
-  //    - 2 Project & Development Heads
-  //    - 1 Events & Outreach Head
-  //    - 1 Social Media Lead
-  const projectDevHeads = teamMembers.filter(m => 
-    m.role === 'Project & Development Head'
-  ).slice(0, 2); // Ensure max 2
+    // 2. DOMAIN HEADS - 4 Domain Heads (ML, Cloud, Cyber, DA) //
+    const domainHeadsMembers = domains.map(domain => {
+      const head = allMembers.find(m => 
+        m.domain === domain.id && m.role === 'Domain Lead'
+      );
+      return head;
+    }).filter(Boolean);
 
-  const eventsHead = teamMembers.find(m => 
-    m.role === 'Events & Outreach Head'
-  );
+    // 3. OPERATIONS TEAM - 4 Members //
+    //    - 2 Project & Development Heads
+    //    - 1 Social Media Lead
+    //    - 1 Events & Outreach Head
+    const projectDevHeads = allMembers.filter(m => m.role === 'Project & Development Head' ).slice(0, 2); // Ensure max 2
+    const eventsHead = allMembers.find(m => m.role === 'Events & Outreach Head' );
+    const socialMediaLead = allMembers.find(m => m.role === 'Social Media Lead' );
 
-  const socialMediaLead = teamMembers.find(m => 
-    m.role === 'Social Media Lead'
-  );
+    const operationsMembers = [
+      ...projectDevHeads,
+      eventsHead,
+      socialMediaLead
+    ].filter(Boolean);
 
-  const operations = [
-    ...projectDevHeads,
-    eventsHead,
-    socialMediaLead
-  ].filter(Boolean);
-
-  // 4. SENIOR CORE MEMBERS - 7 Senior Core Members
-  const seniorCoreMembers = teamMembers
-    .filter(m => m.role === 'Senior Core Member')
-    .slice(0, 7); // Ensure max 7
+    // 4. SENIOR CORE MEMBERS - 7 Senior Core Members //
+    const seniorCoreMembers = allMembers
+      .filter(m => m.role === 'Senior Core Member')
+      .slice(0, 7); // Ensure max 7
+    
+    // finally update ui
+    setTeamMembers({
+      leadership : leadershipMembers,
+      domainHeads : domainHeadsMembers,
+      operations : operationsMembers,
+      seniorCore : seniorCoreMembers
+    })
+  }, [allMembers]);
 
   // ===== INTERSECTION OBSERVER =====
   useEffect(() => {
@@ -172,7 +179,7 @@ export default function Team() {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('opacity-100', 'translate-y-0');
-            entry.target.classList.remove('opacity-0', 'translate-y-8');
+            entry.target.classList.remove('', 'translate-y-8');
           }
         });
       },
@@ -310,7 +317,7 @@ export default function Team() {
           <h2 className="text-2xl font-bold text-white mb-3">Failed to Load Team</h2>
           <p className="text-gray-400 mb-6">{error}</p>
           <button
-            onClick={fetchTeamMembers}
+            onClick={fetchMembers}
             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-xl font-semibold hover:scale-105 transition-all duration-300"
           >
             Try Again
@@ -321,6 +328,7 @@ export default function Team() {
   }
 
   return (
+    <>
     <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip pt-20 pb-16">
       
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -332,10 +340,8 @@ export default function Team() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}
-        <section
-          ref={sectionRefs.hero}
-          className="text-center mb-16 opacity-0 translate-y-8 transition-all duration-1000"
-        >
+        <section ref={sectionRefs.heroRef}
+          className="text-center mb-16 translate-y-8 transition-all duration-1000">
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
             <span className="text-sm text-gray-400">AdroIT Leadership</span>
@@ -360,28 +366,28 @@ export default function Team() {
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
               <span className="text-3xl">👑</span>
               <div>
-                <span className="text-2xl font-bold text-white">{leadership.length}</span>
+                <span className="text-2xl font-bold text-white">{teamMembers.leadership.length}</span>
                 <span className="text-gray-400 text-sm ml-2">Leadership</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
               <span className="text-3xl">🎯</span>
               <div>
-                <span className="text-2xl font-bold text-white">{domainHeads.length}</span>
+                <span className="text-2xl font-bold text-white">{teamMembers.domainHeads.length}</span>
                 <span className="text-gray-400 text-sm ml-2">Domain Heads</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
               <span className="text-3xl">⚙️</span>
               <div>
-                <span className="text-2xl font-bold text-white">{operations.length}</span>
+                <span className="text-2xl font-bold text-white">{teamMembers.operations.length}</span>
                 <span className="text-gray-400 text-sm ml-2">Operations</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
               <span className="text-3xl">⭐</span>
               <div>
-                <span className="text-2xl font-bold text-white">{seniorCoreMembers.length}</span>
+                <span className="text-2xl font-bold text-white">{teamMembers.seniorCore.length}</span>
                 <span className="text-gray-400 text-sm ml-2">Senior Core</span>
               </div>
             </div>
@@ -389,16 +395,16 @@ export default function Team() {
         </section>
 
         {/* ===== 1. LEADERSHIP SECTION - 2 Heads ===== */}
-        {leadership.length > 0 && (
-          <section ref={sectionRefs.leadership} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+        {teamMembers.leadership.length > 0 && (
+          <section ref={sectionRefs.leadershipRef} className="mb-20 translate-y-8 transition-all duration-1000">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-yellow-400 rounded-full"></div>
               <h2 className="text-2xl font-bold text-white">Club Leadership</h2>
-              <span className="text-sm text-gray-500">{leadership.length}/2</span>
+              <span className="text-sm text-gray-500">{teamMembers.leadership.length}/2</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-              {leadership.map((member) => (
+              {teamMembers.leadership.map((member) => (
                 <MemberCard 
                   key={member._id} 
                   member={member} 
@@ -414,16 +420,16 @@ export default function Team() {
         )}
 
         {/* ===== 2. DOMAIN HEADS SECTION - 4 Heads ===== */}
-        {domainHeads.length > 0 && (
-          <section ref={sectionRefs.domainHeads} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+        {teamMembers.domainHeads.length > 0 && (
+          <section ref={sectionRefs.domainHeadsRef} className="mb-20 translate-y-8 transition-all duration-1000">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-purple-400 rounded-full"></div>
               <h2 className="text-2xl font-bold text-white">Domain Heads</h2>
-              <span className="text-sm text-gray-500">{domainHeads.length}/4</span>
+              <span className="text-sm text-gray-500">{teamMembers.domainHeads.length}/4</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {domainHeads.map((member) => {
+              {teamMembers.domainHeads.map((member) => {
                 const domain = domains.find(d => d.id === member.domain);
                 return (
                   <div key={member._id} className="relative group">
@@ -444,16 +450,16 @@ export default function Team() {
         )}
 
         {/* ===== 3. OPERATIONS TEAM SECTION - 4 Members ===== */}
-        {operations.length > 0 && (
-          <section ref={sectionRefs.operations} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+        {teamMembers.operations.length > 0 && (
+          <section ref={sectionRefs.operationsRef} className="mb-20 translate-y-8 transition-all duration-1000">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-blue-400 rounded-full"></div>
               <h2 className="text-2xl font-bold text-white">Operations Team</h2>
-              <span className="text-sm text-gray-500">{operations.length}/4</span>
+              <span className="text-sm text-gray-500">{teamMembers.operations.length}/4</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {operations.map((member) => {
+              {teamMembers.operations.map((member) => {
                 // Determine icon based on role
                 let roleIcon = icons.project;
                 let roleColor = 'from-blue-500 to-blue-600';
@@ -486,16 +492,16 @@ export default function Team() {
         )}
 
         {/* ===== 4. SENIOR CORE MEMBERS SECTION - 7 Members ===== */}
-        {seniorCoreMembers.length > 0 && (
-          <section ref={sectionRefs.seniorCore} className="mb-20 opacity-0 translate-y-8 transition-all duration-1000">
+        {teamMembers.seniorCore.length > 0 && (
+          <section ref={sectionRefs.seniorCoreRef} className="mb-20 translate-y-8 transition-all duration-1000">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-cyan-400 rounded-full"></div>
               <h2 className="text-2xl font-bold text-white">Senior Core Members</h2>
-              <span className="text-sm text-gray-500">{seniorCoreMembers.length}/7</span>
+              <span className="text-sm text-gray-500">{teamMembers.seniorCore.length}/7</span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
-              {seniorCoreMembers.map((member) => (
+              {teamMembers.seniorCore.map((member) => (
                 <MemberCard 
                   key={member._id} 
                   member={member} 
@@ -570,6 +576,7 @@ export default function Team() {
         .animate-pulse-slower { animation: pulse-slower 8s ease-in-out infinite; }
       `}</style>
     </div>
+    </>
   );
 }
 
@@ -619,7 +626,7 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
   // Role badge colors
   const getRoleBadgeColor = (role) => {
     if (role === 'President' || role === 'Vice President') return 'bg-yellow-500/20 text-yellow-400';
-    if (role === 'Domain Head') return 'bg-purple-500/20 text-purple-400';
+    if (role === 'Domain Lead') return 'bg-purple-500/20 text-purple-400';
     if (role === 'Project & Development Head') return 'bg-blue-500/20 text-blue-400';
     if (role === 'Events & Outreach Head') return 'bg-orange-500/20 text-orange-400';
     if (role === 'Social Media Lead') return 'bg-pink-500/20 text-pink-400';
@@ -632,7 +639,7 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
       onClick={onClick}
       className={`group relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl ${style.card} transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/10 cursor-pointer`}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl group-hover:opacity-100 transition-opacity duration-300"></div>
       
       <div className="relative z-10 flex flex-col items-center text-center">
         
@@ -699,7 +706,7 @@ function MemberCard({ member, variant = 'compact', domainColor, onClick, getClou
           </div>
         )}
 
-        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-2 right-2 group-hover:opacity-100 transition-opacity">
           <span className="text-xs text-cyan-400 flex items-center gap-1">
             View {icons.arrow}
           </span>
