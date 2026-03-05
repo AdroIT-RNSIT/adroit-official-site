@@ -203,7 +203,7 @@ function Resources(){
 
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
           <span className="bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            {'Resources'}
+            {currentDomain?.name || 'Resources'}
           </span>
         </h1>
 
