@@ -108,19 +108,7 @@ export default function App() {
 
         {/* Resources - Learning Hub (Protected) */}
         <Route
-          path="/resources"
-          element={
-            <WithLayout>
-              <ProtectedRoute>
-                <Resources />
-              </ProtectedRoute>
-            </WithLayout>
-          }
-        />
-
-        {/* Resources with Domain Filter - Protected */}
-        <Route
-          path="/resources/:domain"
+          path="/resources/:domain?"
           element={
             <WithLayout>
               <ProtectedRoute>
@@ -153,7 +141,6 @@ export default function App() {
             </WithLayout>
           }
         />
-
 
         {/* ============================================ */}
         {/* ===== 4. ADMIN ONLY PAGES ================= */}

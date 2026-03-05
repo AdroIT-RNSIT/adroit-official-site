@@ -21,6 +21,35 @@ async function triggerRAGIngestion() {
   }
 }
 
+export const getStats = async (req, res) => {
+  try {
+    const stats = await Resource.aggregate([
+      {
+        $facet: {
+          all: [{ $count: "count" }],
+          byDomain: [
+            { $match: { domain: { $in: ["ml", "cc", "cy", "da"] } } },
+            { $group: { _id: "$domain", count: { $sum: 1 } } }
+          ]
+        }
+      }
+    ]);
+
+    const result = {
+      all: stats[0].all[0]?.count || 0,
+      ml: 0, cc: 0, cy: 0, da: 0
+    };
+
+    stats[0].byDomain.forEach(item => {
+      result[item._id] = item.count;
+    });
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const getResources = async (req, res) => {
   try {
     const { domain, type, difficulty, search } = req.query;
@@ -36,7 +65,7 @@ export const getResources = async (req, res) => {
       ];
     }
 
-    const resources = await Resource.find(filter).sort({ createdAt: -1 });
+    const resources = await Resource.find(filter).sort({ views: -1 });
     res.json(resources);
   } catch (error) {
     res.status(500).json({ error: error.message });
