@@ -99,7 +99,7 @@ function Resources(){
   const [resourceStats, setResourceStats] = useState({ all : 0, ml : 0, cy : 0, cc : 0, da : 0 });
   const [filters, setFilters] = useState({ type: "", difficulty: "", search: "" });
 
-  const { session } = useSession();
+  const { data: session } = useSession();
   const isAdmin = session?.user?.role === 'admin';
 
   const { domain } = useParams();
