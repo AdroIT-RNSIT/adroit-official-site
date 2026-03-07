@@ -124,9 +124,30 @@ function Resources(){
   const fetchResources = async ()=>{
     setLoading(true);
     try{
-      const res = await fetch(`${API_URL}/api/resources?domain=${domain || ''}&type=${filters.type || ''}&difficulty=${filters.difficulty || ''}&search=${filters.search || ''}`,
-      { credentials: 'include' });
+      const params = new URLSearchParams();
 
+      // Only include domain if it is set and not "all"
+      if (domain && domain !== 'all') {
+        params.set('domain', domain);
+      }
+
+      // Only include non-empty filter values
+      if (filters.type) {
+        params.set('type', filters.type);
+      }
+      if (filters.difficulty) {
+        params.set('difficulty', filters.difficulty);
+      }
+      if (filters.search) {
+        params.set('search', filters.search);
+      }
+
+      const queryString = params.toString();
+      const url = queryString
+        ? `${API_URL}/api/resources?${queryString}`
+        : `${API_URL}/api/resources`;
+
+      const res = await fetch(url, { credentials: 'include' });
       if(!res.ok) throw new Error("Failed to fetch resources");
       const data = await res.json();
       setResources(data);
