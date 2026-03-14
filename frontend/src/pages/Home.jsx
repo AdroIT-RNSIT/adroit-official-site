@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ThreeScene from '../home/ThreeScene';
+import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
 
 // ============================================
@@ -244,9 +244,9 @@ const InteractiveBall = () => {
 const DomainCard = ({ icon, title, description, color, link }) => (
   <Link 
     to={link}
-    className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300 hover:scale-105"
+    className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300"
   >
-    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
+    <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 mb-4 group-hover:scale-110 transition-all duration-300`}>
       {icon}
     </div>
     <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
@@ -301,28 +301,28 @@ const Home = () => {
   // Domain data for your 4 core domains
   const domains = [
     {
-      icon: '🤖',
+      icon: <Brain size={28} strokeWidth={2} />,
       title: 'Machine Learning',
       description: 'Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.',
       color: 'from-cyan-500 to-cyan-600',
       link: '/resources/ml'
     },
     {
-      icon: '☁️',
+      icon: <Cloud size={28} strokeWidth={2} />,
       title: 'Cloud Computing',
       description: 'Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.',
       color: 'from-purple-500 to-purple-600',
       link: '/resources/cc'
     },
     {
-      icon: '🔒',
+      icon: <ShieldCheck size={28} strokeWidth={2} />,
       title: 'Cybersecurity',
       description: 'Protect systems from threats. Learn ethical hacking, network security, and cryptography.',
       color: 'from-pink-500 to-pink-600',
       link: '/resources/cy'
     },
     {
-      icon: '📊',
+      icon: <BarChart3 size={28} strokeWidth={2} />,
       title: 'Data Analytics',
       description: 'Extract insights from data. Master visualization, SQL, Python, and business intelligence.',
       color: 'from-green-500 to-green-600',

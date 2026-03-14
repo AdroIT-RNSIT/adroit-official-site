@@ -1,4 +1,5 @@
 import React from 'react';
+import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link } from 'react-router-dom';
 
 const Footer = ({ showMap = false }) => {
@@ -93,20 +94,37 @@ const Footer = ({ showMap = false }) => {
             <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
               Our Domains
             </h3>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-gray-500 text-sm">
-                <span className="text-cyan-400">🤖</span> Machine Learning
+            <ul className="space-y-3">
+
+              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition"> 
+              <Brain size={16}/>
+              </span>
+              Machine Learning
               </li>
-              <li className="flex items-center gap-2 text-gray-500 text-sm">
-                <span className="text-purple-400">☁️</span> Cloud Computing
+
+              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-purple-500/10 text-purple-400 group-hover:scale-110 transition">
+              <Cloud size={16}/>
+              </span>
+              Cloud Computing
               </li>
-              <li className="flex items-center gap-2 text-gray-500 text-sm">
-                <span className="text-pink-400">🔒</span> Cybersecurity
+
+              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-pink-500/10 text-pink-400 group-hover:scale-110 transition">
+              <ShieldCheck size={16}/>
+              </span>
+              Cybersecurity
               </li>
-              <li className="flex items-center gap-2 text-gray-500 text-sm">
-                <span className="text-green-400">📊</span> Data Analytics
+
+              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-green-500/10 text-green-400 group-hover:scale-110 transition">
+              <BarChart3 size={16}/>
+              </span>
+              Data Analytics
               </li>
-            </ul>
+
+              </ul>
           </div>
 
           {/* ===== COLUMN 4: CONNECT (3 cols) - CONDITIONAL ===== */}

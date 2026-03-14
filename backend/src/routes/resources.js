@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { requireAuth, requireAdmin } from "../middleware/auth.js";
 import {
+  getStats,
   getResources,
   getResourceById,
   createResource,
@@ -10,6 +11,7 @@ import {
 
 const router = Router();
 
+router.get("/stats", getStats);
 router.get("/", requireAuth, getResources);
 router.get("/:id", requireAuth, getResourceById);
 router.post("/", requireAuth, requireAdmin, createResource);
