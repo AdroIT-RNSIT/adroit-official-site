@@ -20,7 +20,8 @@
     "express": "^5.2.1",
     "mongodb": "^7.1.0",
     "mongoose": "^9.1.5",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "nodemailer": "^8.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

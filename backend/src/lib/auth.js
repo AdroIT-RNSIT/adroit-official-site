@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
+import { sendResetPasswordEmail } from "./emailService.js";
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/club-members";
 
@@ -19,6 +20,13 @@ export const auth = betterAuth({
   database: mongodbAdapter(db),
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendResetPasswordEmail({
+        to: user.email,
+        url,
+        userName: user.name,
+      });
+    },
   },
   socialProviders: {
     google: {

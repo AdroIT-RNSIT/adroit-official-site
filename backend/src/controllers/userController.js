@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { db } from "../lib/auth.js";
+import { sendWelcomeEmail } from "../lib/emailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -43,6 +44,13 @@ export const toggleApproval = async (req, res) => {
 
     if (!result) {
       return res.status(404).json({ error: "User not found" });
+    }
+
+    // Send welcome email when user is approved (not on un-approval)
+    if (approved && result.email) {
+      sendWelcomeEmail({ to: result.email, userName: result.name }).catch(
+        (err) => console.error("Failed to send welcome email:", err.message),
+      );
     }
 
     res.json({

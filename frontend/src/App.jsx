@@ -11,6 +11,7 @@ import Team from "./pages/Team";
 import Domains from "./pages/Domains";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 
 // ===== PROTECTED PAGES (Login Required + Approval) =====
 import Resources from "./pages/Resources";
@@ -45,6 +46,7 @@ export default function App() {
         {/* ===== 1. AUTHENTICATION - NO LAYOUT ====== */}
         {/* ============================================ */}
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
 
         {/* ============================================ */}
