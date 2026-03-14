@@ -1,4 +1,3 @@
-import React from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link } from 'react-router-dom';
 
@@ -21,22 +20,6 @@ const Footer = ({ showMap = false }) => {
           
           {/* ===== COLUMN 1: BRAND & CONTACT (5 cols) ===== */}
           <div className="lg:col-span-5">
-            <Link to="/" className="flex items-center gap-3 mb-4 group">
-              <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-xl overflow-hidden group-hover:rotate-[-5deg] group-hover:scale-105 transition-transform duration-200">
-                <img
-                  src="/ADROIT-logo.webp"
-                  alt="AdroIT"
-                  className="w-full h-full object-cover opacity-60"
-                />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-tight">
-                AdroIT
-              </span>
-            </Link>
-            
-            <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-sm">
-              Department of Computer Science & Engineering
-            </p>
             
             <div className="space-y-3">
               <div className="flex items-start gap-3">
