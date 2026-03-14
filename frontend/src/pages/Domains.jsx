@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSession } from '../lib/auth-client';
+import { Brain, Cloud } from 'lucide-react';
 
 export default function Domains() {
   const { data: session } = useSession();
@@ -17,15 +18,10 @@ export default function Domains() {
   // ===== SVG ICONS =====
   const icons = {
     ml: (
-      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.88-11.71L10 14.17l-2.88-2.88c-.39-.39-1.03-.39-1.42 0-.39.39-.39 1.02 0 1.41l3.59 3.59c.39.39 1.02.39 1.41 0l6.59-6.59c.39-.39.39-1.02 0-1.41-.39-.38-1.03-.38-1.41 0z" fill="currentColor"/>
-      </svg>
+      <Brain size={26}/>
     ),
     cc: (
-      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10z" fill="currentColor"/>
-        <path d="M12 10v2h2v2h-2v2h-2v-2H8v-2h2v-2h2z" fill="currentColor"/>
-      </svg>
+      <Cloud size={26}/>
     ),
     cy: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -118,10 +114,32 @@ export default function Domains() {
       bgColor: 'bg-cyan-500/10',
       gradient: 'bg-gradient-to-br from-cyan-500/20 via-purple-500/10 to-transparent',
       description: 'Build intelligent systems that learn, adapt, and make decisions from data.',
-      longDescription: 'Machine Learning empowers computers to learn without explicit programming. From recommendation systems to self-driving cars, ML is revolutionizing every industry.',
+      longDescription: 'This domain focuses on learning the fundamentals of Machine Learning, including data preprocessing, feature engineering, and building predictive models. Members gain hands-on experience working with algorithms, training models, and evaluating their performance.',
       careerPaths: ['AI Engineer', 'ML Engineer', 'Data Scientist', 'Research Scientist', 'Computer Vision Engineer'],
-      skills: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Neural Networks', 'Computer Vision', 'NLP', 'Reinforcement Learning'],
-      tools: ['Jupyter', 'Google Colab', 'AWS SageMaker', 'Hugging Face', 'Keras'],
+      skills: [
+                "Python",
+                "NumPy",
+                "Pandas",
+                "TensorFlow",
+                "PyTorch",
+                "Scikit-learn",
+                "Neural Networks",
+                "Deep Learning",
+                "Computer Vision",
+                "Natural Language Processing (NLP)",
+                "Reinforcement Learning",
+                "Data Preprocessing"
+              ],
+      tools: [
+                "Jupyter Notebook",
+                "Google Colab",
+                "TensorFlow",
+                "PyTorch",
+                "Scikit-learn",
+                "Kaggle",
+                "MLflow",
+                "Weights & Biases"
+              ],
       projects: [
         { name: 'Image Classifier', difficulty: 'Beginner', icon: '🖼️' },
         { name: 'Sentiment Analysis', difficulty: 'Intermediate', icon: '💬' },
@@ -134,19 +152,22 @@ export default function Domains() {
         { title: 'Fast.ai', type: 'Course', provider: 'Jeremy Howard' }
       ],
       stats: {
-        members: 8,
-        projects: 12,
+        members: 17,
+        projects: 4,
         events: 6,
-        resources: 24
+        resources: 3
       },
-      leads: ['Sarah Chen', 'Rohan Kumar'],
+      leads: ['Prajwal Jagadeesh'],
       roadmap: [
-        'Python Basics',
-        'Math Fundamentals',
-        'ML Algorithms',
-        'Deep Learning',
-        'Specialization'
-      ]
+                  "Python",
+                  "Math for ML",
+                  "Data Preprocessing",
+                  "ML Algorithms",
+                  "Model Evaluation",
+                  "Deep Learning",
+                  "Computer Vision",
+                  "NLP"
+                ]
     },
     {
       id: 'cc',
@@ -160,15 +181,12 @@ export default function Domains() {
       bgColor: 'bg-purple-500/10',
       gradient: 'bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-transparent',
       description: 'Design, deploy, and scale applications on world-class cloud infrastructure.',
-      longDescription: 'Cloud Computing delivers on-demand computing resources over the internet. Master AWS, Azure, GCP and modern DevOps practices to build resilient, scalable applications.',
+      longDescription: 'This domain focuses on understanding how networking works and the fundamentals of cloud computing. Members then progress to deploying applications in production environments and working with virtual machines (VMs) to gain practical, real-world experience',
       careerPaths: ['Cloud Architect', 'DevOps Engineer', 'Site Reliability Engineer', 'Cloud Developer', 'Platform Engineer'],
-      skills: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'CI/CD', 'Serverless'],
-      tools: ['AWS Console', 'Azure Portal', 'Google Cloud Console', 'Docker Desktop', 'kubectl', 'Jenkins'],
+      skills: ['Linux','Networking', 'AWS', 'Azure', 'GCP', 'Docker', 'Virtual machine', 'Terraform', 'CI/CD', 'Serverless'],
+      tools: ['AWS Console', 'Azure Portal', 'Google Cloud Console', 'Docker', 'Kubernetes','GitHub Actions','NGINX','Apache', 'Amazon S3','Firebase'],
       projects: [
-        { name: 'Serverless API', difficulty: 'Beginner', icon: '⚡' },
-        { name: 'Containerized App', difficulty: 'Intermediate', icon: '🐳' },
-        { name: 'K8s Cluster', difficulty: 'Advanced', icon: '⎈' },
-        { name: 'Cloud Monitoring', difficulty: 'Intermediate', icon: '📊' }
+        { name: 'Club website', difficulty: 'Intermediate', icon: '🌐' },
       ],
       resources: [
         { title: 'AWS Training', type: 'Certification', provider: 'Amazon' },
@@ -176,18 +194,21 @@ export default function Domains() {
         { title: 'DevOps Roadmap', type: 'Guide', provider: 'Community' }
       ],
       stats: {
-        members: 6,
-        projects: 8,
-        events: 4,
-        resources: 18
+        members: 13,
+        projects: 1,
+        events: 0,
+        resources: 2
       },
-      leads: ['Ananya Singh', 'Vikram Joshi'],
+      leads: ['Praveen Kumar M'],
       roadmap: [
-        'Networking Basics',
-        'One Cloud Platform',
-        'Containers',
-        'Orchestration',
-        'DevOps Practices'
+        'Networking Fundamentals',
+        'Linux Essentials',
+        'One Cloud Platform (AWS/GCP)',
+        'Docker',
+        'Deployment',
+        'Terraform',
+        'CI/CD',
+        'Monitoring & Scaling'
       ]
     },
     {
@@ -202,10 +223,10 @@ export default function Domains() {
       bgColor: 'bg-pink-500/10',
       gradient: 'bg-gradient-to-br from-pink-500/20 via-rose-500/10 to-transparent',
       description: 'Protect systems, networks, and data from evolving cyber threats.',
-      longDescription: 'Cybersecurity defends computers, servers, networks, and data from malicious attacks. Learn ethical hacking, cryptography, and security architecture to become a security expert.',
+      longDescription: 'This domain focuses on understanding how systems, networks, and applications can be secured against cyber threats. Members learn the fundamentals of cybersecurity, including ethical hacking concepts, cryptography basics, and security practices used to protect digital systems and data.',
       careerPaths: ['Security Analyst', 'Penetration Tester', 'Security Engineer', 'SOC Analyst', 'Cryptographer'],
       skills: ['Network Security', 'Ethical Hacking', 'Cryptography', 'Incident Response', 'Risk Assessment', 'Forensics'],
-      tools: ['Kali Linux', 'Wireshark', 'Metasploit', 'Burp Suite', 'Nmap', 'John the Ripper'],
+      tools: ['Kali Linux', 'Wireshark', 'Metasploit', 'Burp Suite', 'Nmap', 'John the Ripper',"Hashcat","OWASP ZAP"],
       projects: [
         { name: 'Network Scanner', difficulty: 'Beginner', icon: '🔍' },
         { name: 'Password Cracker', difficulty: 'Intermediate', icon: '🔑' },
@@ -218,12 +239,12 @@ export default function Domains() {
         { title: 'OWASP Top 10', type: 'Guide', provider: 'OWASP' }
       ],
       stats: {
-        members: 5,
-        projects: 6,
+        members: 12,
+        projects: 4,
         events: 3,
-        resources: 15
+        resources: 3
       },
-      leads: ['Kabir Malhotra'],
+      leads: ['Sanjay N'],
       roadmap: [
         'Networking',
         'Operating Systems',
@@ -260,12 +281,12 @@ export default function Domains() {
         { title: 'Tableau Public', type: 'Tool', provider: 'Salesforce' }
       ],
       stats: {
-        members: 7,
-        projects: 10,
+        members: 15,
+        projects: 4,
         events: 5,
-        resources: 20
+        resources: 3
       },
-      leads: ['Neha Reddy'],
+      leads: ['Jaishnav'],
       roadmap: [
         'Excel Basics',
         'SQL Mastery',
@@ -342,10 +363,8 @@ export default function Domains() {
             <span className="text-sm text-gray-400">AdroIT Knowledge Hub</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Technical Domains
-            </span>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-white">
+            Technical Domains
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
@@ -357,24 +376,55 @@ export default function Domains() {
           {/* Quick Stats */}
           <div className="flex flex-wrap justify-center gap-6 mt-12">
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
-              <span className="text-3xl">🎯</span>
+              <span className="text-2xl">
+                <svg width="41.2" height="36" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="60" cy="60" r="10" fill="#ffffff"/>
+                  <line x1="60" y1="60" x2="60" y2="20" stroke="#06B6D4" stroke-width="4"/>
+                  <line x1="60" y1="60" x2="100" y2="60" stroke="#8B5CF6" stroke-width="4"/>
+                  <line x1="60" y1="60" x2="60" y2="100" stroke="#EC4899" stroke-width="4"/>
+                  <line x1="60" y1="60" x2="20" y2="60" stroke="#22C55E" stroke-width="4"/>
+                  <circle cx="60" cy="20" r="10" fill="#06B6D4"/>
+                  <circle cx="100" cy="60" r="10" fill="#8B5CF6"/>
+                  <circle cx="60" cy="100" r="10" fill="#EC4899"/>
+                  <circle cx="20" cy="60" r="10" fill="#22C55E"/>
+                </svg>
+              </span>
               <div>
                 <span className="text-2xl font-bold text-white">4</span>
                 <span className="text-gray-400 text-sm ml-2">Core Domains</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
-              <span className="text-3xl">🚀</span>
+              <span className="text-3xl">
+                <svg width="74.16" height="64.8" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+
+                  <rect x="30" y="25" width="60" height="50" rx="8" fill="#111"/>
+                  <path d="M42 45 L52 50 L42 55" stroke="#06B6D4" stroke-width="5" fill="none"/>
+                  <line x1="58" y1="50" x2="75" y2="50" stroke="#06B6D4" stroke-width="5"/>
+                  <circle cx="45" cy="35" r="4" fill="#EC4899"/>
+                  <circle cx="60" cy="35" r="4" fill="#8B5CF6"/>
+                  <circle cx="75" cy="35" r="4" fill="#22C55E"/>
+
+                </svg>
+              </span>
               <div>
-                <span className="text-2xl font-bold text-white">36+</span>
+                <span className="text-2xl font-bold text-white">10+</span>
                 <span className="text-gray-400 text-sm ml-2">Projects</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
-              <span className="text-3xl">👥</span>
+              <span className="text-3xl">
+                <svg width="74.16" height="64.8" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
+                  <circle cx="74" cy="42" r="15" fill="#8B5CF6"/>
+
+                  <rect x="32" y="55" width="32" height="15" rx="8" fill="#06B6D4"/>
+                  <rect x="58" y="58" width="32" height="15" rx="8" fill="#8B5CF6"/>
+                </svg>
+              </span>
               <div>
-                <span className="text-2xl font-bold text-white">26+</span>
-                <span className="text-gray-400 text-sm ml-2">Members</span>
+                <span className="text-2xl font-bold text-white">100+</span>
+                <span className="text-gray-400 text-sm ml-2">Members in community</span>
               </div>
             </div>
           </div>
@@ -509,7 +559,7 @@ export default function Domains() {
               {/* Domain Leads Card */}
               <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.members} Domain Leads
+                  {icons.members} Domain Lead
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.leads.map((lead, idx) => (
