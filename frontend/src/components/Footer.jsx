@@ -1,6 +1,5 @@
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link } from 'react-router-dom';
-import { Analytics } from "@vercel/analytics/react";
 
 const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
@@ -23,7 +22,6 @@ const Footer = ({ showMap = false }) => {
           <div className="lg:col-span-5">
             
             <div className="space-y-3">
-              <Analytics/>
               <div className="flex items-start gap-3">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400 mt-1 flex-shrink-0">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
