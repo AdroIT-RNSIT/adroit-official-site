@@ -3,7 +3,7 @@
  */
 
 import "dotenv/config";
-import { auth } from "./lib/auth.js";
+import { auth, db } from "./lib/auth.js";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@adroit.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin@123";
@@ -20,6 +20,17 @@ async function seed() {
       .catch(() => null);
 
     if (existing) {
+      // Ensure the admin account has the correct role + approval flag
+      try {
+        const adminId = existing.user?.id || existing.id || existing._id;
+        await db.collection("user").updateOne(
+          { _id: adminId },
+          { $set: { role: "admin", approved: true } }
+        );
+      } catch (e) {
+        console.warn("Could not enforce admin role/approval in DB:", e.message || e);
+      }
+
       console.log("✅ Admin user already exists — ensured role=admin & approved=true.\n");
       const adminId = existing.user?.id || existing.id || existing._id;
       console.log(`   Admin ID: ${adminId}`);
@@ -27,7 +38,9 @@ async function seed() {
       console.log(`   Password: ${ADMIN_PASSWORD}`);
       process.exit(0);
     }
-  } catch { }
+  } catch (e) {
+    console.error("Seed check failed:", e);
+  }
 
   try {
     const result = await auth.api.signUpEmail({
