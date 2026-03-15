@@ -106,11 +106,22 @@ export default function Login() {
   const handleSignIn = async (e) => {
     e.preventDefault(); setError(""); setLoading(true);
     try {
-      const result = await authClient.signIn.email({ email, password });
-      if (result.error) setError(result.error.message || "Invalid email or password.");
-      else navigate("/resources");
-    } catch { setError("Something went wrong. Please try again."); }
-    setLoading(false);
+      const result = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (result.error) {
+        setError(result.error.message || "Invalid email or password.");
+        setLoading(false);
+        return;
+      }
+
+      navigate("/resources");
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
   };
 
   const handleSignUp = async (e) => {
@@ -121,13 +132,47 @@ export default function Login() {
     }
     setLoading(true);
     try {
-      const result = await authClient.signUp.email({ email, password, name });
-      if (result.error) { setError(result.error.message || "Sign up failed."); setLoading(false); return; }
-      const signInResult = await authClient.signIn.email({ email, password });
-      if (signInResult.error) setError("Account created but auto-login failed. Please sign in.");
-      else navigate("/resources");
-    } catch { setError("Something went wrong. Please try again."); }
-    setLoading(false);
+      if (!name || !email || !password) {
+        setError("Please fill in all fields");
+        setLoading(false);
+        return;
+      }
+
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters");
+        setLoading(false);
+        return;
+      }
+
+      const result = await authClient.signUp.email({
+        email,
+        password,
+        name,
+      });
+
+      if (result.error) {
+        setError(result.error.message || "Sign up failed.");
+        setLoading(false);
+        return;
+      }
+
+      // After successful signup, auto sign in
+      const signInResult = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (signInResult.error) {
+        setError("Account created but auto-login failed. Please sign in.");
+        setLoading(false);
+        return;
+      }
+
+      navigate("/resources");
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = async () => {
