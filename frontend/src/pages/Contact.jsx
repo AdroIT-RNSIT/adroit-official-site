@@ -104,10 +104,8 @@ export default function Contact() {
             <span className="text-sm text-gray-400">Get in Touch</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Connect with AdroIT
-            </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-white">
+            Connect with AdroIT
           </h1>
 
           <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
