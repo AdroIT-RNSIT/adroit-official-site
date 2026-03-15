@@ -34,7 +34,16 @@ export default function Login() {
         return;
       }
 
-      navigate("/resources");
+      // Determine user object from response shape and redirect appropriately
+      const user = result.user || result.data?.user || result.data?.session?.user;
+      const isApproved = user?.approved === true || user?.role === "admin";
+
+      if (isApproved) {
+        navigate("/resources");
+      } else {
+        // If account isn't approved yet, go to homepage where public info lives
+        navigate("/");
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
       setLoading(false);
@@ -83,7 +92,14 @@ export default function Login() {
         return;
       }
 
-      navigate("/resources");
+      const user = signInResult.user || signInResult.data?.user || signInResult.data?.session?.user;
+      const isApproved = user?.approved === true || user?.role === "admin";
+
+      if (isApproved) {
+        navigate("/resources");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
       setLoading(false);
