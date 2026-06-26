@@ -171,24 +171,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
     
     // Upload to Cloudinary
     setUploadingImage(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
     try {
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
-      const data = await res.json();
-      setMemberImagePublicId(data.public_id);
-      showMessage('success', 'Image uploaded successfully!');
+      // Disabled Cloudinary upload per user request
+      setMemberImagePublicId("blank");
+      showMessage('success', 'Image uploaded locally!');
     } catch (error) {
       showMessage('error', 'Failed to upload image');
-      console.error('Cloudinary upload error:', error);
     } finally {
       setUploadingImage(false);
     }

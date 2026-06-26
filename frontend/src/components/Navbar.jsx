@@ -32,7 +32,7 @@ const Navbar = () => {
   const publicLinks = [
     { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
-    { name: "Team", path: "/team" },
+
     { name: "Domains", path: "/domains" },
     { name: "Contact", path: "/contact" }
   ];
@@ -128,63 +128,8 @@ const Navbar = () => {
               </>
             )}
 
-            {/* ===== AUTH SECTION ===== */}
+            {/* ===== AUTH SECTION REMOVED ===== */}
             <div className="ml-3 pl-3 border-l border-white/10">
-              {isPending ? null : isLoggedIn ? (
-                <div className="flex items-center gap-2">
-                  {/* User Avatar */}
-                  <Link
-                    to="/profile"
-                    className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold overflow-hidden group"
-                  >
-                    {session?.user?.image ? (
-                      <img
-                        src={session.user.image}
-                        alt={session.user.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="group-hover:scale-110 transition-transform">
-                        {session?.user?.name?.charAt(0).toUpperCase() || "U"}
-                      </span>
-                    )}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </Link>
-                  
-                  {/* Logout Button */}
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
-                    title="Logout"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    <span className="hidden lg:inline">Logout</span>
-                  </button>
-                </div>
-              ) : (
-                !isHomePage && (
-                  <Link
-                    to="/login"
-                    className="group relative inline-flex items-center gap-2 px-4 py-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105"
-                  >
-                    {/* Animated background effect */}
-                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                    
-                    {/* Icon */}
-                    <svg className="relative w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                    </svg>
-                    
-                    {/* Text */}
-                    <span className="relative">Sign In</span>
-                    
-                    {/* Glow effect */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-purple-600 rounded-lg blur opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-                  </Link>
-                )
-              )}
             </div>
           </div>
 
@@ -327,34 +272,7 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Mobile Auth Button */}
-          <div className="mt-6 pt-6 border-t border-white/10">
-            {isLoggedIn ? (
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  handleLogout();
-                }}
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg text-red-400 hover:text-red-300 text-sm font-medium transition-all duration-200"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Sign Out
-              </button>
-            ) : !isHomePage ? (
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 transition-all duration-200"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                </svg>
-                Sign In
-              </Link>
-            ) : null}
-          </div>
+          {/* Mobile Auth Button Removed */}
         </div>
       </div>
     </>

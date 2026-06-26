@@ -690,13 +690,11 @@ export default function Domains() {
                     </div>
                   ))}
                 </div>
-                <Link
-                  to={`/resources/${activeDomain}`}
-                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white text-sm font-semibold rounded-xl hover:scale-105 transition-all duration-300"
+                <div
+                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-3 bg-white/5 text-gray-400 text-sm font-medium rounded-xl border border-white/10"
                 >
-                  Explore All {currentDomain.shortName} Resources
-                  {icons.arrowRight}
-                </Link>
+                  Become a member to get access to more resources
+                </div>
               </div>
             </div>
           </div>
@@ -715,7 +713,6 @@ export default function Domains() {
                   <th className="text-left py-3 px-2 text-gray-400 font-medium">Projects</th>
                   <th className="text-left py-3 px-2 text-gray-400 font-medium">Resources</th>
                   <th className="text-left py-3 px-2 text-gray-400 font-medium">Lead</th>
-                  <th className="text-left py-3 px-2 text-gray-400 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -738,16 +735,6 @@ export default function Domains() {
                     <td className="py-4 px-2 text-gray-300">{domain.stats.resources}</td>
                     <td className="py-4 px-2">
                       <span className="text-gray-300">{domain.leads[0]}</span>
-                    </td>
-                    <td className="py-4 px-2">
-                      <Link
-                        to={`/resources/${domain.id}`}
-                        className="inline-flex items-center gap-1 text-cyan-400 hover:text-cyan-300 transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        View Resources
-                        {icons.arrow}
-                      </Link>
                     </td>
                   </tr>
                 ))}

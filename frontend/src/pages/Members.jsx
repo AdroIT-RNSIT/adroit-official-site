@@ -167,8 +167,8 @@ export default function Members() {
 
   // ===== CLOUDINARY URL BUILDER =====
   const getCloudinaryUrl = (publicId, width = 100, height = 100) => {
-    if (!publicId) return null;
-    return `https://res.cloudinary.com/adroit/image/upload/c_fill,w_${width},h_${height},q_auto/f_auto/${publicId}`;
+    // Blank section per user request instead of Cloudinary URL
+    return `data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=`;
   };
 
   if (loading) {

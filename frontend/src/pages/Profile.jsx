@@ -150,29 +150,16 @@ export default function Profile() {
     }
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'adroit_profiles');
-
     try {
-      const res = await fetch(
-        'https://api.cloudinary.com/v1_1/adroit/image/upload',
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
-      const data = await res.json();
-
+      // Disabled Cloudinary upload per user request
       setProfile(prev => ({
         ...prev,
-        imagePublicId: data.public_id,
-        imageUrl: data.secure_url
+        imagePublicId: "blank",
+        imageUrl: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
       }));
-
-      showMessage('success', 'Profile photo uploaded successfully!');
+      showMessage('success', 'Profile photo updated locally!');
     } catch (error) {
-      showMessage('error', 'Failed to upload image');
+      showMessage('error', 'Failed to update image');
     } finally {
       setUploading(false);
     }
@@ -321,8 +308,8 @@ export default function Profile() {
 
   // ===== CLOUDINARY URL BUILDER =====
   const getCloudinaryUrl = (publicId, width = 200, height = 200) => {
-    if (!publicId) return null;
-    return `https://res.cloudinary.com/adroit/image/upload/c_fill,w_${width},h_${height},q_auto/f_auto/${publicId}`;
+    // Blank section per user request instead of Cloudinary URL
+    return `data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=`;
   };
 
   // ===== DOMAIN OPTIONS =====

@@ -7,12 +7,8 @@ import MainLayout from "./layout/MainLayout";
 // ===== PUBLIC PAGES (No Login Required) =====
 import Home from "./pages/Home";
 import Events from "./pages/Events";
-import Team from "./pages/Team";
 import Domains from "./pages/Domains";
 import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import ResetPassword from "./pages/ResetPassword";
-
 // ===== PROTECTED PAGES (Login Required + Approval) =====
 import Resources from "./pages/Resources";
 import Members from "./pages/Members";
@@ -42,11 +38,7 @@ export default function App() {
     <>
       <Routes>
 
-        {/* ============================================ */}
-        {/* ===== 1. AUTHENTICATION - NO LAYOUT ====== */}
-        {/* ============================================ */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+
 
 
         {/* ============================================ */}
@@ -73,15 +65,7 @@ export default function App() {
           }
         />
 
-        {/* Team - Public Showcase (Leadership, Domain Heads, Operations, Senior Core) */}
-        <Route
-          path="/team"
-          element={
-            <WithLayout>
-              <Team />
-            </WithLayout>
-          }
-        />
+
 
         {/* Domains - 4 Core Domains Showcase */}
         <Route

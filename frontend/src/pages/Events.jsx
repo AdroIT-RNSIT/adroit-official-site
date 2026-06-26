@@ -13,16 +13,8 @@ export default function Events() {
   const isAdmin = session?.user?.role === "admin";
 
   const fetchEvents = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/events`);
-      if (!res.ok) throw new Error("Failed to fetch events");
-      const data = await res.json();
-      setEvents(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    // Backend removed, just stop loading to show "No events yet"
+    setLoading(false);
   };
 
   useEffect(() => {
