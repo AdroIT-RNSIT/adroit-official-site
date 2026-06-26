@@ -571,12 +571,6 @@ export default function Domains() {
                     </div>
                   ))}
                 </div>
-                <Link
-                  to="/members"
-                  className="mt-4 inline-flex items-center gap-1 text-xs text-gray-400 hover:text-cyan-400 transition-colors"
-                >
-                  View all team members {icons.arrow}
-                </Link>
               </div>
             </div>
 

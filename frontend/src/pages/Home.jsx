@@ -241,11 +241,8 @@ const InteractiveBall = () => {
 // ============================================
 // DOMAIN CARD COMPONENT - NEW!
 // ============================================
-const DomainCard = ({ icon, title, description, color, link }) => (
-  <Link 
-    to={link}
-    className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300"
-  >
+const DomainCard = ({ icon, title, description, color }) => (
+  <div className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300">
     <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 mb-4 group-hover:scale-110 transition-all duration-300`}>
       {icon}
     </div>
@@ -255,13 +252,7 @@ const DomainCard = ({ icon, title, description, color, link }) => (
     <p className="text-gray-400 text-sm leading-relaxed">
       {description}
     </p>
-    <div className="mt-4 inline-flex items-center gap-1 text-cyan-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
-      Explore Resources
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-    </div>
-  </Link>
+  </div>
 );
 
 // ============================================
@@ -369,16 +360,19 @@ const Home = () => {
           </p>
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              to="/login"
-              className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+          <div className="flex flex-col gap-2 justify-center items-center">
+            <button
+              disabled
+              className="group px-8 py-4 bg-gradient-to-r from-cyan-500/50 to-purple-600/50 text-white/80 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-not-allowed transition-all duration-300"
             >
               <span className="relative z-10">Join AdroIT Now</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10 group-hover:translate-x-1 transition-transform">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </Link>
+            </button>
+            <p className="text-xs text-gray-400 mt-2 text-center">
+              Recruitment for this cycle is closed. Next recruitment opens later this year.
+            </p>
           </div>
         </div>
 
