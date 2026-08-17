@@ -334,7 +334,7 @@ export default function Profile() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
+      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center overflow-x-clip">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-4">Please Login</h2>
           <Link
@@ -349,12 +349,12 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-white font-sans pt-20 pb-16">
+    <div className="min-h-screen bg-[#0d1117] text-white font-sans pt-20 pb-16 overflow-x-clip">
 
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 left-20 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[120px]"></div>
+        <div className="absolute top-20 left-20 w-[400px] max-w-[100vw] h-[400px] bg-cyan-500/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-20 right-20 w-[500px] max-w-[100vw] h-[500px] bg-purple-600/5 rounded-full blur-[120px]"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

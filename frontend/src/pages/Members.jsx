@@ -191,9 +191,9 @@ export default function Members() {
     <div className="min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-40 left-20 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-40 right-20 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-40 left-20 w-[400px] max-w-[100vw] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-40 right-20 w-[500px] max-w-[100vw] h-[500px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

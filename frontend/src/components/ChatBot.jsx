@@ -79,7 +79,7 @@ const ChatBot = () => {
 
             {/* Chat Window */}
             {isOpen && (
-                <div className="w-[350px] sm:w-[400px] h-[500px] bg-[#0d1117]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+                <div className="w-[calc(100vw-3rem)] max-w-[400px] h-[500px] bg-[#0d1117]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
 
                     {/* Header */}
                     <div className="p-4 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border-b border-white/10 flex items-center justify-between">

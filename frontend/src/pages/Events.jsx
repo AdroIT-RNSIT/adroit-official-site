@@ -13,7 +13,33 @@ export default function Events() {
   const isAdmin = session?.user?.role === "admin";
 
   const fetchEvents = async () => {
-    // Backend removed, just stop loading to show "No events yet"
+    // Hardcoded events since backend fetch is disabled
+    setEvents([
+      {
+        _id: "1",
+        title: "CTF (Capture The Flag)",
+        description: "Join our exciting cybersecurity Capture The Flag competition. Test your skills in cryptography, web exploitation, and reverse engineering.",
+        date: "2026-09-17T10:00:00Z",
+        location: "Lab 3, CS Department",
+        type: "hackathon"
+      },
+      {
+        _id: "2",
+        title: "Tech Auction",
+        description: "A unique event where teams bid on tech stacks and build a project using only their acquired technologies.",
+        date:"2026-09-15T10:00:00Z",
+        location: "Main Auditorium",
+        type: "Event"
+      },
+      {
+        _id: "3",
+        title: "AI Film Making",
+        description: "Learn how to leverage generative AI tools to script, storyboard, and produce short films. Showcase your creativity!",
+        date:"2026-09-18T10:00:00Z",
+        location: "Seminar Hall",
+        type: "Event"
+      }
+    ]);
     setLoading(false);
   };
 
@@ -35,19 +61,19 @@ export default function Events() {
   };
 
   const typeColors = {
-    workshop: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
-    seminar: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-    hackathon: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
-    meetup: "bg-green-500/10 text-green-400 border border-green-500/20",
-    other: "bg-gray-500/10 text-gray-400 border border-gray-500/20",
+    workshop: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+    seminar: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+    hackathon: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+    meetup: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+    other: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
   };
 
   const typeGradients = {
-    workshop: "from-orange-500 to-amber-600",
-    seminar: "from-blue-500 to-cyan-600",
-    hackathon: "from-purple-500 to-pink-600",
-    meetup: "from-green-500 to-emerald-600",
-    other: "from-gray-500 to-slate-600",
+    workshop: "from-cyan-500 to-purple-600",
+    seminar: "from-cyan-500 to-purple-600",
+    hackathon: "from-cyan-500 to-purple-600",
+    meetup: "from-cyan-500 to-purple-600",
+    other: "from-cyan-500 to-purple-600",
   };
 
   const formatDate = (dateStr) => {
@@ -65,14 +91,13 @@ export default function Events() {
   const filteredEvents =
     filter === "all" ? events : events.filter((e) => e.type === filter);
 
-  // Split into upcoming and past
-  const now = new Date();
-  const upcomingEvents = filteredEvents.filter((e) => new Date(e.date) >= now);
-  const pastEvents = filteredEvents.filter((e) => new Date(e.date) < now);
+  // All events shown in upcoming
+  const upcomingEvents = filteredEvents;
+  const pastEvents = [];
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
+      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center overflow-x-clip">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
           <p className="text-gray-400 font-medium">Loading events...</p>
@@ -82,7 +107,7 @@ export default function Events() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen bg-[#0d1117] overflow-x-clip">
       {/* Hero Header */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">

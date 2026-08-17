@@ -325,9 +325,9 @@ export default function Domains() {
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
+        <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-w-[100vw] h-[800px] bg-gradient-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
       </div>
 
       {/* ===== FLOATING PARTICLES ===== */}
