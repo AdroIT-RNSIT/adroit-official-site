@@ -335,20 +335,41 @@ const Home = () => {
         ref={heroRef}
         className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
       >
+        {/* RNSIT LOGO */}
+        <div className="absolute top-0 left-4 sm:left-8 z-50">
+          <img 
+            src="/rnsit_logo.png" 
+            alt="RNSIT Logo" 
+            className="w-24 md:w-32 lg:w-40 h-auto opacity-80 hover:opacity-100 transition-opacity drop-shadow-2xl shadow-black/50" 
+          />
+        </div>
+
+        {/* 25 YEARS LOGO */}
+        <div className="absolute top-0 right-4 sm:right-8 z-50">
+          <img 
+            src="/25_years_transparent.png" 
+            alt="25 Years Excellence" 
+            className="w-24 md:w-32 lg:w-40 h-auto opacity-80 hover:opacity-100 transition-opacity drop-shadow-2xl shadow-black/50" 
+          />
+        </div>
+
         <div className="max-w-5xl text-center z-10 relative">
-          
+          <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-blue-300 to-blue-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
+              RNS INSTITUTE OF TECHNOLOGY
+          </span>
+          <br></br>
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm text-gray-400">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></span>
+          <div className="inline-flex items-center gap-3 px-8 py-4 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-lg md:text-xl text-gray-400 font-medium tracking-wide">
+            <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></span>
             <span>Department of Computer Science & Engineering</span>
           </div>
 
           {/* Title */}
           <h1 className="mb-6">
-            <span className="block text-2xl md:text-3xl lg:text-4xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
+            <span className="block text-lg md:text-xl lg:text-2xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
               Welcome to
             </span>
-            <span className="block text-6xl md:text-8xl lg:text-9xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-tight">
+            <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
               AdroIT
             </span>
           </h1>
@@ -359,8 +380,51 @@ const Home = () => {
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
+          {/* UPCOMING EVENTS MARQUEE */}
+          <div className="my-12 w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-4">
+            <div className="flex animate-marquee hover:[animation-play-state:paused] items-center">
+              {/* Repeated sets for infinite scroll */}
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex gap-8 px-4">
+                  <div className="w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Hackathon</span>
+                      <span className="text-sm font-semibold text-gray-400">
+                        {new Date("2026-09-17T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </span>
+                    </div>
+                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">CTF (Capture The Flag)</h3>
+                    <p className="text-gray-400 text-base line-clamp-2">Join our exciting cybersecurity Capture The Flag competition. Test your skills in cryptography and web exploitation.</p>
+                  </div>
+                  
+                  <div className="w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Event</span>
+                      <span className="text-sm font-semibold text-gray-400">
+                        {new Date("2026-09-18T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </span>
+                    </div>
+                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">Tech Auction</h3>
+                    <p className="text-gray-400 text-base line-clamp-2">A unique event where teams bid on tech stacks and build a project using only their acquired technologies.</p>
+                  </div>
+
+                  <div className="w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Event</span>
+                      <span className="text-sm font-semibold text-gray-400">
+                        {new Date("2026-09-18T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </span>
+                    </div>
+                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">AI Film Making</h3>
+                    <p className="text-gray-400 text-base line-clamp-2">Learn how to leverage generative AI tools to script, storyboard, and produce short films.</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-col gap-2 justify-center items-center">
+          <div className="flex flex-col gap-2 justify-center items-center relative z-20">
             <button
               disabled
               className="group px-8 py-4 bg-gradient-to-r from-cyan-500/50 to-purple-600/50 text-white/80 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-not-allowed transition-all duration-300"

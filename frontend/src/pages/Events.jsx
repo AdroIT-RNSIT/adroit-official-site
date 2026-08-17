@@ -27,7 +27,7 @@ export default function Events() {
         _id: "2",
         title: "Tech Auction",
         description: "A unique event where teams bid on tech stacks and build a project using only their acquired technologies.",
-        date:"2026-09-15T10:00:00Z",
+        date:"2026-09-18T10:00:00Z",
         location: "Main Auditorium",
         type: "Event"
       },
