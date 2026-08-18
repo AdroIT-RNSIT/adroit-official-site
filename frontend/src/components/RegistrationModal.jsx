@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [successData, setSuccessData] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Determine team size constraints based on event
   const getTeamConstraints = () => {
@@ -17,19 +18,58 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg("");
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
+    const formData = new FormData(e.target);
+    const participants = [];
+    
+    for (let i = 0; i < max; i++) {
+      const pName = formData.get(`participant_${i}`);
+      const pUSN = formData.get(`participant_usn_${i}`);
+      if (pName && pName.trim() !== "") {
+        participants.push({ 
+          name: pName.trim(), 
+          usn: pUSN ? pUSN.trim() : "" 
+        });
+      }
+    }
+    
+    const payload = {
+      eventName: eventTitle,
+      teamName: formData.get("teamName"),
+      collegeName: formData.get("collegeName"),
+      leaderEmail: formData.get("leaderEmail"),
+      participants: participants
+    };
+
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.detail || "Registration failed");
+      }
+      
+      setSuccessData(data);
+      // Auto close after 5 seconds
       setTimeout(() => {
-        setIsSuccess(false);
+        setSuccessData(null);
         onClose();
-      }, 2000);
-    }, 1000);
+      }, 5000);
+    } catch (err) {
+      setErrorMsg(err.message || "An error occurred while registering.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,7 +97,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
 
         {/* Body */}
         <div className="p-6">
-          {isSuccess ? (
+          {successData ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,14 +105,24 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Registration Successful!</h3>
-              <p className="text-gray-400 text-sm">We've received your registration for {eventTitle}. We'll see you there!</p>
+              <p className="text-gray-400 text-sm mb-4">We've received your registration for {eventTitle}. We'll see you there!</p>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4 inline-block">
+                <p className="text-xs text-gray-500 mb-1 uppercase tracking-wider">Your Registration ID</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400">{successData.registrationId}</p>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              {errorMsg && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+                  {errorMsg}
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">Team Name</label>
                 <input 
                   type="text" 
+                  name="teamName"
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                   placeholder="e.g. Byte Bandits"
@@ -83,47 +133,48 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                 <label className="block text-sm font-medium text-gray-400 mb-1">College Name</label>
                 <input 
                   type="text" 
+                  name="collegeName"
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                   placeholder="e.g. RNS Institute of Technology"
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Team Leader Email</label>
-                  <input 
-                    type="email" 
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
-                    placeholder="leader@example.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Team Leader USN</label>
-                  <input 
-                    type="text" 
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
-                    placeholder="1RN2..."
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Team Leader Email</label>
+                <input 
+                  type="email" 
+                  name="leaderEmail"
+                  required
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
+                  placeholder="leader@example.com"
+                />
               </div>
 
               <div className="pt-2">
                 <h4 className="text-sm font-semibold text-cyan-400 mb-3">Team Members ({min}{min !== max ? `-${max}` : ''})</h4>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {Array.from({ length: max }).map((_, i) => (
-                    <div key={i}>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                    <div key={i} className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-3">
+                      <h5 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
                         Participant {i + 1} {i === 0 ? '(Leader)' : ''} {i >= min ? '(Optional)' : ''}
-                      </label>
-                      <input 
-                        type="text" 
-                        required={i < min}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
-                        placeholder={`Name of Participant ${i + 1}`}
-                      />
+                      </h5>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input 
+                          type="text" 
+                          name={`participant_${i}`}
+                          required={i < min}
+                          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
+                          placeholder="Full Name"
+                        />
+                        <input 
+                          type="text" 
+                          name={`participant_usn_${i}`}
+                          required={i < min}
+                          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
+                          placeholder="USN / ID"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>

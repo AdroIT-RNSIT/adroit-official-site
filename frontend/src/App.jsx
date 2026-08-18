@@ -21,7 +21,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // ===== AI CHATBOT =====
-import ChatBot from "./components/ChatBot";
+// import ChatBot from "./components/ChatBot";
 
 // Layout wrapper component
 function WithLayout({ children }) {
@@ -241,7 +241,7 @@ export default function App() {
           }
         />
       </Routes>
-      <ChatBot />
+      {/* <ChatBot /> */}
     </>
   );
 }

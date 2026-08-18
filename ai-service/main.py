@@ -13,6 +13,9 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import base64
 from bson import ObjectId
+import random
+import string
+from typing import List
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -33,6 +36,7 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/club-members")
 client = MongoClient(MONGO_URI)
 db = client.get_database()
 users_collection = db.user
+registrations_collection = db.registrations
 
 # Encryption
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
@@ -57,6 +61,18 @@ class ChatRequest(BaseModel):
 class ApiKeyRequest(BaseModel):
     userId: str
     apiKey: str
+
+class RegistrationParticipant(BaseModel):
+    name: str
+    usn: str
+
+class RegistrationRequest(BaseModel):
+    eventName: str
+    teamName: str
+    collegeName: str
+    leaderEmail: str
+    leaderUSN: str | None = None
+    participants: List[RegistrationParticipant]
 
 # ===== ENCRYPTION / DECRYPTION =====
 def decrypt_api_key(encrypted_data, encryption_key):
@@ -275,3 +291,28 @@ async def trigger_ingest(background_tasks: BackgroundTasks):
         return {"status": "ingestion_started", "message": "Documents are being indexed. This may take a moment."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/register")
+async def register_event(request: RegistrationRequest):
+    try:
+        # Generate simple unique ID
+        random_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        reg_id = f"ADR-{random_suffix}"
+        
+        # Save to DB
+        registration_data = request.dict()
+        registration_data["registrationId"] = reg_id
+        
+        result = registrations_collection.insert_one(registration_data)
+        
+        if result.inserted_id:
+            return {"status": "success", "registrationId": reg_id}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to save registration")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    # Make sure to run on port 5000 as VITE_API_URL specifies http://localhost:5000
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
