@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
+import RegistrationModal from '../components/RegistrationModal';
 
 // ============================================
 // FIXED INTERACTIVE BALL COMPONENT
@@ -386,18 +387,18 @@ const Home = () => {
               {/* Repeated sets for infinite scroll */}
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="flex gap-8 px-4">
-                  <div className="w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                  <Link to="/events" className="block w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
                     <div className="flex justify-between items-start mb-4">
                       <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Hackathon</span>
                       <span className="text-sm font-semibold text-gray-400">
                         {new Date("2026-09-17T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </span>
                     </div>
-                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">CTF (Capture The Flag)</h3>
+                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">Capture The Flag</h3>
                     <p className="text-gray-400 text-base line-clamp-2">Join our exciting cybersecurity Capture The Flag competition. Test your skills in cryptography and web exploitation.</p>
-                  </div>
+                  </Link>
                   
-                  <div className="w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                  <Link to="/events" className="block w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
                     <div className="flex justify-between items-start mb-4">
                       <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Event</span>
                       <span className="text-sm font-semibold text-gray-400">
@@ -406,9 +407,9 @@ const Home = () => {
                     </div>
                     <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">Tech Auction</h3>
                     <p className="text-gray-400 text-base line-clamp-2">A unique event where teams bid on tech stacks and build a project using only their acquired technologies.</p>
-                  </div>
+                  </Link>
 
-                  <div className="w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                  <Link to="/events" className="block w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
                     <div className="flex justify-between items-start mb-4">
                       <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Event</span>
                       <span className="text-sm font-semibold text-gray-400">
@@ -417,7 +418,7 @@ const Home = () => {
                     </div>
                     <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">AI Film Making</h3>
                     <p className="text-gray-400 text-base line-clamp-2">Learn how to leverage generative AI tools to script, storyboard, and produce short films.</p>
-                  </div>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -813,6 +814,7 @@ const Home = () => {
         .animate-ripple { animation: ripple 1.5s ease-out forwards; }
         .animate-trail { animation: trail 0.5s linear forwards; }
       `}</style>
+
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
+import RegistrationModal from "../components/RegistrationModal";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -9,6 +10,8 @@ export default function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("all");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEventTitle, setSelectedEventTitle] = useState("");
 
   const isAdmin = session?.user?.role === "admin";
 
@@ -17,7 +20,7 @@ export default function Events() {
     setEvents([
       {
         _id: "1",
-        title: "CTF (Capture The Flag)",
+        title: "Capture The Flag",
         description: "Join our exciting cybersecurity Capture The Flag competition. Test your skills in cryptography, web exploitation, and reverse engineering.",
         date: "2026-09-17T10:00:00Z",
         location: "Lab 3, CS Department",
@@ -217,6 +220,10 @@ export default function Events() {
                       formatDate={formatDate}
                       isAdmin={isAdmin}
                       onDelete={handleDelete}
+                      onRegister={(title) => {
+                        setSelectedEventTitle(title);
+                        setIsModalOpen(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -249,6 +256,13 @@ export default function Events() {
           </div>
         )}
       </div>
+
+      {/* Registration Modal */}
+      <RegistrationModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        eventTitle={selectedEventTitle} 
+      />
     </div>
   );
 }
@@ -260,14 +274,16 @@ function EventCard({
   formatDate,
   isAdmin,
   onDelete,
+  onRegister,
   isPast = false,
 }) {
   return (
     <div
-      className={`group relative bg-white/[0.03] backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden hover:-translate-y-1 ${
+      onClick={() => !isPast && onRegister && onRegister(event.title)}
+      className={`group relative bg-white/[0.03] backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
         isPast
           ? "border-white/5 opacity-60 hover:opacity-80"
-          : "border-white/10 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5"
+          : "border-white/10 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5 cursor-pointer hover:-translate-y-1"
       }`}
     >
       {/* Event image or gradient top bar */}
