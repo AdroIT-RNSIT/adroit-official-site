@@ -104,7 +104,7 @@ export default function Contact() {
             <span className="text-sm text-gray-400">Get in Touch</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-white">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
             Connect with AdroIT
           </h1>
 

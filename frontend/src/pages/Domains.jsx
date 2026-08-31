@@ -363,7 +363,7 @@ export default function Domains() {
             <span className="text-sm text-gray-400">AdroIT Knowledge Hub</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-white">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
             Technical Domains
           </h1>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import RegistrationModal from "../components/RegistrationModal";
+import { sharedEvents } from "../data/events";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -16,33 +17,8 @@ export default function Events() {
   const isAdmin = session?.user?.role === "admin";
 
   const fetchEvents = async () => {
-    // Hardcoded events since backend fetch is disabled
-    setEvents([
-      {
-        _id: "1",
-        title: "Capture The Flag",
-        description: "Join our exciting cybersecurity Capture The Flag competition. Test your skills in cryptography, web exploitation, and reverse engineering.",
-        date: "2026-09-17T10:00:00Z",
-        location: "Lab 3, CS Department",
-        type: "hackathon"
-      },
-      {
-        _id: "2",
-        title: "Tech Auction",
-        description: "A unique event where teams bid on tech stacks and build a project using only their acquired technologies.",
-        date:"2026-09-18T10:00:00Z",
-        location: "Main Auditorium",
-        type: "Event"
-      },
-      {
-        _id: "3",
-        title: "AI Film Making",
-        description: "Learn how to leverage generative AI tools to script, storyboard, and produce short films. Showcase your creativity!",
-        date:"2026-09-18T10:00:00Z",
-        location: "Seminar Hall",
-        type: "Event"
-      }
-    ]);
+    // Use shared events
+    setEvents(sharedEvents);
     setLoading(false);
   };
 
@@ -113,47 +89,14 @@ export default function Events() {
     <div className="min-h-screen bg-[#0d1117] overflow-x-clip">
       {/* Hero Header */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute top-20 -left-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-        </div>
 
         <div className="max-w-7xl mx-auto px-6 sm:px-8 pt-28 pb-12 relative">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="flex flex-col items-center justify-center text-center gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/20 rounded-full mb-4">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-                <span className="text-cyan-400 text-sm font-medium">
-                  {upcomingEvents.length} upcoming
-                </span>
-              </div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                Events
+              <h1 className="text-5xl sm:text-7xl font-black tracking-tight bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] filter py-2">
+                Paradox 2026
               </h1>
-              <p className="text-gray-400 mt-3 text-lg max-w-lg">
-                Workshops, hackathons, and meetups — join us and level up your
-                skills.
-              </p>
             </div>
-
-            {/* Filter Tabs */}
-            {eventTypes.length > 2 && (
-              <div className="flex items-center gap-2 flex-wrap">
-                {eventTypes.map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setFilter(type)}
-                    className={`px-4 py-2 rounded-xl text-sm font-medium capitalize transition-all duration-200 ${
-                      filter === type
-                        ? "bg-gradient-to-r from-cyan-400 to-purple-600 text-white shadow-lg shadow-cyan-400/20"
-                        : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -206,10 +149,7 @@ export default function Events() {
             {/* Upcoming Events */}
             {upcomingEvents.length > 0 && (
               <div>
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-cyan-400 mb-6 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full"></div>
-                  Upcoming Events
-                </h2>
+                
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {upcomingEvents.map((event) => (
                     <EventCard
@@ -280,12 +220,16 @@ function EventCard({
   return (
     <div
       onClick={() => !isPast && onRegister && onRegister(event.title)}
-      className={`group relative bg-white/[0.03] backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
+      className={`group relative backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
         isPast
-          ? "border-white/5 opacity-60 hover:opacity-80"
-          : "border-white/10 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5 cursor-pointer hover:-translate-y-1"
+          ? "border-white/5 bg-white/[0.03] opacity-60 hover:opacity-80"
+          : "border-yellow-500/30 bg-gradient-to-br from-amber-500/20 via-[#0d1117] to-amber-900/20 hover:border-yellow-400 hover:shadow-[0_0_25px_rgba(250,204,21,0.4)] cursor-pointer hover:-translate-y-2 hover:scale-105 z-10"
       }`}
     >
+      {/* Animated glossy overlay for special card effect */}
+      {!isPast && (
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none z-20"></div>
+      )}
       {/* Event image or gradient top bar */}
       {event.imageUrl ? (
         <div className="relative h-44 overflow-hidden">
@@ -318,11 +262,6 @@ function EventCard({
                 {new Date(event.date).getDate()}
               </span>
             </div>
-            <span
-              className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-medium capitalize ${typeColors[event.type] || typeColors.other}`}
-            >
-              {event.type}
-            </span>
           </div>
 
           {/* Admin delete */}
@@ -350,7 +289,7 @@ function EventCard({
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors mb-2 line-clamp-2">
+        <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 group-hover:drop-shadow-[0_0_8px_rgba(250,204,21,0.8)] transition-all duration-300 mb-2 line-clamp-2">
           {event.title}
         </h3>
 

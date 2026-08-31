@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";import ThreeScene from '../home/ThreeScene';
+import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
+import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
 import RegistrationModal from '../components/RegistrationModal';
+import { sharedEvents } from '../data/events';
 
 // ============================================
 // FIXED INTERACTIVE BALL COMPONENT
@@ -323,14 +325,8 @@ const Home = () => {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip">
+    <div className="relative min-h-screen">
       
-      {/* Background gradients */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/3 left-1/4 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[150px]"></div>
-      </div>
-
       {/* ===== HERO SECTION - YOUR ORIGINAL DESIGN ===== */}
       <section 
         ref={heroRef}
@@ -387,38 +383,18 @@ const Home = () => {
               {/* Repeated sets for infinite scroll */}
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="flex gap-8 px-4">
-                  <Link to="/events" className="block w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Hackathon</span>
-                      <span className="text-sm font-semibold text-gray-400">
-                        {new Date("2026-09-17T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </span>
-                    </div>
-                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">Capture The Flag</h3>
-                    <p className="text-gray-400 text-base line-clamp-2">Join our exciting cybersecurity Capture The Flag competition. Test your skills in cryptography and web exploitation.</p>
-                  </Link>
-                  
-                  <Link to="/events" className="block w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Event</span>
-                      <span className="text-sm font-semibold text-gray-400">
-                        {new Date("2026-09-18T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </span>
-                    </div>
-                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">Tech Auction</h3>
-                    <p className="text-gray-400 text-base line-clamp-2">A unique event where teams bid on tech stacks and build a project using only their acquired technologies.</p>
-                  </Link>
-
-                  <Link to="/events" className="block w-[420px] h-[200px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="text-sm font-medium px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Event</span>
-                      <span className="text-sm font-semibold text-gray-400">
-                        {new Date("2026-09-18T10:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </span>
-                    </div>
-                    <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">AI Film Making</h3>
-                    <p className="text-gray-400 text-base line-clamp-2">Learn how to leverage generative AI tools to script, storyboard, and produce short films.</p>
-                  </Link>
+                  {sharedEvents.map((event) => (
+                    <Link key={event._id} to="/events" className="block w-[480px] h-[240px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                      <div className="flex justify-between items-start mb-4">
+                        <span className="font-black bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] filter text-sm">Paradox 2026</span>
+                        <span className="text-sm font-semibold text-gray-400">
+                          {new Date(event.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                        </span>
+                      </div>
+                      <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">{event.title}</h3>
+                      <p className="text-gray-400 text-base line-clamp-2">{event.description}</p>
+                    </Link>
+                  ))}
                 </div>
               ))}
             </div>
@@ -483,7 +459,7 @@ const Home = () => {
           
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Why Join AdroIT?</h2>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Why Join AdroIT?</h2>
             <p className="text-gray-400 text-xl max-w-4xl mx-auto">
               We bridge the gap between academic theory and industry demands, creating 
               <span className="text-cyan-400"> future-ready professionals</span> through practical learning and innovation
@@ -571,7 +547,7 @@ const Home = () => {
           
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Technical Domains</h2>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Technical Domains</h2>
             <p className="text-gray-400 text-xl max-w-3xl mx-auto">
               Four pillars of technical excellence driving innovation at AdroIT
             </p>
@@ -625,7 +601,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">How AdroIT Will Transform You</h2>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">How AdroIT Will Transform You</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -680,7 +656,7 @@ const Home = () => {
           
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8">Join the AdroIT Community</h2>
+            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Join the AdroIT Community</h2>
             <p className="text-gray-400 text-xl max-w-3xl mx-auto">
               Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
               in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.

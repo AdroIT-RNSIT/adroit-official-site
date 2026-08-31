@@ -31,7 +31,7 @@ const Navbar = () => {
   // ===== PUBLIC LINKS - Visible to everyone =====
   const publicLinks = [
     { name: "Home", path: "/" },
-    { name: "Events", path: "/events" },
+    { name: "Paradox 2026", path: "/events" },
 
     { name: "Domains", path: "/domains" },
     { name: "Contact", path: "/contact" }
@@ -57,7 +57,7 @@ const Navbar = () => {
           
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-9 h-9">
+            <div className="relative w-12 h-12">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg blur-sm opacity-70 group-hover:opacity-100 transition-opacity"></div>
               <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
                 <img
@@ -67,7 +67,7 @@ const Navbar = () => {
                 />
               </div>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
               AdroIT
             </span>
           </Link>
@@ -87,7 +87,13 @@ const Navbar = () => {
                       : "text-gray-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  {link.name}
+                  {link.name === "Paradox 2026" ? (
+                    <span className="font-black bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] filter text-base">
+                      {link.name}
+                    </span>
+                  ) : (
+                    link.name
+                  )}
                 </Link>
               ))}
             </div>
@@ -217,12 +223,18 @@ const Navbar = () => {
               >
                 <span className="w-6 h-6 flex items-center justify-center">
                   {link.name === "Home" && "🏠"}
-                  {link.name === "Events" && "📅"}
+                  {link.name === "Paradox 2026" && "📅"}
                   {link.name === "Team" && "👥"}
                   {link.name === "Domains" && "🎯"}
                   {link.name === "Contact" && "📞"}
                 </span>
-                {link.name}
+                {link.name === "Paradox 2026" ? (
+                  <span className="font-black bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] filter text-base">
+                    {link.name}
+                  </span>
+                ) : (
+                  link.name
+                )}
               </Link>
             ))}
           </div>
