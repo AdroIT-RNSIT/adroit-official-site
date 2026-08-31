@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import RegistrationModal from "../components/RegistrationModal";
+import EventDetailsModal from "../components/EventDetailsModal";
 import { sharedEvents } from "../data/events";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -11,8 +12,12 @@ export default function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("all");
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventTitle, setSelectedEventTitle] = useState("");
+  
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [selectedEventData, setSelectedEventData] = useState(null);
 
   const isAdmin = session?.user?.role === "admin";
 
@@ -150,7 +155,7 @@ export default function Events() {
             {upcomingEvents.length > 0 && (
               <div>
                 
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
                   {upcomingEvents.map((event) => (
                     <EventCard
                       key={event._id}
@@ -161,8 +166,10 @@ export default function Events() {
                       isAdmin={isAdmin}
                       onDelete={handleDelete}
                       onRegister={(title) => {
-                        setSelectedEventTitle(title);
-                        setIsModalOpen(true);
+                        // Find the full event object
+                        const clickedEvent = upcomingEvents.find(e => e.title === title);
+                        setSelectedEventData(clickedEvent);
+                        setIsDetailsModalOpen(true);
                       }}
                     />
                   ))}
@@ -177,7 +184,7 @@ export default function Events() {
                   <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
                   Past Events
                 </h2>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
                   {pastEvents.map((event) => (
                     <EventCard
                       key={event._id}
@@ -203,6 +210,17 @@ export default function Events() {
         onClose={() => setIsModalOpen(false)} 
         eventTitle={selectedEventTitle} 
       />
+
+      {/* Event Details Modal */}
+      <EventDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        event={selectedEventData}
+        onRegisterClick={(title) => {
+          setSelectedEventTitle(title);
+          setIsModalOpen(true);
+        }}
+      />
     </div>
   );
 }
@@ -220,10 +238,10 @@ function EventCard({
   return (
     <div
       onClick={() => !isPast && onRegister && onRegister(event.title)}
-      className={`group relative backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
+      className={`group relative min-h-[420px] flex flex-col backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
         isPast
           ? "border-white/5 bg-white/[0.03] opacity-60 hover:opacity-80"
-          : "border-yellow-500/30 bg-gradient-to-br from-amber-500/20 via-[#0d1117] to-amber-900/20 hover:border-yellow-400 hover:shadow-[0_0_25px_rgba(250,204,21,0.4)] cursor-pointer hover:-translate-y-2 hover:scale-105 z-10"
+          : "border-cyan-500/30 bg-gradient-to-br from-blue-500/20 via-[#0d1117] to-cyan-900/20 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(34,211,238,0.4)] cursor-pointer hover:-translate-y-2 hover:scale-105 z-10"
       }`}
     >
       {/* Animated glossy overlay for special card effect */}
@@ -240,32 +258,13 @@ function EventCard({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-transparent"></div>
         </div>
-      ) : (
-        <div
-          className={`h-1 bg-gradient-to-r ${typeGradients[event.type] || typeGradients.other}`}
-        ></div>
-      )}
+      ) : null}
 
-      <div className="p-6">
-        {/* Date + Type row */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div
-              className={`w-12 h-12 bg-gradient-to-br ${typeGradients[event.type] || typeGradients.other} rounded-xl flex flex-col items-center justify-center text-white shadow-lg`}
-            >
-              <span className="text-[10px] font-medium uppercase leading-none">
-                {new Date(event.date).toLocaleDateString("en-US", {
-                  month: "short",
-                })}
-              </span>
-              <span className="text-lg font-bold leading-none">
-                {new Date(event.date).getDate()}
-              </span>
-            </div>
-          </div>
-
-          {/* Admin delete */}
-          {isAdmin && (
+      <div className="p-6 flex-1 flex flex-col">
+        {/* Top row (Admin delete only) */}
+        {isAdmin && (
+          <div className="flex items-center justify-end mb-4">
+            {/* Admin delete */}
             <button
               onClick={() => onDelete(event._id)}
               className="opacity-0 group-hover:opacity-100 text-red-400/60 hover:text-red-400 transition-all p-2 rounded-lg hover:bg-red-500/10"
@@ -285,26 +284,26 @@ function EventCard({
                 />
               </svg>
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 group-hover:drop-shadow-[0_0_8px_rgba(250,204,21,0.8)] transition-all duration-300 mb-2 line-clamp-2">
+        <h3 className="text-xl font-black bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(34,211,238,0.7)] group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.9)] group-hover:brightness-125 transition-all duration-300 mb-2">
           {event.title}
         </h3>
 
         {/* Description */}
         {event.description && (
-          <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
+          <p className="text-gray-400 text-base leading-relaxed mb-4">
             {event.description}
           </p>
         )}
 
         {/* Meta */}
-        <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+        <div className="mt-auto flex flex-wrap items-center gap-3 text-base text-gray-500 pt-4">
           <span className="flex items-center gap-1.5">
             <svg
-              className="w-3.5 h-3.5"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -321,7 +320,7 @@ function EventCard({
           {event.location && (
             <span className="flex items-center gap-1.5">
               <svg
-                className="w-3.5 h-3.5"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
