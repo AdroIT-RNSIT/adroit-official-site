@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import RegistrationModal from "../components/RegistrationModal";
 import EventDetailsModal from "../components/EventDetailsModal";
+import InteractiveRings from "../components/InteractiveRings";
 import { sharedEvents } from "../data/events";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -91,11 +92,21 @@ export default function Events() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] overflow-x-clip">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden">
+    <div className="min-h-screen bg-[#0d1117] overflow-x-clip relative">
+      
+      {/* Background Helical Path of Rings */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <InteractiveRings className="absolute -top-[10%] -left-[10%] w-[600px] opacity-60" />
+        <InteractiveRings className="absolute top-[25%] left-[20%] w-[500px] opacity-40" />
+        <InteractiveRings className="absolute top-[50%] left-[50%] w-[550px] opacity-50" />
+        <InteractiveRings className="absolute top-[75%] left-[80%] w-[600px] opacity-40" />
+        <InteractiveRings className="absolute top-[100%] left-[100%] w-[700px] opacity-60 -translate-x-1/2 -translate-y-1/2" />
+      </div>
 
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 pt-28 pb-12 relative">
+      {/* Hero Header */}
+      <div className="relative overflow-hidden py-20 z-10">
+
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
           <div className="flex flex-col items-center justify-center text-center gap-6">
             <div>
               <h1 className="text-5xl sm:text-7xl font-black tracking-tight bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] filter py-2">
@@ -106,7 +117,7 @@ export default function Events() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 pb-20">
         {error && (
           <div className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center gap-3">
             <svg

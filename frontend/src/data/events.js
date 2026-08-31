@@ -14,7 +14,7 @@ export const sharedEvents = [
   {
     _id: "2",
     title: "Tech Auction",
-    description: "A unique event where teams bid on tech stacks and build a project using only their acquired technologies.",
+    description: "Tech Auction is a team-based technical strategy event that combines bidding, decision-making, and innovation. Teams start with a fixed amount of virtual currency (CHIPS) and bid for technologies - AI systems, frameworks, databases, hardware, and more. After the auction, teams must build a working prototype using only the technologies they've acquired, based on a problem statement revealed before bidding begins.",
     date:"2026-09-18T05:00:00Z",
     location: "IT Block",
     rules: [
@@ -26,7 +26,7 @@ export const sharedEvents = [
   {
     _id: "3",
     title: "AI Film Making",
-    description: "Learn how to leverage generative AI tools to script, storyboard, and produce short films. Showcase your creativity!",
+    description: "The AI Film Making Challenge is a creative event where teams use Artificial Intelligence tools to script, generate, and edit a short film based on a theme revealed only after the event begins - so every team starts on equal footing. The event is presented in association with Who VR and is designed to test creativity, storytelling, teamwork, and effective use of AI tools under time pressure.",
     date:"2026-09-18T05:00:00Z",
     location: "IT Block",
     rules: [
