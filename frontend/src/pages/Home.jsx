@@ -391,7 +391,7 @@ const Home = () => {
                           {new Date(event.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                         </span>
                       </div>
-                      <h3 className="text-2xl font-black bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(34,211,238,0.7)] group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.9)] group-hover:brightness-125 transition-all duration-300 mb-2 truncate">{event.title}</h3>
+                      <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">{event.title}</h3>
                       <p className="text-gray-400 text-base line-clamp-2">{event.description}</p>
                     </Link>
                   ))}
