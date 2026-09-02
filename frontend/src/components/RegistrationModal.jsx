@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successData, setSuccessData] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Reset state every time modal opens fresh
+  useEffect(() => {
+    if (isOpen) {
+      setSuccessData(null);
+      setErrorMsg("");
+      setIsSubmitting(false);
+    }
+  }, [isOpen]);
 
   // Determine team size constraints based on event
   const getTeamConstraints = () => {
@@ -60,11 +69,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
       }
       
       setSuccessData(data);
-      // Auto close after 5 seconds
+      // Show success for 2 seconds, then redirect to payment gateway
       setTimeout(() => {
-        setSuccessData(null);
-        onClose();
-      }, 5000);
+        window.open("https://payments.billdesk.com/bdcollect/bd/rnsiotec/7312", "_blank");
+      }, 2000);
     } catch (err) {
       setErrorMsg(err.message || "An error occurred while registering.");
     } finally {
@@ -75,19 +83,19 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4">
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-white/60 backdrop-blur-sm"
         onClick={onClose}
       ></div>
       
-      <div className="relative w-full max-w-md bg-[#0d1117] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-md bg-[#f3e8ff] border border-slate-900/10 rounded-2xl shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-white/10 flex justify-between items-center bg-white/[0.02]">
-          <h2 className="text-xl font-bold text-white">
+        <div className="px-6 py-4 border-b border-slate-900/10 flex justify-between items-center bg-white/[0.02]">
+          <h2 className="text-xl font-bold text-slate-900">
             Register for <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">{eventTitle}</span>
           </h2>
           <button 
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-slate-600 hover:text-slate-900 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -104,10 +112,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Registration Successful!</h3>
-              <p className="text-gray-400 text-sm mb-4">We've received your registration for {eventTitle}. We'll see you there!</p>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 inline-block">
-                <p className="text-xs text-gray-500 mb-1 uppercase tracking-wider">Your Registration ID</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Registration Successful!</h3>
+              <p className="text-slate-600 text-sm mb-4">We've received your registration for {eventTitle}. Redirecting you to the payment gateway in 2 seconds...</p>
+              <div className="bg-slate-900/5 border border-slate-900/10 rounded-xl p-4 inline-block">
+                <p className="text-xs text-slate-500 mb-1 uppercase tracking-wider">Your Registration ID</p>
                 <p className="text-2xl font-mono font-bold text-cyan-400">{successData.registrationId}</p>
               </div>
             </div>
@@ -119,34 +127,34 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Team Name</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Team Name</label>
                 <input 
                   type="text" 
                   name="teamName"
                   required
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
+                  className="w-full bg-slate-900/5 border border-slate-900/10 rounded-xl px-4 py-2.5 text-slate-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                   placeholder="e.g. Byte Bandits"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">College Name</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">College Name</label>
                 <input 
                   type="text" 
                   name="collegeName"
                   required
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
+                  className="w-full bg-slate-900/5 border border-slate-900/10 rounded-xl px-4 py-2.5 text-slate-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                   placeholder="e.g. RNS Institute of Technology"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Team Leader Email</label>
+                <label className="block text-sm font-medium text-slate-600 mb-1">Team Leader Email</label>
                 <input 
                   type="email" 
                   name="leaderEmail"
                   required
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
+                  className="w-full bg-slate-900/5 border border-slate-900/10 rounded-xl px-4 py-2.5 text-slate-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                   placeholder="leader@example.com"
                 />
               </div>
@@ -155,8 +163,8 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                 <h4 className="text-sm font-semibold text-cyan-400 mb-3">Team Members ({min}{min !== max ? `-${max}` : ''})</h4>
                 <div className="space-y-4">
                   {Array.from({ length: max }).map((_, i) => (
-                    <div key={i} className="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-3">
-                      <h5 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    <div key={i} className="p-3 bg-white/[0.02] border border-slate-900/5 rounded-xl space-y-3">
+                      <h5 className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
                         Participant {i + 1} {i === 0 ? '(Leader)' : ''} {i >= min ? '(Optional)' : ''}
                       </h5>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -164,14 +172,14 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                           type="text" 
                           name={`participant_${i}`}
                           required={i < min}
-                          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
+                          className="w-full bg-slate-900/5 border border-slate-900/10 rounded-lg px-3 py-2 text-slate-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
                           placeholder="Full Name"
                         />
                         <input 
                           type="text" 
                           name={`participant_usn_${i}`}
                           required={i < min}
-                          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
+                          className="w-full bg-slate-900/5 border border-slate-900/10 rounded-lg px-3 py-2 text-slate-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-sm"
                           placeholder="USN / ID"
                         />
                       </div>
@@ -183,7 +191,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-slate-900 font-bold py-3 rounded-xl transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>

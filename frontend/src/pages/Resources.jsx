@@ -189,7 +189,7 @@ function Resources(){
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip">
+    <div className="min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip">
     
       {/* Background Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -228,7 +228,7 @@ function Resources(){
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
           Curated learning materials to accelerate your technical journey
         </p>
 
@@ -238,19 +238,19 @@ function Resources(){
             <Link
               key={d.id}
               to={`/resources${d.id === 'all' ? '' : `/${d.id}`}`}
-              className={`group relative bg-black/40 backdrop-blur-xl border rounded-xl p-4 transition-all duration-300 hover:scale-105 ${
+              className={`group relative bg-white/40 backdrop-blur-xl border rounded-xl p-4 transition-all duration-300 hover:scale-105 ${
                 (domain === d.id || (d.id === 'all' && !domain))
                   ? `${d.bgColor} ${d.borderColor} border-2`
-                  : 'border-white/10 hover:border-cyan-500/30'
+                  : 'border-slate-900/10 hover:border-cyan-500/30'
               }`}
             >
               <div className="flex flex-col items-center text-center">
                 <span className="text-2xl mb-1">{d.icon}</span>
-                <span className="text-xs font-medium text-gray-300 group-hover:text-white transition-colors">
+                <span className="text-xs font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
                   {d.name}
                 </span>
           
-                <span className="text-xs text-gray-500 mt-1">
+                <span className="text-xs text-slate-500 mt-1">
                   {resourceStats[d.id] || 0} resources
                 </span>
                 
@@ -266,13 +266,13 @@ function Resources(){
     <div id="resources" className="m-6">
     {
       error !== "" ? <ErrorAlert error={error} onRetry={fetchResources} />
-      : resources.length === 0 ? <p className="text-center text-gray-500 mt-20">No resources found. Try adjusting your filters or check back later!</p>
+      : resources.length === 0 ? <p className="text-center text-slate-500 mt-20">No resources found. Try adjusting your filters or check back later!</p>
       : 
       <>
       {/* Summary */}
       <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-gray-500">
-          Showing <span className="text-white font-medium">{resources.length}</span> resources
+        <p className="text-sm text-slate-500">
+          Showing <span className="text-slate-900 font-medium">{resources.length}</span> resources
           {domain && domain !== 'all' && (
             <> in <span className={DOMAINS.find(d => d.id === domain)?.textColor}>
               {DOMAINS.find(d => d.id === domain)?.name}
@@ -324,7 +324,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
   };
 
   return (
-    <div className="group relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl p-5 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-xl p-5 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5">
       
       {/* Glow effect on hover */}
       <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -338,7 +338,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
               {typeConfig.icon}
             </div>
             <div>
-              <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-linear-to-r ${typeConfig.color} bg-opacity-20 text-white`}>
+              <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-linear-to-r ${typeConfig.color} bg-opacity-20 text-slate-900`}>
                 {typeConfig.label}
               </span>
               {difficultyConfig && (
@@ -364,23 +364,23 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
           {resource.title}
         </h3>
 
         {/* Description */}
-        <p className="text-gray-400 text-xs leading-relaxed mb-3 line-clamp-2">
+        <p className="text-slate-600 text-xs leading-relaxed mb-3 line-clamp-2">
           {resource.description}
         </p>
 
         {/* Domain Badge & Author */}
         <div className="flex items-center justify-between mb-3">
-          <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-linear-to-r ${domain.color} bg-opacity-20 text-white`}>
+          <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-linear-to-r ${domain.color} bg-opacity-20 text-slate-900`}>
             <span>{domain.icon}</span>
             <span>{domain.name}</span>
           </span>
           {resource.author && (
-            <span className="text-xs text-gray-500 truncate max-w-30">
+            <span className="text-xs text-slate-500 truncate max-w-30">
               by {resource.author}
             </span>
           )}
@@ -390,12 +390,12 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         {resource.tags && resource.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {resource.tags.slice(0, 2).map(tag => (
-              <span key={tag} className="px-1.5 py-0.5 text-[10px] bg-white/5 rounded text-gray-400">
+              <span key={tag} className="px-1.5 py-0.5 text-[10px] bg-slate-900/5 rounded text-slate-600">
                 #{tag}
               </span>
             ))}
             {resource.tags.length > 2 && (
-              <span className="px-1.5 py-0.5 text-[10px] bg-white/5 rounded text-gray-500">
+              <span className="px-1.5 py-0.5 text-[10px] bg-slate-900/5 rounded text-slate-500">
                 +{resource.tags.length - 2}
               </span>
             )}
@@ -403,8 +403,8 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/5">
-          <div className="flex items-center gap-2 text-[10px] text-gray-500">
+        <div className="flex items-center justify-between pt-3 border-t border-slate-900/5">
+          <div className="flex items-center gap-2 text-[10px] text-slate-500">
             <span className="flex items-center gap-0.5">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10"/>
@@ -425,7 +425,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-linear-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-1 bg-linear-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
           >
             Access
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -458,7 +458,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
   const [mFilters, setMFilters] = useState(filters);
 
   return ( 
-  <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-5 mb-10"
+  <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-10"
     onKeyDown={(e) => {
     if (e.key === 'Enter') {
       onUpdate(mFilters);
@@ -468,12 +468,12 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     
     {/* Search - Wider */}
     <div className="lg:col-span-5 relative">
-      <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
       <input
         type="text"
-        className="w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
+        className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
         value={mFilters.search}
         placeholder={`Search ${currentDomainName}...`}
         onChange={(e) => setMFilters({ ...mFilters, search: e.target.value })}
@@ -482,7 +482,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
           <div className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 flex items-center animate-in fade-in zoom-in duration-200" 
               onClick={() => {onUpdate(mFilters)}}
           >
-            <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-white/20 bg-white/10 px-1.5 font-mono text-[10px] font-medium text-gray-400 mr-2">
+            <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-slate-900/20 bg-slate-900/10 px-1.5 font-mono text-[10px] font-medium text-slate-600 mr-2">
               ENTER
             </kbd>
             <svg 
@@ -500,7 +500,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Type Filter */}
     <div className="lg:col-span-3">
       <select 
-        className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
         value={mFilters.type}
         onChange={(e) => { onUpdate({ ...mFilters, type: e.target.value }); }}
       >
@@ -514,7 +514,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Difficulty Filter */}
     <div className="lg:col-span-2">
       <select 
-        className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
         value={mFilters.difficulty}
         onChange={(e) => { onUpdate({ ...mFilters, difficulty: e.target.value }); }}
       >
@@ -529,7 +529,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     <div className="lg:col-span-2">   
       <button
         onClick={() => onUpdate({ type: "", difficulty: "", search: "" })}
-        className="w-full px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-400 hover:text-white text-sm transition-all"
+        className="w-full px-4 py-2.5 bg-slate-900/5 hover:bg-slate-900/10 border border-slate-900/10 rounded-xl text-slate-600 hover:text-slate-900 text-sm transition-all"
       >
         Clear Filters
       </button>

@@ -14,14 +14,14 @@ import InteractiveRings from '../components/InteractiveRings';
 // DOMAIN CARD COMPONENT - NEW!
 // ============================================
 const DomainCard = ({ icon, title, description, color }) => (
-  <div className="group relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300">
-    <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 mb-4 group-hover:scale-110 transition-all duration-300`}>
+  <div className="group relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300">
+    <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-slate-900 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 mb-4 group-hover:scale-110 transition-all duration-300`}>
       {icon}
     </div>
-    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors">
       {title}
     </h3>
-    <p className="text-gray-400 text-sm leading-relaxed">
+    <p className="text-slate-600 text-sm leading-relaxed">
       {description}
     </p>
   </div>
@@ -94,54 +94,53 @@ const Home = () => {
   ];
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen overflow-x-clip">
       
-      {/* ===== HERO SECTION - YOUR ORIGINAL DESIGN ===== */}
+      {/* RNSIT LOGO - FLUSH TOP LEFT */}
+      <div className="absolute top-0 left-0 z-[1001]">
+        <img 
+          src="/rnsit_logo.png" 
+          alt="RNSIT Logo" 
+          className="w-72 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
+          style={{ mixBlendMode: 'multiply' }}
+        />
+      </div>
+
+      {/* 25 YEARS LOGO - FLUSH TOP RIGHT */}
+      <div className="absolute top-0 right-0 z-[1001]">
+        <img 
+          src="/25_years.png" 
+          alt="25 Years Excellence" 
+          className="w-24 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
+        />
+      </div>
+
+      {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
         className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
       >
-        {/* RNSIT LOGO */}
-        <div className="absolute top-0 left-4 sm:left-8 z-50">
-          <img 
-            src="/rnsit_logo.png" 
-            alt="RNSIT Logo" 
-            className="w-24 md:w-32 lg:w-40 h-auto opacity-80 hover:opacity-100 transition-opacity drop-shadow-2xl shadow-black/50" 
-          />
-        </div>
-
-        {/* 25 YEARS LOGO */}
-        <div className="absolute top-0 right-4 sm:right-8 z-50">
-          <img 
-            src="/25_years_transparent.png" 
-            alt="25 Years Excellence" 
-            className="w-24 md:w-32 lg:w-40 h-auto opacity-80 hover:opacity-100 transition-opacity drop-shadow-2xl shadow-black/50" 
-          />
-        </div>
 
         <div className="max-w-5xl text-center z-10 relative">
-          <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-blue-300 to-blue-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
-              RNS INSTITUTE OF TECHNOLOGY
-          </span>
+          <span className="block text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.2em] mb-2">
+              Welcome to
+            </span>
+          <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
+              AdroIT
+            </span>
           <br></br>
           {/* Badge */}
-          <div className="inline-flex items-center gap-3 px-8 py-4 mb-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-lg md:text-xl text-gray-400 font-medium tracking-wide">
+          <div className="inline-flex items-center gap-3 px-8 py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-lg md:text-xl text-slate-600 font-medium tracking-wide">
             <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></span>
             <span>Department of Computer Science & Engineering</span>
           </div>
 
           {/* Title */}
           <h1 className="mb-6">
-            <span className="block text-lg md:text-xl lg:text-2xl font-light text-gray-400 uppercase tracking-[0.2em] mb-2">
-              Welcome to
-            </span>
-            <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
-              AdroIT
-            </span>
           </h1>
 
           {/* Tagline */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
+          <p className="text-lg md:text-xl lg:text-2xl text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
             The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
@@ -151,17 +150,17 @@ const Home = () => {
             <div className="flex animate-marquee hover:[animation-play-state:paused] items-center">
               {/* Repeated sets for infinite scroll */}
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="flex gap-8 px-4">
+                <div key={i} className="flex gap-4 sm:gap-8 px-2 sm:px-4">
                   {sharedEvents.map((event) => (
-                    <Link key={event._id} to="/events" className="block w-[480px] h-[240px] flex-shrink-0 bg-white/[0.03] backdrop-blur-sm rounded-3xl border border-white/10 hover:border-cyan-500/30 transition-colors p-7 whitespace-normal text-left group">
+                    <Link key={event._id} to="/events" className="block w-[85vw] sm:w-[480px] h-[240px] flex-shrink-0 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 backdrop-blur-sm rounded-3xl border border-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] transition-all p-6 sm:p-7 whitespace-normal text-left group">
                       <div className="flex justify-between items-start mb-4">
-                        <span className="font-black bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] filter text-sm">Paradox 2026</span>
-                        <span className="text-sm font-semibold text-gray-400">
+                        <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-xs sm:text-sm">Paradox 2026</span>
+                        <span className="text-xs sm:text-sm font-semibold text-slate-600">
                           {new Date(event.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                         </span>
                       </div>
-                      <h3 className="text-white font-bold text-2xl mb-2 truncate group-hover:text-cyan-400 transition-colors">{event.title}</h3>
-                      <p className="text-gray-400 text-base line-clamp-2">{event.description}</p>
+                      <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] transition-all">{event.title}</h3>
+                      <p className="text-slate-600 text-sm sm:text-base line-clamp-2">{event.description}</p>
                     </Link>
                   ))}
                 </div>
@@ -173,14 +172,14 @@ const Home = () => {
           <div className="flex flex-col gap-2 justify-center items-center relative z-20">
             <button
               disabled
-              className="group px-8 py-4 bg-gradient-to-r from-cyan-500/50 to-purple-600/50 text-white/80 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-not-allowed transition-all duration-300"
+              className="group px-8 py-4 bg-gradient-to-r from-cyan-500/50 to-purple-600/50 text-slate-900/80 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-not-allowed transition-all duration-300"
             >
               <span className="relative z-10">Join AdroIT Now</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <p className="text-xs text-gray-400 mt-2 text-center">
+            <p className="text-xs text-slate-600 mt-2 text-center">
               Recruitment for this cycle is closed. Next recruitment opens later this year.
             </p>
           </div>
@@ -191,8 +190,8 @@ const Home = () => {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-gray-500">Scroll</span>
-          <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <span className="text-xs text-slate-500">Scroll</span>
+          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
           </svg>
         </div>
@@ -205,7 +204,7 @@ const Home = () => {
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
             <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Why Join AdroIT?</h2>
-            <p className="text-gray-400 text-xl max-w-4xl mx-auto">
+            <p className="text-slate-600 text-xl max-w-4xl mx-auto">
               We bridge the gap between academic theory and industry demands, creating 
               <span className="text-cyan-400"> future-ready professionals</span> through practical learning and innovation
             </p>
@@ -217,38 +216,38 @@ const Home = () => {
             {/* Left Column - 3 Cards */}
             <div className="space-y-8">
               
-              <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-cyan-500/30 transition-all duration-300">
+              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-cyan-500/30 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
                     <span className="text-xl font-bold">01</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Practical Skill Development</h3>
+                  <h3 className="text-2xl font-bold text-slate-900">Practical Skill Development</h3>
                 </div>
-                <p className="text-gray-400">
+                <p className="text-slate-600">
                   Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
                 </p>
               </div>
 
-              <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-purple-500/30 transition-all duration-300">
+              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-purple-500/30 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                     <span className="text-xl font-bold">02</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Industry Exposure</h3>
+                  <h3 className="text-2xl font-bold text-slate-900">Industry Exposure</h3>
                 </div>
-                <p className="text-gray-400">
+                <p className="text-slate-600">
                   Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
                 </p>
               </div>
 
-              <div className="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-pink-500/30 transition-all duration-300">
+              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-pink-500/30 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
                     <span className="text-xl font-bold">03</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Collaborative Environment</h3>
+                  <h3 className="text-2xl font-bold text-slate-900">Collaborative Environment</h3>
                 </div>
-                <p className="text-gray-400">
+                <p className="text-slate-600">
                   Join a community of passionate learners and innovators. Collaborate on projects, 
                   share knowledge, and grow together. Our senior-junior mentorship model ensures 
                   everyone gets the guidance they need to succeed.
@@ -259,7 +258,7 @@ const Home = () => {
             {/* Right Column - Advantage Card */}
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-              <div className="relative bg-black/40 backdrop-blur-3xl border border-white/10 p-10 rounded-3xl">
+              <div className="relative bg-white/40 backdrop-blur-3xl border border-slate-900/10 p-10 rounded-3xl">
                 <h3 className="text-3xl font-bold mb-6 text-center text-cyan-400">The AdroIT Advantage</h3>
                 <div className="space-y-6">
                   {[
@@ -276,7 +275,7 @@ const Home = () => {
                           <path d="M20 6L9 17L4 12"/>
                         </svg>
                       </div>
-                      <span className="text-gray-300">{item}</span>
+                      <span className="text-slate-700">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -293,7 +292,7 @@ const Home = () => {
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
             <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Technical Domains</h2>
-            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Four pillars of technical excellence driving innovation at AdroIT
             </p>
           </div>
@@ -310,7 +309,7 @@ const Home = () => {
             <Link
               to="/domains"
               onClick={()=>window.scrollTo(0,0)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-cyan-400 hover:text-white hover:border-cyan-500/30 transition-all duration-300 group"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-xl text-cyan-400 hover:text-slate-900 hover:border-cyan-500/30 transition-all duration-300 group"
             >
               <span>Explore All Domains</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,7 +330,7 @@ const Home = () => {
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
             Our Learning Philosophy
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
             Like dynamic particles, we believe in adaptive, hands-on learning — not just teaching technology, but building how you <span className="text-cyan-400">think</span>, 
             <span className="text-purple-400"> innovate</span>, and <span className="text-pink-400">create</span>.
           </p>
@@ -351,39 +350,39 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-cyan-500/50 hover:translate-y-[-8px] transition-all duration-500">
+            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-cyan-500/50 hover:translate-y-[-8px] transition-all duration-500">
               <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/>
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
-              <p className="text-gray-400">
+              <p className="text-slate-600">
                 Develop strong technical thinking by understanding core concepts, problem-solving approaches,
                 and real-world applications across all four domains.
               </p>
             </div>
 
-            <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
+            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
               <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/>
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-4 text-purple-400">Professional Network</h3>
-              <p className="text-gray-400">
+              <p className="text-slate-600">
                 Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.
               </p>
             </div>
 
-            <div className="group p-8 border border-white/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-pink-500/50 hover:translate-y-[-8px] transition-all duration-500">
+            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-pink-500/50 hover:translate-y-[-8px] transition-all duration-500">
               <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-4 text-pink-400">Leadership Skills</h3>
-              <p className="text-gray-400">
+              <p className="text-slate-600">
                 Take ownership of projects, lead teams in hackathons, and organize events. 
                 Develop the soft skills that complement your technical expertise.
               </p>
@@ -402,7 +401,7 @@ const Home = () => {
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
             <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Join the AdroIT Community</h2>
-            <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
               in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
             </p>
@@ -410,12 +409,12 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
+            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
               <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-slate-600 mb-4">
                 Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
               </p>
-              <ul className="space-y-2 text-gray-300">
+              <ul className="space-y-2 text-slate-700">
                 <li>• Machine Learning Fundamentals & Projects</li>
                 <li>• Cloud Computing Concepts & Deployment</li>
                 <li>• Cybersecurity Basics & Practices</li>
@@ -423,12 +422,12 @@ const Home = () => {
               </ul>
             </div>
 
-            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
+            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
               <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-slate-600 mb-4">
                 Team-based project cycles designed to apply skills through real-world problem solving.
               </p>
-              <ul className="space-y-2 text-gray-300">
+              <ul className="space-y-2 text-slate-700">
                 <li>• ML Model Development</li>
                 <li>• Cloud-based Application Deployment</li>
                 <li>• Security Analysis & Testing</li>
@@ -436,12 +435,12 @@ const Home = () => {
               </ul>
             </div>
 
-            <div className="p-8 border border-white/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
+            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
               <h3 className="text-2xl font-bold mb-4 text-pink-400">Community & Events</h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-slate-600 mb-4">
                 Events that encourage collaboration, innovation, and exposure to industry practices.
               </p>
-              <ul className="space-y-2 text-gray-300">
+              <ul className="space-y-2 text-slate-700">
                 <li>• HackAdroIT Hackathon</li>
                 <li>• Industry Talks & Expert Sessions</li>
                 <li>• Project Demo Days</li>
@@ -452,7 +451,7 @@ const Home = () => {
 
           {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}
           <div className="text-center mt-16">
-            <p className="text-gray-500 text-sm">
+            <p className="text-slate-500 text-sm">
               Recruitment for this cycle is closed. Next recruitment opens later this year.
             </p>
           </div>

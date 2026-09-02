@@ -5,7 +5,7 @@ const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#0d1117] border-t border-white/10 overflow-hidden">
+    <footer className="relative bg-[#f3e8ff] border-t border-slate-900/10 overflow-hidden">
       
       {/* ===== BACKGROUND DECORATIONS ===== */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -29,7 +29,7 @@ const Footer = ({ showMap = false }) => {
                 </svg>
                 <a 
                   href="mailto:adroit.rnsit@gmail.com" 
-                  className="text-gray-500 hover:text-cyan-400 transition-colors duration-300 text-sm"
+                  className="text-slate-500 hover:text-cyan-400 transition-colors duration-300 text-sm"
                 >
                   adroit.rnsit@gmail.com
                 </a>
@@ -40,7 +40,7 @@ const Footer = ({ showMap = false }) => {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                <p className="text-gray-500 text-sm">
+                <p className="text-slate-500 text-sm">
                   RNSIT, Bangalore
                 </p>
               </div>
@@ -49,23 +49,23 @@ const Footer = ({ showMap = false }) => {
 
           {/* ===== COLUMN 2: THE CLUB (2 cols) ===== */}
           <div className="lg:col-span-2">
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+            <h3 className="text-slate-900 font-semibold mb-4 text-sm uppercase tracking-wider">
               The Club
             </h3>
             <ul className="space-y-2">
-              <li className="text-gray-500 text-sm flex items-center gap-2">
+              <li className="text-slate-500 text-sm flex items-center gap-2">
                 <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
                 Founded 2020
               </li>
-              <li className="text-gray-500 text-sm flex items-center gap-2">
+              <li className="text-slate-500 text-sm flex items-center gap-2">
                 <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
                 50+ Members
               </li>
-              <li className="text-gray-500 text-sm flex items-center gap-2">
+              <li className="text-slate-500 text-sm flex items-center gap-2">
                 <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
                 30+ Projects
               </li>
-              <li className="text-gray-500 text-sm flex items-center gap-2">
+              <li className="text-slate-500 text-sm flex items-center gap-2">
                 <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
                 20+ Events
               </li>
@@ -74,33 +74,33 @@ const Footer = ({ showMap = false }) => {
 
           {/* ===== COLUMN 3: DOMAINS (2 cols) ===== */}
           <div className="lg:col-span-2">
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+            <h3 className="text-slate-900 font-semibold mb-4 text-sm uppercase tracking-wider">
               Our Domains
             </h3>
             <ul className="space-y-3">
 
-              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
               <span className="flex items-center justify-center w-7 h-7 rounded-md bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition"> 
               <Brain size={16}/>
               </span>
               Machine Learning
               </li>
 
-              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
               <span className="flex items-center justify-center w-7 h-7 rounded-md bg-purple-500/10 text-purple-400 group-hover:scale-110 transition">
               <Cloud size={16}/>
               </span>
               Cloud Computing
               </li>
 
-              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
               <span className="flex items-center justify-center w-7 h-7 rounded-md bg-pink-500/10 text-pink-400 group-hover:scale-110 transition">
               <ShieldCheck size={16}/>
               </span>
               Cybersecurity
               </li>
 
-              <li className="group flex items-center gap-3 text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300">
+              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
               <span className="flex items-center justify-center w-7 h-7 rounded-md bg-green-500/10 text-green-400 group-hover:scale-110 transition">
               <BarChart3 size={16}/>
               </span>
@@ -113,7 +113,7 @@ const Footer = ({ showMap = false }) => {
           {/* ===== COLUMN 4: CONNECT (3 cols) - CONDITIONAL ===== */}
           {!showMap && (
             <div className="lg:col-span-3">
-              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+              <h3 className="text-slate-900 font-semibold mb-4 text-sm uppercase tracking-wider">
                 Connect
               </h3>
               <div className="flex items-center gap-4">
@@ -121,7 +121,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://github.com/AdroIT-RNSIT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-lg text-gray-500 hover:text-cyan-400 transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-cyan-400 transition-all duration-300"
                   aria-label="GitHub"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -132,7 +132,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.linkedin.com/company/adroit-rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-lg text-gray-500 hover:text-cyan-400 transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-cyan-400 transition-all duration-300"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -143,7 +143,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.instagram.com/adroit_rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-lg text-gray-500 hover:text-pink-400 transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-pink-400 transition-all duration-300"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -166,11 +166,11 @@ const Footer = ({ showMap = false }) => {
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
-              <h4 className="text-white font-semibold text-sm">Find Our Campus</h4>
+              <h4 className="text-slate-900 font-semibold text-sm">Find Our Campus</h4>
             </div>
             
             {/* ===== MAP - RESTORED TO ORIGINAL SIZE ===== */}
-            <div className="relative h-56 sm:h-64 rounded-lg overflow-hidden border border-white/10 shadow-lg">
+            <div className="relative h-56 sm:h-64 rounded-lg overflow-hidden border border-slate-900/10 shadow-lg">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3519.4201134668556!2d77.51600707454556!3d12.902195416397204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3fa747acf84b%3A0x97a5cf1952c2fe3a!2sRNSIT%20CSE%20Department!5e1!3m2!1sen!2sin!4v1770548920832!5m2!1sen!2sin"
                 width="100%"
@@ -187,7 +187,7 @@ const Footer = ({ showMap = false }) => {
                 href="https://maps.google.com/?q=RNSIT+Bangalore"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg hover:bg-black/90 transition-colors duration-300 flex items-center gap-1"
+                className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-slate-900 text-xs px-3 py-2 rounded-lg hover:bg-black/90 transition-colors duration-300 flex items-center gap-1"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
@@ -205,7 +205,7 @@ const Footer = ({ showMap = false }) => {
         )}
 
         {/* ===== BOTTOM BAR ===== */}
-        <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-8 pt-6 border-t border-slate-900/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-gray-600">
             © {currentYear} AdroIT Club. All rights reserved.
           </p>

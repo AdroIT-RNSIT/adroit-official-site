@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 // DOMAIN CONFIGURATION - MATCHES OTHER PAGES
 // ============================================
 const DOMAINS = [
-  { id: 'all', name: 'All Members', icon: '👥', color: 'from-gray-500 to-gray-600', textColor: 'text-gray-400' },
+  { id: 'all', name: 'All Members', icon: '👥', color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
   { id: 'ml', name: 'Machine Learning', icon: '🤖', color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
   { id: 'cc', name: 'Cloud Computing', icon: '☁️', color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
   { id: 'cy', name: 'Cybersecurity', icon: '🔒', color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
@@ -173,7 +173,7 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
             <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
@@ -181,14 +181,14 @@ export default function Members() {
               <span className="text-2xl">👥</span>
             </div>
           </div>
-          <p className="text-gray-400 text-sm">Loading member directory...</p>
+          <p className="text-slate-600 text-sm">Loading member directory...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip pt-20 pb-16">
+    <div className="min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -200,9 +200,9 @@ export default function Members() {
         
         {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-            <span className="text-sm text-gray-400">AdroIT Member Directory</span>
+            <span className="text-sm text-slate-600">AdroIT Member Directory</span>
           </div>
 
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4">
@@ -211,44 +211,44 @@ export default function Members() {
             </span>
           </h1>
           
-          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
             Connect with everyone in the AdroIT community
           </p>
 
           {/* ===== QUICK STATS ===== */}
           <div className="flex flex-wrap justify-center gap-4 mt-6">
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
               <span className="text-xl">👥</span>
               <div>
-                <span className="text-white font-bold">{members.length}</span>
-                <span className="text-gray-400 text-xs ml-1">Total Members</span>
+                <span className="text-slate-900 font-bold">{members.length}</span>
+                <span className="text-slate-600 text-xs ml-1">Total Members</span>
               </div>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
               <span className="text-xl">🎯</span>
               <div>
-                <span className="text-white font-bold">4</span>
-                <span className="text-gray-400 text-xs ml-1">Domains</span>
+                <span className="text-slate-900 font-bold">4</span>
+                <span className="text-slate-600 text-xs ml-1">Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
               <span className="text-xl">📅</span>
               <div>
-                <span className="text-white font-bold">
+                <span className="text-slate-900 font-bold">
                   {members.filter(m => m.year?.includes('1st') || m.year?.includes('2nd')).length}
                 </span>
-                <span className="text-gray-400 text-xs ml-1">Juniors</span>
+                <span className="text-slate-600 text-xs ml-1">Juniors</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* ===== SEARCH & FILTERS BAR ===== */}
-        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-5 mb-8">
+        <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
           
           {/* Search Row */}
           <div className="relative mb-4">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -256,7 +256,7 @@ export default function Members() {
               placeholder="Search by name, email, role, or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
+              className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
             />
           </div>
 
@@ -265,7 +265,7 @@ export default function Members() {
             
             {/* Domain Filter */}
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Domain</label>
+              <label className="block text-xs text-slate-500 mb-1">Domain</label>
               <div className="flex flex-wrap gap-1.5">
                 {DOMAINS.map((domain) => (
                   <button
@@ -273,8 +273,8 @@ export default function Members() {
                     onClick={() => setActiveDomain(domain.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
                       activeDomain === domain.id
-                        ? `bg-gradient-to-r ${domain.color} text-white`
-                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                        ? `bg-gradient-to-r ${domain.color} text-slate-900`
+                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                     }`}
                   >
                     <span className="mr-1">{domain.icon}</span>
@@ -289,7 +289,7 @@ export default function Members() {
 
             {/* Year Filter */}
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Year</label>
+              <label className="block text-xs text-slate-500 mb-1">Year</label>
               <div className="flex flex-wrap gap-1.5">
                 {YEARS.map((year) => (
                   <button
@@ -297,8 +297,8 @@ export default function Members() {
                     onClick={() => setActiveYear(year.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
                       activeYear === year.id
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white'
-                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-slate-900'
+                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                     }`}
                   >
                     {year.name}
@@ -314,7 +314,7 @@ export default function Members() {
 
             {/* Role Filter */}
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Role</label>
+              <label className="block text-xs text-slate-500 mb-1">Role</label>
               <div className="flex flex-wrap gap-1.5">
                 {ROLES.map((role) => (
                   <button
@@ -322,8 +322,8 @@ export default function Members() {
                     onClick={() => setActiveRole(role.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
                       activeRole === role.id
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white'
-                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-slate-900'
+                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                     }`}
                   >
                     {role.name}
@@ -339,12 +339,12 @@ export default function Members() {
 
             {/* Sort & Clear */}
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Sort By</label>
+              <label className="block text-xs text-slate-500 mb-1">Sort By</label>
               <div className="flex gap-2">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="flex-1 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-white text-xs focus:outline-none focus:border-cyan-500/50 transition-all"
+                  className="flex-1 px-3 py-1.5 bg-slate-900/5 border border-slate-900/10 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-cyan-500/50 transition-all"
                 >
                   <option value="name">Name</option>
                   <option value="year">Year</option>
@@ -359,7 +359,7 @@ export default function Members() {
                     setSearchQuery('');
                     setSortBy('name');
                   }}
-                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-400 hover:text-white text-xs transition-all"
+                  className="px-3 py-1.5 bg-slate-900/5 hover:bg-slate-900/10 border border-slate-900/10 rounded-lg text-slate-600 hover:text-slate-900 text-xs transition-all"
                 >
                   Clear
                 </button>
@@ -370,9 +370,9 @@ export default function Members() {
 
         {/* ===== RESULTS SUMMARY ===== */}
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-gray-500">
-            Showing <span className="text-white font-medium">{filteredMembers.length}</span> of{' '}
-            <span className="text-white font-medium">{members.length}</span> members
+          <p className="text-sm text-slate-500">
+            Showing <span className="text-slate-900 font-medium">{filteredMembers.length}</span> of{' '}
+            <span className="text-slate-900 font-medium">{members.length}</span> members
           </p>
           <p className="text-xs text-gray-600">
             {activeDomain !== 'all' && ` • ${DOMAINS.find(d => d.id === activeDomain)?.name}`}
@@ -402,11 +402,11 @@ export default function Members() {
         {/* ===== MEMBERS GRID ===== */}
         {filteredMembers.length === 0 ? (
           <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/5 border border-white/10 rounded-full mb-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-900/5 border border-slate-900/10 rounded-full mb-4">
               <span className="text-3xl">👥</span>
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">No members found</h3>
-            <p className="text-gray-500 text-sm max-w-md mx-auto">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">No members found</h3>
+            <p className="text-slate-500 text-sm max-w-md mx-auto">
               {searchQuery || activeDomain !== 'all' || activeYear !== 'all' || activeRole !== 'all'
                 ? "Try adjusting your search or filter criteria."
                 : "Members will appear here once they join the club."}
@@ -431,16 +431,16 @@ export default function Members() {
           <div className="mt-16 text-center">
             <div className="relative group inline-block">
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
+              <div className="relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
+                <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
                   Want to be part of this community?
                 </h3>
-                <p className="text-gray-400 text-sm mb-4 max-w-lg mx-auto">
+                <p className="text-slate-600 text-sm mb-4 max-w-lg mx-auto">
                   Join AdroIT and connect with passionate technologists
                 </p>
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl text-sm shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl text-sm shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
                 >
                   Join AdroIT Now
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -499,12 +499,12 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
     if (role === 'President' || role === 'Vice President') return 'bg-yellow-500/20 text-yellow-400';
     if (role === 'Domain Lead') return 'bg-purple-500/20 text-purple-400';
     if (role === 'Core Member') return 'bg-blue-500/20 text-blue-400';
-    if (role === 'Member') return 'bg-gray-500/20 text-gray-400';
-    return 'bg-gray-500/20 text-gray-400';
+    if (role === 'Member') return 'bg-gray-500/20 text-slate-600';
+    return 'bg-gray-500/20 text-slate-600';
   };
 
   return (
-    <div className="group relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg p-3 transition-all duration-200 hover:-translate-y-1 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-lg p-3 transition-all duration-200 hover:-translate-y-1 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5">
       
       <div className="relative">
         
@@ -516,10 +516,10 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
             <img
               src={getCloudinaryUrl(member.imagePublicId, 80, 80)}
               alt={member.name}
-              className="relative w-full h-full object-cover rounded-lg border border-white/10"
+              className="relative w-full h-full object-cover rounded-lg border border-slate-900/10"
             />
           ) : (
-            <div className={`relative w-full h-full rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-white font-bold text-xl border border-white/10`}>
+            <div className={`relative w-full h-full rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-slate-900 font-bold text-xl border border-slate-900/10`}>
               {member.name?.charAt(0).toUpperCase()}
             </div>
           )}
@@ -533,7 +533,7 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
           {isAdmin && (
             <button
               onClick={() => onDelete(member._id)}
-              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               title="Remove member"
             >
               <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -545,11 +545,11 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
 
         {/* Member Info */}
         <div className="text-center">
-          <h3 className="text-white font-medium text-xs truncate group-hover:text-cyan-400 transition-colors">
+          <h3 className="text-slate-900 font-medium text-xs truncate group-hover:text-cyan-400 transition-colors">
             {member.name}
           </h3>
           
-          <div className="mt-1 inline-flex items-center px-1.5 py-0.5 bg-white/5 rounded">
+          <div className="mt-1 inline-flex items-center px-1.5 py-0.5 bg-slate-900/5 rounded">
             <span className={`text-[9px] font-medium ${getRoleBadgeColor(member.role)}`}>
               {member.role === 'Domain Lead' ? 'Lead' : 
                member.role === 'Core Member' ? 'Core' : 

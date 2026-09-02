@@ -82,17 +82,17 @@ export default function Events() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center overflow-x-clip">
+      <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center overflow-x-clip">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400 font-medium">Loading events...</p>
+          <p className="text-slate-600 font-medium">Loading events...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] overflow-x-clip relative">
+    <div className="min-h-screen bg-[#f3e8ff] overflow-x-clip relative">
       
       {/* Background Helical Path of Rings */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
@@ -109,7 +109,7 @@ export default function Events() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
           <div className="flex flex-col items-center justify-center text-center gap-6">
             <div>
-              <h1 className="text-5xl sm:text-7xl font-black tracking-tight bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(239,68,68,0.8)] filter py-2">
+              <h1 className="text-5xl sm:text-7xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(56,189,248,0.8)] filter py-2">
                 Paradox 2026
               </h1>
             </div>
@@ -137,11 +137,12 @@ export default function Events() {
           </div>
         )}
 
+
         {filteredEvents.length === 0 ? (
           <div className="text-center py-24">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/5 border border-white/10 rounded-2xl mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-900/5 border border-slate-900/10 rounded-2xl mb-6">
               <svg
-                className="w-10 h-10 text-gray-500"
+                className="w-10 h-10 text-slate-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -154,8 +155,8 @@ export default function Events() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">No events yet</h3>
-            <p className="text-gray-500 max-w-sm mx-auto">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">No events yet</h3>
+            <p className="text-slate-500 max-w-sm mx-auto">
               Stay tuned — upcoming workshops, hackathons and meetups will
               appear here.
             </p>
@@ -191,7 +192,7 @@ export default function Events() {
             {/* Past Events */}
             {pastEvents.length > 0 && (
               <div>
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-6 flex items-center gap-2">
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-6 flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
                   Past Events
                 </h2>
@@ -213,6 +214,28 @@ export default function Events() {
             )}
           </div>
         )}
+        
+        {/* Rules and Guidelines */}
+        <div className="mt-20 bg-slate-900/[0.03] backdrop-blur-md border border-slate-900/10 rounded-3xl p-8 lg:p-12 text-slate-700">
+          <h2 className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent mb-6">
+            Rules and Guidelines
+          </h2>
+          <p className="mb-6 text-lg text-slate-600">
+            These guidelines apply across every Paradox 2026 event. Event-specific additions, where applicable, are listed under each event below.
+          </p>
+          <ol className="list-decimal list-inside space-y-3 text-base marker:text-cyan-500 marker:font-bold">
+            <li>To avail the IEEE member discounted fee, at least one member of the team must hold a valid IEEE membership, and the registration must be made under that member's name and membership ID.</li>
+            <li>Membership details will be verified. Any discrepancy found will lead to immediate invalidation of the registration, with no refund.</li>
+            <li>Payment must be made only through the official payment gateway linked on this website.</li>
+            <li>The payment amount must be entered manually at checkout - please double-check it against the fee applicable to your event/category before paying.</li>
+            <li>If the amount entered does not match the actual fee applicable, the registration will be considered invalid and no refund will be initiated. Exceptions will be considered only in cases of a genuine, verifiable error.</li>
+            <li>A registration is confirmed only after payment and membership details (where applicable) are verified. A confirmation email will follow within 48 hours - please retain your payment reference until then.</li>
+            <li>All team member details (name, institution, email, phone, IEEE ID where applicable) must be accurate at the time of registration.</li>
+            <li>Multiple/Duplicate registrations for the same team in the same event are not allowed and may lead to cancellation of all such entries.</li>
+            <li>All participants must carry a valid college/institution ID card to the venue.</li>
+            <li>The organising team reserves the right to modify these guidelines, event rules, schedules, or venues at any time; changes will be communicated through official channels.</li>
+          </ol>
+        </div>
       </div>
 
       {/* Registration Modal */}
@@ -251,8 +274,8 @@ function EventCard({
       onClick={() => !isPast && onRegister && onRegister(event.title)}
       className={`group relative min-h-[420px] flex flex-col backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
         isPast
-          ? "border-white/5 bg-white/[0.03] opacity-60 hover:opacity-80"
-          : "border-cyan-500/30 bg-gradient-to-br from-blue-500/20 via-[#0d1117] to-cyan-900/20 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(34,211,238,0.4)] cursor-pointer hover:-translate-y-2 hover:scale-105 z-10"
+          ? "border-slate-900/5 bg-slate-900/[0.03] opacity-60 hover:opacity-80"
+          : "border-cyan-500/40 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.4)] cursor-pointer hover:-translate-y-2 hover:scale-105 z-10"
       }`}
     >
       {/* Animated glossy overlay for special card effect */}
@@ -277,7 +300,7 @@ function EventCard({
           <div className="flex items-center justify-end mb-4">
             {/* Admin delete */}
             <button
-              onClick={() => onDelete(event._id)}
+              onClick={(e) => { e.stopPropagation(); onDelete(event._id); }}
               className="opacity-0 group-hover:opacity-100 text-red-400/60 hover:text-red-400 transition-all p-2 rounded-lg hover:bg-red-500/10"
               title="Delete event"
             >
@@ -298,62 +321,56 @@ function EventCard({
           </div>
         )}
 
-        {/* Title */}
-        <h3 className="text-xl font-black bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(34,211,238,0.7)] group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.9)] group-hover:brightness-125 transition-all duration-300 mb-2">
+        <h3 className="text-xl font-black bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.7)] group-hover:drop-shadow-[0_0_12px_rgba(245,158,11,0.9)] group-hover:brightness-125 transition-all duration-300 mb-2">
           {event.title}
         </h3>
 
-        {/* Description */}
+        {/* Description - FULL DESCRIPTION VISIBLE */}
         {event.description && (
-          <p className="text-gray-400 text-base leading-relaxed mb-4">
+          <p className="text-slate-600 text-base leading-relaxed mb-4">
             {event.description}
           </p>
         )}
 
-        {/* Meta */}
-        <div className="mt-auto flex flex-wrap items-center gap-3 text-base text-gray-500 pt-4">
-          <span className="flex items-center gap-1.5">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {formatDate(event.date)}
-          </span>
-          {event.location && (
-            <span className="flex items-center gap-1.5">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              {event.location}
-            </span>
-          )}
-        </div>
+        {/* Registration Cost */}
+        {!isPast && event.registrationCost && (
+          <div className="mt-4 p-3 rounded-xl bg-white/40 border border-cyan-500/20">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Registration Cost</p>
+            <div className="flex flex-wrap gap-3">
+              {event.registrationCost.ieee !== undefined && (
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-cyan-700">
+                  <span className="w-2 h-2 rounded-full bg-cyan-500 inline-block"></span>
+                  IEEE: ₹{event.registrationCost.ieee}
+                </span>
+              )}
+              {event.registrationCost.nonIeee !== undefined && (
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                  <span className="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
+                  Non-IEEE: ₹{event.registrationCost.nonIeee}
+                </span>
+              )}
+              {event.registrationCost.all !== undefined && (
+                <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+                  All: ₹{event.registrationCost.all}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Register Button */}
+      {!isPast && onRegister && (
+        <div className="px-6 pb-6">
+          <button
+            onClick={(e) => { e.stopPropagation(); onRegister(event.title); }}
+            className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all duration-300 text-sm tracking-wide"
+          >
+            View Details &amp; Register
+          </button>
+        </div>
+      )}
     </div>
   );
 }

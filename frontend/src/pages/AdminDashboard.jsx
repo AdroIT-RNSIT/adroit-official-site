@@ -399,10 +399,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
       
       {/* ===== HEADER ===== */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-        <p className="text-gray-400 mt-1">
+        <h1 className="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+        <p className="text-slate-600 mt-1">
           Welcome,{" "}
-          <span className="font-medium text-gray-300">
+          <span className="font-medium text-slate-700">
             {session?.user?.name}
           </span>
           . Manage resources, events, users, and members.
@@ -469,7 +469,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
       )}
 
       {/* ===== TAB NAVIGATION ===== */}
-      <div className="flex flex-wrap gap-2 mb-6 border-b border-white/10 pb-4">
+      <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-900/10 pb-4">
         <TabButton
           active={activeTab === "resources"}
           onClick={() => setActiveTab("resources")}
@@ -497,18 +497,18 @@ export default function AdminDashboard({ initialTab = "resources" }) {
       </div>
 
       {/* ===== TAB CONTENT ===== */}
-      <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+      <div className="bg-slate-900/[0.03] backdrop-blur-sm rounded-2xl p-6 border border-slate-900/10">
         
         {/* ===== TAB 1: RESOURCES ===== */}
         {activeTab === "resources" && (
           <form onSubmit={handleCreateResource} className="space-y-5">
-            <h2 className="text-xl font-bold text-white mb-4">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">
               Create New Resource
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Title *
                 </label>
                 <input
@@ -517,12 +517,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="React Fundamentals"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   URL
                 </label>
                 <input
@@ -531,14 +531,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, url: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="https://example.com/resource"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Description *
               </label>
               <textarea
@@ -551,14 +551,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     description: e.target.value,
                   })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
                 placeholder="A comprehensive guide to React..."
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Type
                 </label>
                 <select
@@ -566,7 +566,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 >
                   <option value="article">📝 Article</option>
                   <option value="video">🎬 Video</option>
@@ -579,7 +579,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Domain
                 </label>
                 <select
@@ -587,7 +587,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, domain: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 >
                   <option value="ml">🤖 Machine Learning</option>
                   <option value="cc">☁️ Cloud Computing</option>
@@ -596,7 +596,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Difficulty
                 </label>
                 <select
@@ -604,7 +604,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, difficulty: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 >
                   <option value="beginner">🟢 Beginner</option>
                   <option value="intermediate">🟡 Intermediate</option>
@@ -614,7 +614,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Tags (comma separated)
               </label>
               <input
@@ -622,7 +622,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 onChange={(e) =>
                   setResourceForm({ ...resourceForm, tags: e.target.value })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 placeholder="react, javascript, frontend"
               />
             </div>
@@ -630,7 +630,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {submitting ? "Creating..." : "Create Resource"}
             </button>
@@ -640,11 +640,11 @@ export default function AdminDashboard({ initialTab = "resources" }) {
         {/* ===== TAB 2: EVENTS ===== */}
         {activeTab === "events" && (
           <form onSubmit={handleCreateEvent} className="space-y-5">
-            <h2 className="text-xl font-bold text-white mb-4">Create New Event</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Create New Event</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Title *
                 </label>
                 <input
@@ -653,12 +653,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="React Workshop"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Type
                 </label>
                 <select
@@ -666,7 +666,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 >
                   <option value="workshop">🛠️ Workshop</option>
                   <option value="seminar">🎤 Seminar</option>
@@ -678,7 +678,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Description *
               </label>
               <textarea
@@ -688,14 +688,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 onChange={(e) =>
                   setEventForm({ ...eventForm, description: e.target.value })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
                 placeholder="Join us for a hands-on workshop..."
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Date & Time *
                 </label>
                 <input
@@ -705,11 +705,11 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, date: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Location
                 </label>
                 <input
@@ -717,7 +717,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, location: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                   placeholder="Room 201, CS Building"
                 />
               </div>
@@ -725,7 +725,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
 
             {/* Event Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Event Image
               </label>
               {imagePreview ? (
@@ -733,12 +733,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="w-full max-w-xs h-40 object-cover rounded-xl border border-white/10"
+                    className="w-full max-w-xs h-40 object-cover rounded-xl border border-slate-900/10"
                   />
                   <button
                     type="button"
                     onClick={removeEventImage}
-                    className="absolute top-2 right-2 p-1.5 bg-red-500/80 hover:bg-red-500 text-white rounded-lg transition-colors"
+                    className="absolute top-2 right-2 p-1.5 bg-red-500/80 hover:bg-red-500 text-slate-900 rounded-lg transition-colors"
                     title="Remove image"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -747,12 +747,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
-                  <svg className="w-8 h-8 text-gray-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-slate-900/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
+                  <svg className="w-8 h-8 text-slate-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span className="text-sm text-gray-400">Click to upload an image</span>
-                  <span className="text-xs text-gray-500 mt-1">JPEG, PNG, WebP — max 5 MB</span>
+                  <span className="text-sm text-slate-600">Click to upload an image</span>
+                  <span className="text-xs text-slate-500 mt-1">JPEG, PNG, WebP — max 5 MB</span>
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
@@ -766,7 +766,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {submitting ? "Creating..." : "Create Event"}
             </button>
@@ -776,8 +776,8 @@ export default function AdminDashboard({ initialTab = "resources" }) {
         {/* ===== TAB 3: USERS ===== */}
         {activeTab === "users" && (
           <div>
-            <h2 className="text-xl font-bold text-white mb-4">Manage Users</h2>
-            <p className="text-sm text-gray-400 mb-6">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Manage Users</h2>
+            <p className="text-sm text-slate-600 mb-6">
               Approve or reject users who signed in via Google. Only approved
               users can access protected pages.
             </p>
@@ -787,13 +787,13 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
               </div>
             ) : users.length === 0 ? (
-              <p className="text-gray-400 text-center py-8">No users found.</p>
+              <p className="text-slate-600 text-center py-8">No users found.</p>
             ) : (
               <div className="space-y-3">
                 {users.map((user) => (
                   <div
                     key={user.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-white/10 hover:border-white/20 transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-slate-900/10 hover:border-slate-900/20 transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       {user.image ? (
@@ -803,15 +803,15 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           className="w-10 h-10 rounded-full object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-slate-900 font-bold text-sm">
                           {user.name?.[0]?.toUpperCase() || "?"}
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="font-medium text-white truncate">
+                        <p className="font-medium text-slate-900 truncate">
                           {user.name}
                         </p>
-                        <p className="text-sm text-gray-400 truncate">
+                        <p className="text-sm text-slate-600 truncate">
                           {user.email}
                         </p>
                       </div>
@@ -841,7 +841,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           </span>
                           <button
                             onClick={() => toggleApproval(user.id, true)}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-sm hover:shadow-md transition-all"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 shadow-sm hover:shadow-md transition-all"
                           >
                             Approve
                           </button>
@@ -858,10 +858,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
         {/* ===== TAB 4: MEMBERS ===== */}
         {activeTab === "members" && (
           <div className="space-y-8">
-            <h2 className="text-xl font-bold text-white mb-4">Member Management</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Member Management</h2>
             
             {/* ===== ADD MEMBER FORM ===== */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+            <div className="bg-slate-900/5 rounded-2xl p-6 border border-slate-900/10">
               <h3 className="text-lg font-semibold text-cyan-400 mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -875,7 +875,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   {/* Left Column */}
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Full Name *
                       </label>
                       <input
@@ -883,33 +883,33 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         required
                         value={memberForm.name}
                         onChange={(e) => setMemberForm({...memberForm, name: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="John Doe"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Email
                       </label>
                       <input
                         type="email"
                         value={memberForm.email}
                         onChange={(e) => setMemberForm({...memberForm, email: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="john@adroit.com"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Domain *
                       </label>
                       <select
                         required
                         value={memberForm.domain}
                         onChange={(e) => setMemberForm({...memberForm, domain: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-black focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-black focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       >
                         <option value="ml">🤖 Machine Learning</option>
                         <option value="cc">☁️ Cloud Computing</option>
@@ -919,14 +919,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Role *
                       </label>
                       <select
                         required
                         value={memberForm.role}
                         onChange={(e) => setMemberForm({...memberForm, role: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       >
                         <option value="President">👑 President</option>
                         <option value="Vice President">👑 Vice President</option>
@@ -938,13 +938,13 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Year
                       </label>
                       <select
                         value={memberForm.year}
                         onChange={(e) => setMemberForm({...memberForm, year: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                       >
                         <option value="1st">1st Year</option>
                         <option value="2nd">2nd Year</option>
@@ -961,7 +961,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     
                     {/* Profile Image Upload */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Profile Photo
                       </label>
                       {memberImagePreview ? (
@@ -969,12 +969,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           <img
                             src={memberImagePreview}
                             alt="Preview"
-                            className="w-32 h-32 object-cover rounded-xl border border-white/10"
+                            className="w-32 h-32 object-cover rounded-xl border border-slate-900/10"
                           />
                           <button
                             type="button"
                             onClick={removeMemberImage}
-                            className="absolute -top-2 -right-2 p-1.5 bg-red-500/80 hover:bg-red-500 rounded-full text-white transition-colors"
+                            className="absolute -top-2 -right-2 p-1.5 bg-red-500/80 hover:bg-red-500 rounded-full text-slate-900 transition-colors"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -982,12 +982,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           </button>
                         </div>
                       ) : (
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
-                          <svg className="w-8 h-8 text-gray-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-900/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
+                          <svg className="w-8 h-8 text-slate-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          <span className="text-sm text-gray-400">Click to upload photo</span>
-                          <span className="text-xs text-gray-500 mt-1">JPEG, PNG, WebP — max 5 MB</span>
+                          <span className="text-sm text-slate-600">Click to upload photo</span>
+                          <span className="text-xs text-slate-500 mt-1">JPEG, PNG, WebP — max 5 MB</span>
                           <input
                             type="file"
                             accept="image/jpeg,image/png,image/webp"
@@ -1011,40 +1011,40 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         Department
                       </label>
                       <input
                         type="text"
                         value={memberForm.department}
                         onChange={(e) => setMemberForm({...memberForm, department: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="Computer Science & Engineering"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         LinkedIn
                       </label>
                       <input
                         type="url"
                         value={memberForm.linkedin}
                         onChange={(e) => setMemberForm({...memberForm, linkedin: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="https://linkedin.com/in/username"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
                         GitHub
                       </label>
                       <input
                         type="url"
                         value={memberForm.github}
                         onChange={(e) => setMemberForm({...memberForm, github: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
                         placeholder="https://github.com/username"
                       />
                     </div>
@@ -1053,14 +1053,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
 
                 {/* Bio */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
                     Bio
                   </label>
                   <textarea
                     rows={3}
                     value={memberForm.bio}
                     onChange={(e) => setMemberForm({...memberForm, bio: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
                     placeholder="Tell us about this member..."
                   />
                 </div>
@@ -1068,7 +1068,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 <button
                   type="submit"
                   disabled={submitting || uploadingImage}
-                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {submitting ? "Adding Member..." : "Add Member"}
                 </button>
@@ -1076,10 +1076,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             </div>
 
             {/* ===== CURRENT MEMBERS LIST ===== */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center justify-between">
+            <div className="bg-slate-900/5 rounded-2xl p-6 border border-slate-900/10">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center justify-between">
                 <span>Current Members</span>
-                <span className="text-sm text-gray-400">Total: {members.length}</span>
+                <span className="text-sm text-slate-600">Total: {members.length}</span>
               </h3>
               
               {membersLoading ? (
@@ -1087,13 +1087,13 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
                 </div>
               ) : members.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">No members added yet.</p>
+                <p className="text-slate-600 text-center py-8">No members added yet.</p>
               ) : (
                 <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
                   {members.map((member) => (
                     <div
                       key={member._id}
-                      className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                      className="flex items-center justify-between p-3 bg-slate-900/5 rounded-lg hover:bg-slate-900/10 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         {/* Avatar */}
@@ -1103,19 +1103,19 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           member.domain === 'cy' ? 'from-pink-500 to-pink-600' :
                           member.domain === 'da' ? 'from-green-500 to-green-600' :
                           'from-gray-500 to-gray-600'
-                        } flex items-center justify-center text-white font-bold`}>
+                        } flex items-center justify-center text-slate-900 font-bold`}>
                           {member.name?.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-white font-medium text-sm">{member.name}</p>
+                          <p className="text-slate-900 font-medium text-sm">{member.name}</p>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-xs text-gray-500">{member.role}</span>
+                            <span className="text-xs text-slate-500">{member.role}</span>
                             <span className="text-xs text-gray-600">•</span>
-                            <span className="text-xs text-gray-500">{member.domain}</span>
+                            <span className="text-xs text-slate-500">{member.domain}</span>
                             {member.year && (
                               <>
                                 <span className="text-xs text-gray-600">•</span>
-                                <span className="text-xs text-gray-500">{member.year}</span>
+                                <span className="text-xs text-slate-500">{member.year}</span>
                               </>
                             )}
                           </div>
@@ -1145,16 +1145,16 @@ export default function AdminDashboard({ initialTab = "resources" }) {
 // ===== STAT CARD COMPONENT =====
 function StatCard({ title, value, gradient, icon }) {
   return (
-    <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+    <div className="bg-slate-900/[0.03] backdrop-blur-sm rounded-2xl p-5 border border-slate-900/10">
       <div className="flex items-center gap-3">
         <div
-          className={`p-2.5 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}
+          className={`p-2.5 rounded-xl bg-gradient-to-br ${gradient} text-slate-900 shadow-lg`}
         >
           {icon}
         </div>
         <div>
-          <p className="text-sm text-gray-400 font-medium">{title}</p>
-          <p className="text-2xl font-bold text-white">{value}</p>
+          <p className="text-sm text-slate-600 font-medium">{title}</p>
+          <p className="text-2xl font-bold text-slate-900">{value}</p>
         </div>
       </div>
     </div>
@@ -1168,8 +1168,8 @@ function TabButton({ active, onClick, children }) {
       onClick={onClick}
       className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
         active
-          ? "bg-gradient-to-r from-cyan-400 to-purple-600 text-white shadow-lg shadow-cyan-400/20"
-          : "bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white"
+          ? "bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-900 shadow-lg shadow-cyan-400/20"
+          : "bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900"
       }`}
     >
       {children}

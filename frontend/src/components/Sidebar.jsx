@@ -69,13 +69,13 @@ const Sidebar = () => {
                 className="group relative w-10 h-10 flex items-center justify-center"
               >
                 <div className="relative w-10 h-10 flex items-center justify-center rounded-full bg-transparent group-hover:bg-cyan-400/15 border border-gray-700/50 group-hover:border-cyan-400/40 group-hover:shadow-[0_0_15px_3px_rgba(34,211,238,0.3)] transition-all duration-300">
-                  <div className="text-gray-500 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300">
+                  <div className="text-slate-500 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300">
                     {link.icon}
                   </div>
                 </div>
                 
                 {/* Tooltip */}
-                <span className="absolute left-full ml-4 px-3 py-2 bg-white/10 backdrop-blur-xl border border-white/10 rounded-lg text-white text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-lg shadow-cyan-400/20">
+                <span className="absolute left-full ml-4 px-3 py-2 bg-slate-900/10 backdrop-blur-xl border border-slate-900/10 rounded-lg text-slate-900 text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-lg shadow-cyan-400/20">
                   {link.name}
                   <span className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-white/10"></span>
                 </span>
@@ -87,7 +87,7 @@ const Sidebar = () => {
 
       {/* Mobile Bottom Bar */}
       <div className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
-        <div className="flex items-center gap-10 px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-xl shadow-black/30">
+        <div className="flex items-center gap-10 px-10 py-5 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full shadow-xl shadow-black/30">
           {socialLinks.map((link, index) => (
             <a
               key={index}
@@ -98,13 +98,13 @@ const Sidebar = () => {
               className="group relative w-8 h-8 flex items-center justify-center"
             >
               <div className="relative w-10 h-10 flex items-center justify-center rounded-full bg-transparent group-hover:bg-cyan-400/15 border border-gray-700/50 group-hover:border-cyan-400/40 group-hover:shadow-[0_0_15px_3px_rgba(34,211,238,0.3)] transition-all duration-300">
-                <div className="text-gray-500 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300">
+                <div className="text-slate-500 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300">
                   {link.icon}
                 </div>
               </div>
               
               {/* Mobile Tooltip */}
-              <span className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-white/10 backdrop-blur-xl border border-white/10 rounded text-white text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 pointer-events-none shadow-lg">
+              <span className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-slate-900/10 backdrop-blur-xl border border-slate-900/10 rounded text-slate-900 text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 pointer-events-none shadow-lg">
                 {link.name}
                 <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white/10"></span>
               </span>

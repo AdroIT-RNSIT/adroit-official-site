@@ -200,24 +200,24 @@ export default function App() {
           path="*"
           element={
             <WithLayout>
-              <div className="min-h-screen bg-[#0d1117] flex items-center justify-center pt-16 px-4">
+              <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center pt-16 px-4">
                 <div className="text-center max-w-md">
-                  <div className="inline-flex items-center justify-center w-24 h-24 bg-white/5 border border-white/10 rounded-full mb-6">
-                    <span className="text-4xl font-bold text-gray-400">404</span>
+                  <div className="inline-flex items-center justify-center w-24 h-24 bg-slate-900/5 border border-slate-900/10 rounded-full mb-6">
+                    <span className="text-4xl font-bold text-slate-600">404</span>
                   </div>
 
-                  <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                     Page Not Found
                   </h1>
 
-                  <p className="text-gray-400 mb-8">
+                  <p className="text-slate-600 mb-8">
                     The page you're looking for doesn't exist or has been moved.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                       to="/"
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -227,7 +227,7 @@ export default function App() {
 
                     <Link
                       to="/domains"
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900/5 hover:bg-slate-900/10 border border-slate-900/10 text-slate-900 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
                     >
                       Explore Domains
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -321,7 +321,7 @@ export default function Domains() {
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
 
   return (
-    <div className="relative min-h-screen bg-[#0d1117] text-white font-sans overflow-x-clip pt-20 pb-16">
+    <div className="relative min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -358,16 +358,16 @@ export default function Domains() {
           ref={sectionRefs.hero}
           className="text-center mb-16 opacity-0 translate-y-8 transition-all duration-1000"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-            <span className="text-sm text-gray-400">AdroIT Knowledge Hub</span>
+            <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
             Technical Domains
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
             Master the four pillars of modern technology with our comprehensive learning paths,
             <span className="text-cyan-400"> hands-on projects</span>, and
             <span className="text-purple-400"> expert mentorship</span>
@@ -375,7 +375,7 @@ export default function Domains() {
 
           {/* Quick Stats */}
           <div className="flex flex-wrap justify-center gap-6 mt-12">
-            <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-6 py-4 rounded-2xl border border-slate-900/10">
               <span className="text-2xl">
                 <svg width="41.2" height="36" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="60" cy="60" r="10" fill="#ffffff"/>
@@ -390,11 +390,11 @@ export default function Domains() {
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-white">4</span>
-                <span className="text-gray-400 text-sm ml-2">Core Domains</span>
+                <span className="text-2xl font-bold text-slate-900">4</span>
+                <span className="text-slate-600 text-sm ml-2">Core Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-6 py-4 rounded-2xl border border-slate-900/10">
               <span className="text-3xl">
                 <svg width="74.16" height="64.8" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
 
@@ -408,11 +408,11 @@ export default function Domains() {
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-white">10+</span>
-                <span className="text-gray-400 text-sm ml-2">Projects</span>
+                <span className="text-2xl font-bold text-slate-900">10+</span>
+                <span className="text-slate-600 text-sm ml-2">Projects</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-white/5 backdrop-blur px-6 py-4 rounded-2xl border border-white/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-6 py-4 rounded-2xl border border-slate-900/10">
               <span className="text-3xl">
                 <svg width="74.16" height="64.8" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
@@ -423,8 +423,8 @@ export default function Domains() {
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-white">100+</span>
-                <span className="text-gray-400 text-sm ml-2">Members in community</span>
+                <span className="text-2xl font-bold text-slate-900">100+</span>
+                <span className="text-slate-600 text-sm ml-2">Members in community</span>
               </div>
             </div>
           </div>
@@ -441,8 +441,8 @@ export default function Domains() {
                 onMouseLeave={() => setHoveredDomain(null)}
                 className={`group relative flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-500 ${
                   activeDomain === domain.id
-                    ? `bg-gradient-to-r ${domain.color} text-white shadow-lg scale-105`
-                    : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-white'
+                    ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg scale-105`
+                    : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
                 }`}
               >
                 {activeDomain === domain.id && (
@@ -453,7 +453,7 @@ export default function Domains() {
                 <span className="relative font-semibold">{domain.name}</span>
                 
                 {hoveredDomain === domain.id && activeDomain !== domain.id && (
-                  <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-xl border border-white/10 rounded-xl p-3 whitespace-nowrap z-50 animate-fade-in">
+                  <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-xl border border-slate-900/10 rounded-xl p-3 whitespace-nowrap z-50 animate-fade-in">
                     <div className="flex gap-4 text-xs">
                       <div><span className="text-cyan-400">{domain.stats.members}</span> members</div>
                       <div><span className="text-purple-400">{domain.stats.projects}</span> projects</div>
@@ -485,38 +485,38 @@ export default function Domains() {
                   </div>
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h2 className="text-3xl md:text-4xl font-bold text-white">{currentDomain.name}</h2>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white border ${currentDomain.borderColor}`}>
+                      <h2 className="text-3xl md:text-4xl font-bold text-slate-900">{currentDomain.name}</h2>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium bg-slate-900/20 text-slate-900 border ${currentDomain.borderColor}`}>
                         {currentDomain.shortName}
                       </span>
                     </div>
-                    <p className="text-gray-300 text-lg max-w-2xl">{currentDomain.description}</p>
+                    <p className="text-slate-700 text-lg max-w-2xl">{currentDomain.description}</p>
                   </div>
                 </div>
                 
                 {/* Stats Cards */}
                 <div className="flex gap-3">
-                  <div className="bg-black/40 backdrop-blur px-4 py-3 rounded-xl border border-white/10">
+                  <div className="bg-white/40 backdrop-blur px-4 py-3 rounded-xl border border-slate-900/10">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.members}
                     </div>
-                    <div className="text-xs text-gray-400 flex items-center gap-1">
+                    <div className="text-xs text-slate-600 flex items-center gap-1">
                       {icons.members} Members
                     </div>
                   </div>
-                  <div className="bg-black/40 backdrop-blur px-4 py-3 rounded-xl border border-white/10">
+                  <div className="bg-white/40 backdrop-blur px-4 py-3 rounded-xl border border-slate-900/10">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.projects}
                     </div>
-                    <div className="text-xs text-gray-400 flex items-center gap-1">
+                    <div className="text-xs text-slate-600 flex items-center gap-1">
                       {icons.projects} Projects
                     </div>
                   </div>
-                  <div className="bg-black/40 backdrop-blur px-4 py-3 rounded-xl border border-white/10">
+                  <div className="bg-white/40 backdrop-blur px-4 py-3 rounded-xl border border-slate-900/10">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.resources}
                     </div>
-                    <div className="text-xs text-gray-400 flex items-center gap-1">
+                    <div className="text-xs text-slate-600 flex items-center gap-1">
                       {icons.resources} Resources
                     </div>
                   </div>
@@ -532,17 +532,17 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* About Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-3 flex items-center gap-2`}>
                   {icons.domain} About This Domain
                 </h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <p className="text-slate-700 text-sm leading-relaxed">
                   {currentDomain.longDescription}
                 </p>
               </div>
 
               {/* Career Paths Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.career} Career Paths
                 </h3>
@@ -550,24 +550,24 @@ export default function Domains() {
                   {currentDomain.careerPaths.map((career, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm">
                       <span className="text-cyan-400">{icons.check}</span>
-                      <span className="text-gray-300">{career}</span>
+                      <span className="text-slate-700">{career}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Domain Leads Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.members} Domain Lead
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.leads.map((lead, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-white text-xs font-bold`}>
+                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-slate-900 text-xs font-bold`}>
                         {lead.charAt(0)}
                       </div>
-                      <span className="text-white text-sm font-medium">{lead}</span>
+                      <span className="text-slate-900 text-sm font-medium">{lead}</span>
                     </div>
                   ))}
                 </div>
@@ -578,7 +578,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Skills Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.skills} Skills to Master
                 </h3>
@@ -595,32 +595,32 @@ export default function Domains() {
               </div>
 
               {/* Tools Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.tools} Popular Tools
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
                   {currentDomain.tools.map((tool, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-white/5 rounded-lg">
-                      <span className="text-gray-400 text-xs">{icons.tools}</span>
-                      <span className="text-gray-300 text-xs">{tool}</span>
+                    <div key={idx} className="flex items-center gap-2 p-2 bg-slate-900/5 rounded-lg">
+                      <span className="text-slate-600 text-xs">{icons.tools}</span>
+                      <span className="text-slate-700 text-xs">{tool}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Sample Projects Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.projects} Sample Projects
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.projects.map((project, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
+                    <div key={idx} className="flex items-center justify-between p-3 bg-slate-900/5 rounded-xl">
                       <div className="flex items-center gap-3">
                         <span className="text-xl">{project.icon}</span>
                         <div>
-                          <div className="text-white text-sm font-medium">{project.name}</div>
+                          <div className="text-slate-900 text-sm font-medium">{project.name}</div>
                           <span className={`text-xs ${
                             project.difficulty === 'Beginner' ? 'text-green-400' :
                             project.difficulty === 'Intermediate' ? 'text-yellow-400' :
@@ -640,7 +640,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Learning Roadmap Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.roadmap} Learning Roadmap
                 </h3>
@@ -648,7 +648,7 @@ export default function Domains() {
                   {currentDomain.roadmap.map((step, idx) => (
                     <div key={idx} className="flex items-start gap-3 mb-4 last:mb-0">
                       <div className="relative">
-                        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-white text-xs font-bold`}>
+                        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-slate-900 text-xs font-bold`}>
                           {idx + 1}
                         </div>
                         {idx < currentDomain.roadmap.length - 1 && (
@@ -656,7 +656,7 @@ export default function Domains() {
                         )}
                       </div>
                       <div>
-                        <span className="text-white text-sm font-medium">{step}</span>
+                        <span className="text-slate-900 text-sm font-medium">{step}</span>
                       </div>
                     </div>
                   ))}
@@ -664,20 +664,20 @@ export default function Domains() {
               </div>
 
               {/* Recommended Resources Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.book} Recommended Resources
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.resources.map((resource, idx) => (
-                    <div key={idx} className="block p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer">
+                    <div key={idx} className="block p-3 bg-slate-900/5 rounded-xl hover:bg-slate-900/10 transition-colors cursor-pointer">
                       <div className="flex items-start justify-between">
                         <div>
-                          <div className="text-white text-sm font-medium">{resource.title}</div>
+                          <div className="text-slate-900 text-sm font-medium">{resource.title}</div>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className="text-xs text-gray-500">{resource.type}</span>
+                            <span className="text-xs text-slate-500">{resource.type}</span>
                             <span className="text-xs text-gray-600">•</span>
-                            <span className="text-xs text-gray-500">{resource.provider}</span>
+                            <span className="text-xs text-slate-500">{resource.provider}</span>
                           </div>
                         </div>
                       </div>
@@ -685,7 +685,7 @@ export default function Domains() {
                   ))}
                 </div>
                 <div
-                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-3 bg-white/5 text-gray-400 text-sm font-medium rounded-xl border border-white/10"
+                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-3 bg-slate-900/5 text-slate-600 text-sm font-medium rounded-xl border border-slate-900/10"
                 >
                   Become a member to get access to more resources
                 </div>
@@ -694,41 +694,41 @@ export default function Domains() {
           </div>
 
           {/* Domain Comparison Table */}
-          <div className="mt-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 overflow-x-auto">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <div className="mt-12 bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
+            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>
             
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left py-3 px-2 text-gray-400 font-medium">Domain</th>
-                  <th className="text-left py-3 px-2 text-gray-400 font-medium">Members</th>
-                  <th className="text-left py-3 px-2 text-gray-400 font-medium">Projects</th>
-                  <th className="text-left py-3 px-2 text-gray-400 font-medium">Resources</th>
-                  <th className="text-left py-3 px-2 text-gray-400 font-medium">Lead</th>
+                <tr className="border-b border-slate-900/10">
+                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Domain</th>
+                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Members</th>
+                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Projects</th>
+                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Resources</th>
+                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Lead</th>
                 </tr>
               </thead>
               <tbody>
                 {domains.map((domain) => (
                   <tr 
                     key={domain.id} 
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer ${
-                      activeDomain === domain.id ? 'bg-white/5' : ''
+                    className={`border-b border-slate-900/5 hover:bg-slate-900/5 transition-colors cursor-pointer ${
+                      activeDomain === domain.id ? 'bg-slate-900/5' : ''
                     }`}
                     onClick={() => setActiveDomain(domain.id)}
                   >
                     <td className="py-4 px-2">
                       <div className="flex items-center gap-2">
                         <span className="w-5 h-5">{domain.icon}</span>
-                        <span className="text-white font-medium">{domain.name}</span>
+                        <span className="text-slate-900 font-medium">{domain.name}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-2 text-gray-300">{domain.stats.members}</td>
-                    <td className="py-4 px-2 text-gray-300">{domain.stats.projects}</td>
-                    <td className="py-4 px-2 text-gray-300">{domain.stats.resources}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.members}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources}</td>
                     <td className="py-4 px-2">
-                      <span className="text-gray-300">{domain.leads[0]}</span>
+                      <span className="text-slate-700">{domain.leads[0]}</span>
                     </td>
                   </tr>
                 ))}

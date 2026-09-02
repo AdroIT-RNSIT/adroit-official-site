@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 font-medium">Loading...</p>
+          <p className="text-slate-500 font-medium">Loading...</p>
         </div>
       </div>
     );
@@ -49,7 +49,7 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
           <h2 className="text-xl font-bold text-gray-900 mb-2">
             Pending Approval
           </h2>
-          <p className="text-gray-500 mb-4">
+          <p className="text-slate-500 mb-4">
             Your account is waiting for admin approval. You'll be able to access
             this page once an admin approves your account.
           </p>
@@ -77,7 +77,7 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
               Contact Admin
             </a>
           </div>
-          <p className="text-gray-400 text-xs">
+          <p className="text-slate-600 text-xs">
             Already approved? Try refreshing the page.
           </p>
         </div>

@@ -49,8 +49,8 @@ const Navbar = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-[1000] h-16 transition-all duration-300 ease-in-out ${
           scrolled
-            ? "backdrop-blur-xl bg-[#0d1117]/95 border-b border-white/10 shadow-xl"
-            : "bg-[#0d1117] border-b border-white/5"
+            ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
+            : "bg-[#f3e8ff] border-b border-slate-900/5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
@@ -70,6 +70,11 @@ const Navbar = () => {
             <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
               AdroIT
             </span>
+            <img
+              src="/ieee_logo.png"
+              alt="IEEE"
+              className="ml-2 h-[240px] w-auto object-contain self-end"
+            />
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
@@ -83,12 +88,12 @@ const Navbar = () => {
                   to={link.path}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive(link.path)
-                      ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                      : "text-gray-300 hover:text-white hover:bg-white/5"
+                      ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                      : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
                   }`}
                 >
                   {link.name === "Paradox 2026" ? (
-                    <span className="font-black bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] filter text-base">
+                    <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
                       {link.name}
                     </span>
                   ) : (
@@ -101,7 +106,7 @@ const Navbar = () => {
             {/* PROTECTED LINKS - Only when logged in */}
             {isLoggedIn && (
               <>
-                <span className="w-px h-5 bg-white/10 mx-1"></span>
+                <span className="w-px h-5 bg-slate-900/10 mx-1"></span>
                 <div className="flex items-center">
                   {protectedLinks.map((link) => (
                     <Link
@@ -109,8 +114,8 @@ const Navbar = () => {
                       to={link.path}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                         isActive(link.path)
-                          ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-gray-300 hover:text-white hover:bg-white/5"
+                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
                       }`}
                     >
                       {link.name}
@@ -123,8 +128,8 @@ const Navbar = () => {
                       to="/admin"
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                         isActive("/admin")
-                          ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-gray-300 hover:text-white hover:bg-white/5"
+                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
                       }`}
                     >
                       Admin
@@ -135,14 +140,14 @@ const Navbar = () => {
             )}
 
             {/* ===== AUTH SECTION REMOVED ===== */}
-            <div className="ml-3 pl-3 border-l border-white/10">
+            <div className="ml-3 pl-3 border-l border-slate-900/10">
             </div>
           </div>
 
           {/* ===== MOBILE MENU BUTTON ===== */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200"
+            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-all duration-200"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             <span className={`w-5 h-0.5 bg-white rounded-full transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
@@ -161,12 +166,12 @@ const Navbar = () => {
       )}
 
       <div
-        className={`md:hidden fixed top-0 right-0 w-80 h-full z-[1000] bg-[#0d1117] border-l border-white/10 shadow-2xl transform transition-all duration-500 ease-out ${
+        className={`md:hidden fixed top-0 right-0 w-80 h-full z-[1000] bg-[#f3e8ff] border-l border-slate-900/10 shadow-2xl transform transition-all duration-500 ease-out ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-6 border-b border-slate-900/10">
           <Link to="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
             <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
               <img src="/ADROIT-logo.webp" alt="AdroIT" className="w-full h-full object-cover opacity-60" />
@@ -177,9 +182,9 @@ const Navbar = () => {
           </Link>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors"
+            className="w-10 h-10 flex items-center justify-center bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-colors"
           >
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -190,9 +195,9 @@ const Navbar = () => {
           
           {/* User Info - Only when logged in */}
           {isLoggedIn && (
-            <div className="mb-6 p-4 bg-white/5 rounded-xl border border-white/10">
+            <div className="mb-6 p-4 bg-slate-900/5 rounded-xl border border-slate-900/10">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-white text-lg font-bold">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-slate-900 text-lg font-bold">
                   {session?.user?.image ? (
                     <img src={session.user.image} alt={session.user.name} className="w-full h-full object-cover rounded-lg" />
                   ) : (
@@ -200,8 +205,8 @@ const Navbar = () => {
                   )}
                 </div>
                 <div>
-                  <p className="text-white font-medium">{session?.user?.name}</p>
-                  <p className="text-gray-500 text-xs">{session?.user?.email}</p>
+                  <p className="text-slate-900 font-medium">{session?.user?.name}</p>
+                  <p className="text-slate-500 text-xs">{session?.user?.email}</p>
                 </div>
               </div>
             </div>
@@ -217,8 +222,8 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive(link.path)
-                    ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                    ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
                 }`}
               >
                 <span className="w-6 h-6 flex items-center justify-center">
@@ -229,7 +234,7 @@ const Navbar = () => {
                   {link.name === "Contact" && "📞"}
                 </span>
                 {link.name === "Paradox 2026" ? (
-                  <span className="font-black bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] filter text-base">
+                  <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-base">
                     {link.name}
                   </span>
                 ) : (
@@ -242,7 +247,7 @@ const Navbar = () => {
           {/* Protected Links - Only when logged in */}
           {isLoggedIn && (
             <>
-              <div className="my-4 border-t border-white/10"></div>
+              <div className="my-4 border-t border-slate-900/10"></div>
               <div className="space-y-1">
                 <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Member</p>
                 {protectedLinks.map((link) => (
@@ -252,8 +257,8 @@ const Navbar = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive(link.path)
-                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
                     }`}
                   >
                     <span className="w-6 h-6 flex items-center justify-center">
@@ -272,8 +277,8 @@ const Navbar = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive("/admin")
-                        ? "text-white bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
                     }`}
                   >
                     <span className="w-6 h-6 flex items-center justify-center">⚙️</span>
