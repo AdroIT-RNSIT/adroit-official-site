@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 python-dotenv
-supabase
+pymongo
 cryptography
 pycryptodome
 faiss-cpu

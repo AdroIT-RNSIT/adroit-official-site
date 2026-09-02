@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, HTTPException, Body, File, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from supabase import create_client, Client
+from pymongo import MongoClient
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -12,6 +12,7 @@ import hashlib
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import base64
+from bson import ObjectId
 import random
 import string
 from typing import List
@@ -24,21 +25,18 @@ app = FastAPI()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Adjust in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ===== SUPABASE CLIENT =====
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")  # Use service_role key for backend
-
-if not SUPABASE_URL or not SUPABASE_KEY:
-    print("❌ ERROR: SUPABASE_URL and SUPABASE_KEY must be set in .env")
-    exit(1)
-
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+# Database
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/club-members")
+client = MongoClient(MONGO_URI)
+db = client.get_database()
+users_collection = db.user
+registrations_collection = db.registrations
 
 # Encryption
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
@@ -86,19 +84,19 @@ def decrypt_api_key(encrypted_data, encryption_key):
         parts = encrypted_data.split(".")
         if len(parts) != 3:
             return None
-
+        
         iv_hex, auth_tag_hex, encrypted_hex = parts
         iv = bytes.fromhex(iv_hex)
         auth_tag = bytes.fromhex(auth_tag_hex)
         encrypted = bytes.fromhex(encrypted_hex)
-
+        
         cipher = AES.new(
             bytes.fromhex(encryption_key),
             AES.MODE_GCM,
             nonce=iv
         )
-        cipher.update(auth_tag)
-
+        cipher.update(auth_tag)  # For GCM verification
+        
         decrypted = cipher.decrypt_and_verify(encrypted, auth_tag)
         return decrypted.decode("utf-8")
     except Exception as e:
@@ -106,33 +104,51 @@ def decrypt_api_key(encrypted_data, encryption_key):
         return None
 
 def get_user_api_key(user_id):
-    """Fetch and decrypt user's API key from Supabase"""
+    """
+    Fetch and decrypt user's API key from MongoDB
+    """
     try:
-        result = supabase.table("users").select("gemini_api_key").eq("id", user_id).single().execute()
-        user = result.data
-        if not user or not user.get("gemini_api_key"):
+        # Convert string ID to ObjectId
+        try:
+            user_obj_id = ObjectId(user_id)
+        except:
+            user_obj_id = user_id  # Fallback to string if conversion fails
+        
+        user = users_collection.find_one({"_id": user_obj_id})
+        if not user or not user.get("geminiApiKey"):
             return None
-
+        
         encryption_key = os.getenv("ENCRYPTION_KEY")
         if not encryption_key:
             print("⚠️ ENCRYPTION_KEY not set")
             return None
-
-        return decrypt_api_key(user["gemini_api_key"], encryption_key)
+        
+        decrypted_key = decrypt_api_key(user["geminiApiKey"], encryption_key)
+        return decrypted_key
     except Exception as e:
         print(f"❌ Error fetching user API key: {e}")
         return None
 
 def get_user_approved_status(user_id):
-    """Fetch user's approval status from Supabase"""
+    """
+    Fetch user's approval status from MongoDB
+    Returns False if user_id is None (logged out)
+    """
     if not user_id:
         return False
+    
     try:
-        result = supabase.table("users").select("approved").eq("id", user_id).single().execute()
-        user = result.data
+        # Convert string ID to ObjectId
+        try:
+            user_obj_id = ObjectId(user_id)
+        except:
+            user_obj_id = user_id  # Fallback to string if conversion fails
+        
+        user = users_collection.find_one({"_id": user_obj_id})
         if not user:
             print(f"   ⚠️ User not found with ID: {user_id}")
             return False
+        
         approved = user.get("approved", False)
         print(f"   ✅ User found - Approved: {approved}")
         return approved
@@ -148,99 +164,129 @@ def home():
 async def chat(request: ChatRequest):
     user_msg = request.message
     user_id = request.userId
-
+    
+    # Check if system is ready
     if not rag_bot:
         return {"response": "System AI is currently unavailable.", "mode": "error"}
 
+    # Get user's API key if they have one
     user_api_key = None
     user_approved = False
-
+    
     if user_id:
         user_api_key = get_user_api_key(user_id)
         user_approved = get_user_approved_status(user_id)
 
+    # 1. Try RAG (User or Global) with user's API key if available
     rag_response = rag_bot.ask(user_msg, user_id=user_id, user_api_key=user_api_key, user_approved=user_approved)
-
+    
+    # If rag_response is a string (error string from old logic handling), wrap it
     if isinstance(rag_response, str):
-        return {"response": rag_response, "mode": "error"}
-
+         return {"response": rag_response, "mode": "error"}
+         
+    # Logic:
+    # If mode is 'user_rag', we returned answer from private docs. Great.
+    
     if rag_response["source"] == "user_rag":
         response_data = {"response": rag_response["answer"], "mode": "personalized_rag"}
         print(f"📤 Sending to Frontend: {response_data}")
         return response_data
 
+    # If mode is 'empty_user_rag', strictly return the prompt to upload data.
     if rag_response["source"] == "empty_user_rag":
         return {"response": rag_response["answer"], "mode": "system_msg"}
-
+        
+    # If mode is 'global_rag', we returned answer from public docs.
+    # BUT, if the user is a Member with an API Key, they can use personalized chat with their own key
     if user_id and rag_response["source"] == "global_rag":
         user_api_key = get_user_api_key(user_id)
         if user_api_key:
             try:
+                # Use user's API key for personalized chat
                 user_llm = ChatGoogleGenerativeAI(
-                    model="gemini-2.5-flash",
+                    model="gemini-2.5-flash", 
                     google_api_key=user_api_key
                 )
+                
+                # Still use RAG answer as primary (consistent), but user has their own quota
                 print(f"✅ Using user's personal API key for {user_id}")
                 return {"response": rag_response["answer"], "mode": "rag_with_user_key"}
+                
             except Exception as e:
                 print(f"⚠️ Error with user's API key: {e}")
+                # Fallthrough to global RAG
 
     return {"response": rag_response["answer"], "mode": "rag"}
 
 @app.post("/user/apikey")
 async def save_api_key(request: ApiKeyRequest):
     try:
-        encrypted_key = Fernet(ENCRYPTION_KEY.encode()).encrypt(request.apiKey.encode()).decode()
-
-        result = supabase.table("users").update({
-            "gemini_api_key": encrypted_key,
-            "has_api_key": True
-        }).eq("id", request.userId).execute()
-
-        if not result.data:
+        # Encrypt key
+        encrypted_key = cipher.encrypt(request.apiKey.encode()).decode()
+        
+        # Update User in DB
+        result = users_collection.update_one(
+            {"_id": request.userId},
+            {"$set": {"geminiApiKey": encrypted_key, "hasApiKey": True}}
+        )
+        
+        if result.matched_count == 0:
             raise HTTPException(status_code=404, detail="User not found")
-
+            
         return {"status": "success", "message": "API Key saved securely."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 @app.post("/user/upload")
 async def upload_file(
     userId: str = Body(...),
     file: UploadFile = File(...)
 ):
     try:
+        # Directory structure: data/users/{userId}/docs
         user_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "users", userId)
         docs_dir = os.path.join(user_dir, "docs")
         os.makedirs(docs_dir, exist_ok=True)
-
+        
         file_path = os.path.join(docs_dir, file.filename)
-
+        
+        # Save file
         with open(file_path, "wb") as buffer:
             import shutil
             shutil.copyfileobj(file.file, buffer)
-
+            
+        # Trigger Ingestion (Directly call function instead of subprocess for simplicity if possible, or subprocess)
+        # Using subprocess to keep it async/separate process or we can import the function
+        # Let's import the function to keep it simple, but run it in a thread/background task?
+        # For MVP, we run it synchronously or use BackgroundTasks
         from user_ingest import ingest_user_docs
+        
+        # In a real app, use BackgroundTasks. Here we do it inline for immediate feedback or better yet BackgroundTasks
         ingest_user_docs(userId)
-
+        
         return {"status": "success", "message": f"File '{file.filename}' uploaded and indexed."}
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 @app.post("/ingest")
 async def trigger_ingest(background_tasks: BackgroundTasks):
+    """
+    Endpoint to trigger re-ingestion of all documents (markdown + MongoDB resources).
+    Useful when new resources are added to the database.
+    Runs in the background to avoid blocking the response.
+    """
     try:
         def ingest_in_background():
             print("🔄 Starting ingestion in background...")
             ingest_docs()
             print("✅ Ingestion completed. Reloading RAG service...")
+            # Reload the RAG service to use the new index
             global rag_bot
             try:
                 rag_bot = RAGService()
                 print("✅ RAG service reloaded with new index")
             except Exception as e:
                 print(f"❌ Error reloading RAG service: {e}")
-
+        
         background_tasks.add_task(ingest_in_background)
         return {"status": "ingestion_started", "message": "Documents are being indexed. This may take a moment."}
     except Exception as e:
@@ -249,23 +295,17 @@ async def trigger_ingest(background_tasks: BackgroundTasks):
 @app.post("/register")
 async def register_event(request: RegistrationRequest):
     try:
+        # Generate simple unique ID
         random_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         reg_id = f"ADR-{random_suffix}"
-
-        # Build flat participants list for Supabase (stored as JSONB)
-        registration_data = {
-            "registration_id": reg_id,
-            "event_name": request.eventName,
-            "team_name": request.teamName,
-            "college_name": request.collegeName,
-            "leader_email": request.leaderEmail,
-            "leader_usn": request.leaderUSN,
-            "participants": [p.dict() for p in request.participants],
-        }
-
-        result = supabase.table("registrations").insert(registration_data).execute()
-
-        if result.data:
+        
+        # Save to DB
+        registration_data = request.dict()
+        registration_data["registrationId"] = reg_id
+        
+        result = registrations_collection.insert_one(registration_data)
+        
+        if result.inserted_id:
             return {"status": "success", "registrationId": reg_id}
         else:
             raise HTTPException(status_code=500, detail="Failed to save registration")
@@ -274,4 +314,5 @@ async def register_event(request: RegistrationRequest):
 
 if __name__ == "__main__":
     import uvicorn
+    # Make sure to run on port 5000 as VITE_API_URL specifies http://localhost:5000
     uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)
