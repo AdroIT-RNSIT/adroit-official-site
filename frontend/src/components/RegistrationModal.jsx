@@ -27,57 +27,10 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMsg("");
-    
-    const formData = new FormData(e.target);
-    const participants = [];
-    
-    for (let i = 0; i < max; i++) {
-      const pName = formData.get(`participant_${i}`);
-      const pUSN = formData.get(`participant_usn_${i}`);
-      if (pName && pName.trim() !== "") {
-        participants.push({ 
-          name: pName.trim(), 
-          usn: pUSN ? pUSN.trim() : "" 
-        });
-      }
-    }
-    
-    const payload = {
-      eventName: eventTitle,
-      teamName: formData.get("teamName"),
-      collegeName: formData.get("collegeName"),
-      leaderEmail: formData.get("leaderEmail"),
-      participants: participants
-    };
-
-    try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-      const response = await fetch(`${API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.detail || "Registration failed");
-      }
-      
-      setSuccessData(data);
-      // Show success for 2 seconds, then redirect to payment gateway
-      setTimeout(() => {
-        window.open("https://payments.billdesk.com/bdcollect/bd/rnsiotec/7312", "_blank");
-      }, 2000);
-    } catch (err) {
-      setErrorMsg(err.message || "An error occurred while registering.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    window.open("https://payments.billdesk.com/bdcollect/bd/rnsiotec/7312", "_blank");
+    onClose();
   };
 
   return (
