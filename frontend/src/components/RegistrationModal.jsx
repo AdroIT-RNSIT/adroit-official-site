@@ -159,7 +159,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+            <form onSubmit={handleSubmit} className="space-y-4 max-h-[70dvh] overflow-y-auto pr-2 custom-scrollbar">
               {errorMsg && (
                 <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
                   {errorMsg}

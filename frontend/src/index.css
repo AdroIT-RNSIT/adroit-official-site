@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* Global Mobile Fixes */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none; /* Prevent pull-to-refresh glitching */
+}
+
+/* Prevent iOS auto-zoom on form inputs */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
 /* Hide scrollbar while keeping scrolling functionality */
 html {
   scrollbar-width: none; /* Firefox */
@@ -17,6 +30,9 @@ html::-webkit-scrollbar {
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+  /* Use hardware acceleration for smoother mobile animation */
+  transform: translateZ(0); 
+  will-change: transform;
 }
 
 @media (max-width: 640px) {
@@ -25,6 +41,9 @@ html::-webkit-scrollbar {
   }
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+/* Only pause on hover for devices with a real mouse (prevents sticky touch on mobile) */
+@media (hover: hover) and (pointer: fine) {
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
 }

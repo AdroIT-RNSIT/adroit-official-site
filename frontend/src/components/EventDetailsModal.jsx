@@ -22,7 +22,7 @@ export default function EventDetailsModal({ isOpen, onClose, event, onRegisterCl
         onClick={onClose}
       />
       
-      <div className="relative w-full max-w-2xl bg-[#f3e8ff] border border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-900/50 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-2xl bg-[#f3e8ff] border border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-900/50 overflow-hidden flex flex-col max-h-[90dvh]">
         {/* Header styling matching the cards */}
         <div className="relative p-6 border-b border-slate-900/10 bg-gradient-to-r from-cyan-100/60 via-sky-50/80 to-blue-100/60">
           <button
