@@ -141,10 +141,21 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Registration Successful!</h3>
-              <p className="text-slate-600 text-sm mb-4">We've received your registration for {eventTitle}. Redirecting you to the payment gateway in 2 seconds...</p>
-              <div className="bg-slate-900/5 border border-slate-900/10 rounded-xl p-4 inline-block">
+              <p className="text-slate-600 text-sm mb-4">We've received your registration for {eventTitle}.</p>
+              <div className="bg-slate-900/5 border border-slate-900/10 rounded-xl p-4 inline-block mb-6">
                 <p className="text-xs text-slate-500 mb-1 uppercase tracking-wider">Your Registration ID</p>
                 <p className="text-2xl font-mono font-bold text-cyan-400">{successData.registrationId}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 mb-3">If a new tab doesn't open automatically, click below:</p>
+                <a 
+                  href="https://payments.billdesk.com/bdcollect/bd/rnsiotec/7312" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all"
+                >
+                  Proceed to Payment
+                </a>
               </div>
             </div>
           ) : (
