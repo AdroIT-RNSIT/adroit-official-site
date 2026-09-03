@@ -19,6 +19,12 @@ html::-webkit-scrollbar {
   animation: marquee 30s linear infinite;
 }
 
+@media (max-width: 640px) {
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+}
+
 .animate-marquee:hover {
   animation-play-state: paused;
 }
