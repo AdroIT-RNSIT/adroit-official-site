@@ -101,7 +101,7 @@ const Home = () => {
         <img 
           src="/rnsit_logo.png" 
           alt="RNSIT Logo" 
-          className="w-72 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
+          className="w-44 sm:w-64 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
           style={{ mixBlendMode: 'multiply' }}
         />
       </div>
@@ -111,7 +111,7 @@ const Home = () => {
         <img 
           src="/25_years.png" 
           alt="25 Years Excellence" 
-          className="w-24 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
+          className="w-16 sm:w-24 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
         />
       </div>
 
