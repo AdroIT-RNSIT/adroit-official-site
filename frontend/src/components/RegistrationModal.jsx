@@ -37,6 +37,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
     const teamName = formData.get("teamName")?.toString().trim() || "";
     const collegeName = formData.get("collegeName")?.toString().trim() || "";
     const leaderEmail = formData.get("leaderEmail")?.toString().trim() || "";
+    const ieeeMembershipId = formData.get("ieeeMembershipId")?.toString().trim() || "NA";
     const participants = [];
     
     for (let i = 0; i < max; i++) {
@@ -66,6 +67,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
             team_name: teamName,
             college_name: collegeName,
             leader_email: leaderEmail,
+            ieee_membership_id: ieeeMembershipId,
             team_size: participants.length,
             participants: participants,
             submitted_at: new Date().toISOString()
@@ -182,6 +184,18 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                   required
                   className="w-full bg-slate-900/5 border border-slate-900/10 rounded-xl px-4 py-2.5 text-slate-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
                   placeholder="leader@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-600 mb-1">IEEE Membership ID (Optional)</label>
+                <input 
+                  type="text" 
+                  name="ieeeMembershipId"
+                  maxLength={15}
+                  defaultValue="NA"
+                  className="w-full bg-slate-900/5 border border-slate-900/10 rounded-xl px-4 py-2.5 text-slate-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all"
+                  placeholder="Max 15 digits or NA"
                 />
               </div>
 
