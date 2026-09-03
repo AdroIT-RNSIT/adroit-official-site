@@ -223,7 +223,7 @@ export default function Events() {
                         <span className="text-xs font-semibold">Logo</span>
                       </div>
                     </div>
-                    <span className="text-base font-bold text-slate-700">WhoVR</span>
+                    <span className="text-base font-bold text-slate-700">WHO VR</span>
                   </div>
 
                   {/* Nexploit */}
@@ -288,8 +288,8 @@ export default function Events() {
                 <div className="p-6 flex gap-8 items-center justify-center h-[calc(100%-60px)]">
                   {/* WhoVR Mobile */}
                   <div className="flex flex-col items-center gap-2">
-                    <img src="/whovr.png" alt="WhoVR" className="h-16 w-auto object-contain" />
-                    <span className="text-sm font-bold text-slate-700">WhoVR</span>
+                    <img src="/whovr.png" alt="WHO VR" className="h-16 w-auto object-contain" />
+                    <span className="text-sm font-bold text-slate-700">WHO VR</span>
                   </div>
                   {/* Nexploit Mobile */}
                   <div className="flex flex-col items-center gap-2">
@@ -298,6 +298,16 @@ export default function Events() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Notice Box Above Event Cards */}
+            <div className="mb-8 p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 backdrop-blur-sm flex items-center justify-center gap-3 text-slate-800 text-center shadow-sm">
+              <svg className="w-5 h-5 text-cyan-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-semibold text-sm md:text-base">
+                All participants must read the generic Rules and Guidelines at the bottom of this page
+              </span>
             </div>
 
             {/* Events Grid - original centered layout */}
@@ -461,6 +471,16 @@ function EventCard({
         <h3 className="text-xl font-black bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.7)] group-hover:drop-shadow-[0_0_12px_rgba(245,158,11,0.9)] group-hover:brightness-125 transition-all duration-300 mb-2">
           {event.title}
         </h3>
+
+        {/* Date and Time */}
+        {event.date && (
+          <div className="flex items-center gap-2.5 text-base text-slate-600 font-bold mb-4">
+            <svg className="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>{formatDate(event.date)}</span>
+          </div>
+        )}
 
         {/* Description - FULL DESCRIPTION VISIBLE */}
         {event.description && (

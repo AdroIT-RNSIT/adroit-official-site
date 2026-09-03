@@ -156,7 +156,7 @@ const Home = () => {
                       <div className="flex justify-between items-start mb-4">
                         <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-xs sm:text-sm">Paradox 2026</span>
                         <span className="text-xs sm:text-sm font-semibold text-slate-600">
-                          {new Date(event.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                          {new Date(event.date).toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
                       <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] transition-all">{event.title}</h3>
