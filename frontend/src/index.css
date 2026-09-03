@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
 /* Global Mobile Fixes */
-html, body {
+html {
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
+}
+
+body {
   overflow-x: hidden;
   width: 100%;
-  -webkit-text-size-adjust: 100%;
-  overscroll-behavior-y: none; /* Prevent pull-to-refresh glitching */
+  overscroll-behavior-y: none;
 }
 
 /* Prevent iOS auto-zoom on form inputs */
