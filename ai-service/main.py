@@ -13,12 +13,7 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import base64
 from bson import ObjectId
-import random
-import string
-import io
-import csv
 from typing import List
-from fastapi.responses import StreamingResponse
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -39,7 +34,6 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/club-members")
 client = MongoClient(MONGO_URI)
 db = client.get_database()
 users_collection = db.user
-registrations_collection = db.registrations
 
 # Encryption
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
@@ -64,18 +58,6 @@ class ChatRequest(BaseModel):
 class ApiKeyRequest(BaseModel):
     userId: str
     apiKey: str
-
-class RegistrationParticipant(BaseModel):
-    name: str
-    usn: str
-
-class RegistrationRequest(BaseModel):
-    eventName: str
-    teamName: str
-    collegeName: str
-    leaderEmail: str
-    leaderUSN: str | None = None
-    participants: List[RegistrationParticipant]
 
 # ===== ENCRYPTION / DECRYPTION =====
 def decrypt_api_key(encrypted_data, encryption_key):
@@ -294,73 +276,6 @@ async def trigger_ingest(background_tasks: BackgroundTasks):
         return {"status": "ingestion_started", "message": "Documents are being indexed. This may take a moment."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/register")
-async def register_event(request: RegistrationRequest):
-    try:
-        # Generate simple unique ID
-        random_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-        reg_id = f"ADR-{random_suffix}"
-        
-        # Save to DB
-        registration_data = request.dict()
-        registration_data["registrationId"] = reg_id
-        
-        result = registrations_collection.insert_one(registration_data)
-        
-        if result.inserted_id:
-            return {"status": "success", "registrationId": reg_id}
-        else:
-            raise HTTPException(status_code=500, detail="Failed to save registration")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/admin/export-registrations")
-async def export_registrations(secret: str = None):
-    # Very simple security for production - replace with a stronger key or ENV variable if needed
-    if secret != "adroit2026":
-        raise HTTPException(status_code=401, detail="Unauthorized")
-        
-    registrations = list(registrations_collection.find())
-    
-    if not registrations:
-        raise HTTPException(status_code=404, detail="No registrations found")
-
-    # Determine fieldnames dynamically
-    fieldnames = set()
-    for reg in registrations:
-        fieldnames.update(reg.keys())
-    if "_id" in fieldnames: fieldnames.remove("_id")
-    
-    preferred_order = ["registrationId", "eventName", "teamName", "collegeName", "leaderEmail", "participants"]
-    ordered_fields = [f for f in preferred_order if f in fieldnames]
-    other_fields = sorted([f for f in fieldnames if f not in preferred_order])
-    final_fieldnames = ordered_fields + other_fields
-
-    # Generate CSV in memory
-    output = io.StringIO()
-    writer = csv.DictWriter(output, fieldnames=final_fieldnames)
-    writer.writeheader()
-    
-    for reg in registrations:
-        reg.pop("_id", None)
-        # Format participants array nicely
-        if "participants" in reg and isinstance(reg["participants"], list):
-            parts = []
-            for p in reg["participants"]:
-                name = p.get("name", "Unknown")
-                usn = p.get("usn", "N/A")
-                parts.append(f"{name} ({usn})")
-            reg["participants"] = " | ".join(parts)
-        writer.writerow(reg)
-
-    output.seek(0)
-    
-    return StreamingResponse(
-        iter([output.getvalue()]), 
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=registrations_export.csv"}
-    )
 
 if __name__ == "__main__":
     import uvicorn

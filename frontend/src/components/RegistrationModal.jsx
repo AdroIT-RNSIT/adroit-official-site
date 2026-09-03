@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
 
 const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,43 +34,68 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
     setErrorMsg("");
     
     const formData = new FormData(e.target);
+    const teamName = formData.get("teamName")?.toString().trim() || "";
+    const collegeName = formData.get("collegeName")?.toString().trim() || "";
+    const leaderEmail = formData.get("leaderEmail")?.toString().trim() || "";
     const participants = [];
     
     for (let i = 0; i < max; i++) {
       const pName = formData.get(`participant_${i}`);
       const pUSN = formData.get(`participant_usn_${i}`);
-      if (pName && pName.trim() !== "") {
+      if (pName && pName.toString().trim() !== "") {
         participants.push({ 
-          name: pName.trim(), 
-          usn: pUSN ? pUSN.trim() : "" 
+          participantNumber: i + 1,
+          name: pName.toString().trim(), 
+          studentId: pUSN ? pUSN.toString().trim() : "",
+          collegeName: collegeName,
+          email: i === 0 ? leaderEmail : "",
+          teamName: teamName
         });
       }
     }
-    
-    const payload = {
-      eventName: eventTitle,
-      teamName: formData.get("teamName"),
-      collegeName: formData.get("collegeName"),
-      leaderEmail: formData.get("leaderEmail"),
-      participants: participants
-    };
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-      const response = await fetch(`${API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.detail || "Registration failed");
+      // Check if Supabase credentials are set
+      const supabaseConfigured = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      if (supabaseConfigured) {
+        const { data, error } = await supabase
+          .from('event_registrations')
+          .insert({
+            event_name: eventTitle,
+            team_name: teamName,
+            college_name: collegeName,
+            leader_email: leaderEmail,
+            team_size: participants.length,
+            participants: participants,
+            submitted_at: new Date().toISOString()
+          })
+          .select();
+
+        if (error) {
+          throw new Error(error.message || "Failed to save registration to database");
+        }
+        setSuccessData({ registrationId: data[0]?.id || "ADR-SUCCESS" });
+      } else {
+        // Fallback to FastAPI backend if Supabase env is not configured yet
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const response = await fetch(`${API_URL}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventName: eventTitle,
+            teamName,
+            collegeName,
+            leaderEmail,
+            participants
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Registration failed");
+        setSuccessData(data);
       }
-      
-      setSuccessData(data);
-      // Show success for 2 seconds, then redirect to payment gateway
+
+      // Show success message briefly, then open BillDesk
       setTimeout(() => {
         window.open("https://payments.billdesk.com/bdcollect/bd/rnsiotec/7312", "_blank");
       }, 2000);
