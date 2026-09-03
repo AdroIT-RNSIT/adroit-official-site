@@ -216,7 +216,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
                   {Array.from({ length: max }).map((_, i) => (
                     <div key={i} className="p-3 bg-white/[0.02] border border-slate-900/5 rounded-xl space-y-3">
                       <h5 className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                        Participant {i + 1} {i === 0 ? '(Leader)' : ''} {i >= min ? '(Optional)' : ''}
+                        Participant {i + 1} {i === 0 ? '(Leader)' : ''} {i > (min - 1) ? '(Optional)' : '(Required)'}
                       </h5>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <input 
