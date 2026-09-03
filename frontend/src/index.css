@@ -13,14 +13,16 @@ input, textarea, select {
   font-size: 16px !important;
 }
 
-/* Hide scrollbar while keeping scrolling functionality */
-html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
+/* Hide scrollbar on mobile only */
+@media (max-width: 768px) {
+  html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
 
-html::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Opera */
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
 }
 
 @keyframes marquee {
