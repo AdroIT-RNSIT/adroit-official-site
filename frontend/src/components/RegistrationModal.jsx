@@ -20,7 +20,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
     const title = eventTitle || '';
     if (title.includes('CTF') || title.includes('Capture The Flag')) return { min: 3, max: 4 };
     if (title.includes('Tech Auction')) return { min: 3, max: 4 };
-    if (title.includes('AI Film Making')) return { min: 3, max: 3 };
+    if (title.includes('AI Film Making')) return { min: 1, max: 2 };
     return { min: 1, max: 4 };
   };
   

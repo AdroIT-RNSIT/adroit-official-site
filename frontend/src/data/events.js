@@ -41,7 +41,7 @@ export const sharedEvents = [
     location: "IT Block",
     registrationCost: { all: 100 },
     rules: [
-      "Teams of 3 participants each.",
+      "Teams of 1-2 participants each.",
       "The theme is revealed only after the event starts - no pre-made or pre-prepared footage related to the theme may be used.",
       "Teams get a 2-hour window to script, generate, and edit their film using AI and/or conventional tools.",
       "Final films must be submitted within the given submission window (10-20 minutes); late submissions may be penalised or disqualified.",
