@@ -123,19 +123,17 @@ const Home = () => {
       >
 
         <div className="max-w-5xl text-center z-10 relative">
-          <span className="block text-sm sm:text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.1em] sm:tracking-[0.2em] mb-2">
-              Paradox 2026
-            </span>
-          <BrandMark size="hero" className="mb-6" />
-          <br></br>
-          {/* Badge */}
-          <div className="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-full px-4 sm:px-8 py-3 sm:py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-xs sm:text-lg md:text-xl text-slate-600 font-medium tracking-wide whitespace-normal text-center">
-            <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse flex-shrink-0"></span>
-            <span>Department of Computer Science & Engineering</span>
-          </div>
+          <span className="inline-flex items-center mb-4 rounded-full border border-cyan-800/20 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-cyan-800">
+            Paradox 2026
+          </span>
+          <BrandMark size="hero" className="mb-5" />
 
-          {/* Title */}
-          <h1 className="mb-6">
+          <h1 className="mx-auto mb-10 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-cyan-800 leading-snug">
+            <span className="sr-only">AdroIT — </span>
+            Department of
+            <span className="mt-0.5 block font-bold">
+              Computer Science &amp; Engineering
+            </span>
           </h1>
 
           {/* Tagline */}
