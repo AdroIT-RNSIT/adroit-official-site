@@ -74,7 +74,7 @@ const Navbar = () => {
             <img
               src="/ieee_logo.png"
               alt="IEEE RNSIT"
-              className="absolute h-[180px] w-auto max-w-none left-0 top-1/2 -translate-y-1/2"
+              className="absolute h-[180px] w-auto max-w-none left-0 top-1/2 -translate-y-1/2 translate-y-[9px]"
             />
           </div>
           </Link>
