@@ -70,11 +70,13 @@ const Navbar = () => {
             <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
               AdroIT
             </span>
+            <div className="ml-4 h-12 w-64 overflow-hidden relative">
             <img
               src="/ieee_logo.png"
-              alt="IEEE"
-              className="ml-3 h-10 w-auto object-contain"
+              alt="IEEE RNSIT"
+              className="absolute h-[180px] w-auto max-w-none left-0 top-1/2 -translate-y-1/2"
             />
+          </div>
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
