@@ -73,7 +73,7 @@ const Navbar = () => {
             <img
               src="/ieee_logo.png"
               alt="IEEE"
-              className="ml-3 h-12 w-auto object-contain"
+              className="ml-3 h-10 w-auto object-contain"
             />
           </Link>
 
