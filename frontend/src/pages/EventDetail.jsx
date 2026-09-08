@@ -55,10 +55,7 @@ export default function EventDetail() {
             <ArrowLeft size={16} />
             Paradox 2026
           </Link>
-          <p className="font-mono text-[11px] uppercase tracking-[0.32em] text-cyan-300">
-            Paradox 2026
-          </p>
-          <div className="mt-3 flex items-center justify-between gap-6 sm:gap-10 lg:gap-16">
+          <div className="flex items-center justify-between gap-6 sm:gap-10 lg:gap-16">
             <h1 className="min-w-0 flex-1 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
               {event.title}
             </h1>
