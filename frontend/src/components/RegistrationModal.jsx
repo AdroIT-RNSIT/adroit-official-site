@@ -57,9 +57,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
 
     try {
       // Check if Supabase credentials are set
-      const supabaseConfigured = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-      if (supabaseConfigured) {
+      if (supabase) {
         const { data, error } = await supabase
           .from('event_registrations')
           .insert({
