@@ -269,7 +269,7 @@ const Home = () => {
       </section>
 
       {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
-      <section ref={domainsRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-4 transition-all duration-500">
+      <section ref={domainsRef} className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
@@ -304,11 +304,19 @@ const Home = () => {
       </section>
 
       {/* ===== INTERACTIVE CANVAS SECTION ===== */}
-      <section 
+      <section
         ref={approachRef}
-        className="min-h-[60dvh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
+        className="relative z-0 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-500"
       >
-        <ThreeScene />
+        <div
+          className="pointer-events-none absolute inset-x-0 -top-24 -bottom-24 z-0 sm:-top-32 sm:-bottom-32"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
+          }}
+        >
+          <ThreeScene />
+        </div>
         <div className="relative z-10 text-center">
           <h2 className="fluid-h2 font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
             Our Learning Philosophy
@@ -323,7 +331,7 @@ const Home = () => {
       {/* ===== BENEFITS SECTION ===== */}
       <section 
         ref={benefitsRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
+        className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
