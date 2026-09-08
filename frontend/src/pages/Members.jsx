@@ -173,7 +173,7 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center">
+      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
             <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
@@ -188,7 +188,7 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
+    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -205,7 +205,7 @@ export default function Members() {
             <span className="text-sm text-slate-600">AdroIT Member Directory</span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4">
+          <h1 className="fluid-h1 font-extrabold mb-4">
             <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               All Members
             </span>
@@ -427,8 +427,7 @@ export default function Members() {
         )}
 
         {/* ===== JOIN CTA - Only for non-logged in users ===== */}
-        {!session && (
-          <div className="mt-16 text-center">
+        <div className="mt-16 text-center">
             <div className="relative group inline-block">
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
               <div className="relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
@@ -436,13 +435,13 @@ export default function Members() {
                   Want to be part of this community?
                 </h3>
                 <p className="text-slate-600 text-sm mb-4 max-w-lg mx-auto">
-                  Join AdroIT and connect with passionate technologists
+                  Reach out and we&apos;ll point you to the next recruitment cycle.
                 </p>
                 <Link
-                  to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl text-sm shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl text-sm shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
                 >
-                  Join AdroIT Now
+                  Contact AdroIT
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -450,7 +449,6 @@ export default function Members() {
               </div>
             </div>
           </div>
-        )}
       </div>
 
       {/* ===== STYLES ===== */}

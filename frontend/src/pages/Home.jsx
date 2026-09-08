@@ -94,14 +94,14 @@ const Home = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-x-clip">
+    <div className="home-root relative min-h-dvh overflow-x-clip">
       
       {/* RNSIT LOGO - FLUSH TOP LEFT */}
       <div className="absolute top-0 left-0 z-[1001]">
         <img 
           src="/rnsit_logo.png" 
           alt="RNSIT Logo" 
-          className="w-44 sm:w-64 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
+          className="w-28 sm:w-44 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
           style={{ mixBlendMode: 'multiply' }}
         />
       </div>
@@ -111,27 +111,27 @@ const Home = () => {
         <img 
           src="/25_years.png" 
           alt="25 Years Excellence" 
-          className="w-16 sm:w-24 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
+          className="w-12 sm:w-16 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
         />
       </div>
 
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
+        className="min-h-dvh flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
       >
 
         <div className="max-w-5xl text-center z-10 relative">
-          <span className="block text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.2em] mb-2">
+          <span className="block text-sm sm:text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.1em] sm:tracking-[0.2em] mb-2">
               Welcome to
             </span>
-          <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
+          <span className="block fluid-hero font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.08em] sm:tracking-[0.15em] sm:ml-4">
               AdroIT
             </span>
           <br></br>
           {/* Badge */}
-          <div className="inline-flex items-center gap-3 px-8 py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-lg md:text-xl text-slate-600 font-medium tracking-wide">
-            <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></span>
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-full px-4 sm:px-8 py-3 sm:py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-xs sm:text-lg md:text-xl text-slate-600 font-medium tracking-wide whitespace-normal text-center">
+            <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse flex-shrink-0"></span>
             <span>Department of Computer Science & Engineering</span>
           </div>
 
@@ -140,7 +140,7 @@ const Home = () => {
           </h1>
 
           {/* Tagline */}
-          <p className="text-lg md:text-xl lg:text-2xl text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
+          <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
             The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
@@ -169,19 +169,22 @@ const Home = () => {
           </div>
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-col gap-2 justify-center items-center relative z-20">
-            <button
-              disabled
-              className="group px-8 py-4 bg-gradient-to-r from-cyan-500/50 to-purple-600/50 text-slate-900/80 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-not-allowed transition-all duration-300"
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center relative z-20">
+            <Link
+              to="/domains"
+              className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
             >
-              <span className="relative z-10">Join AdroIT Now</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
+              <span className="relative z-10">Explore AdroIT</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10 group-hover:translate-x-1 transition-transform">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </button>
-            <p className="text-xs text-slate-600 mt-2 text-center">
-              Recruitment for this cycle is closed. Next recruitment opens later this year.
-            </p>
+            </Link>
+            <Link
+              to="/events"
+              className="px-8 py-4 bg-slate-900/5 border border-slate-900/10 text-slate-900 font-semibold rounded-xl hover:bg-slate-900/10 hover:border-cyan-500/30 transition-all duration-300"
+            >
+              See Events
+            </Link>
           </div>
         </div>
 
@@ -198,20 +201,20 @@ const Home = () => {
       </section>
 
       {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000">
+      <section id="why-join" ref={missionRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Why Join AdroIT?</h2>
-            <p className="text-slate-600 text-xl max-w-4xl mx-auto">
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Why Join AdroIT?</h2>
+            <p className="text-slate-600 fluid-lead max-w-4xl mx-auto">
               We bridge the gap between academic theory and industry demands, creating 
               <span className="text-cyan-400"> future-ready professionals</span> through practical learning and innovation
             </p>
           </div>
 
           {/* YOUR ORIGINAL 3-COLUMN LAYOUT */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             
             {/* Left Column - 3 Cards */}
             <div className="space-y-8">
@@ -286,12 +289,12 @@ const Home = () => {
       </section>
 
       {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
-      <section ref={domainsRef} className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-12 transition-all duration-1000">
+      <section ref={domainsRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-12 transition-all duration-1000">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Technical Domains</h2>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Technical Domains</h2>
             <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Four pillars of technical excellence driving innovation at AdroIT
             </p>
@@ -323,11 +326,11 @@ const Home = () => {
       {/* ===== INTERACTIVE CANVAS SECTION ===== */}
       <section 
         ref={approachRef}
-        className="min-h-[60vh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="min-h-[60dvh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
         <ThreeScene />
         <div className="relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
+          <h2 className="fluid-h2 font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
             Our Learning Philosophy
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto text-lg">
@@ -340,12 +343,12 @@ const Home = () => {
       {/* ===== BENEFITS SECTION ===== */}
       <section 
         ref={benefitsRef}
-        className="py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">How AdroIT Will Transform You</h2>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">How AdroIT Will Transform You</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -394,13 +397,13 @@ const Home = () => {
       {/* ===== CLUB ACTIVITIES ===== */}
       <section 
         ref={activitiesRef}
-        className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
       >
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Join the AdroIT Community</h2>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Join the AdroIT Community</h2>
             <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
               in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
@@ -478,31 +481,31 @@ const Home = () => {
         }
         @keyframes move-spiral {
           0% { transform: translate(0, 0) scale(1); opacity: 1; }
-          25% { transform: translate(-120px, -120px) scale(1.2); opacity: 0.8; }
-          50% { transform: translate(120px, -120px) scale(1); opacity: 1; }
-          75% { transform: translate(120px, 120px) scale(1.2); opacity: 0.8; }
+          25% { transform: translate(-18%, -18%) scale(1.2); opacity: 0.8; }
+          50% { transform: translate(18%, -18%) scale(1); opacity: 1; }
+          75% { transform: translate(18%, 18%) scale(1.2); opacity: 0.8; }
           100% { transform: translate(0, 0) scale(1); opacity: 1; }
         }
         @keyframes move-spiral-trail-1 {
           0% { transform: translate(0, 0); opacity: 0; }
-          10% { transform: translate(-40px, -40px); opacity: 0.5; }
-          20% { transform: translate(-80px, -80px); opacity: 0.3; }
-          30% { transform: translate(-120px, -120px); opacity: 0.1; }
-          100% { transform: translate(-120px, -120px); opacity: 0; }
+          10% { transform: translate(-6%, -6%); opacity: 0.5; }
+          20% { transform: translate(-12%, -12%); opacity: 0.3; }
+          30% { transform: translate(-18%, -18%); opacity: 0.1; }
+          100% { transform: translate(-18%, -18%); opacity: 0; }
         }
         @keyframes move-spiral-trail-2 {
           0% { transform: translate(0, 0); opacity: 0; }
-          20% { transform: translate(60px, -60px); opacity: 0.5; }
-          40% { transform: translate(120px, -120px); opacity: 0.3; }
-          60% { transform: translate(180px, -180px); opacity: 0.1; }
-          100% { transform: translate(180px, -180px); opacity: 0; }
+          20% { transform: translate(9%, -9%); opacity: 0.5; }
+          40% { transform: translate(18%, -18%); opacity: 0.3; }
+          60% { transform: translate(27%, -27%); opacity: 0.1; }
+          100% { transform: translate(27%, -27%); opacity: 0; }
         }
         @keyframes move-spiral-trail-3 {
           0% { transform: translate(0, 0); opacity: 0; }
-          30% { transform: translate(60px, 60px); opacity: 0.5; }
-          60% { transform: translate(120px, 120px); opacity: 0.3; }
-          90% { transform: translate(180px, 180px); opacity: 0.1; }
-          100% { transform: translate(180px, 180px); opacity: 0; }
+          30% { transform: translate(9%, 9%); opacity: 0.5; }
+          60% { transform: translate(18%, 18%); opacity: 0.3; }
+          90% { transform: translate(27%, 27%); opacity: 0.1; }
+          100% { transform: translate(27%, 27%); opacity: 0; }
         }
         @keyframes float-particle {
           0%, 100% { transform: translate(0, 0); opacity: 0; }

@@ -189,7 +189,7 @@ function Resources(){
   }
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip">
+    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip">
     
       {/* Background Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -222,7 +222,7 @@ function Resources(){
 
       <div className="text-center mb-12 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
+        <h1 className="fluid-h1 font-extrabold mb-6">
           <span className="bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
             {currentDomain?.name || 'Resources'}
           </span>

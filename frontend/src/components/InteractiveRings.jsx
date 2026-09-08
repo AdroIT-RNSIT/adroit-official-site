@@ -45,7 +45,7 @@ const InteractiveBall = () => {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const container = document.querySelector('.relative.min-h-screen');
+      const container = document.querySelector('.home-root');
       if (container) {
         const rect = container.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
@@ -220,7 +220,7 @@ const InteractiveBall = () => {
   );
 };
 
-export default function InteractiveRings({ className = "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[650px]" }) {
+export default function InteractiveRings({ className = "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(100%,70vmin)] max-w-[650px]" }) {
   return (
     <div className={`hero-ring-container aspect-square pointer-events-none z-0 px-4 ${className}`}>
       <div className="relative w-full h-full">
@@ -229,13 +229,21 @@ export default function InteractiveRings({ className = "absolute top-1/2 left-1/
         <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/25 rounded-full animate-spin-slower-reverse shadow-[0_0_25px_5px_rgba(168,85,247,0.1)]"></div>
         <div className="absolute w-[40%] h-[40%] top-[30%] left-[30%] border border-cyan-400/20 rounded-full animate-spin-slowest shadow-[0_0_20px_3px_rgba(34,211,238,0.1)]"></div>
 
-        <div className="absolute w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_15px_5px_rgba(34,211,238,0.4)] animate-move-spiral">
-          <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
+        <div className="absolute inset-0 animate-move-spiral">
+          <div className="absolute top-1/2 left-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_15px_5px_rgba(34,211,238,0.4)]">
+            <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
+          </div>
         </div>
 
-        <div className="absolute w-1.5 h-1.5 rounded-full bg-cyan-400/50 shadow-[0_0_8px_2px_rgba(34,211,238,0.3)] animate-move-spiral-trail-1"></div>
-        <div className="absolute w-1 h-1 rounded-full bg-purple-500/40 shadow-[0_0_6px_1px_rgba(168,85,247,0.3)] animate-move-spiral-trail-2"></div>
-        <div className="absolute w-0.5 h-0.5 rounded-full bg-cyan-400/30 shadow-[0_0_4px_1px_rgba(34,211,238,0.3)] animate-move-spiral-trail-3"></div>
+        <div className="absolute inset-0 animate-move-spiral-trail-1">
+          <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/50 shadow-[0_0_8px_2px_rgba(34,211,238,0.3)]"></div>
+        </div>
+        <div className="absolute inset-0 animate-move-spiral-trail-2">
+          <div className="absolute top-1/2 left-1/2 w-1 h-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-500/40 shadow-[0_0_6px_1px_rgba(168,85,247,0.3)]"></div>
+        </div>
+        <div className="absolute inset-0 animate-move-spiral-trail-3">
+          <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/30 shadow-[0_0_4px_1px_rgba(34,211,238,0.3)]"></div>
+        </div>
 
         <InteractiveBall />
       </div>

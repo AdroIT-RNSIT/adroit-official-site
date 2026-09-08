@@ -5,7 +5,7 @@ const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#f3e8ff] border-t border-slate-900/10 overflow-hidden">
+    <footer className="relative bg-[#f3e8ff] border-t border-slate-900/10 overflow-hidden pb-[env(safe-area-inset-bottom,0px)]">
       
       {/* ===== BACKGROUND DECORATIONS ===== */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

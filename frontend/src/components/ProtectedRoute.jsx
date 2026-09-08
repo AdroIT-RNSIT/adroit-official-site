@@ -20,7 +20,7 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
   }
 
   if (!session) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   const isAdmin = session.user?.role === "admin";

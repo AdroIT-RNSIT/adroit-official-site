@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useSession } from '../lib/auth-client';
 import { Brain, Cloud } from 'lucide-react';
 
 export default function Domains() {
-  const { data: session } = useSession();
-  const isLoggedIn = !!session;
   const [activeDomain, setActiveDomain] = useState('ml');
   const [hoveredDomain, setHoveredDomain] = useState(null);
   
@@ -321,7 +318,7 @@ export default function Domains() {
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
 
   return (
-    <div className="relative min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
+    <div className="relative min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -363,11 +360,11 @@ export default function Domains() {
             <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
+          <h1 className="fluid-h1 font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
             Technical Domains
           </h1>
 
-          <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="fluid-lead text-slate-600 max-w-4xl mx-auto leading-relaxed">
             Master the four pillars of modern technology with our comprehensive learning paths,
             <span className="text-cyan-400"> hands-on projects</span>, and
             <span className="text-purple-400"> expert mentorship</span>
@@ -375,9 +372,9 @@ export default function Domains() {
 
           {/* Quick Stats */}
           <div className="flex flex-wrap justify-center gap-6 mt-12">
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-6 py-4 rounded-2xl border border-slate-900/10">
-              <span className="text-2xl">
-                <svg width="41.2" height="36" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
+                <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="60" cy="60" r="10" fill="#ffffff"/>
                   <line x1="60" y1="60" x2="60" y2="20" stroke="#06B6D4" stroke-width="4"/>
                   <line x1="60" y1="60" x2="100" y2="60" stroke="#8B5CF6" stroke-width="4"/>
@@ -394,9 +391,9 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Core Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-6 py-4 rounded-2xl border border-slate-900/10">
-              <span className="text-3xl">
-                <svg width="74.16" height="64.8" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
+                <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
 
                   <rect x="30" y="25" width="60" height="50" rx="8" fill="#111"/>
                   <path d="M42 45 L52 50 L42 55" stroke="#06B6D4" stroke-width="5" fill="none"/>
@@ -412,9 +409,9 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Projects</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-6 py-4 rounded-2xl border border-slate-900/10">
-              <span className="text-3xl">
-                <svg width="74.16" height="64.8" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
+                <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
                   <circle cx="74" cy="42" r="15" fill="#8B5CF6"/>
 
@@ -439,9 +436,9 @@ export default function Domains() {
                 onClick={() => setActiveDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-500 ${
+                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-all duration-500 ${
                   activeDomain === domain.id
-                    ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg scale-105`
+                    ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg sm:scale-105`
                     : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
                 }`}
               >
@@ -475,17 +472,17 @@ export default function Domains() {
             <div className={`absolute inset-0 bg-gradient-to-r ${currentDomain.color}/10`}></div>
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
             
-            <div className="relative z-10 p-8 md:p-12">
+            <div className="relative z-10 p-5 sm:p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div className="flex items-center gap-6">
-                  <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-4xl md:text-5xl shadow-xl`}>
-                    <div className="w-12 h-12 md:w-14 md:h-14">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-4xl md:text-5xl shadow-xl flex-shrink-0`}>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
                       {currentDomain.icon}
                     </div>
                   </div>
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <h2 className="text-3xl md:text-4xl font-bold text-slate-900">{currentDomain.name}</h2>
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">{currentDomain.name}</h2>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium bg-slate-900/20 text-slate-900 border ${currentDomain.borderColor}`}>
                         {currentDomain.shortName}
                       </span>
@@ -495,8 +492,8 @@ export default function Domains() {
                 </div>
                 
                 {/* Stats Cards */}
-                <div className="flex gap-3">
-                  <div className="bg-white/40 backdrop-blur px-4 py-3 rounded-xl border border-slate-900/10">
+                <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
+                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.members}
                     </div>
@@ -504,7 +501,7 @@ export default function Domains() {
                       {icons.members} Members
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur px-4 py-3 rounded-xl border border-slate-900/10">
+                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.projects}
                     </div>
@@ -512,7 +509,7 @@ export default function Domains() {
                       {icons.projects} Projects
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur px-4 py-3 rounded-xl border border-slate-900/10">
+                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.resources}
                     </div>

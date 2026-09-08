@@ -338,7 +338,7 @@ export default function Profile() {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Please Login</h2>
           <Link
-            to="/login"
+            to="/"
             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 rounded-xl"
           >
             Go to Login

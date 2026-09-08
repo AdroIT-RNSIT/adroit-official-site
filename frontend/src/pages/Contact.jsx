@@ -73,7 +73,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] text-slate-900 px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
+    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 px-4 sm:px-6 lg:px-8 py-20 relative overflow-x-clip">
       
       {/* ===== ANIMATED BACKGROUND ORBS ===== */}
       <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-cyan-500/10 blur-[140px] animate-float"></div>
@@ -104,11 +104,11 @@ export default function Contact() {
             <span className="text-sm text-slate-600">Get in Touch</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
+          <h1 className="fluid-h1 font-extrabold mb-4 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
             Connect with AdroIT
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="fluid-lead text-slate-600 max-w-2xl mx-auto">
             Let's connect, collaborate, and build something amazing together.
           </p>
         </div>

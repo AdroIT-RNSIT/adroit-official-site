@@ -32,22 +32,20 @@ const Navbar = () => {
   const publicLinks = [
     { name: "Home", path: "/" },
     { name: "Paradox 2026", path: "/events" },
-
     { name: "Domains", path: "/domains" },
+    { name: "Members", path: "/members" },
     { name: "Contact", path: "/contact" }
   ];
 
-  // ===== PROTECTED LINKS - Only visible when logged in =====
+  // ===== ACCOUNT LINKS - Only visible when logged in =====
   const protectedLinks = [
-    { name: "Resources", path: "/resources" },
-    { name: "Members", path: "/members" },
     { name: "Profile", path: "/profile" }
   ];
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] h-16 transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] transition-all duration-300 ease-in-out ${
           scrolled
             ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
             : "bg-[#f3e8ff] border-b border-slate-900/5"
@@ -67,10 +65,10 @@ const Navbar = () => {
                 />
               </div>
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
               AdroIT
             </span>
-            <div className="ml-4 h-12 w-64 overflow-hidden relative">
+            <div className="hidden lg:block ml-4 h-12 w-64 overflow-hidden relative">
             <img
               src="/ieee_logo.png"
               alt="IEEE RNSIT"
@@ -152,9 +150,9 @@ const Navbar = () => {
             className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-all duration-200"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
-            <span className={`w-5 h-0.5 bg-white rounded-full transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
-            <span className={`w-5 h-0.5 bg-white rounded-full transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : "opacity-100"}`}></span>
-            <span className={`w-5 h-0.5 bg-white rounded-full transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
+            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
+            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : "opacity-100"}`}></span>
+            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
           </button>
         </div>
       </nav>
@@ -168,7 +166,7 @@ const Navbar = () => {
       )}
 
       <div
-        className={`md:hidden fixed top-0 right-0 w-80 h-full z-[1000] bg-[#f3e8ff] border-l border-slate-900/10 shadow-2xl transform transition-all duration-500 ease-out ${
+        className={`md:hidden fixed top-0 right-0 w-80 max-w-[85vw] h-full z-[1000] bg-[#f3e8ff] border-l border-slate-900/10 shadow-2xl transform transition-all duration-500 ease-out pt-[env(safe-area-inset-top,0px)] pb-[env(safe-area-inset-bottom,0px)] ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -216,7 +214,7 @@ const Navbar = () => {
 
           {/* Public Links */}
           <div className="space-y-1">
-            <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Public</p>
+            <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Explore</p>
             {publicLinks.map((link) => (
               <Link
                 key={link.path}
@@ -231,7 +229,7 @@ const Navbar = () => {
                 <span className="w-6 h-6 flex items-center justify-center">
                   {link.name === "Home" && "🏠"}
                   {link.name === "Paradox 2026" && "📅"}
-                  {link.name === "Team" && "👥"}
+                  {link.name === "Members" && "👥"}
                   {link.name === "Domains" && "🎯"}
                   {link.name === "Contact" && "📞"}
                 </span>

@@ -1,13 +1,21 @@
 @import "tailwindcss";
 
+:root {
+  --nav-height: calc(4rem + env(safe-area-inset-top, 0px));
+}
+
 /* Global Mobile Fixes */
 html {
   -webkit-text-size-adjust: 100%;
   overscroll-behavior-y: none;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
-body {
-  overflow-x: hidden;
+body,
+#root {
+  overflow-x: clip;
+  max-width: 100%;
   width: 100%;
   overscroll-behavior-y: none;
 }
@@ -53,3 +61,54 @@ input, textarea, select {
     animation-play-state: paused;
   }
 }
+
+@layer utilities {
+  .fluid-hero {
+    font-size: clamp(2.25rem, 11vw, 4.5rem);
+  }
+
+  .fluid-h1 {
+    font-size: clamp(1.75rem, 7vw, 3.75rem);
+  }
+
+  .fluid-h2 {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .fluid-lead {
+    font-size: clamp(1rem, 3.2vw, 1.5rem);
+  }
+}
+
+@keyframes move-spiral {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  25% { transform: translate(-18%, -18%) scale(1.2); opacity: 0.8; }
+  50% { transform: translate(18%, -18%) scale(1); opacity: 1; }
+  75% { transform: translate(18%, 18%) scale(1.2); opacity: 0.8; }
+  100% { transform: translate(0, 0) scale(1); opacity: 1; }
+}
+@keyframes move-spiral-trail-1 {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { transform: translate(-6%, -6%); opacity: 0.5; }
+  20% { transform: translate(-12%, -12%); opacity: 0.3; }
+  30% { transform: translate(-18%, -18%); opacity: 0.1; }
+  100% { transform: translate(-18%, -18%); opacity: 0; }
+}
+@keyframes move-spiral-trail-2 {
+  0% { transform: translate(0, 0); opacity: 0; }
+  20% { transform: translate(9%, -9%); opacity: 0.5; }
+  40% { transform: translate(18%, -18%); opacity: 0.3; }
+  60% { transform: translate(27%, -27%); opacity: 0.1; }
+  100% { transform: translate(27%, -27%); opacity: 0; }
+}
+@keyframes move-spiral-trail-3 {
+  0% { transform: translate(0, 0); opacity: 0; }
+  30% { transform: translate(9%, 9%); opacity: 0.5; }
+  60% { transform: translate(18%, 18%); opacity: 0.3; }
+  90% { transform: translate(27%, 27%); opacity: 0.1; }
+  100% { transform: translate(27%, 27%); opacity: 0; }
+}
+.animate-move-spiral { animation: move-spiral 6s ease-in-out infinite; }
+.animate-move-spiral-trail-1 { animation: move-spiral-trail-1 6s ease-out infinite; }
+.animate-move-spiral-trail-2 { animation: move-spiral-trail-2 6s ease-out infinite; animation-delay: 0.3s; }
+.animate-move-spiral-trail-3 { animation: move-spiral-trail-3 6s ease-out infinite; animation-delay: 0.6s; }

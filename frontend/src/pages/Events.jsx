@@ -82,7 +82,7 @@ export default function Events() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center overflow-x-clip">
+      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center overflow-x-clip">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
           <p className="text-slate-600 font-medium">Loading events...</p>
@@ -92,7 +92,7 @@ export default function Events() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] overflow-x-clip relative">
+    <div className="min-h-dvh bg-[#f3e8ff] overflow-x-clip relative">
       
       {/* Background Helical Path of Rings */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
@@ -106,10 +106,10 @@ export default function Events() {
       {/* Hero Header */}
       <div className="relative overflow-hidden py-20 z-10">
 
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col items-center justify-center text-center gap-6">
             <div>
-              <h1 className="text-5xl sm:text-7xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(56,189,248,0.8)] filter py-2">
+              <h1 className="fluid-h1 font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(56,189,248,0.8)] filter py-2">
                 Paradox 2026
               </h1>
             </div>
@@ -117,7 +117,7 @@ export default function Events() {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         {error && (
           <div className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center gap-3">
             <svg

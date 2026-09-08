@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 
 // ===== LAYOUT =====
 import MainLayout from "./layout/MainLayout";
@@ -41,9 +41,7 @@ export default function App() {
 
 
 
-        {/* ============================================ */}
-        {/* ===== 2. PUBLIC PAGES - WITH LAYOUT ====== */}
-        {/* ============================================ */}
+        <Route path="/login" element={<Navigate to="/" replace />} />
 
         {/* Homepage */}
         <Route
@@ -89,29 +87,25 @@ export default function App() {
 
 
         {/* ============================================ */}
-        {/* ===== 3. PROTECTED PAGES - LOGIN ONLY ===== */}
+        {/* ===== 3. EXPLORE PAGES - NO LOGIN ======== */}
         {/* ============================================ */}
 
-        {/* Resources - Learning Hub (Protected) */}
+        {/* Resources - Learning Hub */}
         <Route
           path="/resources/:domain?"
           element={
             <WithLayout>
-              <ProtectedRoute>
-                <Resources />
-              </ProtectedRoute>
+              <Resources />
             </WithLayout>
           }
         />
 
-        {/* Members Directory - Complete Club Roster (Protected) */}
+        {/* Members Directory - Complete Club Roster */}
         <Route
           path="/members"
           element={
             <WithLayout>
-              <ProtectedRoute>
-                <Members />
-              </ProtectedRoute>
+              <Members />
             </WithLayout>
           }
         />
@@ -200,7 +194,7 @@ export default function App() {
           path="*"
           element={
             <WithLayout>
-              <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center pt-16 px-4">
+              <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center pt-16 px-4">
                 <div className="text-center max-w-md">
                   <div className="inline-flex items-center justify-center w-24 h-24 bg-slate-900/5 border border-slate-900/10 rounded-full mb-6">
                     <span className="text-4xl font-bold text-slate-600">404</span>
