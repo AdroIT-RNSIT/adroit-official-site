@@ -112,3 +112,14 @@ input, textarea, select {
 .animate-move-spiral-trail-1 { animation: move-spiral-trail-1 6s ease-out infinite; }
 .animate-move-spiral-trail-2 { animation: move-spiral-trail-2 6s ease-out infinite; animation-delay: 0.3s; }
 .animate-move-spiral-trail-3 { animation: move-spiral-trail-3 6s ease-out infinite; animation-delay: 0.6s; }
+
+.event-strip {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.event-strip::-webkit-scrollbar {
+  display: none;
+}
+.event-strip-card {
+  transform-origin: center center;
+}

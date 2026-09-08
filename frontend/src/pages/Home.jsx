@@ -4,6 +4,7 @@ import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
 import RegistrationModal from '../components/RegistrationModal';
 import BrandMark from '../components/BrandMark';
+import EventCarousel from '../components/EventCarousel';
 import { sharedEvents } from '../data/events';
 
 // ============================================
@@ -142,28 +143,7 @@ const Home = () => {
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
-          {/* UPCOMING EVENTS MARQUEE */}
-          <div className="my-8 sm:my-12 w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-4">
-            <div className="flex animate-marquee hover:[animation-play-state:paused] items-center">
-              {/* Repeated sets for infinite scroll */}
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="flex gap-4 sm:gap-8 px-2 sm:px-4">
-                  {sharedEvents.map((event) => (
-                    <Link key={event._id} to="/events" className="block w-[85vw] sm:w-[480px] h-[240px] flex-shrink-0 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 backdrop-blur-sm rounded-3xl border border-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] transition-all p-6 sm:p-7 whitespace-normal text-left group">
-                      <div className="flex justify-between items-start mb-4">
-                        <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-xs sm:text-sm">Paradox 2026</span>
-                        <span className="text-xs sm:text-sm font-semibold text-slate-600">
-                          {new Date(event.date).toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] transition-all">{event.title}</h3>
-                      <p className="text-slate-600 text-sm sm:text-base line-clamp-2">{event.description}</p>
-                    </Link>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
+          <EventCarousel events={sharedEvents} />
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
           <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
