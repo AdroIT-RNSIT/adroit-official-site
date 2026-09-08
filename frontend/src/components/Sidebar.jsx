@@ -86,7 +86,7 @@ const Sidebar = () => {
       </div>
 
       {/* Mobile Bottom Bar */}
-      <div className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
+      <div className="lg:hidden fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-50">
         <div className="flex items-center gap-10 px-10 py-5 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full shadow-xl shadow-black/30">
           {socialLinks.map((link, index) => (
             <a

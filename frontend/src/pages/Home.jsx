@@ -119,16 +119,16 @@ const Home = () => {
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="min-h-dvh flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
+        className="relative flex min-h-dvh flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-36 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out"
       >
 
-        <div className="max-w-5xl text-center z-10 relative">
+        <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
           <span className="inline-flex items-center mb-4 rounded-full border border-cyan-800/20 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-cyan-800">
             Paradox 2026
           </span>
           <BrandMark size="hero" className="mb-5" />
 
-          <h1 className="mx-auto mb-10 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-cyan-800 leading-snug">
+          <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-cyan-800 leading-snug">
             <span className="sr-only">AdroIT — </span>
             Department of
             <span className="mt-0.5 block font-bold">
@@ -143,7 +143,7 @@ const Home = () => {
           </p>
 
           {/* UPCOMING EVENTS MARQUEE */}
-          <div className="my-12 w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-4">
+          <div className="my-8 sm:my-12 w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-4">
             <div className="flex animate-marquee hover:[animation-play-state:paused] items-center">
               {/* Repeated sets for infinite scroll */}
               {[...Array(4)].map((_, i) => (
@@ -166,35 +166,34 @@ const Home = () => {
           </div>
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center relative z-20">
+          <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
             <Link
               to="/domains"
-              className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+              className="group inline-flex items-center justify-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 shadow-md shadow-cyan-500/25 hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300"
             >
-              <span className="relative z-10">Explore AdroIT</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10 group-hover:translate-x-1 transition-transform">
+              <span>Explore AdroIT</span>
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-0.5 transition-transform">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
             <Link
               to="/events"
-              className="px-8 py-4 bg-slate-900/5 border border-slate-900/10 text-slate-900 font-semibold rounded-xl hover:bg-slate-900/10 hover:border-cyan-500/30 transition-all duration-300"
+              className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-slate-800 rounded-full bg-slate-900/5 border border-slate-900/10 hover:bg-slate-900/10 hover:border-cyan-500/30 transition-all duration-300"
             >
               See Events
             </Link>
+          </div>
+
+          <div className="hidden lg:flex mt-10 flex-col items-center gap-2 text-slate-500">
+            <span className="text-xs">Scroll</span>
+            <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
+            </svg>
           </div>
         </div>
 
         {/* FIXED: Responsive rings container */}
         <InteractiveRings />
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-slate-500">Scroll</span>
-          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
-          </svg>
-        </div>
       </section>
 
       {/* ===== WHY JOIN SECTION ===== */}
