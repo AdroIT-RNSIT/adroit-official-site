@@ -52,9 +52,18 @@ export default function EventDetail() {
           <p className="font-mono text-[11px] uppercase tracking-[0.32em] text-cyan-300">
             Paradox 2026
           </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
-            {event.title}
-          </h1>
+          <div className="mt-3 flex items-center justify-between gap-6 sm:gap-10 lg:gap-16">
+            <h1 className="min-w-0 flex-1 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
+              {event.title}
+            </h1>
+            <button
+              type="button"
+              onClick={() => setIsRegOpen(true)}
+              className="shrink-0 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.28)] transition-transform hover:scale-[1.02] hover:from-cyan-300 hover:to-blue-400 sm:px-8 sm:py-3.5 sm:text-base"
+            >
+              Register now
+            </button>
+          </div>
           {event.tagline && (
             <p className="mt-3 max-w-2xl text-base text-cyan-100/80 sm:text-lg">
               {event.tagline}
@@ -63,7 +72,7 @@ export default function EventDetail() {
         </div>
       </section>
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-28 sm:px-6 lg:px-8 lg:pb-16">
+      <div className="relative mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <MetaCard icon={<Calendar size={16} />} label="Date" value={dateLabel} />
           {event.location && (
@@ -108,25 +117,6 @@ export default function EventDetail() {
           )}
         </div>
 
-        <div className="mt-10 hidden lg:block">
-          <button
-            type="button"
-            onClick={() => setIsRegOpen(true)}
-            className="rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-8 py-3.5 text-base font-bold text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.28)] transition-transform hover:scale-[1.02] hover:from-cyan-300 hover:to-blue-400"
-          >
-            Register now
-          </button>
-        </div>
-      </div>
-
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-[#080c16]/90 p-4 backdrop-blur-xl lg:hidden pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <button
-          type="button"
-          onClick={() => setIsRegOpen(true)}
-          className="w-full rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 py-3.5 text-base font-bold text-slate-950"
-        >
-          Register now
-        </button>
       </div>
 
       <RegistrationModal
