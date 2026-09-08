@@ -12,7 +12,7 @@ export const sharedEvents = [
       "No flag-sharing between teams, and no attacking other teams' systems or the competition infrastructure - testing is authorised only within the provided environment.",
       "Standard cybersecurity tools and public documentation are permitted (e.g. Wireshark, Burp Suite, Ghidra, CyberChef, Hydra, Nmap - full suggested list shared at the briefing).",
       "Flags must be submitted through the official CTF platform before the scheduled end time - no extensions will be given.",
-      "Final rankings are based on the official leaderboard: flags solved and time taken. Organisers'/judges' decisions on violations and scoring are final."
+      "Final rankings are based on the official leaderboard: flags solved and time taken. Organisers/judges' decisions on violations and scoring are final."
     ]
   },
   {
