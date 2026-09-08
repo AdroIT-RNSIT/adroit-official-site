@@ -2,9 +2,13 @@ export const sharedEvents = [
   {
     _id: "1",
     title: "Capture The Flag",
+    tagline: "Think. Hack. Solve. Repeat.",
     description: "Operation Code Heist is an inter-collegiate cybersecurity competition built around a cyber-heist theme. Teams navigate six rounds, racing to crack the heist on a live scoring leaderboard.",
     date: "2026-09-17T05:00:00Z",
     location: "Main Auditorium",
+    teamSize: "3–4 members",
+    poster: "/ctf-img.webp",
+    imageUrl: "/ctf-img.webp",
     registrationCost: { ieee: 250, nonIeee: 300 },
     rules: [
       "Teams of 4; two structured 3-hour sessions with a lunch break in between (total event duration 8.5 hours).",
@@ -18,9 +22,13 @@ export const sharedEvents = [
   {
     _id: "2",
     title: "Tech Auction",
+    tagline: "Bid. Strategize. Win.",
     description: "Tech Auction is a team-based technical strategy event that combines bidding, decision-making, and innovation. Teams start with a fixed amount of virtual currency (CHIPS) and bid for technologies - AI systems, frameworks, databases, hardware, and more. After the auction, teams must build a working prototype using only the technologies they've acquired, based on a problem statement revealed before bidding begins.",
     date:"2026-09-18T05:00:00Z",
     location: "IT Block Edusat Hall",
+    teamSize: "3–4 members",
+    poster: "/tech-img.webp",
+    imageUrl: "/tech-img.webp",
     registrationCost: { ieee: 200, nonIeee: 250 },
     rules: [
       "Every team starts with an equal amount of CHIPS - no borrowing or transferring CHIPS between teams.",
@@ -36,9 +44,13 @@ export const sharedEvents = [
   {
     _id: "3",
     title: "AI Film Making",
+    tagline: "Ideas · AI · Stories · Beyond reality",
     description: "The AI Film Making Challenge is a creative event where teams use Artificial Intelligence tools to script, generate, and edit a short film based on a theme revealed only after the event begins - so every team starts on equal footing. The event is presented in association with Who VR and is designed to test creativity, storytelling, teamwork, and effective use of AI tools under time pressure.",
     date:"2026-09-18T05:00:00Z",
     location: "IT Block",
+    teamSize: "1–2 members",
+    poster: "/ai-img.webp",
+    imageUrl: "/ai-img.webp",
     registrationCost: { all: 100 },
     rules: [
       "Teams of 1-2 participants each.",
