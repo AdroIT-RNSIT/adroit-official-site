@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSession, authClient } from "../lib/auth-client";
+import BrandMark from "./BrandMark";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -55,9 +56,7 @@ const Navbar = () => {
           
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <span className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-[0.08em] sm:tracking-[0.15em] leading-none">
-              AdroIT
-            </span>
+            <BrandMark size="nav" />
             <div className="hidden lg:block ml-4 h-12 w-64 overflow-hidden relative">
               <img
                 src="/ieee_logo.png"
@@ -163,9 +162,7 @@ const Navbar = () => {
         {/* Mobile Menu Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-900/10">
           <Link to="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
-            <span className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-[0.08em] leading-none">
-              AdroIT
-            </span>
+            <BrandMark size="nav" />
           </Link>
           <button
             onClick={() => setMobileMenuOpen(false)}

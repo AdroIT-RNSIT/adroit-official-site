@@ -3,6 +3,7 @@ import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
 import RegistrationModal from '../components/RegistrationModal';
+import BrandMark from '../components/BrandMark';
 import { sharedEvents } from '../data/events';
 
 // ============================================
@@ -123,11 +124,9 @@ const Home = () => {
 
         <div className="max-w-5xl text-center z-10 relative">
           <span className="block text-sm sm:text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.1em] sm:tracking-[0.2em] mb-2">
-              Welcome to
+              Paradox 2026
             </span>
-          <span className="block fluid-hero font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.08em] sm:tracking-[0.15em] sm:ml-4">
-              AdroIT
-            </span>
+          <BrandMark size="hero" className="mb-6" />
           <br></br>
           {/* Badge */}
           <div className="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-full px-4 sm:px-8 py-3 sm:py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-xs sm:text-lg md:text-xl text-slate-600 font-medium tracking-wide whitespace-normal text-center">

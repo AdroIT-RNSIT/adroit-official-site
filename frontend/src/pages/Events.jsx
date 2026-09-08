@@ -3,6 +3,7 @@ import { useSession } from "../lib/auth-client";
 import RegistrationModal from "../components/RegistrationModal";
 import EventDetailsModal from "../components/EventDetailsModal";
 import InteractiveRings from "../components/InteractiveRings";
+import BrandMark from "../components/BrandMark";
 import { sharedEvents } from "../data/events";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -112,7 +113,11 @@ export default function Events() {
               <h1 className="fluid-h1 font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(56,189,248,0.8)] filter py-2">
                 Paradox 2026
               </h1>
+              <p className="mt-3 font-mono text-xs sm:text-sm tracking-[0.25em] uppercase text-slate-500">
+                Capture The Flag
+              </p>
             </div>
+            <BrandMark size="hero" />
           </div>
         </div>
       </div>
