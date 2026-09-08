@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 
 // ===== LAYOUT =====
 import MainLayout from "./layout/MainLayout";
@@ -242,6 +243,7 @@ export default function App() {
         />
       </Routes>
       {/* <ChatBot /> */}
+      <Analytics />
     </>
   );
 }
