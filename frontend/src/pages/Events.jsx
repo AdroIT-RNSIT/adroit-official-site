@@ -424,19 +424,17 @@ function EventCard({
   return (
     <div
       onClick={() => !isPast && onRegister && onRegister(event.title)}
-      className={`group relative min-h-[420px] flex flex-col backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
+      className={`group relative flex flex-col backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
         isPast
           ? "border-slate-900/5 bg-slate-900/[0.03] opacity-60 hover:opacity-80"
-          : "border-cyan-500/40 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.4)] cursor-pointer hover:-translate-y-2 hover:scale-105 z-10"
+          : "border-cyan-500/40 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.4)] cursor-pointer hover:-translate-y-1 z-10"
       }`}
     >
-      {/* Animated glossy overlay for special card effect */}
       {!isPast && (
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none z-20"></div>
       )}
-      {/* Event image or gradient top bar */}
       {event.imageUrl ? (
-        <div className="relative h-44 overflow-hidden">
+        <div className="relative h-40 overflow-hidden">
           <img
             src={event.imageUrl}
             alt={event.title}
@@ -446,11 +444,9 @@ function EventCard({
         </div>
       ) : null}
 
-      <div className="p-6 flex-1 flex flex-col">
-        {/* Top row (Admin delete only) */}
+      <div className="p-5 flex-1 flex flex-col">
         {isAdmin && (
-          <div className="flex items-center justify-end mb-4">
-            {/* Admin delete */}
+          <div className="flex items-center justify-end mb-2">
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(event._id); }}
               className="opacity-0 group-hover:opacity-100 text-red-400/60 hover:text-red-400 transition-all p-2 rounded-lg hover:bg-red-500/10"
@@ -473,63 +469,33 @@ function EventCard({
           </div>
         )}
 
-        <h3 className="text-xl font-black bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.7)] group-hover:drop-shadow-[0_0_12px_rgba(245,158,11,0.9)] group-hover:brightness-125 transition-all duration-300 mb-2">
+        <h3 className="text-xl font-black bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.7)] mb-2">
           {event.title}
         </h3>
 
-        {/* Date and Time */}
         {event.date && (
-          <div className="flex items-center gap-2.5 text-base text-slate-600 font-bold mb-4">
-            <svg className="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex items-center gap-2 text-sm text-slate-600 font-semibold mb-3">
+            <svg className="w-4 h-4 text-cyan-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <span>{formatDate(event.date)}</span>
           </div>
         )}
 
-        {/* Description - FULL DESCRIPTION VISIBLE */}
         {event.description && (
-          <p className="text-slate-600 text-base leading-relaxed mb-4">
+          <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
             {event.description}
           </p>
         )}
-
-        {/* Registration Cost */}
-        {!isPast && event.registrationCost && (
-          <div className="mt-4 p-3 rounded-xl bg-white/40 border border-cyan-500/20">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Registration Cost</p>
-            <div className="flex flex-wrap gap-3">
-              {event.registrationCost.ieee !== undefined && (
-                <span className="flex items-center gap-1.5 text-sm font-semibold text-cyan-700">
-                  <span className="w-2 h-2 rounded-full bg-cyan-500 inline-block"></span>
-                  IEEE: ₹{event.registrationCost.ieee}
-                </span>
-              )}
-              {event.registrationCost.nonIeee !== undefined && (
-                <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
-                  Non-IEEE: ₹{event.registrationCost.nonIeee}
-                </span>
-              )}
-              {event.registrationCost.all !== undefined && (
-                <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
-                  All: ₹{event.registrationCost.all}
-                </span>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Register Button */}
       {!isPast && onRegister && (
-        <div className="px-6 pb-6">
+        <div className="px-5 pb-5">
           <button
             onClick={(e) => { e.stopPropagation(); onRegister(event.title); }}
-            className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all duration-300 text-sm tracking-wide"
+            className="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all duration-300 text-sm tracking-wide"
           >
-            View Details &amp; Register
+            View details &amp; register
           </button>
         </div>
       )}
