@@ -151,7 +151,7 @@ export default function EventDetail() {
       <RegistrationModal
         isOpen={isRegOpen}
         onClose={() => setIsRegOpen(false)}
-        eventTitle={event.title}
+        event={event}
       />
     </div>
   );

@@ -127,9 +127,28 @@ input, textarea, select {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 .event-page-enter {
-  animation: event-page-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: event-page-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.reg-scroll-lock,
+html.reg-scroll-lock body,
+html.reg-scroll-lock #root {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.reg-scroll-lock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+[data-registration-scroll] {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 }
