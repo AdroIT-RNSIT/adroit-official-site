@@ -103,22 +103,17 @@ const Home = () => {
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
       
-      {/* RNSIT LOGO - FLUSH TOP LEFT */}
-      <div className="absolute top-0 left-0 z-[1001]">
-        <img 
-          src="/rnsit_logo.png" 
-          alt="RNSIT Logo" 
-          className="w-28 sm:w-44 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
-          style={{ mixBlendMode: 'multiply' }}
+      {/* RNSIT + 25 YEARS — same height, opposite corners */}
+      <div className="absolute top-0 inset-x-0 z-[1001] flex items-center justify-between pointer-events-none">
+        <img
+          src="/rnsit_logo.png"
+          alt="RNSIT Logo"
+          className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto max-w-[70%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
         />
-      </div>
-
-      {/* 25 YEARS LOGO - FLUSH TOP RIGHT */}
-      <div className="absolute top-0 right-0 z-[1001]">
-        <img 
-          src="/25_years.png" 
-          alt="25 Years Excellence" 
-          className="w-12 sm:w-16 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
+        <img
+          src="/25_years.png"
+          alt="25 Years Excellence"
+          className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
 
