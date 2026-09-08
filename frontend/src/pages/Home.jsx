@@ -108,25 +108,25 @@ const Home = () => {
         <img
           src="/rnsit_logo.png"
           alt="RNSIT Logo"
-          className="w-[10.5rem] sm:w-[16.5rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl"
+          className="w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl"
           style={{ mixBlendMode: "multiply" }}
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="w-[4.5rem] sm:w-24 h-auto max-w-[36%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
       <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
         <img
           src="/rnsit_logo.png"
           alt="RNSIT Logo"
-          className="h-72 w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+          className="h-[12.6rem] w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="h-72 w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="h-[10.08rem] w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
 
