@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, MapPin, Users, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Calendar, ChevronDown, MapPin, Users } from "lucide-react";
 import RegistrationModal from "../components/RegistrationModal";
 import { getEventBySlug } from "../data/events";
 
@@ -17,6 +17,12 @@ export default function EventDetail() {
   const { slug } = useParams();
   const event = getEventBySlug(slug);
   const [isRegOpen, setIsRegOpen] = useState(false);
+  const [rulesOpen, setRulesOpen] = useState(false);
+
+  useEffect(() => {
+    setRulesOpen(false);
+    setIsRegOpen(false);
+  }, [slug]);
 
   if (!event) return <Navigate to="/events" replace />;
 
@@ -90,32 +96,58 @@ export default function EventDetail() {
           )}
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
-          <div>
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-              About the event
-            </h2>
-            <p className="mt-4 text-base leading-8 text-slate-200 sm:text-lg">
-              {event.description}
-            </p>
-          </div>
+        <section className="mt-10">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+            About the event
+          </h2>
+          <p className="mt-4 max-w-3xl text-base leading-8 text-slate-200 sm:text-lg">
+            {event.description}
+          </p>
+        </section>
 
-          {event.rules?.length > 0 && (
-            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-7">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                Rules &amp; guidelines
-              </h2>
-              <ol className="mt-5 space-y-4">
+        {event.rules?.length > 0 && (
+          <section className="mt-8 sm:mt-10">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent">
+              <button
+                type="button"
+                onClick={() => setRulesOpen((open) => !open)}
+                className="flex min-h-14 w-full items-center justify-between gap-4 px-4 py-3.5 text-left sm:px-5 lg:pointer-events-none lg:min-h-0 lg:cursor-default lg:px-0 lg:py-0"
+                aria-expanded={rulesOpen}
+              >
+                <div>
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                    Rules &amp; guidelines
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-400 lg:hidden">
+                    {event.rules.length} points · tap to {rulesOpen ? "hide" : "read"}
+                  </p>
+                </div>
+                <ChevronDown
+                  size={20}
+                  className={`shrink-0 text-cyan-300 transition-transform lg:hidden ${rulesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              <ol
+                className={`gap-3 border-t border-white/10 p-3 sm:grid-cols-2 sm:p-4 lg:mt-5 lg:border-0 lg:p-0 ${
+                  rulesOpen ? "grid" : "hidden lg:grid"
+                }`}
+              >
                 {event.rules.map((rule, idx) => (
-                  <li key={idx} className="flex gap-3 text-sm leading-relaxed text-slate-200 sm:text-[15px]">
-                    <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-cyan-400" />
-                    <span>{rule}</span>
+                  <li
+                    key={idx}
+                    className="flex gap-3 rounded-xl bg-black/25 px-3.5 py-3.5 sm:rounded-2xl sm:px-5 sm:py-4 lg:border lg:border-white/10 lg:bg-white/[0.04]"
+                  >
+                    <span className="mt-0.5 font-mono text-xs font-semibold text-cyan-400 sm:text-sm">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <p className="text-[15px] leading-relaxed text-slate-200">{rule}</p>
                   </li>
                 ))}
               </ol>
             </div>
-          )}
-        </div>
+          </section>
+        )}
 
       </div>
 
