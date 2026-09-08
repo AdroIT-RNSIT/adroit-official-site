@@ -103,31 +103,44 @@ const Home = () => {
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
       
-      {/* RNSIT + 25 YEARS — same height, opposite corners */}
-      <div className="absolute top-0 inset-x-0 z-[1001] flex items-center justify-between pointer-events-none">
+      {/* Mobile: original corner sizes in flow so the hero sits below. Laptop: larger aligned pair. */}
+      <div className="lg:hidden relative z-[1001] flex items-center justify-between">
         <img
           src="/rnsit_logo.png"
           alt="RNSIT Logo"
-          className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto max-w-[70%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+          className="w-[10.5rem] sm:w-[16.5rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl"
+          style={{ mixBlendMode: "multiply" }}
         />
         <img
           src="/25_years.png"
           alt="25 Years Excellence"
-          className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="w-[4.5rem] sm:w-24 h-auto max-w-[36%] object-contain object-right drop-shadow-2xl"
+        />
+      </div>
+      <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
+        <img
+          src="/rnsit_logo.png"
+          alt="RNSIT Logo"
+          className="h-72 w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+        />
+        <img
+          src="/25_years.png"
+          alt="25 Years Excellence"
+          className="h-72 w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
 
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-24 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
+        className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-8 pb-24 sm:pt-10 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
 
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
           <span className="inline-flex items-center mb-4 rounded-full border border-cyan-800/20 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-cyan-800">
             Paradox 2026
           </span>
-          <BrandMark size="hero" className="mb-5" />
+          <BrandMark size="home" className="mb-5" />
 
           <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-cyan-800 leading-snug">
             <span className="sr-only">AdroIT — </span>
