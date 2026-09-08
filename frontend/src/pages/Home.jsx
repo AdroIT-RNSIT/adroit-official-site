@@ -112,9 +112,9 @@ const Home = () => {
           style={{ mixBlendMode: "multiply" }}
         />
         <img
-          src="/25_years.png"
+          src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="w-[4.5rem] sm:w-24 h-auto max-w-[36%] object-contain object-right drop-shadow-2xl"
+          className="w-[4.5rem] sm:w-24 h-auto max-w-[36%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
       <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
@@ -124,7 +124,7 @@ const Home = () => {
           className="h-72 w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
         />
         <img
-          src="/25_years.png"
+          src="/25_years_new.png"
           alt="25 Years Excellence"
           className="h-72 w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
