@@ -41,15 +41,15 @@ const Home = () => {
 
   useEffect(() => {
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
+      threshold: 0,
+      rootMargin: '80px 0px 0px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('opacity-100', 'translate-y-0');
-          entry.target.classList.remove('opacity-0', 'translate-y-12');
+          entry.target.classList.remove('opacity-0', 'translate-y-4', 'translate-y-12');
         }
       });
     }, observerOptions);
@@ -119,7 +119,7 @@ const Home = () => {
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="relative flex min-h-dvh flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-36 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out"
+        className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-24 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
 
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
@@ -197,7 +197,7 @@ const Home = () => {
       </section>
 
       {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000">
+      <section id="why-join" ref={missionRef} className="py-10 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
@@ -285,7 +285,7 @@ const Home = () => {
       </section>
 
       {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
-      <section ref={domainsRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-12 transition-all duration-1000">
+      <section ref={domainsRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
@@ -322,7 +322,7 @@ const Home = () => {
       {/* ===== INTERACTIVE CANVAS SECTION ===== */}
       <section 
         ref={approachRef}
-        className="min-h-[60dvh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="min-h-[60dvh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
       >
         <ThreeScene />
         <div className="relative z-10 text-center">
@@ -339,7 +339,7 @@ const Home = () => {
       {/* ===== BENEFITS SECTION ===== */}
       <section 
         ref={benefitsRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -393,7 +393,7 @@ const Home = () => {
       {/* ===== CLUB ACTIVITIES ===== */}
       <section 
         ref={activitiesRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           
