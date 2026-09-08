@@ -12,8 +12,8 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-500 font-medium">Loading...</p>
+          <div className="w-10 h-10 border-2 border-border-subtle border-t-accent-primary rounded-full animate-spin" />
+          <p className="text-text-muted font-medium">Loading...</p>
         </div>
       </div>
     );
@@ -26,58 +26,29 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
   const isAdmin = session.user?.role === "admin";
   const isApproved = session.user?.approved === true;
 
-  // Admins always pass; non-admins need approval
   if (!isAdmin && !isApproved) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-4">
-            <svg
-              className="w-8 h-8 text-amber-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
+      <div className="flex items-center justify-center min-h-[60vh] px-4">
+        <div className="text-center max-w-md mx-auto">
+          <h2 className="text-xl font-bold text-text-primary mb-2">
             Pending Approval
           </h2>
-          <p className="text-slate-500 mb-4">
+          <p className="text-text-body mb-4">
             Your account is waiting for admin approval. You'll be able to access
             this page once an admin approves your account.
           </p>
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
-            <p className="text-amber-800 text-sm font-medium">
+          <div className="card p-4 mb-4 text-left">
+            <p className="text-text-primary text-sm font-medium">
               Please contact an admin to get your account approved.
             </p>
             <a
               href="mailto:adroit@example.com"
-              className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 font-semibold rounded-lg text-sm transition-colors duration-200"
+              className="btn btn-secondary mt-3 text-sm"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
               Contact Admin
             </a>
           </div>
-          <p className="text-slate-600 text-xs">
+          <p className="text-text-muted text-xs">
             Already approved? Try refreshing the page.
           </p>
         </div>

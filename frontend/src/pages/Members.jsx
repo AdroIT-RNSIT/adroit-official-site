@@ -8,11 +8,11 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 // DOMAIN CONFIGURATION - MATCHES OTHER PAGES
 // ============================================
 const DOMAINS = [
-  { id: 'all', name: 'All Members', icon: '👥', color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
-  { id: 'ml', name: 'Machine Learning', icon: '🤖', color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
-  { id: 'cc', name: 'Cloud Computing', icon: '☁️', color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
-  { id: 'cy', name: 'Cybersecurity', icon: '🔒', color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
-  { id: 'da', name: 'Data Analytics', icon: '📊', color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
+  { id: 'all', name: 'All Members', icon: '👥' },
+  { id: 'ml', name: 'Machine Learning', icon: '🤖' },
+  { id: 'cc', name: 'Cloud Computing', icon: '☁️' },
+  { id: 'cy', name: 'Cybersecurity', icon: '🔒' },
+  { id: 'da', name: 'Data Analytics', icon: '📊' }
 ];
 
 // ============================================
@@ -173,10 +173,10 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center">
+      <div className="min-h-[60vh] bg-bg-base flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
-            <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-2 border-border-subtle border-t-accent-primary rounded-full animate-spin mx-auto mb-4"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <span className="text-2xl">👥</span>
             </div>
@@ -188,30 +188,16 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
-      
-      {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-40 left-20 w-[400px] max-w-[100vw] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-40 right-20 w-[500px] max-w-[100vw] h-[500px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-bg-base overflow-x-clip py-10 sm:py-12">
+      <div className="page-wrap">
         
         {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-            <span className="text-sm text-slate-600">AdroIT Member Directory</span>
-          </div>
+          <div className="badge mb-4">AdroIT Member Directory</div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              All Members
-            </span>
-          </h1>
+          <h1 className="section-title">All Members</h1>
           
-          <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="section-lead">
             Connect with everyone in the AdroIT community
           </p>
 
@@ -244,7 +230,7 @@ export default function Members() {
         </div>
 
         {/* ===== SEARCH & FILTERS BAR ===== */}
-        <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
+        <div className="card p-5 mb-8">
           
           {/* Search Row */}
           <div className="relative mb-4">
@@ -256,7 +242,7 @@ export default function Members() {
               placeholder="Search by name, email, role, or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
+              className="input-field pl-9"
             />
           </div>
 
@@ -271,10 +257,10 @@ export default function Members() {
                   <button
                     key={domain.id}
                     onClick={() => setActiveDomain(domain.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                    className={`min-h-11 px-3 rounded-lg text-xs font-medium ${
                       activeDomain === domain.id
-                        ? `bg-gradient-to-r ${domain.color} text-slate-900`
-                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
+                        ? `bg-accent-primary text-white`
+                        : 'bg-bg-base text-text-body border border-border-subtle'
                     }`}
                   >
                     <span className="mr-1">{domain.icon}</span>
@@ -295,10 +281,10 @@ export default function Members() {
                   <button
                     key={year.id}
                     onClick={() => setActiveYear(year.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                    className={`min-h-11 px-3 rounded-lg text-xs font-medium ${
                       activeYear === year.id
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-slate-900'
-                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
+                        ? 'bg-accent-primary text-white'
+                        : 'bg-bg-base text-text-body border border-border-subtle'
                     }`}
                   >
                     {year.name}
@@ -320,10 +306,10 @@ export default function Members() {
                   <button
                     key={role.id}
                     onClick={() => setActiveRole(role.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                    className={`min-h-11 px-3 rounded-lg text-xs font-medium ${
                       activeRole === role.id
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-slate-900'
-                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
+                        ? 'bg-accent-primary text-white'
+                        : 'bg-bg-base text-text-body border border-border-subtle'
                     }`}
                   >
                     {role.name}
@@ -344,7 +330,7 @@ export default function Members() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="flex-1 px-3 py-1.5 bg-slate-900/5 border border-slate-900/10 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-cyan-500/50 transition-all"
+                  className="input-field text-sm"
                 >
                   <option value="name">Name</option>
                   <option value="year">Year</option>
@@ -359,7 +345,7 @@ export default function Members() {
                     setSearchQuery('');
                     setSortBy('name');
                   }}
-                  className="px-3 py-1.5 bg-slate-900/5 hover:bg-slate-900/10 border border-slate-900/10 rounded-lg text-slate-600 hover:text-slate-900 text-xs transition-all"
+                  className="btn btn-secondary text-xs"
                 >
                   Clear
                 </button>
@@ -370,9 +356,9 @@ export default function Members() {
 
         {/* ===== RESULTS SUMMARY ===== */}
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-slate-500">
-            Showing <span className="text-slate-900 font-medium">{filteredMembers.length}</span> of{' '}
-            <span className="text-slate-900 font-medium">{members.length}</span> members
+          <p className="text-sm text-text-muted">
+            Showing <span className="text-text-primary font-medium">{filteredMembers.length}</span> of{' '}
+            <span className="text-text-primary font-medium">{members.length}</span> members
           </p>
           <p className="text-xs text-gray-600">
             {activeDomain !== 'all' && ` • ${DOMAINS.find(d => d.id === activeDomain)?.name}`}
@@ -429,18 +415,17 @@ export default function Members() {
         {/* ===== JOIN CTA - Only for non-logged in users ===== */}
         {!session && (
           <div className="mt-16 text-center">
-            <div className="relative group inline-block">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
+          <div className="relative group inline-block">
+              <div className="relative card p-6 md:p-8">
+                <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-3">
                   Want to be part of this community?
                 </h3>
-                <p className="text-slate-600 text-sm mb-4 max-w-lg mx-auto">
+                <p className="text-text-body text-sm mb-4 max-w-lg mx-auto">
                   Join AdroIT and connect with passionate technologists
                 </p>
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl text-sm shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                  className="btn btn-primary"
                 >
                   Join AdroIT Now
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -452,20 +437,6 @@ export default function Members() {
           </div>
         )}
       </div>
-
-      {/* ===== STYLES ===== */}
-      <style>{`
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.05); }
-        }
-        @keyframes pulse-slower {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(1.1); }
-        }
-        .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-        .animate-pulse-slower { animation: pulse-slower 8s ease-in-out infinite; }
-      `}</style>
     </div>
   );
 }
@@ -475,14 +446,6 @@ export default function Members() {
 // ============================================
 function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
   
-  // Domain color mapping
-  const domainColors = {
-    ml: 'from-cyan-500 to-cyan-600',
-    cc: 'from-purple-500 to-purple-600',
-    cy: 'from-pink-500 to-pink-600',
-    da: 'from-green-500 to-green-600'
-  };
-
   const domainIcons = {
     ml: '🤖',
     cc: '☁️',
@@ -491,26 +454,25 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
   };
 
   const domain = member.domain || 'ml';
-  const color = domainColors[domain] || 'from-gray-500 to-gray-600';
   const icon = domainIcons[domain] || '👤';
 
   // Role badge color
   const getRoleBadgeColor = (role) => {
-    if (role === 'President' || role === 'Vice President') return 'bg-yellow-500/20 text-yellow-400';
-    if (role === 'Domain Lead') return 'bg-purple-500/20 text-purple-400';
-    if (role === 'Core Member') return 'bg-blue-500/20 text-blue-400';
-    if (role === 'Member') return 'bg-gray-500/20 text-slate-600';
-    return 'bg-gray-500/20 text-slate-600';
+    if (role === 'President' || role === 'Vice President') return 'bg-accent-amber-tint text-accent-amber';
+    if (role === 'Domain Lead') return 'bg-accent-primary-tint text-accent-primary';
+    if (role === 'Core Member') return 'bg-bg-base text-text-body';
+    if (role === 'Member') return 'text-text-muted';
+    return 'text-text-muted';
   };
 
   return (
-    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-lg p-3 transition-all duration-200 hover:-translate-y-1 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div className="card card-hover p-3">
       
       <div className="relative">
         
         {/* Avatar */}
         <div className="relative w-14 h-14 mx-auto mb-2">
-          <div className={`absolute inset-0 bg-gradient-to-br ${color} rounded-lg blur-md opacity-50`}></div>
+          <div className={`absolute inset-0 bg-accent-primary-tint rounded-lg`}></div>
           
           {member.imagePublicId ? (
             <img
@@ -519,13 +481,13 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
               className="relative w-full h-full object-cover rounded-lg border border-slate-900/10"
             />
           ) : (
-            <div className={`relative w-full h-full rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-slate-900 font-bold text-xl border border-slate-900/10`}>
+            <div className="relative w-full h-full rounded-lg bg-accent-primary text-white flex items-center justify-center font-bold text-xl border border-border-subtle">
               {member.name?.charAt(0).toUpperCase()}
             </div>
           )}
 
           {/* Domain Icon Badge */}
-          <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-[10px] border-2 border-[#0d1117]`}>
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-accent-primary-tint text-accent-primary flex items-center justify-center text-[10px] border border-border-subtle">
             {icon}
           </div>
 
@@ -533,7 +495,7 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
           {isAdmin && (
             <button
               onClick={() => onDelete(member._id)}
-              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              className="absolute -top-1 -right-1 w-7 h-7 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white"
               title="Remove member"
             >
               <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -545,7 +507,7 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
 
         {/* Member Info */}
         <div className="text-center">
-          <h3 className="text-slate-900 font-medium text-xs truncate group-hover:text-cyan-400 transition-colors">
+          <h3 className="text-text-primary font-medium text-xs truncate">
             {member.name}
           </h3>
           

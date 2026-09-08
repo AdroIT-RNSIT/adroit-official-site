@@ -1,16 +1,10 @@
-
-
 export default function LoadingSpinner({ icon, text }) {
   return (
-    <div className="min-h-screen bg-[#f3e8ff] flex items-center justify-center">
+    <div className="min-h-[60vh] bg-bg-base flex items-center justify-center px-4">
       <div className="text-center">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-2xl">{icon || "📚"}</span>
-          </div>
-        </div>
-        <p className="text-slate-600 text-sm">{text || "Loading ..."}</p>
+        <div className="w-10 h-10 border-2 border-border-subtle border-t-accent-primary rounded-full animate-spin mx-auto mb-3" />
+        {icon ? <p className="text-lg mb-1">{icon}</p> : null}
+        <p className="text-sm text-text-body">{text || "Loading ..."}</p>
       </div>
     </div>
   );

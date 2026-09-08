@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";  // No props!
 import Footer from "../components/Footer";
 
 export default function MainLayout({ children }) {
@@ -8,17 +7,10 @@ export default function MainLayout({ children }) {
   const showMap = location.pathname === "/";
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-[#f9f0ff] to-[#f3e8ff] text-slate-900 font-sans overflow-x-clip">
-      {/* Background gradients */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/3 left-1/4 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[150px]"></div>
-      </div>
-
+    <div className="min-h-dvh bg-bg-base text-text-primary font-sans">
       <Navbar />
-      <Sidebar />  {/* No showOnHomepage prop! */}
-      <main className="pt-16 relative z-10">{children}</main>
-      <Footer showMap={showMap}/>
+      <main className="pt-16">{children}</main>
+      <Footer showMap={showMap} />
     </div>
   );
 }

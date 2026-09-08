@@ -1,540 +1,424 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
-import ThreeScene from '../home/ThreeScene';
+import {
+  Brain,
+  Cloud,
+  ShieldCheck,
+  BarChart3,
+  ArrowRight,
+  CalendarDays,
+  Rocket,
+  Users,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import RegistrationModal from '../components/RegistrationModal';
-import { sharedEvents } from '../data/events';
+import { sharedEvents } from "../data/events";
+import Reveal from "../components/Reveal";
 
-// ============================================
-// FIXED INTERACTIVE BALL COMPONENT
-// ============================================
-import InteractiveRings from '../components/InteractiveRings';
-
-// ============================================
-// DOMAIN CARD COMPONENT - NEW!
-// ============================================
-const DomainCard = ({ icon, title, description, color }) => (
-  <div className="group relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300">
-    <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-slate-900 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 mb-4 group-hover:scale-110 transition-all duration-300`}>
-      {icon}
-    </div>
-    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors">
-      {title}
-    </h3>
-    <p className="text-slate-600 text-sm leading-relaxed">
-      {description}
-    </p>
-  </div>
+const DomainCard = ({ icon, title, description, delay = 0 }) => (
+  <Reveal delay={delay} className="h-full">
+    <article className="domain-card card card-hover h-full">
+      <div className="domain-icon">{icon}</div>
+      <h3 className="domain-title">{title}</h3>
+      <p className="text-sm text-text-body leading-relaxed flex-1">{description}</p>
+      <span className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-accent-primary">
+        Learn more
+        <ArrowRight size={14} aria-hidden="true" />
+      </span>
+    </article>
+  </Reveal>
 );
 
-// ============================================
-// MAIN HOME COMPONENT
-// ============================================
 const Home = () => {
-  const heroRef = useRef(null);
-  const missionRef = useRef(null);
-  const domainsRef = useRef(null);
-  const approachRef = useRef(null);
-  const benefitsRef = useRef(null);
-  const activitiesRef = useRef(null);
-
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('opacity-100', 'translate-y-0');
-          entry.target.classList.remove('opacity-0', 'translate-y-12');
-        }
-      });
-    }, observerOptions);
-
-    const refs = [heroRef, missionRef, domainsRef, approachRef, benefitsRef, activitiesRef];
-    refs.forEach(ref => {
-      if (ref.current) observer.observe(ref.current);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Domain data for your 4 core domains
   const domains = [
     {
-      icon: <Brain size={28} strokeWidth={2} />,
-      title: 'Machine Learning',
-      description: 'Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.',
-      color: 'from-cyan-500 to-cyan-600',
-      link: '/resources/ml'
+      icon: <Brain size={22} strokeWidth={2} />,
+      title: "Machine Learning",
+      description:
+        "Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.",
     },
     {
-      icon: <Cloud size={28} strokeWidth={2} />,
-      title: 'Cloud Computing',
-      description: 'Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.',
-      color: 'from-purple-500 to-purple-600',
-      link: '/resources/cc'
+      icon: <Cloud size={22} strokeWidth={2} />,
+      title: "Cloud Computing",
+      description:
+        "Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.",
     },
     {
-      icon: <ShieldCheck size={28} strokeWidth={2} />,
-      title: 'Cybersecurity',
-      description: 'Protect systems from threats. Learn ethical hacking, network security, and cryptography.',
-      color: 'from-pink-500 to-pink-600',
-      link: '/resources/cy'
+      icon: <ShieldCheck size={22} strokeWidth={2} />,
+      title: "Cybersecurity",
+      description:
+        "Protect systems from threats. Learn ethical hacking, network security, and cryptography.",
     },
     {
-      icon: <BarChart3 size={28} strokeWidth={2} />,
-      title: 'Data Analytics',
-      description: 'Extract insights from data. Master visualization, SQL, Python, and business intelligence.',
-      color: 'from-green-500 to-green-600',
-      link: '/resources/da'
-    }
+      icon: <BarChart3 size={22} strokeWidth={2} />,
+      title: "Data Analytics",
+      description:
+        "Extract insights from data. Master visualization, SQL, Python, and business intelligence.",
+    },
+  ];
+
+  const advantages = [
+    "Build an impressive portfolio with real projects",
+    "Master in-demand technologies before they're in your syllabus",
+    "Network with industry professionals and alumni",
+    "Develop leadership and teamwork skills",
+    "Gain confidence through regular presentations and demos",
+    "Access exclusive learning resources and workshops",
+  ];
+
+  const communityCards = [
+    {
+      icon: <CalendarDays size={20} strokeWidth={2} />,
+      title: "Weekly Tech Sessions",
+      description:
+        "Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.",
+      items: [
+        "Machine Learning Fundamentals & Projects",
+        "Cloud Computing Concepts & Deployment",
+        "Cybersecurity Basics & Practices",
+        "Data Analytics Tools & Workflows",
+      ],
+    },
+    {
+      icon: <Rocket size={20} strokeWidth={2} />,
+      title: "Project Sprints",
+      description:
+        "Team-based project cycles designed to apply skills through real-world problem solving.",
+      items: [
+        "ML Model Development",
+        "Cloud-based Application Deployment",
+        "Security Analysis & Testing",
+        "Data-driven Insights Projects",
+      ],
+    },
+    {
+      icon: <Users size={20} strokeWidth={2} />,
+      title: "Community & Events",
+      description:
+        "Events that encourage collaboration, innovation, and exposure to industry practices.",
+      items: [
+        "HackAdroIT Hackathon",
+        "Industry Talks & Expert Sessions",
+        "Project Demo Days",
+        "Peer Learning & Networking Events",
+      ],
+    },
+  ];
+
+  const growthPillars = [
+    {
+      num: "01",
+      title: "Technical Excellence",
+      description:
+        "Develop strong technical thinking by understanding core concepts, problem-solving approaches, and real-world applications across all four domains.",
+    },
+    {
+      num: "02",
+      title: "Professional Network",
+      description:
+        "Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.",
+    },
+    {
+      num: "03",
+      title: "Leadership Skills",
+      description:
+        "Take ownership of projects, lead teams in hackathons, and organize events. Develop the soft skills that complement your technical expertise.",
+    },
   ];
 
   return (
-    <div className="relative min-h-screen overflow-x-clip">
-      
-      {/* RNSIT LOGO - FLUSH TOP LEFT */}
-      <div className="absolute top-0 left-0 z-[1001]">
-        <img 
-          src="/rnsit_logo.png" 
-          alt="RNSIT Logo" 
-          className="w-44 sm:w-64 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
-          style={{ mixBlendMode: 'multiply' }}
+    <div className="relative overflow-x-clip">
+      <section className="hero-section relative overflow-hidden">
+        <div className="absolute inset-0 hero-grid pointer-events-none" aria-hidden="true" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-primary-tint), transparent 70%)",
+          }}
+          aria-hidden="true"
         />
-      </div>
 
-      {/* 25 YEARS LOGO - FLUSH TOP RIGHT */}
-      <div className="absolute top-0 right-0 z-[1001]">
-        <img 
-          src="/25_years.png" 
-          alt="25 Years Excellence" 
-          className="w-16 sm:w-24 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
-        />
-      </div>
-
-      {/* ===== HERO SECTION ===== */}
-      <section 
-        ref={heroRef}
-        className="min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
-      >
-
-        <div className="max-w-5xl text-center z-10 relative">
-          <span className="block text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.2em] mb-2">
+        <div className="page-wrap relative py-8 sm:py-10 lg:py-12">
+          <Reveal>
+            <p className="text-sm font-medium tracking-[0.18em] uppercase text-text-muted mb-3">
               Welcome to
-            </span>
-          <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.15em] ml-4">
+            </p>
+            <h1 className="text-[2.5rem] sm:text-6xl lg:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none mb-6">
               AdroIT
-            </span>
-          <br></br>
-          {/* Badge */}
-          <div className="inline-flex items-center gap-3 px-8 py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-lg md:text-xl text-slate-600 font-medium tracking-wide">
-            <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></span>
-            <span>Department of Computer Science & Engineering</span>
-          </div>
+            </h1>
 
-          {/* Title */}
-          <h1 className="mb-6">
-          </h1>
+            <div className="badge mb-6 max-w-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0" />
+              <span className="text-left">Department of Computer Science &amp; Engineering</span>
+            </div>
 
-          {/* Tagline */}
-          <p className="text-lg md:text-xl lg:text-2xl text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
-            The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
-            cutting-edge technology, collaborative projects, and industry-ready skills
-          </p>
+            <p className="text-base sm:text-lg lg:text-xl text-text-body leading-relaxed max-w-3xl">
+              The Premier Technical Club{" "}
+              <span className="text-text-primary font-medium">Empowering Tomorrow's Innovators</span>{" "}
+              through cutting-edge technology, collaborative projects, and industry-ready skills
+            </p>
+          </Reveal>
 
-          {/* UPCOMING EVENTS MARQUEE */}
-          <div className="my-12 w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-4">
-            <div className="flex animate-marquee hover:[animation-play-state:paused] items-center">
-              {/* Repeated sets for infinite scroll */}
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="flex gap-4 sm:gap-8 px-2 sm:px-4">
-                  {sharedEvents.map((event) => (
-                    <Link key={event._id} to="/events" className="block w-[85vw] sm:w-[480px] h-[240px] flex-shrink-0 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 backdrop-blur-sm rounded-3xl border border-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] transition-all p-6 sm:p-7 whitespace-normal text-left group">
-                      <div className="flex justify-between items-start mb-4">
-                        <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-xs sm:text-sm">Paradox 2026</span>
-                        <span className="text-xs sm:text-sm font-semibold text-slate-600">
-                          {new Date(event.date).toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] transition-all">{event.title}</h3>
-                      <p className="text-slate-600 text-sm sm:text-base line-clamp-2">{event.description}</p>
-                    </Link>
-                  ))}
-                </div>
+          <Reveal delay={60}>
+            <div className="hero-branding">
+              <div className="hero-branding-college">
+                <img
+                  src="/rnsit_logo.png"
+                  alt="RNS Institute of Technology"
+                  width={120}
+                  height={44}
+                  className="brand-mark hero-brand-rnsit"
+                />
+                <img
+                  src="/25_years.png"
+                  alt="25 Years of RNSIT"
+                  width={88}
+                  height={44}
+                  className="brand-mark hero-brand-25"
+                />
+              </div>
+              <div className="hero-branding-event">
+                <span className="hero-branding-label">In association with</span>
+                <img
+                  src="/ieee_logo.png"
+                  alt="IEEE RNSIT Student Branch"
+                  width={208}
+                  height={32}
+                  className="brand-mark hero-brand-ieee"
+                />
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="mt-6">
+            <div className="snap-strip mb-10">
+              {sharedEvents.map((event, index) => (
+                <Reveal key={event._id} delay={index * 60}>
+                  <Link
+                    to="/events"
+                    className="snap-card event-card card card-hover p-5 text-left block h-full"
+                  >
+                    <div className="flex flex-wrap justify-between items-start gap-2 mb-3">
+                      <span className="badge-amber badge text-xs font-semibold">Paradox 2026</span>
+                      <span className="text-xs text-text-muted text-right shrink-0">
+                        {new Date(event.date).toLocaleDateString("en-US", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </div>
+                    <h3 className="event-card-title font-semibold text-lg text-text-primary mb-2">
+                      {event.title}
+                    </h3>
+                    <p className="text-sm text-text-body line-clamp-3 mb-3">{event.description}</p>
+                    <span className="inline-flex items-center gap-1 text-sm font-medium text-accent-primary">
+                      View details
+                      <ArrowRight size={14} aria-hidden="true" />
+                    </span>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           </div>
 
-          {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-col gap-2 justify-center items-center relative z-20">
-            <button
-              disabled
-              className="group px-8 py-4 bg-gradient-to-r from-cyan-500/50 to-purple-600/50 text-slate-900/80 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-not-allowed transition-all duration-300"
-            >
-              <span className="relative z-10">Join AdroIT Now</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10">
-                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <p className="text-xs text-slate-600 mt-2 text-center">
-              Recruitment for this cycle is closed. Next recruitment opens later this year.
-            </p>
-          </div>
-        </div>
-
-        {/* FIXED: Responsive rings container */}
-        <InteractiveRings />
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-slate-500">Scroll</span>
-          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
-          </svg>
+          <Reveal delay={120}>
+            <div className="flex flex-col items-start gap-2">
+              <button type="button" disabled className="btn btn-primary">
+                Join AdroIT Now
+                <ArrowRight size={18} />
+              </button>
+              <p className="text-xs text-text-muted">
+                Recruitment for this cycle is closed. Next recruitment opens later this year.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000">
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Why Join AdroIT?</h2>
-            <p className="text-slate-600 text-xl max-w-4xl mx-auto">
-              We bridge the gap between academic theory and industry demands, creating 
-              <span className="text-cyan-400"> future-ready professionals</span> through practical learning and innovation
+      <section id="why-join" className="section-block section-tint">
+        <div className="page-wrap">
+          <Reveal>
+            <p className="section-kicker">01 // Our Mission</p>
+            <h2 className="section-title">Why Join AdroIT?</h2>
+            <p className="section-lead mb-10">
+              We bridge the gap between academic theory and industry demands, creating
+              <span className="text-text-primary"> future-ready professionals</span> through
+              practical learning and innovation
             </p>
-          </div>
+          </Reveal>
 
-          {/* YOUR ORIGINAL 3-COLUMN LAYOUT */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
-            {/* Left Column - 3 Cards */}
-            <div className="space-y-8">
-              
-              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-cyan-500/30 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
-                    <span className="text-xl font-bold">01</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <Reveal className="lg:col-span-7">
+              <ol className="space-y-0">
+                <li className="mission-item flex gap-4 pb-8">
+                  <span className="mission-marker">01</span>
+                  <div>
+                    <h3 className="text-xl font-semibold text-text-primary mb-2">
+                      Practical Skill Development
+                    </h3>
+                    <p className="text-text-body">
+                      Move beyond theory with <b>AdroIT</b> — build real-world projects, master
+                      industry tools, and gain in-demand skills across Machine Learning, Data
+                      Analytics, Cloud Computing, and Cybersecurity.
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Practical Skill Development</h3>
-                </div>
-                <p className="text-slate-600">
-                  Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
-                </p>
-              </div>
-
-              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-purple-500/30 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
-                    <span className="text-xl font-bold">02</span>
+                </li>
+                <li className="mission-item flex gap-4 py-8">
+                  <span className="mission-marker">02</span>
+                  <div>
+                    <h3 className="text-xl font-semibold text-text-primary mb-2">
+                      Industry Exposure
+                    </h3>
+                    <p className="text-text-body">
+                      Connect with alumni at top tech companies, learn from industry expert
+                      workshops, and join sponsored hackathons. We give you the network, exposure,
+                      and opportunities to kickstart your career.
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Industry Exposure</h3>
-                </div>
-                <p className="text-slate-600">
-                  Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
-                </p>
-              </div>
-
-              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-pink-500/30 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
-                    <span className="text-xl font-bold">03</span>
+                </li>
+                <li className="mission-item flex gap-4 pt-8">
+                  <span className="mission-marker">03</span>
+                  <div>
+                    <h3 className="text-xl font-semibold text-text-primary mb-2">
+                      Collaborative Environment
+                    </h3>
+                    <p className="text-text-body">
+                      Join a community of passionate learners and innovators. Collaborate on
+                      projects, share knowledge, and grow together. Our senior-junior mentorship
+                      model ensures everyone gets the guidance they need to succeed.
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Collaborative Environment</h3>
-                </div>
-                <p className="text-slate-600">
-                  Join a community of passionate learners and innovators. Collaborate on projects, 
-                  share knowledge, and grow together. Our senior-junior mentorship model ensures 
-                  everyone gets the guidance they need to succeed.
-                </p>
-              </div>
-            </div>
+                </li>
+              </ol>
+            </Reveal>
 
-            {/* Right Column - Advantage Card */}
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-              <div className="relative bg-white/40 backdrop-blur-3xl border border-slate-900/10 p-10 rounded-3xl">
-                <h3 className="text-3xl font-bold mb-6 text-center text-cyan-400">The AdroIT Advantage</h3>
-                <div className="space-y-6">
-                  {[
-                    "Build an impressive portfolio with real projects",
-                    "Master in-demand technologies before they're in your syllabus",
-                    "Network with industry professionals and alumni",
-                    "Develop leadership and teamwork skills",
-                    "Gain confidence through regular presentations and demos",
-                    "Access exclusive learning resources and workshops"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                          <path d="M20 6L9 17L4 12"/>
-                        </svg>
-                      </div>
-                      <span className="text-slate-700">{item}</span>
-                    </div>
+            <Reveal delay={80} className="lg:col-span-5">
+              <aside className="advantage-panel card card-elevated p-6 sm:p-8 h-full">
+                <h3 className="text-lg font-semibold text-text-primary mb-5">The AdroIT Advantage</h3>
+                <ul className="space-y-3">
+                  {advantages.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-text-body">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0" />
+                      {item}
+                    </li>
                   ))}
-                </div>
-              </div>
-            </div>
+                </ul>
+              </aside>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
-      <section ref={domainsRef} className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-12 transition-all duration-1000">
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Technical Domains</h2>
-            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
+      <section className="section-block section-surface">
+        <div className="page-wrap">
+          <Reveal>
+            <p className="section-kicker">02 // Our Expertise</p>
+            <h2 className="section-title">Technical Domains</h2>
+            <p className="section-lead mb-10">
               Four pillars of technical excellence driving innovation at AdroIT
             </p>
-          </div>
+          </Reveal>
 
-          {/* 4-Column Grid for Domains */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {domains.map((domain, index) => (
-              <DomainCard key={index} {...domain} />
+              <DomainCard key={domain.title} {...domain} delay={index * 60} />
             ))}
           </div>
 
-          {/* Domain CTA */}
-          <div className="text-center mt-12">
+          <Reveal delay={180} className="mt-8">
             <Link
               to="/domains"
-              onClick={()=>window.scrollTo(0,0)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-xl text-cyan-400 hover:text-slate-900 hover:border-cyan-500/30 transition-all duration-300 group"
+              onClick={() => window.scrollTo(0, 0)}
+              className="btn btn-secondary"
             >
-              <span>Explore All Domains</span>
-              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+              Explore All Domains
+              <ArrowRight size={16} />
             </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-block section-philosophy">
+        <div className="page-wrap relative">
+          <Reveal>
+            <div className="max-w-2xl">
+              <h2 className="section-title">Our Learning Philosophy</h2>
+              <p className="text-text-body text-lg leading-relaxed">
+                Like dynamic particles, we believe in adaptive, hands-on learning — not just
+                teaching technology, but building how you{" "}
+                <span className="text-text-primary font-medium">think</span>,
+                <span className="text-text-primary font-medium"> innovate</span>, and{" "}
+                <span className="text-text-primary font-medium">create</span>.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-block section-tint">
+        <div className="page-wrap">
+          <Reveal>
+            <p className="section-kicker">03 // Your Growth</p>
+            <h2 className="section-title mb-10">How AdroIT Will Transform You</h2>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {growthPillars.map((pillar, index) => (
+              <Reveal key={pillar.num} delay={index * 60}>
+                <article className="pillar-card card-hover h-full">
+                  <div className="pillar-accent" aria-hidden="true" />
+                  <p className="font-mono text-sm font-semibold text-accent-primary mb-2">
+                    {pillar.num}
+                  </p>
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">{pillar.title}</h3>
+                  <p className="text-text-body text-sm leading-relaxed">{pillar.description}</p>
+                </article>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ===== INTERACTIVE CANVAS SECTION ===== */}
-      <section 
-        ref={approachRef}
-        className="min-h-[60vh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
-      >
-        <ThreeScene />
-        <div className="relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
-            Our Learning Philosophy
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-            Like dynamic particles, we believe in adaptive, hands-on learning — not just teaching technology, but building how you <span className="text-cyan-400">think</span>, 
-            <span className="text-purple-400"> innovate</span>, and <span className="text-pink-400">create</span>.
-          </p>
-        </div>
-      </section>
-
-      {/* ===== BENEFITS SECTION ===== */}
-      <section 
-        ref={benefitsRef}
-        className="py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">How AdroIT Will Transform You</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-cyan-500/50 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
-              <p className="text-slate-600">
-                Develop strong technical thinking by understanding core concepts, problem-solving approaches,
-                and real-world applications across all four domains.
-              </p>
-            </div>
-
-            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-purple-400">Professional Network</h3>
-              <p className="text-slate-600">
-                Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.
-              </p>
-            </div>
-
-            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-pink-500/50 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-pink-400">Leadership Skills</h3>
-              <p className="text-slate-600">
-                Take ownership of projects, lead teams in hackathons, and organize events. 
-                Develop the soft skills that complement your technical expertise.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CLUB ACTIVITIES ===== */}
-      <section 
-        ref={activitiesRef}
-        className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
-      >
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Join the AdroIT Community</h2>
-            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
-              Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
-              in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
+      <section className="section-block section-surface">
+        <div className="page-wrap">
+          <Reveal>
+            <p className="section-kicker">04 // What We Do</p>
+            <h2 className="section-title">Join the AdroIT Community</h2>
+            <p className="section-lead mb-10">
+              Learn by building through hands-on sessions, collaborative projects, and real-world
+              exposure in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
             </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {communityCards.map((card, index) => (
+              <Reveal key={card.title} delay={index * 60}>
+                <article className="community-card card card-hover p-6 h-full">
+                  <div className="community-icon">{card.icon}</div>
+                  <h3 className="text-lg font-semibold text-text-primary mb-3">{card.title}</h3>
+                  <p className="text-text-body text-sm mb-4">{card.description}</p>
+                  <ul className="space-y-2 text-sm text-text-body">
+                    {card.items.map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <span className="mt-2 w-1 h-1 rounded-full bg-accent-primary shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
+            ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
-              <p className="text-slate-600 mb-4">
-                Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• Machine Learning Fundamentals & Projects</li>
-                <li>• Cloud Computing Concepts & Deployment</li>
-                <li>• Cybersecurity Basics & Practices</li>
-                <li>• Data Analytics Tools & Workflows</li>
-              </ul>
-            </div>
-
-            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
-              <p className="text-slate-600 mb-4">
-                Team-based project cycles designed to apply skills through real-world problem solving.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• ML Model Development</li>
-                <li>• Cloud-based Application Deployment</li>
-                <li>• Security Analysis & Testing</li>
-                <li>• Data-driven Insights Projects</li>
-              </ul>
-            </div>
-
-            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-pink-400">Community & Events</h3>
-              <p className="text-slate-600 mb-4">
-                Events that encourage collaboration, innovation, and exposure to industry practices.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• HackAdroIT Hackathon</li>
-                <li>• Industry Talks & Expert Sessions</li>
-                <li>• Project Demo Days</li>
-                <li>• Peer Learning & Networking Events</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}
-          <div className="text-center mt-16">
-            <p className="text-slate-500 text-sm">
+          <Reveal delay={180}>
+            <p className="text-sm text-text-muted mt-10">
               Recruitment for this cycle is closed. Next recruitment opens later this year.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
-
-      {/* ===== FIXED: Global Styles - Replaced style jsx with regular style ===== */}
-      <style>{`
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.02); }
-        }
-        @keyframes spin-slow {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @keyframes spin-slower-reverse {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
-        @keyframes spin-slowest {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(720deg); }
-        }
-        @keyframes move-spiral {
-          0% { transform: translate(0, 0) scale(1); opacity: 1; }
-          25% { transform: translate(-120px, -120px) scale(1.2); opacity: 0.8; }
-          50% { transform: translate(120px, -120px) scale(1); opacity: 1; }
-          75% { transform: translate(120px, 120px) scale(1.2); opacity: 0.8; }
-          100% { transform: translate(0, 0) scale(1); opacity: 1; }
-        }
-        @keyframes move-spiral-trail-1 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          10% { transform: translate(-40px, -40px); opacity: 0.5; }
-          20% { transform: translate(-80px, -80px); opacity: 0.3; }
-          30% { transform: translate(-120px, -120px); opacity: 0.1; }
-          100% { transform: translate(-120px, -120px); opacity: 0; }
-        }
-        @keyframes move-spiral-trail-2 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          20% { transform: translate(60px, -60px); opacity: 0.5; }
-          40% { transform: translate(120px, -120px); opacity: 0.3; }
-          60% { transform: translate(180px, -180px); opacity: 0.1; }
-          100% { transform: translate(180px, -180px); opacity: 0; }
-        }
-        @keyframes move-spiral-trail-3 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          30% { transform: translate(60px, 60px); opacity: 0.5; }
-          60% { transform: translate(120px, 120px); opacity: 0.3; }
-          90% { transform: translate(180px, 180px); opacity: 0.1; }
-          100% { transform: translate(180px, 180px); opacity: 0; }
-        }
-        @keyframes float-particle {
-          0%, 100% { transform: translate(0, 0); opacity: 0; }
-          10%, 90% { opacity: 0.3; }
-          50% { opacity: 0.6; transform: translate(20px, -20px); }
-        }
-        @keyframes hit-particle {
-          0% { transform: scale(1); opacity: 0.7; }
-          100% { transform: scale(0); opacity: 0; }
-        }
-        @keyframes ripple {
-          0% { width: 0px; height: 0px; opacity: 0.8; }
-          100% { width: 100px; height: 100px; opacity: 0; }
-        }
-        @keyframes trail {
-          0% { opacity: 0.3; transform: scale(1); }
-          100% { opacity: 0; transform: scale(0.5); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
-        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-        .animate-spin-slower-reverse { animation: spin-slower-reverse 25s linear infinite; }
-        .animate-spin-slowest { animation: spin-slowest 40s linear infinite; }
-        .animate-move-spiral { animation: move-spiral 6s ease-in-out infinite; }
-        .animate-move-spiral-trail-1 { animation: move-spiral-trail-1 6s ease-out infinite; }
-        .animate-move-spiral-trail-2 { animation: move-spiral-trail-2 6s ease-out infinite; animation-delay: 0.3s; }
-        .animate-move-spiral-trail-3 { animation: move-spiral-trail-3 6s ease-out infinite; animation-delay: 0.6s; }
-        .animate-float-particle { animation: float-particle var(--duration) ease-in-out infinite; }
-        .animate-hit-particle { animation: hit-particle 0.8s ease-out forwards; }
-        .animate-ripple { animation: ripple 1.5s ease-out forwards; }
-        .animate-trail { animation: trail 0.5s linear forwards; }
-      `}</style>
-
     </div>
   );
 };

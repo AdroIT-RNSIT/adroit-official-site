@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X, MapPin, Calendar, CheckCircle2 } from "lucide-react";
 
 export default function EventDetailsModal({ isOpen, onClose, event, onRegisterClick }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen || !event) return null;
 
   const formatDate = (dateStr) => {
@@ -16,61 +30,56 @@ export default function EventDetailsModal({ isOpen, onClose, event, onRegisterCl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div 
-        className="absolute inset-0 bg-white/60 backdrop-blur-sm" 
-        onClick={onClose}
-      />
-      
-      <div className="relative w-full max-w-2xl bg-[#f3e8ff] border border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-900/50 overflow-hidden flex flex-col max-h-[90dvh]">
-        {/* Header styling matching the cards */}
-        <div className="relative p-6 border-b border-slate-900/10 bg-gradient-to-r from-cyan-100/60 via-sky-50/80 to-blue-100/60">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="absolute inset-0 bg-text-primary/40" onClick={onClose} />
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="event-details-title"
+        className="relative w-full sm:max-w-2xl bg-bg-surface border border-border-subtle sm:rounded-xl shadow-md overflow-hidden flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90dvh]"
+      >
+        <div className="p-5 border-b border-border-subtle">
           <button
+            type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 text-slate-600 hover:text-slate-900 transition-colors"
+            className="absolute top-3 right-3 inline-flex items-center justify-center w-11 h-11 rounded-lg text-text-body hover:bg-bg-base"
+            aria-label="Close"
           >
-            <X size={24} />
+            <X size={22} />
           </button>
-          <h2 className="text-3xl font-black bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.7)] pr-8">
+          <h2 id="event-details-title" className="text-2xl font-bold text-text-primary pr-12">
             {event.title}
           </h2>
-          
-          <div className="flex flex-wrap items-center gap-4 mt-4 text-slate-600 text-sm">
-            <span className="flex items-center gap-1.5 bg-slate-900/5 px-3 py-1.5 rounded-full border border-slate-900/5">
-              <Calendar size={16} className="text-cyan-400" />
+          <div className="flex flex-wrap items-center gap-2 mt-3 text-sm text-text-body">
+            <span className="badge">
+              <Calendar size={14} />
               {formatDate(event.date)}
             </span>
             {event.location && (
-              <span className="flex items-center gap-1.5 bg-slate-900/5 px-3 py-1.5 rounded-full border border-slate-900/5">
-                <MapPin size={16} className="text-cyan-400" />
+              <span className="badge">
+                <MapPin size={14} />
                 {event.location}
               </span>
             )}
           </div>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
-          <div className="mb-8">
-            <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
-              About The Event
-            </h3>
-            <p className="text-slate-700 leading-relaxed text-base">
-              {event.description}
-            </p>
-          </div>
+        <div className="p-5 overflow-y-auto flex-1">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted mb-2">
+            About The Event
+          </h3>
+          <p className="text-text-body leading-relaxed mb-8">{event.description}</p>
 
           {event.rules && event.rules.length > 0 && (
-            <div className="mb-4">
-              <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
-                Rules & Guidelines
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted mb-3">
+                Rules &amp; Guidelines
               </h3>
               <ul className="space-y-3">
                 {event.rules.map((rule, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-slate-700 text-base">
-                    <CheckCircle2 size={20} className="text-cyan-500 shrink-0 mt-0.5" />
+                  <li key={idx} className="flex items-start gap-3 text-text-body text-sm">
+                    <CheckCircle2 size={18} className="text-accent-primary shrink-0 mt-0.5" />
                     <span>{rule}</span>
                   </li>
                 ))}
@@ -79,14 +88,14 @@ export default function EventDetailsModal({ isOpen, onClose, event, onRegisterCl
           )}
         </div>
 
-        {/* Footer with Register Button */}
-        <div className="p-6 border-t border-slate-900/10 bg-white/[0.02]">
+        <div className="p-5 border-t border-border-subtle">
           <button
+            type="button"
             onClick={() => {
               onClose();
               onRegisterClick(event.title);
             }}
-            className="w-full py-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-slate-900 font-bold rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] transition-all duration-300 transform hover:-translate-y-1 text-lg"
+            className="btn btn-primary w-full"
           >
             Register Now
           </button>
