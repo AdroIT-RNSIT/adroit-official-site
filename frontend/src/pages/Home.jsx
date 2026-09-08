@@ -163,13 +163,6 @@ const Home = () => {
               See Events
             </Link>
           </div>
-
-          <div className="hidden lg:flex mt-10 flex-col items-center gap-2 text-slate-500">
-            <span className="text-xs">Scroll</span>
-            <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
-            </svg>
-          </div>
         </div>
 
         {/* FIXED: Responsive rings container */}
