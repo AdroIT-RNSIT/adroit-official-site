@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, Link, Navigate } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 
 // ===== LAYOUT =====
 import MainLayout from "./layout/MainLayout";
@@ -7,6 +7,7 @@ import MainLayout from "./layout/MainLayout";
 // ===== PUBLIC PAGES (No Login Required) =====
 import Home from "./pages/Home";
 import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
 import Domains from "./pages/Domains";
 import Contact from "./pages/Contact";
 // ===== PROTECTED PAGES (Login Required + Approval) =====
@@ -29,10 +30,11 @@ function WithLayout({ children }) {
 }
 
 export default function App() {
-  // Scroll to top on route change
+  const location = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [location.pathname]);
 
   return (
     <>
@@ -59,6 +61,14 @@ export default function App() {
           element={
             <WithLayout>
               <Events />
+            </WithLayout>
+          }
+        />
+        <Route
+          path="/events/:slug"
+          element={
+            <WithLayout>
+              <EventDetail />
             </WithLayout>
           }
         />

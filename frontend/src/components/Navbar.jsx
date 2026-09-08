@@ -10,7 +10,8 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
 
-  const isActive = (path) => pathname === path;
+  const isActive = (path) =>
+    path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
   const isHomePage = pathname === "/";

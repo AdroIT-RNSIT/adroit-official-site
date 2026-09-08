@@ -7,6 +7,7 @@ export const sharedEvents = [
     date: "2026-09-17T05:00:00Z",
     location: "Main Auditorium",
     teamSize: "3–4 members",
+    slug: "capture-the-flag",
     poster: "/ctf-img.webp",
     imageUrl: "/ctf-img.webp",
     registrationCost: { ieee: 250, nonIeee: 300 },
@@ -27,6 +28,7 @@ export const sharedEvents = [
     date:"2026-09-18T05:00:00Z",
     location: "IT Block Edusat Hall",
     teamSize: "3–4 members",
+    slug: "tech-auction",
     poster: "/tech-img.webp",
     imageUrl: "/tech-img.webp",
     registrationCost: { ieee: 200, nonIeee: 250 },
@@ -49,6 +51,7 @@ export const sharedEvents = [
     date:"2026-09-18T05:00:00Z",
     location: "IT Block",
     teamSize: "1–2 members",
+    slug: "ai-film-making",
     poster: "/ai-img.webp",
     imageUrl: "/ai-img.webp",
     registrationCost: { all: 100 },
@@ -63,3 +66,5 @@ export const sharedEvents = [
     ]
   }
 ];
+
+export const getEventBySlug = (slug) => sharedEvents.find((event) => event.slug === slug);

@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
-import { Link } from "react-router-dom";
-import RegistrationModal from '../components/RegistrationModal';
-import EventDetailsModal from '../components/EventDetailsModal';
+import { Link, useNavigate } from "react-router-dom";
 import BrandMark from '../components/BrandMark';
 import EventCarousel from '../components/EventCarousel';
 import { sharedEvents } from '../data/events';
@@ -34,16 +32,13 @@ const DomainCard = ({ icon, title, description, color }) => (
 // MAIN HOME COMPONENT
 // ============================================
 const Home = () => {
+  const navigate = useNavigate();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
   const domainsRef = useRef(null);
   const approachRef = useRef(null);
   const benefitsRef = useRef(null);
   const activitiesRef = useRef(null);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isRegOpen, setIsRegOpen] = useState(false);
-  const [regTitle, setRegTitle] = useState("");
 
   useEffect(() => {
     const observerOptions = {
@@ -158,11 +153,7 @@ const Home = () => {
 
           <EventCarousel
             events={sharedEvents}
-            paused={isDetailsOpen || isRegOpen}
-            onSelect={(event) => {
-              setSelectedEvent(event);
-              setIsDetailsOpen(true);
-            }}
+            onSelect={(event) => navigate(`/events/${event.slug}`)}
           />
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
@@ -526,21 +517,6 @@ const Home = () => {
         .animate-ripple { animation: ripple 1.5s ease-out forwards; }
         .animate-trail { animation: trail 0.5s linear forwards; }
       `}</style>
-
-      <EventDetailsModal
-        isOpen={isDetailsOpen}
-        onClose={() => setIsDetailsOpen(false)}
-        event={selectedEvent}
-        onRegisterClick={(title) => {
-          setRegTitle(title);
-          setIsRegOpen(true);
-        }}
-      />
-      <RegistrationModal
-        isOpen={isRegOpen}
-        onClose={() => setIsRegOpen(false)}
-        eventTitle={regTitle}
-      />
 
     </div>
   );

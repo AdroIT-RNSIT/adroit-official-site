@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSession } from "../lib/auth-client";
-import RegistrationModal from "../components/RegistrationModal";
-import EventDetailsModal from "../components/EventDetailsModal";
 import InteractiveRings from "../components/InteractiveRings";
 import BrandMark from "../components/BrandMark";
 import { sharedEvents } from "../data/events";
@@ -10,16 +9,11 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function Events() {
   const { data: session } = useSession();
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("all");
-  
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEventTitle, setSelectedEventTitle] = useState("");
-  
-  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const [selectedEventData, setSelectedEventData] = useState(null);
 
   const isAdmin = session?.user?.role === "admin";
 
@@ -329,11 +323,7 @@ export default function Events() {
                         formatDate={formatDate}
                         isAdmin={isAdmin}
                         onDelete={handleDelete}
-                        onRegister={(title) => {
-                          const clickedEvent = upcomingEvents.find(e => e.title === title);
-                          setSelectedEventData(clickedEvent);
-                          setIsDetailsModalOpen(true);
-                        }}
+                        onRegister={() => navigate(`/events/${event.slug}`)}
                       />
                     ))}
                   </div>
@@ -389,24 +379,6 @@ export default function Events() {
           </ol>
         </div>
       </div>
-
-      {/* Registration Modal */}
-      <RegistrationModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        eventTitle={selectedEventTitle} 
-      />
-
-      {/* Event Details Modal */}
-      <EventDetailsModal
-        isOpen={isDetailsModalOpen}
-        onClose={() => setIsDetailsModalOpen(false)}
-        event={selectedEventData}
-        onRegisterClick={(title) => {
-          setSelectedEventTitle(title);
-          setIsModalOpen(true);
-        }}
-      />
     </div>
   );
 }
@@ -423,7 +395,7 @@ function EventCard({
 }) {
   return (
     <div
-      onClick={() => !isPast && onRegister && onRegister(event.title)}
+      onClick={() => !isPast && onRegister && onRegister()}
       className={`group relative flex flex-col backdrop-blur-sm rounded-2xl border transition-all duration-300 overflow-hidden ${
         isPast
           ? "border-slate-900/5 bg-slate-900/[0.03] opacity-60 hover:opacity-80"
@@ -492,7 +464,7 @@ function EventCard({
       {!isPast && onRegister && (
         <div className="px-5 pb-5">
           <button
-            onClick={(e) => { e.stopPropagation(); onRegister(event.title); }}
+            onClick={(e) => { e.stopPropagation(); onRegister(); }}
             className="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all duration-300 text-sm tracking-wide"
           >
             View details &amp; register
