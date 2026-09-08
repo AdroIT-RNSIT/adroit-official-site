@@ -3,6 +3,7 @@ import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
 import { Link } from "react-router-dom";
 import RegistrationModal from '../components/RegistrationModal';
+import EventDetailsModal from '../components/EventDetailsModal';
 import BrandMark from '../components/BrandMark';
 import EventCarousel from '../components/EventCarousel';
 import { sharedEvents } from '../data/events';
@@ -39,6 +40,10 @@ const Home = () => {
   const approachRef = useRef(null);
   const benefitsRef = useRef(null);
   const activitiesRef = useRef(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isRegOpen, setIsRegOpen] = useState(false);
+  const [regTitle, setRegTitle] = useState("");
 
   useEffect(() => {
     const observerOptions = {
@@ -143,7 +148,14 @@ const Home = () => {
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
-          <EventCarousel events={sharedEvents} />
+          <EventCarousel
+            events={sharedEvents}
+            paused={isDetailsOpen || isRegOpen}
+            onSelect={(event) => {
+              setSelectedEvent(event);
+              setIsDetailsOpen(true);
+            }}
+          />
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
           <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
@@ -506,6 +518,21 @@ const Home = () => {
         .animate-ripple { animation: ripple 1.5s ease-out forwards; }
         .animate-trail { animation: trail 0.5s linear forwards; }
       `}</style>
+
+      <EventDetailsModal
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        event={selectedEvent}
+        onRegisterClick={(title) => {
+          setRegTitle(title);
+          setIsRegOpen(true);
+        }}
+      />
+      <RegistrationModal
+        isOpen={isRegOpen}
+        onClose={() => setIsRegOpen(false)}
+        eventTitle={regTitle}
+      />
 
     </div>
   );
