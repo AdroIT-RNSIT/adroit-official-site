@@ -282,10 +282,16 @@ export default function RegistrationModal({ isOpen, onClose, event, eventTitle }
                 )}
 
                 <div className={step === 1 ? "space-y-4" : "hidden"}>
-                  <Field label="Team name">
-                    <input type="text" name="teamName" required className={inputClass} placeholder="Byte Bandits" />
+                  <Field label="Team name*">
+                    <input
+                      type="text"
+                      name="teamName"
+                      required
+                      className={inputClass}
+                      placeholder="Byte Bandits"
+                    />
                   </Field>
-                  <Field label="College">
+                  <Field label="College*">
                     <input
                       type="text"
                       name="collegeName"
@@ -294,7 +300,7 @@ export default function RegistrationModal({ isOpen, onClose, event, eventTitle }
                       placeholder="RNS Institute of Technology"
                     />
                   </Field>
-                  <Field label="Team leader email">
+                  <Field label="Team leader email*">
                     <input
                       type="email"
                       name="leaderEmail"
@@ -303,13 +309,13 @@ export default function RegistrationModal({ isOpen, onClose, event, eventTitle }
                       placeholder="leader@college.edu"
                     />
                   </Field>
-                  <Field label="IEEE membership ID" optional>
+                  <Field label="IEEE membership ID">
                     <input
                       type="text"
                       name="ieeeMembershipId"
                       maxLength={15}
                       className={inputClass}
-                      placeholder="Leave blank if not a member"
+                      placeholder="IEEE ID (optional)"
                     />
                   </Field>
                 </div>
@@ -317,27 +323,35 @@ export default function RegistrationModal({ isOpen, onClose, event, eventTitle }
                 <div className={step === 2 ? "space-y-3" : "hidden"}>
                   <p className="text-sm text-slate-400">
                     Add {min}
-                    {min !== max ? `–${max}` : ""} members. Name and USN for each.
+                    {min !== max ? `–${max}` : ""} members. Extra slots can be left empty.
                   </p>
                   {Array.from({ length: max }).map((_, i) => {
                     const optional = i >= min;
                     return (
                       <div key={i} className="grid grid-cols-[2rem_1fr] items-start gap-3">
-                        <span className="mt-2 text-sm tabular-nums text-slate-500">{i + 1}</span>
+                        <span className="mt-2 text-sm tabular-nums text-slate-500">
+                          {i + 1}{optional ? "" : "*"}
+                        </span>
                         <div className="grid gap-2 sm:grid-cols-2">
                           <input
                             type="text"
                             name={`participant_${i}`}
                             required={step === 2 && !optional}
                             className={inputClass}
-                            placeholder={i === 0 ? "Leader full name" : "Full name"}
+                            placeholder={
+                              optional
+                                ? "Full name (optional)"
+                                : i === 0
+                                  ? "Leader full name"
+                                  : "Full name"
+                            }
                           />
                           <input
                             type="text"
                             name={`participant_usn_${i}`}
                             required={step === 2 && !optional}
                             className={inputClass}
-                            placeholder="USN"
+                            placeholder={optional ? "USN (optional)" : "USN"}
                           />
                         </div>
                       </div>
@@ -384,13 +398,10 @@ export default function RegistrationModal({ isOpen, onClose, event, eventTitle }
   );
 }
 
-function Field({ label, optional, children }) {
+function Field({ label, children }) {
   return (
     <label className="block">
-      <span className="mb-1.5 flex items-baseline gap-2 text-sm text-slate-400">
-        {label}
-        {optional && <span className="text-xs text-slate-600">optional</span>}
-      </span>
+      <span className="mb-1.5 block text-sm text-slate-400">{label}</span>
       {children}
     </label>
   );
