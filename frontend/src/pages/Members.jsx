@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import { Link } from "react-router-dom";
+import Reveal from "../components/Reveal";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -191,8 +192,7 @@ export default function Members() {
     <div className="min-h-screen bg-bg-base overflow-x-clip py-10 sm:py-12">
       <div className="page-wrap">
         
-        {/* ===== HEADER SECTION ===== */}
-        <div className="text-center mb-10">
+        <Reveal className="text-center mb-10">
           <div className="badge mb-4">AdroIT Member Directory</div>
 
           <h1 className="section-title">All Members</h1>
@@ -227,7 +227,7 @@ export default function Members() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* ===== SEARCH & FILTERS BAR ===== */}
         <div className="card p-5 mb-8">
@@ -399,6 +399,7 @@ export default function Members() {
             </p>
           </div>
         ) : (
+          <Reveal>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
             {filteredMembers.map((member) => (
               <MemberCard
@@ -410,6 +411,7 @@ export default function Members() {
               />
             ))}
           </div>
+          </Reveal>
         )}
 
         {/* ===== JOIN CTA - Only for non-logged in users ===== */}

@@ -1,18 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { X, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { stopLenis, startLenis } from "../lib/scroll";
 
 export default function EventDetailsModal({ isOpen, onClose, event, onRegisterClick }) {
+  const [entered, setEntered] = useState(false);
+
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      setEntered(false);
+      return;
+    }
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    stopLenis();
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
+    const timer = setTimeout(() => setEntered(true), 10);
     return () => {
       document.body.style.overflow = prev;
+      startLenis();
       window.removeEventListener("keydown", onKey);
+      clearTimeout(timer);
     };
   }, [isOpen, onClose]);
 
@@ -30,14 +40,18 @@ export default function EventDetailsModal({ isOpen, onClose, event, onRegisterCl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="absolute inset-0 bg-text-primary/40" onClick={onClose} />
+    <div className="modal-root modal-root--details">
+      <div
+        className={`modal-overlay ${entered ? "is-open" : ""}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="event-details-title"
-        className="relative w-full sm:max-w-2xl bg-bg-surface border border-border-subtle sm:rounded-xl shadow-md overflow-hidden flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90dvh]"
+        className={`modal-panel w-full sm:max-w-2xl bg-bg-surface border border-border-subtle sm:rounded-xl shadow-md overflow-hidden flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90dvh] ${entered ? "is-open" : ""}`}
       >
         <div className="p-5 border-b border-border-subtle">
           <button
@@ -65,7 +79,7 @@ export default function EventDetailsModal({ isOpen, onClose, event, onRegisterCl
           </div>
         </div>
 
-        <div className="p-5 overflow-y-auto flex-1">
+        <div className="p-5 overflow-y-auto flex-1" data-lenis-prevent>
           <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted mb-2">
             About The Event
           </h3>

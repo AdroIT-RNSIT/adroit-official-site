@@ -3,6 +3,8 @@ import { useSession } from "../lib/auth-client";
 import RegistrationModal from "../components/RegistrationModal";
 import EventDetailsModal from "../components/EventDetailsModal";
 import { sharedEvents } from "../data/events";
+import Reveal from "../components/Reveal";
+import RevealGroup from "../components/RevealGroup";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -91,19 +93,21 @@ export default function Events() {
   return (
     <div className="min-h-screen bg-bg-base overflow-x-clip">
       <div className="page-wrap py-10 sm:py-14">
-        <p className="section-kicker">Paradox 2026</p>
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-text-primary mb-4">
-          Paradox 2026
-        </h1>
-        <div className="brand-event mb-8">
-          <img
-            src="/ieee_logo.png"
-            alt="IEEE RNSIT Student Branch"
-            width={208}
-            height={32}
-            className="brand-mark brand-event-ieee"
-          />
-        </div>
+        <Reveal>
+          <p className="section-kicker">Paradox 2026</p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-text-primary mb-4">
+            Paradox 2026
+          </h1>
+          <div className="brand-event mb-8">
+            <img
+              src="/ieee_logo.png"
+              alt="IEEE RNSIT Student Branch"
+              width={208}
+              height={32}
+              className="brand-mark brand-event-ieee"
+            />
+          </div>
+        </Reveal>
 
         {error && (
           <div className="mb-6 p-4 card text-sm text-red-700 flex items-center gap-3">
@@ -111,8 +115,8 @@ export default function Events() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="card overflow-hidden">
+        <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="reveal-item card overflow-hidden" style={{ "--index": 0 }}>
             <div className="px-5 py-3 border-b border-border-subtle bg-accent-primary-tint">
               <p className="font-semibold text-accent-primary">Prize Pool</p>
             </div>
@@ -138,7 +142,7 @@ export default function Events() {
             </div>
           </div>
 
-          <div className="card overflow-hidden">
+          <div className="reveal-item card overflow-hidden" style={{ "--index": 1 }}>
             <div className="px-5 py-3 border-b border-border-subtle">
               <p className="font-semibold text-text-primary">Sponsors</p>
             </div>
@@ -177,7 +181,7 @@ export default function Events() {
               </div>
             </div>
           </div>
-        </div>
+        </RevealGroup>
 
         <div className="mb-8 p-4 card text-sm text-text-body">
           All participants must read the generic Rules and Guidelines at the bottom of this page
@@ -193,24 +197,25 @@ export default function Events() {
         ) : (
           <div className="space-y-10">
             {upcomingEvents.length > 0 && (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {upcomingEvents.map((event) => (
-                  <EventCard
-                    key={event._id}
-                    event={event}
-                    typeColors={typeColors}
-                    typeGradients={typeGradients}
-                    formatDate={formatDate}
-                    isAdmin={isAdmin}
-                    onDelete={handleDelete}
-                    onRegister={(title) => {
-                      const clickedEvent = upcomingEvents.find((e) => e.title === title);
-                      setSelectedEventData(clickedEvent);
-                      setIsDetailsModalOpen(true);
-                    }}
-                  />
+              <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {upcomingEvents.map((event, index) => (
+                  <div key={event._id} className="reveal-item h-full" style={{ "--index": index }}>
+                    <EventCard
+                      event={event}
+                      typeColors={typeColors}
+                      typeGradients={typeGradients}
+                      formatDate={formatDate}
+                      isAdmin={isAdmin}
+                      onDelete={handleDelete}
+                      onRegister={(title) => {
+                        const clickedEvent = upcomingEvents.find((e) => e.title === title);
+                        setSelectedEventData(clickedEvent);
+                        setIsDetailsModalOpen(true);
+                      }}
+                    />
+                  </div>
                 ))}
-              </div>
+              </RevealGroup>
             )}
 
             {pastEvents.length > 0 && (
@@ -289,7 +294,7 @@ function EventCard({
   return (
     <div
       onClick={() => !isPast && onRegister && onRegister(event.title)}
-      className={`card flex flex-col overflow-hidden ${
+      className={`card event-card flex flex-col overflow-hidden h-full ${
         isPast ? "opacity-60" : "card-hover cursor-pointer"
       }`}
     >

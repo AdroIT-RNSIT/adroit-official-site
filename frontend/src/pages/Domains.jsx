@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSession } from '../lib/auth-client';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from 'lucide-react';
+import Reveal from '../components/Reveal';
 
 export default function Domains() {
   const { data: session } = useSession();
@@ -112,7 +113,7 @@ export default function Domains() {
   return (
     <div className="min-h-screen bg-bg-base py-10 sm:py-14">
       <div className="page-wrap">
-        <div className="mb-10">
+        <Reveal className="mb-10">
           <div className="badge mb-4">AdroIT Knowledge Hub</div>
           <h1 className="section-title">Technical Domains</h1>
           <p className="section-lead">
@@ -125,9 +126,9 @@ export default function Domains() {
             <div className="badge">10+ Projects</div>
             <div className="badge">100+ Members in community</div>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x">
+        <div className="flex gap-2 overflow-x-auto pb-2 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x" data-lenis-prevent>
           {domains.map((domain) => (
             <button
               key={domain.id}
@@ -143,6 +144,7 @@ export default function Domains() {
           ))}
         </div>
 
+        <div key={activeDomain} className="domain-panel-enter">
         <div className="card p-5 sm:p-8 mb-6">
           <div className="flex flex-col gap-4">
             <div>
@@ -279,6 +281,7 @@ export default function Domains() {
               ))}
             </tbody>
           </table>
+        </div>
         </div>
       </div>
     </div>

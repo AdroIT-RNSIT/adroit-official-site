@@ -1,4 +1,5 @@
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
+import { scrollToTop } from "../lib/scroll";
 import Reveal from "./Reveal";
 
 const SOCIAL_LINKS = [
@@ -36,7 +37,7 @@ const Footer = ({ showMap = false }) => {
 
   return (
     <footer className="footer-surface">
-      <Reveal as="div" className="page-wrap py-10">
+      <Reveal as="div" className="page-wrap py-10" mobileStatic>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 mb-8">
           <div className="lg:col-span-4 space-y-3">
             <p className="text-sm font-semibold text-text-primary">AdroIT</p>
@@ -145,7 +146,7 @@ const Footer = ({ showMap = false }) => {
           </p>
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => scrollToTop({ immediate: false })}
             className="btn btn-ghost text-xs min-h-11"
             aria-label="Back to top"
           >

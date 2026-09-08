@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { stopLenis, startLenis } from '../lib/scroll';
 
 const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successData, setSuccessData] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [entered, setEntered] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setSuccessData(null);
       setErrorMsg("");
       setIsSubmitting(false);
+      stopLenis();
       const prev = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => {
         document.body.style.overflow = prev;
+        startLenis();
       };
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setEntered(false);
+      return;
+    }
+    const timer = setTimeout(() => setEntered(true), 10);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   const getTeamConstraints = () => {
@@ -109,14 +122,18 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="absolute inset-0 bg-text-primary/40" onClick={onClose} />
+    <div className="modal-root">
+      <div
+        className={`modal-overlay ${entered ? "is-open" : ""}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="register-title"
-        className="relative w-full sm:max-w-md bg-bg-surface border border-border-subtle sm:rounded-xl overflow-hidden z-10 flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90dvh]"
+        className={`modal-panel w-full sm:max-w-md bg-bg-surface border border-border-subtle sm:rounded-xl overflow-hidden flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90dvh] ${entered ? "is-open" : ""}`}
       >
         <div className="px-5 py-4 border-b border-border-subtle flex justify-between items-center">
           <h2 id="register-title" className="text-lg font-bold text-text-primary pr-4">
@@ -134,7 +151,7 @@ const RegistrationModal = ({ isOpen, onClose, eventTitle }) => {
           </button>
         </div>
 
-        <div className="p-5 overflow-y-auto flex-1">
+        <div className="p-5 overflow-y-auto flex-1" data-lenis-prevent>
           {successData ? (
             <div className="text-center py-6">
               <h3 className="text-xl font-bold text-text-primary mb-2">Registration Successful!</h3>

@@ -11,20 +11,47 @@ import {
 import { Link } from "react-router-dom";
 import { sharedEvents } from "../data/events";
 import Reveal from "../components/Reveal";
+import RevealGroup from "../components/RevealGroup";
+import { scrollToTop } from "../lib/scroll";
 
-const DomainCard = ({ icon, title, description, delay = 0 }) => (
-  <Reveal delay={delay} className="h-full">
-    <article className="domain-card card card-hover h-full">
-      <div className="domain-icon">{icon}</div>
-      <h3 className="domain-title">{title}</h3>
-      <p className="text-sm text-text-body leading-relaxed flex-1">{description}</p>
-      <span className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-accent-primary">
-        Learn more
-        <ArrowRight size={14} aria-hidden="true" />
-      </span>
-    </article>
-  </Reveal>
-);
+const missionItems = [
+  {
+    num: "01",
+    title: "Practical Skill Development",
+    body: (
+      <>
+        Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and
+        gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and
+        Cybersecurity.
+      </>
+    ),
+    className: "mission-item flex gap-4 pb-8",
+  },
+  {
+    num: "02",
+    title: "Industry Exposure",
+    body: (
+      <>
+        Connect with alumni at top tech companies, learn from industry expert workshops, and join
+        sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your
+        career.
+      </>
+    ),
+    className: "mission-item flex gap-4 py-8",
+  },
+  {
+    num: "03",
+    title: "Collaborative Environment",
+    body: (
+      <>
+        Join a community of passionate learners and innovators. Collaborate on projects, share
+        knowledge, and grow together. Our senior-junior mentorship model ensures everyone gets the
+        guidance they need to succeed.
+      </>
+    ),
+    className: "mission-item flex gap-4 pt-8",
+  },
+];
 
 const Home = () => {
   const domains = [
@@ -137,28 +164,34 @@ const Home = () => {
         />
 
         <div className="page-wrap relative py-8 sm:py-10 lg:py-12">
-          <Reveal>
-            <p className="text-sm font-medium tracking-[0.18em] uppercase text-text-muted mb-3">
+          <RevealGroup immediate className="hero-sequence">
+            <p
+              className="reveal-item text-sm font-medium tracking-[0.18em] uppercase text-text-muted mb-3"
+              style={{ "--index": 0 }}
+            >
               Welcome to
             </p>
-            <h1 className="text-[2.5rem] sm:text-6xl lg:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none mb-6">
+            <h1
+              className="reveal-item text-[2.5rem] sm:text-6xl lg:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none mb-6"
+              style={{ "--index": 1 }}
+            >
               AdroIT
             </h1>
-
-            <div className="badge mb-6 max-w-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0" />
-              <span className="text-left">Department of Computer Science &amp; Engineering</span>
+            <div className="reveal-item" style={{ "--index": 2 }}>
+              <div className="badge mb-6 max-w-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0" />
+                <span className="text-left">Department of Computer Science &amp; Engineering</span>
+              </div>
             </div>
-
-            <p className="text-base sm:text-lg lg:text-xl text-text-body leading-relaxed max-w-3xl">
+            <p
+              className="reveal-item text-base sm:text-lg lg:text-xl text-text-body leading-relaxed max-w-3xl"
+              style={{ "--index": 3 }}
+            >
               The Premier Technical Club{" "}
               <span className="text-text-primary font-medium">Empowering Tomorrow's Innovators</span>{" "}
               through cutting-edge technology, collaborative projects, and industry-ready skills
             </p>
-          </Reveal>
-
-          <Reveal delay={60}>
-            <div className="hero-branding">
+            <div className="reveal-item hero-branding" style={{ "--index": 4 }}>
               <div className="hero-branding-college">
                 <img
                   src="/rnsit_logo.png"
@@ -186,41 +219,41 @@ const Home = () => {
                 />
               </div>
             </div>
-          </Reveal>
+          </RevealGroup>
 
           <div className="mt-6">
-            <div className="snap-strip mb-10">
+            <RevealGroup className="snap-strip mb-10" data-lenis-prevent>
               {sharedEvents.map((event, index) => (
-                <Reveal key={event._id} delay={index * 60}>
-                  <Link
-                    to="/events"
-                    className="snap-card event-card card card-hover p-5 text-left block h-full"
-                  >
-                    <div className="flex flex-wrap justify-between items-start gap-2 mb-3">
-                      <span className="badge-amber badge text-xs font-semibold">Paradox 2026</span>
-                      <span className="text-xs text-text-muted text-right shrink-0">
-                        {new Date(event.date).toLocaleDateString("en-US", {
-                          weekday: "short",
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </div>
-                    <h3 className="event-card-title font-semibold text-lg text-text-primary mb-2">
-                      {event.title}
-                    </h3>
-                    <p className="text-sm text-text-body line-clamp-3 mb-3">{event.description}</p>
-                    <span className="inline-flex items-center gap-1 text-sm font-medium text-accent-primary">
-                      View details
-                      <ArrowRight size={14} aria-hidden="true" />
+                <Link
+                  key={event._id}
+                  to="/events"
+                  className="reveal-item snap-card event-card card card-hover p-5 text-left block h-full"
+                  style={{ "--index": index }}
+                >
+                  <div className="flex flex-wrap justify-between items-start gap-2 mb-3">
+                    <span className="badge-amber badge text-xs font-semibold">Paradox 2026</span>
+                    <span className="text-xs text-text-muted text-right shrink-0">
+                      {new Date(event.date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </span>
-                  </Link>
-                </Reveal>
+                  </div>
+                  <h3 className="event-card-title font-semibold text-lg text-text-primary mb-2">
+                    {event.title}
+                  </h3>
+                  <p className="text-sm text-text-body line-clamp-3 mb-3">{event.description}</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-medium text-accent-primary">
+                    View details
+                    <ArrowRight size={14} aria-hidden="true" />
+                  </span>
+                </Link>
               ))}
-            </div>
+            </RevealGroup>
           </div>
 
           <Reveal delay={120}>
@@ -250,51 +283,23 @@ const Home = () => {
           </Reveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <Reveal className="lg:col-span-7">
-              <ol className="space-y-0">
-                <li className="mission-item flex gap-4 pb-8">
-                  <span className="mission-marker">01</span>
+            <RevealGroup as="ol" className="lg:col-span-7 space-y-0">
+              {missionItems.map((item, index) => (
+                <li
+                  key={item.num}
+                  className={`reveal-item ${item.className}`}
+                  style={{ "--index": index }}
+                >
+                  <span className="mission-marker">{item.num}</span>
                   <div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">
-                      Practical Skill Development
-                    </h3>
-                    <p className="text-text-body">
-                      Move beyond theory with <b>AdroIT</b> — build real-world projects, master
-                      industry tools, and gain in-demand skills across Machine Learning, Data
-                      Analytics, Cloud Computing, and Cybersecurity.
-                    </p>
+                    <h3 className="text-xl font-semibold text-text-primary mb-2">{item.title}</h3>
+                    <p className="text-text-body">{item.body}</p>
                   </div>
                 </li>
-                <li className="mission-item flex gap-4 py-8">
-                  <span className="mission-marker">02</span>
-                  <div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">
-                      Industry Exposure
-                    </h3>
-                    <p className="text-text-body">
-                      Connect with alumni at top tech companies, learn from industry expert
-                      workshops, and join sponsored hackathons. We give you the network, exposure,
-                      and opportunities to kickstart your career.
-                    </p>
-                  </div>
-                </li>
-                <li className="mission-item flex gap-4 pt-8">
-                  <span className="mission-marker">03</span>
-                  <div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">
-                      Collaborative Environment
-                    </h3>
-                    <p className="text-text-body">
-                      Join a community of passionate learners and innovators. Collaborate on
-                      projects, share knowledge, and grow together. Our senior-junior mentorship
-                      model ensures everyone gets the guidance they need to succeed.
-                    </p>
-                  </div>
-                </li>
-              </ol>
-            </Reveal>
+              ))}
+            </RevealGroup>
 
-            <Reveal delay={80} className="lg:col-span-5">
+            <Reveal delay={180} className="lg:col-span-5">
               <aside className="advantage-panel card card-elevated p-6 sm:p-8 h-full">
                 <h3 className="text-lg font-semibold text-text-primary mb-5">The AdroIT Advantage</h3>
                 <ul className="space-y-3">
@@ -321,16 +326,28 @@ const Home = () => {
             </p>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {domains.map((domain, index) => (
-              <DomainCard key={domain.title} {...domain} delay={index * 60} />
+              <article
+                key={domain.title}
+                className="reveal-item domain-card card card-hover h-full"
+                style={{ "--index": index }}
+              >
+                <div className="domain-icon">{domain.icon}</div>
+                <h3 className="domain-title">{domain.title}</h3>
+                <p className="text-sm text-text-body leading-relaxed flex-1">{domain.description}</p>
+                <span className="inline-flex items-center gap-1 mt-4 text-sm font-medium text-accent-primary">
+                  Learn more
+                  <ArrowRight size={14} aria-hidden="true" />
+                </span>
+              </article>
             ))}
-          </div>
+          </RevealGroup>
 
           <Reveal delay={180} className="mt-8">
             <Link
               to="/domains"
-              onClick={() => window.scrollTo(0, 0)}
+              onClick={() => scrollToTop({ immediate: true })}
               className="btn btn-secondary"
             >
               Explore All Domains
@@ -343,14 +360,14 @@ const Home = () => {
       <section className="section-block section-philosophy">
         <div className="page-wrap relative">
           <Reveal>
-            <div className="max-w-2xl">
+            <div className="max-w-2xl philosophy-copy">
               <h2 className="section-title">Our Learning Philosophy</h2>
               <p className="text-text-body text-lg leading-relaxed">
                 Like dynamic particles, we believe in adaptive, hands-on learning — not just
                 teaching technology, but building how you{" "}
-                <span className="text-text-primary font-medium">think</span>,
-                <span className="text-text-primary font-medium"> innovate</span>, and{" "}
-                <span className="text-text-primary font-medium">create</span>.
+                <span className="philosophy-emphasis text-text-body font-medium">think</span>,
+                <span className="philosophy-emphasis text-text-body font-medium"> innovate</span>, and{" "}
+                <span className="philosophy-emphasis text-text-body font-medium">create</span>.
               </p>
             </div>
           </Reveal>
@@ -364,20 +381,22 @@ const Home = () => {
             <h2 className="section-title mb-10">How AdroIT Will Transform You</h2>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {growthPillars.map((pillar, index) => (
-              <Reveal key={pillar.num} delay={index * 60}>
-                <article className="pillar-card card-hover h-full">
-                  <div className="pillar-accent" aria-hidden="true" />
-                  <p className="font-mono text-sm font-semibold text-accent-primary mb-2">
-                    {pillar.num}
-                  </p>
-                  <h3 className="text-lg font-semibold text-text-primary mb-2">{pillar.title}</h3>
-                  <p className="text-text-body text-sm leading-relaxed">{pillar.description}</p>
-                </article>
-              </Reveal>
+              <article
+                key={pillar.num}
+                className="reveal-item pillar-card card-hover h-full"
+                style={{ "--index": index }}
+              >
+                <div className="pillar-accent" aria-hidden="true" />
+                <p className="font-mono text-sm font-semibold text-accent-primary mb-2">
+                  {pillar.num}
+                </p>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">{pillar.title}</h3>
+                <p className="text-text-body text-sm leading-relaxed">{pillar.description}</p>
+              </article>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
@@ -392,27 +411,29 @@ const Home = () => {
             </p>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {communityCards.map((card, index) => (
-              <Reveal key={card.title} delay={index * 60}>
-                <article className="community-card card card-hover p-6 h-full">
-                  <div className="community-icon">{card.icon}</div>
-                  <h3 className="text-lg font-semibold text-text-primary mb-3">{card.title}</h3>
-                  <p className="text-text-body text-sm mb-4">{card.description}</p>
-                  <ul className="space-y-2 text-sm text-text-body">
-                    {card.items.map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <span className="mt-2 w-1 h-1 rounded-full bg-accent-primary shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              </Reveal>
+              <article
+                key={card.title}
+                className="reveal-item community-card card card-hover p-6 h-full"
+                style={{ "--index": index }}
+              >
+                <div className="community-icon">{card.icon}</div>
+                <h3 className="text-lg font-semibold text-text-primary mb-3">{card.title}</h3>
+                <p className="text-text-body text-sm mb-4">{card.description}</p>
+                <ul className="space-y-2 text-sm text-text-body">
+                  {card.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-2 w-1 h-1 rounded-full bg-accent-primary shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
             ))}
-          </div>
+          </RevealGroup>
 
-          <Reveal delay={180}>
+          <Reveal delay={120}>
             <p className="text-sm text-text-muted mt-10">
               Recruitment for this cycle is closed. Next recruitment opens later this year.
             </p>

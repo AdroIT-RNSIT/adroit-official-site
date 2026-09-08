@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { scrollToTop } from "./lib/scroll";
 
 // ===== LAYOUT =====
 import MainLayout from "./layout/MainLayout";
@@ -32,7 +33,7 @@ export default function App() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTop({ immediate: true });
   }, [pathname]);
 
   return (

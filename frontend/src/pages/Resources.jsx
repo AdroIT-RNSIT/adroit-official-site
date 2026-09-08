@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from '../lib/auth-client';
 import { useParams, Link } from 'react-router-dom';
 import LoadingSpinner from "../components/LoadingSpinner";
+import Reveal from "../components/Reveal";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -152,6 +153,7 @@ function Resources(){
     <div className="min-h-screen bg-bg-base overflow-x-clip">
       <div className="page-wrap py-10 sm:py-12">
 
+        <Reveal>
         <h1 className="section-title">
             {currentDomain?.name || 'Resources'}
         </h1>
@@ -159,6 +161,7 @@ function Resources(){
         <p className="section-lead mb-8">
           Curated learning materials to accelerate your technical journey
         </p>
+        </Reveal>
 
         {/* Domain cards */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-2">

@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
+import { observeReveal } from "../lib/revealObserver";
 
 export default function Reveal({
   as: Tag = "div",
   className = "",
   delay = 0,
+  immediate = false,
+  mobileStatic = false,
   children,
   style,
   ...props
@@ -14,29 +17,32 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (immediate) {
       el.classList.add("is-visible");
       return;
     }
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("is-visible");
-          io.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -24px 0px" }
-    );
+    if (mobileStatic && window.matchMedia("(max-width: 767px)").matches) {
+      el.classList.add("is-visible");
+      return;
+    }
 
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+    return observeReveal(el, () => el.classList.add("is-visible"));
+  }, [immediate, mobileStatic]);
+
+  const classes = [
+    "reveal",
+    immediate ? "is-visible" : "",
+    mobileStatic ? "reveal-mobile-static" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <Tag
       ref={ref}
-      className={`reveal ${className}`.trim()}
+      className={classes}
       style={{
         ...style,
         ...(delay > 0 ? { "--reveal-delay": `${delay}ms` } : undefined),

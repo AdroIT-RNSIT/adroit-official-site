@@ -126,7 +126,7 @@ const Navbar = () => {
         aria-modal="true"
         aria-label="Navigation"
       >
-        <div className="h-full overflow-y-auto p-5 pb-10">
+        <div className="h-full overflow-y-auto p-5 pb-10" data-lenis-prevent>
           {isLoggedIn && (
             <div className="mb-5 p-3 rounded-xl border border-border-subtle bg-bg-base">
               <p className="text-sm font-semibold text-text-primary truncate">

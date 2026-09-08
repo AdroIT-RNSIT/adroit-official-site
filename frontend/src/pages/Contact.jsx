@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import Reveal from "../components/Reveal";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -69,17 +70,17 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-bg-base px-4 py-12 sm:py-16">
       <div className="page-wrap max-w-5xl">
-        <div className="mb-10">
+        <Reveal className="mb-10">
           <div className="badge mb-4">Get in Touch</div>
           <h1 className="section-title">Connect with AdroIT</h1>
           <p className="section-lead">
             Let's connect, collaborate, and build something amazing together.
           </p>
-        </div>
+        </Reveal>
 
         {message.text && (
           <div
-            className={`mb-6 p-4 rounded-xl border text-sm flex items-center justify-between ${
+            className={`form-message-enter mb-6 p-4 rounded-xl border text-sm flex items-center justify-between ${
               message.type === "success"
                 ? "bg-green-50 border-green-200 text-green-800"
                 : "bg-red-50 border-red-200 text-red-700"
@@ -97,6 +98,7 @@ export default function Contact() {
           </div>
         )}
 
+        <Reveal delay={80}>
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="card p-5 sm:p-8">
             <h2 className="text-xl font-bold text-text-primary mb-6">Send us a Message</h2>
@@ -225,6 +227,7 @@ export default function Contact() {
             </div>
           </div>
         </div>
+        </Reveal>
       </div>
     </div>
   );

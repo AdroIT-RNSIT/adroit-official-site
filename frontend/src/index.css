@@ -23,7 +23,17 @@
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.07);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --reveal-distance: 10px;
+  --reveal-duration: 0.5s;
+  --stagger-step: 40ms;
   --nav-height: 64px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --reveal-distance: 14px;
+    --stagger-step: 60ms;
+  }
 }
 
 @theme {
@@ -461,7 +471,7 @@ input, textarea, select {
 }
 
 .btn:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.99);
 }
 
 .btn:disabled {
@@ -504,7 +514,7 @@ input, textarea, select {
 }
 
 .btn-ghost:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.99);
 }
 
 .btn-danger {
@@ -540,13 +550,13 @@ input, textarea, select {
   .card-hover:hover {
     border-color: var(--border-hover);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 
   .domain-card:hover {
     border-color: rgba(79, 70, 229, 0.35);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 
   .domain-card:hover .domain-icon {
@@ -557,18 +567,18 @@ input, textarea, select {
   .event-card:hover {
     border-color: rgba(79, 70, 229, 0.2);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 
   .pillar-card:hover {
     border-color: rgba(79, 70, 229, 0.2);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 
   .community-card:hover {
     border-color: rgba(79, 70, 229, 0.25);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 }
 
@@ -806,16 +816,156 @@ textarea.input-field {
    ============================================================ */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(var(--reveal-distance));
   transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.5s var(--ease-out);
+    opacity var(--reveal-duration) var(--ease-out),
+    transform var(--reveal-duration) var(--ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+
+.reveal-group > .reveal-item {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance));
+  transition:
+    opacity var(--reveal-duration) var(--ease-out),
+    transform var(--reveal-duration) var(--ease-out);
+  transition-delay: calc(var(--index, 0) * var(--stagger-step));
+}
+
+.reveal-group.is-visible > .reveal-item {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .reveal-mobile-static.reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0ms;
+  }
+}
+
+/* ============================================================
+   MODAL TRANSITIONS
+   ============================================================ */
+.modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .modal-root {
+    align-items: center;
+    padding: 1rem;
+  }
+}
+
+.modal-root--details {
+  z-index: 50;
+}
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  opacity: 0;
+  transition: opacity 0.22s var(--ease-out);
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+}
+
+.modal-panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition:
+    opacity 0.22s var(--ease-out),
+    transform 0.22s var(--ease-out);
+}
+
+@media (min-width: 640px) {
+  .modal-panel {
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+.modal-panel.is-open {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   FORM / DOMAIN TRANSITIONS
+   ============================================================ */
+.form-message-enter {
+  animation: message-enter 0.25s var(--ease-out);
+}
+
+@keyframes message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.domain-panel-enter {
+  animation: domain-fade-in 0.15s var(--ease-out);
+}
+
+@keyframes domain-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.philosophy-copy {
+  transition: color 0.4s var(--ease-out);
+}
+
+.reveal.is-visible .philosophy-copy .philosophy-emphasis {
+  color: var(--text-primary);
 }
 
 .hero-section {
@@ -867,5 +1017,24 @@ textarea.input-field {
     transform: none;
     transition: none;
     transition-delay: 0ms !important;
+  }
+
+  .reveal-group > .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0ms !important;
+  }
+
+  .modal-overlay,
+  .modal-panel {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .form-message-enter,
+  .domain-panel-enter {
+    animation: none !important;
   }
 }
