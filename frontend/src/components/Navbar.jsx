@@ -55,26 +55,16 @@ const Navbar = () => {
           
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-12 h-12">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg blur-sm opacity-70 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
-                <img
-                  src="/ADROIT-logo.webp"
-                  alt="AdroIT"
-                  className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-            </div>
-            <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-[0.08em] sm:tracking-[0.15em] leading-none">
               AdroIT
             </span>
             <div className="hidden lg:block ml-4 h-12 w-64 overflow-hidden relative">
-            <img
-              src="/ieee_logo.png"
-              alt="IEEE RNSIT"
-              className="absolute h-[180px] w-auto max-w-none left-0 top-[calc(50%+9px)] -translate-y-1/2"
-            />
-          </div>
+              <img
+                src="/ieee_logo.png"
+                alt="IEEE RNSIT"
+                className="absolute h-[180px] w-auto max-w-none left-0 top-[calc(50%+9px)] -translate-y-1/2"
+              />
+            </div>
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
@@ -172,11 +162,8 @@ const Navbar = () => {
       >
         {/* Mobile Menu Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-900/10">
-          <Link to="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-            <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
-              <img src="/ADROIT-logo.webp" alt="AdroIT" className="w-full h-full object-cover opacity-60" />
-            </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+          <Link to="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
+            <span className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent tracking-[0.08em] leading-none">
               AdroIT
             </span>
           </Link>
