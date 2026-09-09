@@ -1,765 +1,289 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Brain, Cloud } from 'lucide-react';
+import React, { useState } from 'react';
+import { useSession } from '../lib/auth-client';
+import { Brain, Cloud, ShieldCheck, BarChart3 } from 'lucide-react';
+import Reveal from '../components/Reveal';
 
 export default function Domains() {
+  const { data: session } = useSession();
+  const isLoggedIn = !!session;
   const [activeDomain, setActiveDomain] = useState('ml');
-  const [hoveredDomain, setHoveredDomain] = useState(null);
-  
-  const sectionRefs = {
-    hero: useRef(null),
-    overview: useRef(null),
-    domains: useRef(null)
-  };
 
-  // ===== SVG ICONS =====
-  const icons = {
-    ml: (
-      <Brain size={26}/>
-    ),
-    cc: (
-      <Cloud size={26}/>
-    ),
-    cy: (
-      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" fill="currentColor"/>
-      </svg>
-    ),
-    da: (
-      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
-      </svg>
-    ),
-    members: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/>
-      </svg>
-    ),
-    projects: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z" fill="currentColor"/>
-      </svg>
-    ),
-    resources: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 6h16v2H4V6zm2-4h12v2H6V2zm16 6H2v12h20V8zm-2 10H4v-8h16v8z" fill="currentColor"/>
-      </svg>
-    ),
-    career: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-10c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z" fill="currentColor"/>
-      </svg>
-    ),
-    skills: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
-      </svg>
-    ),
-    tools: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5s-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.79 2.59 5.01 4 8.19 4s6.4-1.41 8.19-4H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-4 6c0 2.76-2.24 5-5 5s-5-2.24-5-5V9c0-2.76 2.24-5 5-5s5 2.24 5 5v5z" fill="currentColor"/>
-      </svg>
-    ),
-    roadmap: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8-1.41-1.42z" fill="currentColor"/>
-      </svg>
-    ),
-    community: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0 4h8v2H7z" fill="currentColor"/>
-      </svg>
-    ),
-    arrow: (
-      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" fill="currentColor"/>
-      </svg>
-    ),
-    arrowRight: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill="currentColor"/>
-      </svg>
-    ),
-    check: (
-      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
-      </svg>
-    ),
-    book: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 6h16v2H4V6zm2-4h12v2H6V2zm16 6H2v12h20V8zm-2 10H4v-8h16v8z" fill="currentColor"/>
-      </svg>
-    ),
-    domain: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" fill="currentColor"/>
-      </svg>
-    )
-  };
-
-  // ===== DOMAIN DEFINITIONS =====
   const domains = [
     {
       id: 'ml',
       name: 'Machine Learning',
       shortName: 'ML',
-      icon: icons.ml,
-      color: 'from-cyan-500 to-cyan-600',
-      lightColor: 'from-cyan-400/20 to-cyan-600/20',
-      borderColor: 'border-cyan-500/30',
-      textColor: 'text-cyan-400',
-      bgColor: 'bg-cyan-500/10',
-      gradient: 'bg-gradient-to-br from-cyan-500/20 via-purple-500/10 to-transparent',
+      icon: <Brain size={22} />,
       description: 'Build intelligent systems that learn, adapt, and make decisions from data.',
       longDescription: 'This domain focuses on learning the fundamentals of Machine Learning, including data preprocessing, feature engineering, and building predictive models. Members gain hands-on experience working with algorithms, training models, and evaluating their performance.',
       careerPaths: ['AI Engineer', 'ML Engineer', 'Data Scientist', 'Research Scientist', 'Computer Vision Engineer'],
-      skills: [
-                "Python",
-                "NumPy",
-                "Pandas",
-                "TensorFlow",
-                "PyTorch",
-                "Scikit-learn",
-                "Neural Networks",
-                "Deep Learning",
-                "Computer Vision",
-                "Natural Language Processing (NLP)",
-                "Reinforcement Learning",
-                "Data Preprocessing"
-              ],
-      tools: [
-                "Jupyter Notebook",
-                "Google Colab",
-                "TensorFlow",
-                "PyTorch",
-                "Scikit-learn",
-                "Kaggle",
-                "MLflow",
-                "Weights & Biases"
-              ],
+      skills: ["Python", "NumPy", "Pandas", "TensorFlow", "PyTorch", "Scikit-learn", "Neural Networks", "Deep Learning", "Computer Vision", "Natural Language Processing (NLP)", "Reinforcement Learning", "Data Preprocessing"],
+      tools: ["Jupyter Notebook", "Google Colab", "TensorFlow", "PyTorch", "Scikit-learn", "Kaggle", "MLflow", "Weights & Biases"],
       projects: [
-        { name: 'Image Classifier', difficulty: 'Beginner', icon: '🖼️' },
-        { name: 'Sentiment Analysis', difficulty: 'Intermediate', icon: '💬' },
-        { name: 'Object Detection', difficulty: 'Advanced', icon: '👁️' },
-        { name: 'Recommendation System', difficulty: 'Intermediate', icon: '🎬' }
+        { name: 'Image Classifier', difficulty: 'Beginner' },
+        { name: 'Sentiment Analysis', difficulty: 'Intermediate' },
+        { name: 'Object Detection', difficulty: 'Advanced' },
+        { name: 'Recommendation System', difficulty: 'Intermediate' }
       ],
       resources: [
         { title: 'ML Crash Course', type: 'Course', provider: 'Google' },
         { title: 'Deep Learning Specialization', type: 'Course', provider: 'Andrew Ng' },
         { title: 'Fast.ai', type: 'Course', provider: 'Jeremy Howard' }
       ],
-      stats: {
-        members: 17,
-        projects: 4,
-        events: 6,
-        resources: 3
-      },
+      stats: { members: 17, projects: 4, events: 6, resources: 3 },
       leads: ['Prajwal Jagadeesh'],
-      roadmap: [
-                  "Python",
-                  "Math for ML",
-                  "Data Preprocessing",
-                  "ML Algorithms",
-                  "Model Evaluation",
-                  "Deep Learning",
-                  "Computer Vision",
-                  "NLP"
-                ]
+      roadmap: ["Python", "Math for ML", "Data Preprocessing", "ML Algorithms", "Model Evaluation", "Deep Learning", "Computer Vision", "NLP"]
     },
     {
       id: 'cc',
       name: 'Cloud Computing',
       shortName: 'Cloud',
-      icon: icons.cc,
-      color: 'from-purple-500 to-purple-600',
-      lightColor: 'from-purple-400/20 to-purple-600/20',
-      borderColor: 'border-purple-500/30',
-      textColor: 'text-purple-400',
-      bgColor: 'bg-purple-500/10',
-      gradient: 'bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-transparent',
+      icon: <Cloud size={22} />,
       description: 'Design, deploy, and scale applications on world-class cloud infrastructure.',
       longDescription: 'This domain focuses on understanding how networking works and the fundamentals of cloud computing. Members then progress to deploying applications in production environments and working with virtual machines (VMs) to gain practical, real-world experience',
       careerPaths: ['Cloud Architect', 'DevOps Engineer', 'Site Reliability Engineer', 'Cloud Developer', 'Platform Engineer'],
-      skills: ['Linux','Networking', 'AWS', 'Azure', 'GCP', 'Docker', 'Virtual machine', 'Terraform', 'CI/CD', 'Serverless'],
-      tools: ['AWS Console', 'Azure Portal', 'Google Cloud Console', 'Docker', 'Kubernetes','GitHub Actions','NGINX','Apache', 'Amazon S3','Firebase'],
+      skills: ['Linux', 'Networking', 'AWS', 'Azure', 'GCP', 'Docker', 'Virtual machine', 'Terraform', 'CI/CD', 'Serverless'],
+      tools: ['AWS Console', 'Azure Portal', 'Google Cloud Console', 'Docker', 'Kubernetes', 'GitHub Actions', 'NGINX', 'Apache', 'Amazon S3', 'Firebase'],
       projects: [
-        { name: 'Club website', difficulty: 'Intermediate', icon: '🌐' },
+        { name: 'Club website', difficulty: 'Intermediate' },
       ],
       resources: [
         { title: 'AWS Training', type: 'Certification', provider: 'Amazon' },
         { title: 'Kubernetes Basics', type: 'Course', provider: 'Google' },
         { title: 'DevOps Roadmap', type: 'Guide', provider: 'Community' }
       ],
-      stats: {
-        members: 13,
-        projects: 1,
-        events: 0,
-        resources: 2
-      },
+      stats: { members: 13, projects: 1, events: 0, resources: 2 },
       leads: ['Praveen Kumar M'],
-      roadmap: [
-        'Networking Fundamentals',
-        'Linux Essentials',
-        'One Cloud Platform (AWS/GCP)',
-        'Docker',
-        'Deployment',
-        'Terraform',
-        'CI/CD',
-        'Monitoring & Scaling'
-      ]
+      roadmap: ['Networking Fundamentals', 'Linux Essentials', 'One Cloud Platform (AWS/GCP)', 'Docker', 'Deployment', 'Terraform', 'CI/CD', 'Monitoring & Scaling']
     },
     {
       id: 'cy',
       name: 'Cybersecurity',
       shortName: 'Cyber',
-      icon: icons.cy,
-      color: 'from-pink-500 to-pink-600',
-      lightColor: 'from-pink-400/20 to-pink-600/20',
-      borderColor: 'border-pink-500/30',
-      textColor: 'text-pink-400',
-      bgColor: 'bg-pink-500/10',
-      gradient: 'bg-gradient-to-br from-pink-500/20 via-rose-500/10 to-transparent',
+      icon: <ShieldCheck size={22} />,
       description: 'Protect systems, networks, and data from evolving cyber threats.',
       longDescription: 'This domain focuses on understanding how systems, networks, and applications can be secured against cyber threats. Members learn the fundamentals of cybersecurity, including ethical hacking concepts, cryptography basics, and security practices used to protect digital systems and data.',
       careerPaths: ['Security Analyst', 'Penetration Tester', 'Security Engineer', 'SOC Analyst', 'Cryptographer'],
       skills: ['Network Security', 'Ethical Hacking', 'Cryptography', 'Incident Response', 'Risk Assessment', 'Forensics'],
-      tools: ['Kali Linux', 'Wireshark', 'Metasploit', 'Burp Suite', 'Nmap', 'John the Ripper',"Hashcat","OWASP ZAP"],
+      tools: ['Kali Linux', 'Wireshark', 'Metasploit', 'Burp Suite', 'Nmap', 'John the Ripper', "Hashcat", "OWASP ZAP"],
       projects: [
-        { name: 'Network Scanner', difficulty: 'Beginner', icon: '🔍' },
-        { name: 'Password Cracker', difficulty: 'Intermediate', icon: '🔑' },
-        { name: 'Web App Pentest', difficulty: 'Advanced', icon: '🌐' },
-        { name: 'Security Audit', difficulty: 'Intermediate', icon: '📋' }
+        { name: 'Network Scanner', difficulty: 'Beginner' },
+        { name: 'Password Cracker', difficulty: 'Intermediate' },
+        { name: 'Web App Pentest', difficulty: 'Advanced' },
+        { name: 'Security Audit', difficulty: 'Intermediate' }
       ],
       resources: [
         { title: 'TryHackMe', type: 'Platform', provider: 'Community' },
         { title: 'Cybersecurity Basics', type: 'Course', provider: 'Coursera' },
         { title: 'OWASP Top 10', type: 'Guide', provider: 'OWASP' }
       ],
-      stats: {
-        members: 12,
-        projects: 4,
-        events: 3,
-        resources: 3
-      },
+      stats: { members: 12, projects: 4, events: 3, resources: 3 },
       leads: ['Sanjay N'],
-      roadmap: [
-        'Networking',
-        'Operating Systems',
-        'Security Fundamentals',
-        'Ethical Hacking',
-        'Specialization'
-      ]
+      roadmap: ['Networking', 'Operating Systems', 'Security Fundamentals', 'Ethical Hacking', 'Specialization']
     },
     {
       id: 'da',
       name: 'Data Analytics',
       shortName: 'DA',
-      icon: icons.da,
-      color: 'from-green-500 to-green-600',
-      lightColor: 'from-green-400/20 to-green-600/20',
-      borderColor: 'border-green-500/30',
-      textColor: 'text-green-400',
-      bgColor: 'bg-green-500/10',
-      gradient: 'bg-gradient-to-br from-green-500/20 via-emerald-500/10 to-transparent',
+      icon: <BarChart3 size={22} />,
       description: 'Extract actionable insights from complex datasets to drive decisions.',
       longDescription: 'Data Analytics transforms raw data into meaningful insights. Master data visualization, statistical analysis, and business intelligence to become a data-driven decision maker.',
       careerPaths: ['Data Analyst', 'Business Intelligence Analyst', 'Data Engineer', 'Analytics Manager', 'BI Developer'],
       skills: ['SQL', 'Python', 'R', 'Tableau', 'Power BI', 'Excel', 'Statistics', 'Data Visualization'],
       tools: ['PostgreSQL', 'MySQL', 'Tableau', 'Power BI', 'Pandas', 'Matplotlib', 'Looker'],
       projects: [
-        { name: 'Sales Dashboard', difficulty: 'Beginner', icon: '📉' },
-        { name: 'Customer Segmentation', difficulty: 'Intermediate', icon: '👥' },
-        { name: 'Predictive Analytics', difficulty: 'Advanced', icon: '🔮' },
-        { name: 'ETL Pipeline', difficulty: 'Intermediate', icon: '🔄' }
+        { name: 'Sales Dashboard', difficulty: 'Beginner' },
+        { name: 'Customer Segmentation', difficulty: 'Intermediate' },
+        { name: 'Predictive Analytics', difficulty: 'Advanced' },
+        { name: 'ETL Pipeline', difficulty: 'Intermediate' }
       ],
       resources: [
         { title: 'SQL for Data Science', type: 'Course', provider: 'Coursera' },
         { title: 'Python Data Analysis', type: 'Course', provider: 'DataCamp' },
         { title: 'Tableau Public', type: 'Tool', provider: 'Salesforce' }
       ],
-      stats: {
-        members: 15,
-        projects: 4,
-        events: 5,
-        resources: 3
-      },
+      stats: { members: 15, projects: 4, events: 5, resources: 3 },
       leads: ['Jaishnav'],
-      roadmap: [
-        'Excel Basics',
-        'SQL Mastery',
-        'Python/R',
-        'Visualization',
-        'Advanced Analytics'
-      ]
+      roadmap: ['Excel Basics', 'SQL Mastery', 'Python/R', 'Visualization', 'Advanced Analytics']
     }
   ];
-
-  // ===== INTERSECTION OBSERVER =====
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('opacity-100', 'translate-y-0');
-            entry.target.classList.remove('opacity-0', 'translate-y-8');
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    Object.values(sectionRefs).forEach(ref => {
-      if (ref.current) observer.observe(ref.current);
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
 
   return (
-    <div className="relative min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
-      
-      {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-w-[100vw] h-[800px] bg-gradient-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
-      </div>
-
-      {/* ===== FLOATING PARTICLES ===== */}
-      <div className="fixed inset-0 pointer-events-none z-1 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full ${
-              activeDomain === 'ml' ? 'bg-cyan-400/30' :
-              activeDomain === 'cc' ? 'bg-purple-400/30' :
-              activeDomain === 'cy' ? 'bg-pink-400/30' :
-              'bg-green-400/30'
-            } animate-float-particle`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${10 + Math.random() * 20}s`
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* ===== HERO SECTION ===== */}
-        <section
-          ref={sectionRefs.hero}
-          className="text-center mb-16 opacity-0 translate-y-8 transition-all duration-1000"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-            <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
-          </div>
-
-          <h1 className="fluid-h1 font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
-            Technical Domains
-          </h1>
-
-          <p className="fluid-lead text-slate-600 max-w-4xl mx-auto leading-relaxed">
+    <div className="min-h-screen bg-bg-base py-10 sm:py-14">
+      <div className="page-wrap">
+        <Reveal className="mb-10">
+          <div className="badge mb-4">AdroIT Knowledge Hub</div>
+          <h1 className="section-title">Technical Domains</h1>
+          <p className="section-lead">
             Master the four pillars of modern technology with our comprehensive learning paths,
-            <span className="text-cyan-400"> hands-on projects</span>, and
-            <span className="text-purple-400"> expert mentorship</span>
+            <span className="text-text-primary"> hands-on projects</span>, and
+            <span className="text-text-primary"> expert mentorship</span>
           </p>
+          <div className="flex flex-wrap gap-3 mt-8 max-w-full">
+            <div className="badge">4 Core Domains</div>
+            <div className="badge">10+ Projects</div>
+            <div className="badge">100+ Members in community</div>
+          </div>
+        </Reveal>
 
-          {/* Quick Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-12">
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
-              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
-                <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="60" cy="60" r="10" fill="#ffffff"/>
-                  <line x1="60" y1="60" x2="60" y2="20" stroke="#06B6D4" stroke-width="4"/>
-                  <line x1="60" y1="60" x2="100" y2="60" stroke="#8B5CF6" stroke-width="4"/>
-                  <line x1="60" y1="60" x2="60" y2="100" stroke="#EC4899" stroke-width="4"/>
-                  <line x1="60" y1="60" x2="20" y2="60" stroke="#22C55E" stroke-width="4"/>
-                  <circle cx="60" cy="20" r="10" fill="#06B6D4"/>
-                  <circle cx="100" cy="60" r="10" fill="#8B5CF6"/>
-                  <circle cx="60" cy="100" r="10" fill="#EC4899"/>
-                  <circle cx="20" cy="60" r="10" fill="#22C55E"/>
-                </svg>
-              </span>
-              <div>
-                <span className="text-2xl font-bold text-slate-900">4</span>
-                <span className="text-slate-600 text-sm ml-2">Core Domains</span>
+        <div className="flex gap-2 overflow-x-auto pb-2 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x" data-lenis-prevent>
+          {domains.map((domain) => (
+            <button
+              key={domain.id}
+              type="button"
+              onClick={() => setActiveDomain(domain.id)}
+              className={`btn shrink-0 ${
+                activeDomain === domain.id ? "btn-primary" : "btn-secondary"
+              }`}
+            >
+              {domain.icon}
+              {domain.name}
+            </button>
+          ))}
+        </div>
+
+        <div key={activeDomain} className="domain-panel-enter">
+        <div className="card p-5 sm:p-8 mb-6">
+          <div className="flex flex-col gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-accent-primary">{currentDomain.icon}</span>
+                <h2 className="text-2xl font-bold text-text-primary">{currentDomain.name}</h2>
+                <span className="badge">{currentDomain.shortName}</span>
               </div>
+              <p className="text-text-body">{currentDomain.description}</p>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
-              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
-                <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-
-                  <rect x="30" y="25" width="60" height="50" rx="8" fill="#111"/>
-                  <path d="M42 45 L52 50 L42 55" stroke="#06B6D4" stroke-width="5" fill="none"/>
-                  <line x1="58" y1="50" x2="75" y2="50" stroke="#06B6D4" stroke-width="5"/>
-                  <circle cx="45" cy="35" r="4" fill="#EC4899"/>
-                  <circle cx="60" cy="35" r="4" fill="#8B5CF6"/>
-                  <circle cx="75" cy="35" r="4" fill="#22C55E"/>
-
-                </svg>
-              </span>
-              <div>
-                <span className="text-2xl font-bold text-slate-900">10+</span>
-                <span className="text-slate-600 text-sm ml-2">Projects</span>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-lg bg-bg-base border border-border-subtle p-3">
+                <div className="text-xl font-bold text-accent-primary">{currentDomain.stats.members}</div>
+                <div className="text-xs text-text-muted">Members</div>
               </div>
-            </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
-              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
-                <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
-                  <circle cx="74" cy="42" r="15" fill="#8B5CF6"/>
-
-                  <rect x="32" y="55" width="32" height="15" rx="8" fill="#06B6D4"/>
-                  <rect x="58" y="58" width="32" height="15" rx="8" fill="#8B5CF6"/>
-                </svg>
-              </span>
-              <div>
-                <span className="text-2xl font-bold text-slate-900">100+</span>
-                <span className="text-slate-600 text-sm ml-2">Members in community</span>
+              <div className="rounded-lg bg-bg-base border border-border-subtle p-3">
+                <div className="text-xl font-bold text-accent-primary">{currentDomain.stats.projects}</div>
+                <div className="text-xs text-text-muted">Projects</div>
+              </div>
+              <div className="rounded-lg bg-bg-base border border-border-subtle p-3">
+                <div className="text-xl font-bold text-accent-primary">{currentDomain.stats.resources}</div>
+                <div className="text-xs text-text-muted">Resources</div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* ===== DOMAIN SELECTOR ===== */}
-        <section className="mb-12">
-          <div className="flex flex-wrap justify-center gap-4">
-            {domains.map((domain) => (
-              <button
-                key={domain.id}
-                onClick={() => setActiveDomain(domain.id)}
-                onMouseEnter={() => setHoveredDomain(domain.id)}
-                onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-all duration-500 ${
-                  activeDomain === domain.id
-                    ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg sm:scale-105`
-                    : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
-                }`}
-              >
-                {activeDomain === domain.id && (
-                  <div className={`absolute inset-0 bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse`}></div>
-                )}
-                
-                <span className="relative w-6 h-6">{domain.icon}</span>
-                <span className="relative font-semibold">{domain.name}</span>
-                
-                {hoveredDomain === domain.id && activeDomain !== domain.id && (
-                  <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-xl border border-slate-900/10 rounded-xl p-3 whitespace-nowrap z-50 animate-fade-in">
-                    <div className="flex gap-4 text-xs">
-                      <div><span className="text-cyan-400">{domain.stats.members}</span> members</div>
-                      <div><span className="text-purple-400">{domain.stats.projects}</span> projects</div>
-                    </div>
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* ===== ACTIVE DOMAIN DASHBOARD ===== */}
-        <section
-          key={activeDomain}
-          className="opacity-0 translate-y-8 animate-fade-in-up"
-        >
-          {/* Domain Hero Banner */}
-          <div className={`relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-br ${currentDomain.lightColor} border ${currentDomain.borderColor}`}>
-            <div className={`absolute inset-0 bg-gradient-to-r ${currentDomain.color}/10`}></div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10 p-5 sm:p-8 md:p-12">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-4xl md:text-5xl shadow-xl flex-shrink-0`}>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
-                      {currentDomain.icon}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">{currentDomain.name}</h2>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium bg-slate-900/20 text-slate-900 border ${currentDomain.borderColor}`}>
-                        {currentDomain.shortName}
-                      </span>
-                    </div>
-                    <p className="text-slate-700 text-lg max-w-2xl">{currentDomain.description}</p>
-                  </div>
-                </div>
-                
-                {/* Stats Cards */}
-                <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
-                    <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
-                      {currentDomain.stats.members}
-                    </div>
-                    <div className="text-xs text-slate-600 flex items-center gap-1">
-                      {icons.members} Members
-                    </div>
-                  </div>
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
-                    <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
-                      {currentDomain.stats.projects}
-                    </div>
-                    <div className="text-xs text-slate-600 flex items-center gap-1">
-                      {icons.projects} Projects
-                    </div>
-                  </div>
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
-                    <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
-                      {currentDomain.stats.resources}
-                    </div>
-                    <div className="text-xs text-slate-600 flex items-center gap-1">
-                      {icons.resources} Resources
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+          <div className="space-y-4">
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-2">About This Domain</h3>
+              <p className="text-sm text-text-body leading-relaxed">{currentDomain.longDescription}</p>
             </div>
-          </div>
-
-          {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            
-            {/* Column 1: About & Career */}
-            <div className="lg:col-span-1 space-y-6">
-              
-              {/* About Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-3 flex items-center gap-2`}>
-                  {icons.domain} About This Domain
-                </h3>
-                <p className="text-slate-700 text-sm leading-relaxed">
-                  {currentDomain.longDescription}
-                </p>
-              </div>
-
-              {/* Career Paths Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.career} Career Paths
-                </h3>
-                <div className="space-y-2">
-                  {currentDomain.careerPaths.map((career, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm">
-                      <span className="text-cyan-400">{icons.check}</span>
-                      <span className="text-slate-700">{career}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Domain Leads Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.members} Domain Lead
-                </h3>
-                <div className="space-y-3">
-                  {currentDomain.leads.map((lead, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-slate-900 text-xs font-bold`}>
-                        {lead.charAt(0)}
-                      </div>
-                      <span className="text-slate-900 text-sm font-medium">{lead}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Column 2: Skills, Tools, Projects */}
-            <div className="lg:col-span-1 space-y-6">
-              
-              {/* Skills Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.skills} Skills to Master
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {currentDomain.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium ${currentDomain.bgColor} ${currentDomain.textColor} border ${currentDomain.borderColor}`}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Tools Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.tools} Popular Tools
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {currentDomain.tools.map((tool, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-slate-900/5 rounded-lg">
-                      <span className="text-slate-600 text-xs">{icons.tools}</span>
-                      <span className="text-slate-700 text-xs">{tool}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sample Projects Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.projects} Sample Projects
-                </h3>
-                <div className="space-y-3">
-                  {currentDomain.projects.map((project, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 bg-slate-900/5 rounded-xl">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl">{project.icon}</span>
-                        <div>
-                          <div className="text-slate-900 text-sm font-medium">{project.name}</div>
-                          <span className={`text-xs ${
-                            project.difficulty === 'Beginner' ? 'text-green-400' :
-                            project.difficulty === 'Intermediate' ? 'text-yellow-400' :
-                            'text-red-400'
-                          }`}>
-                            {project.difficulty}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Column 3: Roadmap & Resources */}
-            <div className="lg:col-span-1 space-y-6">
-              
-              {/* Learning Roadmap Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.roadmap} Learning Roadmap
-                </h3>
-                <div className="relative">
-                  {currentDomain.roadmap.map((step, idx) => (
-                    <div key={idx} className="flex items-start gap-3 mb-4 last:mb-0">
-                      <div className="relative">
-                        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-slate-900 text-xs font-bold`}>
-                          {idx + 1}
-                        </div>
-                        {idx < currentDomain.roadmap.length - 1 && (
-                          <div className={`absolute top-6 left-3 w-0.5 h-8 bg-gradient-to-b ${currentDomain.color}`}></div>
-                        )}
-                      </div>
-                      <div>
-                        <span className="text-slate-900 text-sm font-medium">{step}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Recommended Resources Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
-                  {icons.book} Recommended Resources
-                </h3>
-                <div className="space-y-3">
-                  {currentDomain.resources.map((resource, idx) => (
-                    <div key={idx} className="block p-3 bg-slate-900/5 rounded-xl hover:bg-slate-900/10 transition-colors cursor-pointer">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="text-slate-900 text-sm font-medium">{resource.title}</div>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="text-xs text-slate-500">{resource.type}</span>
-                            <span className="text-xs text-gray-600">•</span>
-                            <span className="text-xs text-slate-500">{resource.provider}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div
-                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-3 bg-slate-900/5 text-slate-600 text-sm font-medium rounded-xl border border-slate-900/10"
-                >
-                  Become a member to get access to more resources
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Domain Comparison Table */}
-          <div className="mt-12 bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
-            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-              {icons.da} Domain Comparison
-            </h3>
-            
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-slate-900/10">
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Domain</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Members</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Projects</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Resources</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Lead</th>
-                </tr>
-              </thead>
-              <tbody>
-                {domains.map((domain) => (
-                  <tr 
-                    key={domain.id} 
-                    className={`border-b border-slate-900/5 hover:bg-slate-900/5 transition-colors cursor-pointer ${
-                      activeDomain === domain.id ? 'bg-slate-900/5' : ''
-                    }`}
-                    onClick={() => setActiveDomain(domain.id)}
-                  >
-                    <td className="py-4 px-2">
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5">{domain.icon}</span>
-                        <span className="text-slate-900 font-medium">{domain.name}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.members}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources}</td>
-                    <td className="py-4 px-2">
-                      <span className="text-slate-700">{domain.leads[0]}</span>
-                    </td>
-                  </tr>
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-3">Career Paths</h3>
+              <ul className="space-y-2 text-sm text-text-body">
+                {currentDomain.careerPaths.map((career) => (
+                  <li key={career}>{career}</li>
                 ))}
-              </tbody>
-            </table>
+              </ul>
+            </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-3">Domain Lead</h3>
+              {currentDomain.leads.map((lead) => (
+                <p key={lead} className="text-sm font-medium text-text-primary">{lead}</p>
+              ))}
+            </div>
           </div>
-        </section>
-      </div>
 
-      {/* ===== STYLES ===== */}
-      <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.05); }
-        }
-        @keyframes pulse-slower {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(1.1); }
-        }
-        @keyframes float-particle {
-          0% { transform: translateY(0) translateX(0); opacity: 0; }
-          10% { opacity: 0.5; }
-          90% { opacity: 0.5; }
-          100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
-        .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-        .animate-pulse-slower { animation: pulse-slower 8s ease-in-out infinite; }
-        .animate-float-particle { animation: float-particle 20s linear infinite; }
-      `}</style>
+          <div className="space-y-4">
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-3">Skills to Master</h3>
+              <div className="flex flex-wrap gap-2">
+                {currentDomain.skills.map((skill) => (
+                  <span key={skill} className="badge">{skill}</span>
+                ))}
+              </div>
+            </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-3">Popular Tools</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {currentDomain.tools.map((tool) => (
+                  <span key={tool} className="text-xs text-text-body p-2 rounded-lg bg-bg-base">{tool}</span>
+                ))}
+              </div>
+            </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-3">Sample Projects</h3>
+              <ul className="space-y-3">
+                {currentDomain.projects.map((project) => (
+                  <li key={project.name} className="flex items-center justify-between gap-3">
+                    <span className="text-sm font-medium text-text-primary">{project.name}</span>
+                    <span className="badge text-xs">{project.difficulty}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-4">Learning Roadmap</h3>
+              <ol className="space-y-3">
+                {currentDomain.roadmap.map((step, idx) => (
+                  <li key={step} className="flex gap-3 text-sm">
+                    <span className="font-mono text-accent-primary">{idx + 1}</span>
+                    <span className="text-text-primary font-medium">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="card p-5">
+              <h3 className="font-semibold text-text-primary mb-3">Recommended Resources</h3>
+              <div className="space-y-3">
+                {currentDomain.resources.map((resource) => (
+                  <div key={resource.title} className="p-3 rounded-lg bg-bg-base">
+                    <div className="text-sm font-medium text-text-primary">{resource.title}</div>
+                    <div className="text-xs text-text-muted mt-1">{resource.type} • {resource.provider}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 text-center text-sm text-text-muted border border-border-subtle rounded-xl px-4 py-3">
+                Become a member to get access to more resources
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="card p-5 overflow-x-auto">
+          <h3 className="font-semibold text-text-primary mb-4">Domain Comparison</h3>
+          <table className="w-full text-sm min-w-[32rem]">
+            <thead>
+              <tr className="border-b border-border-subtle text-left text-text-muted">
+                <th className="py-3 pr-3 font-medium">Domain</th>
+                <th className="py-3 pr-3 font-medium">Members</th>
+                <th className="py-3 pr-3 font-medium">Projects</th>
+                <th className="py-3 pr-3 font-medium">Resources</th>
+                <th className="py-3 font-medium">Lead</th>
+              </tr>
+            </thead>
+            <tbody>
+              {domains.map((domain) => (
+                <tr
+                  key={domain.id}
+                  className={`border-b border-border-subtle cursor-pointer ${activeDomain === domain.id ? "bg-accent-primary-tint" : ""}`}
+                  onClick={() => setActiveDomain(domain.id)}
+                >
+                  <td className="py-3 pr-3 font-medium text-text-primary">{domain.name}</td>
+                  <td className="py-3 pr-3 text-text-body">{domain.stats.members}</td>
+                  <td className="py-3 pr-3 text-text-body">{domain.stats.projects}</td>
+                  <td className="py-3 pr-3 text-text-body">{domain.stats.resources}</td>
+                  <td className="py-3 text-text-body">{domain.leads[0]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
     </div>
   );
 }

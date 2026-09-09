@@ -395,7 +395,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="page-wrap py-8">
       
       {/* ===== HEADER ===== */}
       <div className="mb-8">
@@ -497,7 +497,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
       </div>
 
       {/* ===== TAB CONTENT ===== */}
-      <div className="bg-slate-900/[0.03] backdrop-blur-sm rounded-2xl p-6 border border-slate-900/10">
+      <div className="card p-5 sm:p-6">
         
         {/* ===== TAB 1: RESOURCES ===== */}
         {activeTab === "resources" && (
@@ -517,7 +517,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                   placeholder="React Fundamentals"
                 />
               </div>
@@ -531,7 +531,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, url: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                   placeholder="https://example.com/resource"
                 />
               </div>
@@ -566,7 +566,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="input-field"
                 >
                   <option value="article">📝 Article</option>
                   <option value="video">🎬 Video</option>
@@ -587,7 +587,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, domain: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="input-field"
                 >
                   <option value="ml">🤖 Machine Learning</option>
                   <option value="cc">☁️ Cloud Computing</option>
@@ -604,7 +604,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, difficulty: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="input-field"
                 >
                   <option value="beginner">🟢 Beginner</option>
                   <option value="intermediate">🟡 Intermediate</option>
@@ -630,7 +630,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="btn btn-primary disabled:opacity-60"
             >
               {submitting ? "Creating..." : "Create Resource"}
             </button>
@@ -653,7 +653,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                   placeholder="React Workshop"
                 />
               </div>
@@ -666,7 +666,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="input-field"
                 >
                   <option value="workshop">🛠️ Workshop</option>
                   <option value="seminar">🎤 Seminar</option>
@@ -705,7 +705,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, date: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="input-field"
                 />
               </div>
               <div>
@@ -717,7 +717,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, location: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                   placeholder="Room 201, CS Building"
                 />
               </div>
@@ -766,7 +766,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="btn btn-primary disabled:opacity-60"
             >
               {submitting ? "Creating..." : "Create Event"}
             </button>
@@ -803,7 +803,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           className="w-10 h-10 rounded-full object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-slate-900 font-bold text-sm">
+                        <div className="w-10 h-10 rounded-full bg-accent-primary text-white flex items-center justify-center font-bold text-sm">
                           {user.name?.[0]?.toUpperCase() || "?"}
                         </div>
                       )}
@@ -841,7 +841,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           </span>
                           <button
                             onClick={() => toggleApproval(user.id, true)}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 shadow-sm hover:shadow-md transition-all"
+                            className="btn btn-primary text-xs px-3 py-1.5"
                           >
                             Approve
                           </button>
@@ -862,7 +862,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             
             {/* ===== ADD MEMBER FORM ===== */}
             <div className="bg-slate-900/5 rounded-2xl p-6 border border-slate-900/10">
-              <h3 className="text-lg font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
@@ -883,7 +883,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         required
                         value={memberForm.name}
                         onChange={(e) => setMemberForm({...memberForm, name: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                         placeholder="John Doe"
                       />
                     </div>
@@ -896,7 +896,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="email"
                         value={memberForm.email}
                         onChange={(e) => setMemberForm({...memberForm, email: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                         placeholder="john@adroit.com"
                       />
                     </div>
@@ -926,7 +926,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         required
                         value={memberForm.role}
                         onChange={(e) => setMemberForm({...memberForm, role: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="input-field"
                       >
                         <option value="President">👑 President</option>
                         <option value="Vice President">👑 Vice President</option>
@@ -944,7 +944,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                       <select
                         value={memberForm.year}
                         onChange={(e) => setMemberForm({...memberForm, year: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="input-field"
                       >
                         <option value="1st">1st Year</option>
                         <option value="2nd">2nd Year</option>
@@ -998,8 +998,8 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         </label>
                       )}
                       {uploadingImage && (
-                        <p className="text-xs text-cyan-400 mt-2 flex items-center gap-2">
-                          <span className="w-3 h-3 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></span>
+                        <p className="text-xs text-accent-primary mt-2 flex items-center gap-2">
+                          <span className="w-3 h-3 border-2 border-accent-primary border-t-transparent rounded-full animate-spin"></span>
                           Uploading to Cloudinary...
                         </p>
                       )}
@@ -1018,7 +1018,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="text"
                         value={memberForm.department}
                         onChange={(e) => setMemberForm({...memberForm, department: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                         placeholder="Computer Science & Engineering"
                       />
                     </div>
@@ -1031,7 +1031,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="url"
                         value={memberForm.linkedin}
                         onChange={(e) => setMemberForm({...memberForm, linkedin: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                         placeholder="https://linkedin.com/in/username"
                       />
                     </div>
@@ -1044,7 +1044,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="url"
                         value={memberForm.github}
                         onChange={(e) => setMemberForm({...memberForm, github: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-border-subtle bg-bg-surface text-text-primary input-field"
                         placeholder="https://github.com/username"
                       />
                     </div>
@@ -1068,7 +1068,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 <button
                   type="submit"
                   disabled={submitting || uploadingImage}
-                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="btn btn-primary disabled:opacity-60"
                 >
                   {submitting ? "Adding Member..." : "Add Member"}
                 </button>
@@ -1084,7 +1084,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
               
               {membersLoading ? (
                 <div className="flex justify-center py-8">
-                  <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-2 border-border-subtle border-t-accent-primary rounded-full animate-spin"></div>
                 </div>
               ) : members.length === 0 ? (
                 <p className="text-slate-600 text-center py-8">No members added yet.</p>
@@ -1097,13 +1097,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     >
                       <div className="flex items-center gap-3">
                         {/* Avatar */}
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${
-                          member.domain === 'ml' ? 'from-cyan-500 to-cyan-600' :
-                          member.domain === 'cc' ? 'from-purple-500 to-purple-600' :
-                          member.domain === 'cy' ? 'from-pink-500 to-pink-600' :
-                          member.domain === 'da' ? 'from-green-500 to-green-600' :
-                          'from-gray-500 to-gray-600'
-                        } flex items-center justify-center text-slate-900 font-bold`}>
+                        <div className="w-10 h-10 rounded-lg bg-accent-primary text-white flex items-center justify-center font-bold">
                           {member.name?.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -1145,10 +1139,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
 // ===== STAT CARD COMPONENT =====
 function StatCard({ title, value, gradient, icon }) {
   return (
-    <div className="bg-slate-900/[0.03] backdrop-blur-sm rounded-2xl p-5 border border-slate-900/10">
+    <div className="card p-5">
       <div className="flex items-center gap-3">
         <div
-          className={`p-2.5 rounded-xl bg-gradient-to-br ${gradient} text-slate-900 shadow-lg`}
+          className={`p-2.5 rounded-xl bg-accent-primary-tint text-accent-primary`}
         >
           {icon}
         </div>
@@ -1166,10 +1160,10 @@ function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
+      className={`min-h-11 px-5 py-2.5 rounded-xl font-medium text-sm ${
         active
-          ? "bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-900 shadow-lg shadow-cyan-400/20"
-          : "bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900"
+          ? "bg-accent-primary text-white"
+          : "bg-bg-base text-text-body border border-border-subtle"
       }`}
     >
       {children}

@@ -1,136 +1,346 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useSession, authClient } from "../lib/auth-client";
+import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "../lib/auth-client";
+import { prefersReducedMotion } from "../lib/revealObserver";
+import { getLenis } from "../lib/scroll";
+
+const DESKTOP_NAV_MQ = "(min-width: 768px)";
+const COMPACT_RESTORE_UP_PX = 60;
+const TOP_SCROLL_THRESHOLD = 16;
+
+const publicLinks = [
+  { name: "Home", path: "/" },
+  { name: "Paradox 2026", path: "/events" },
+  { name: "Domains", path: "/domains" },
+  { name: "Contact", path: "/contact" },
+];
+
+const protectedLinks = [
+  { name: "Resources", path: "/resources" },
+  { name: "Members", path: "/members" },
+  { name: "Profile", path: "/profile" },
+];
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { data: session, isPending } = useSession();
+  const [navReady, setNavReady] = useState(false);
+  const [navCompact, setNavCompact] = useState(false);
+  const scrollUpAccumRef = useRef(0);
+  const lastScrollRef = useRef(0);
+  const { data: session } = useSession();
 
   const isActive = (path) => pathname === path;
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
-  const isHomePage = pathname === "/";
-
-  const handleLogout = async () => {
-    await authClient.signOut();
-    navigate("/");
-  };
+  const isHome = pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setNavReady(true);
+      return;
+    }
+    const timer = window.setTimeout(() => setNavReady(true), 40);
+    return () => window.clearTimeout(timer);
   }, []);
 
-  // ===== PUBLIC LINKS - Visible to everyone =====
-  const publicLinks = [
-    { name: "Home", path: "/" },
-    { name: "Paradox 2026", path: "/events" },
-    { name: "Domains", path: "/domains" },
-    { name: "Members", path: "/members" },
-    { name: "Contact", path: "/contact" }
-  ];
+  useEffect(() => {
+    if (!isHome) {
+      setNavCompact(false);
+      return undefined;
+    }
 
-  // ===== ACCOUNT LINKS - Only visible when logged in =====
-  const protectedLinks = [
-    { name: "Profile", path: "/profile" }
-  ];
+    const desktopMq = window.matchMedia(DESKTOP_NAV_MQ);
+    const getScrollY = () => getLenis()?.scroll ?? window.scrollY;
+    let lenisScrollActive = false;
+    let lenisInstance = getLenis();
+
+    lastScrollRef.current = getScrollY();
+
+    const applyCompact = (scrollY, direction) => {
+      if (!desktopMq.matches) {
+        setNavCompact(false);
+        scrollUpAccumRef.current = 0;
+        return;
+      }
+
+      if (scrollY <= TOP_SCROLL_THRESHOLD) {
+        scrollUpAccumRef.current = 0;
+        setNavCompact(false);
+        return;
+      }
+
+      if (direction > 0) {
+        scrollUpAccumRef.current = 0;
+        setNavCompact(true);
+        return;
+      }
+
+      if (direction < 0) {
+        scrollUpAccumRef.current += lastScrollRef.current - scrollY;
+        if (scrollUpAccumRef.current >= COMPACT_RESTORE_UP_PX) {
+          scrollUpAccumRef.current = 0;
+          setNavCompact(false);
+        }
+      }
+    };
+
+    const handleScroll = () => {
+      const scrollY = getScrollY();
+      const direction =
+        scrollY > lastScrollRef.current ? 1 : scrollY < lastScrollRef.current ? -1 : 0;
+      applyCompact(scrollY, direction);
+      lastScrollRef.current = scrollY;
+    };
+
+    const handleDesktopChange = () => {
+      scrollUpAccumRef.current = 0;
+      if (!desktopMq.matches) {
+        setNavCompact(false);
+        return;
+      }
+      const scrollY = getScrollY();
+      lastScrollRef.current = scrollY;
+      setNavCompact(scrollY > TOP_SCROLL_THRESHOLD);
+    };
+
+    const handleWindowScroll = () => {
+      if (lenisScrollActive) return;
+      handleScroll();
+    };
+
+    const handleLenisScroll = () => {
+      handleScroll();
+    };
+
+    const bindLenis = () => {
+      lenisInstance = getLenis();
+      if (!lenisInstance || lenisScrollActive) return lenisScrollActive;
+      lenisInstance.on("scroll", handleLenisScroll);
+      lenisScrollActive = true;
+      handleScroll();
+      return true;
+    };
+
+    window.addEventListener("scroll", handleWindowScroll, { passive: true });
+    bindLenis();
+    handleScroll();
+
+    const bindRetries = [150, 400, 900, 2000].map((delay) =>
+      window.setTimeout(bindLenis, delay)
+    );
+
+    desktopMq.addEventListener("change", handleDesktopChange);
+
+    return () => {
+      bindRetries.forEach((timer) => window.clearTimeout(timer));
+      window.removeEventListener("scroll", handleWindowScroll);
+      if (lenisInstance && lenisScrollActive) {
+        lenisInstance.off("scroll", handleLenisScroll);
+      }
+      desktopMq.removeEventListener("change", handleDesktopChange);
+      scrollUpAccumRef.current = 0;
+      setNavCompact(false);
+    };
+  }, [isHome]);
+
+  const linkClass = (path) => {
+    const active = isActive(path);
+    return [
+      "nav-link",
+      "nav-intro-item",
+      active ? "nav-link-active" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+  };
 
   return (
     <>
+      {isHome && <div className="nav-scroll-boundary" aria-hidden="true" />}
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] transition-all duration-300 ease-in-out ${
-          scrolled
-            ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
-            : "bg-[#f3e8ff] border-b border-slate-900/5"
+        className={`nav-shell fixed top-0 left-0 right-0 z-50 ${
+          isHome ? "nav-shell--hero-integrated" : "nav-shell--elevated"
+        } ${navReady ? "nav-shell--ready" : ""} ${
+          isHome && navCompact ? "nav-shell--compact" : ""
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
-          
-          {/* ===== LOGO ===== */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-12 h-12">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg blur-sm opacity-70 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
-                <img
-                  src="/ADROIT-logo.webp"
-                  alt="AdroIT"
-                  className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-            </div>
-            <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
-              AdroIT
-            </span>
-            <div className="hidden lg:block ml-4 h-12 w-64 overflow-hidden relative">
+        <div className="page-wrap nav-inner">
+          <Link
+            to="/"
+            className="nav-brand nav-intro-item"
+            style={{ "--nav-index": 0 }}
+          >
             <img
-              src="/ieee_logo.png"
-              alt="IEEE RNSIT"
-              className="absolute h-[180px] w-auto max-w-none left-0 top-[calc(50%+9px)] -translate-y-1/2"
+              src="/ADROIT-logo.webp"
+              alt=""
+              width={68}
+              height={68}
+              className="brand-mark brand-nav-adroit rounded-lg"
+              aria-hidden="true"
             />
-          </div>
+            <span className="nav-brand-text">
+              <span className="nav-brand-name">AdroIT</span>
+              <span className="nav-brand-tag">RNSIT Technical Club</span>
+            </span>
           </Link>
 
-          {/* ===== DESKTOP NAVIGATION ===== */}
-          <div className="hidden md:flex items-center gap-1">
-            
-            {/* PUBLIC LINKS */}
-            <div className="flex items-center">
+          <div className="nav-center nav-desktop" role="navigation" aria-label="Primary">
+            {publicLinks.map((link, index) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={linkClass(link.path)}
+                style={{ "--nav-index": index + 1 }}
+                aria-current={isActive(link.path) ? "page" : undefined}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          <div className="nav-end">
+            {isLoggedIn && (
+              <div className="nav-desktop nav-actions-desktop">
+                {protectedLinks.map((link, index) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={linkClass(link.path)}
+                    style={{ "--nav-index": index + 5 }}
+                    aria-current={isActive(link.path) ? "page" : undefined}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className={linkClass("/admin")}
+                    style={{ "--nav-index": 8 }}
+                    aria-current={isActive("/admin") ? "page" : undefined}
+                  >
+                    Admin
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {isHome && (
+              <div
+                className="nav-institutional nav-intro-item"
+                style={{ "--nav-index": isLoggedIn ? 9 : 5 }}
+              >
+                <img
+                  src="/25_years.png"
+                  alt="25 Years of RNSIT"
+                  width={52}
+                  height={52}
+                  className="brand-mark nav-brand-25"
+                />
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="nav-toggle md:hidden"
+              aria-label="Open menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div
+        className={`md:hidden mobile-nav-root ${
+          mobileMenuOpen ? "mobile-nav-root--open" : ""
+        }`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div
+          className="mobile-nav-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+
+        <div
+          id="mobile-nav"
+          className="mobile-nav-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation"
+        >
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(false)}
+            className="mobile-nav-modal__close"
+            aria-label="Close menu"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div className="mobile-nav-modal__body" data-lenis-prevent>
+            {isLoggedIn && (
+              <div className="mb-5 p-3 rounded-xl border border-border-subtle bg-bg-base">
+                <p className="text-sm font-semibold text-text-primary truncate">
+                  {session?.user?.name}
+                </p>
+                <p className="text-xs text-text-muted truncate">{session?.user?.email}</p>
+              </div>
+            )}
+
+            <p className="section-kicker mb-3 pr-12">Public</p>
+            <div className="mobile-nav-modal__links mb-6">
               {publicLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive(link.path)
-                      ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                      : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`${linkClass(link.path)} mobile-nav-modal__link`}
                 >
-                  {link.name === "Paradox 2026" ? (
-                    <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
-                      {link.name}
-                    </span>
-                  ) : (
-                    link.name
-                  )}
+                  {link.name}
                 </Link>
               ))}
             </div>
 
-            {/* PROTECTED LINKS - Only when logged in */}
             {isLoggedIn && (
               <>
-                <span className="w-px h-5 bg-slate-900/10 mx-1"></span>
-                <div className="flex items-center">
+                <p className="section-kicker mb-3">Member</p>
+                <div className="mobile-nav-modal__links mb-2">
                   {protectedLinks.map((link) => (
                     <Link
                       key={link.path}
                       to={link.path}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive(link.path)
-                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`${linkClass(link.path)} mobile-nav-modal__link`}
                     >
                       {link.name}
                     </Link>
                   ))}
-                  
-                  {/* Admin Link */}
                   {isAdmin && (
                     <Link
                       to="/admin"
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive("/admin")
-                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`${linkClass("/admin")} mobile-nav-modal__link`}
                     >
                       Admin
                     </Link>
@@ -138,158 +348,7 @@ const Navbar = () => {
                 </div>
               </>
             )}
-
-            {/* ===== AUTH SECTION REMOVED ===== */}
-            <div className="ml-3 pl-3 border-l border-slate-900/10">
-            </div>
           </div>
-
-          {/* ===== MOBILE MENU BUTTON ===== */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-all duration-200"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : "opacity-100"}`}></span>
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
-          </button>
-        </div>
-      </nav>
-
-      {/* ===== MOBILE MENU ===== */}
-      {mobileMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] transition-all duration-300"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      <div
-        className={`md:hidden fixed top-0 right-0 w-80 max-w-[85vw] h-full z-[1000] bg-[#f3e8ff] border-l border-slate-900/10 shadow-2xl transform transition-all duration-500 ease-out pt-[env(safe-area-inset-top,0px)] pb-[env(safe-area-inset-bottom,0px)] ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-900/10">
-          <Link to="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-            <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
-              <img src="/ADROIT-logo.webp" alt="AdroIT" className="w-full h-full object-cover opacity-60" />
-            </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
-              AdroIT
-            </span>
-          </Link>
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-colors"
-          >
-            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Menu Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(100vh-200px)]">
-          
-          {/* User Info - Only when logged in */}
-          {isLoggedIn && (
-            <div className="mb-6 p-4 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-slate-900 text-lg font-bold">
-                  {session?.user?.image ? (
-                    <img src={session.user.image} alt={session.user.name} className="w-full h-full object-cover rounded-lg" />
-                  ) : (
-                    session?.user?.name?.charAt(0).toUpperCase() || "U"
-                  )}
-                </div>
-                <div>
-                  <p className="text-slate-900 font-medium">{session?.user?.name}</p>
-                  <p className="text-slate-500 text-xs">{session?.user?.email}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Public Links */}
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Explore</p>
-            {publicLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(link.path)
-                    ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
-                }`}
-              >
-                <span className="w-6 h-6 flex items-center justify-center">
-                  {link.name === "Home" && "🏠"}
-                  {link.name === "Paradox 2026" && "📅"}
-                  {link.name === "Members" && "👥"}
-                  {link.name === "Domains" && "🎯"}
-                  {link.name === "Contact" && "📞"}
-                </span>
-                {link.name === "Paradox 2026" ? (
-                  <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-base">
-                    {link.name}
-                  </span>
-                ) : (
-                  link.name
-                )}
-              </Link>
-            ))}
-          </div>
-
-          {/* Protected Links - Only when logged in */}
-          {isLoggedIn && (
-            <>
-              <div className="my-4 border-t border-slate-900/10"></div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Member</p>
-                {protectedLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive(link.path)
-                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
-                    }`}
-                  >
-                    <span className="w-6 h-6 flex items-center justify-center">
-                      {link.name === "Resources" && "📚"}
-                      {link.name === "Members" && "👥"}
-                      {link.name === "Profile" && "👤"}
-                    </span>
-                    {link.name}
-                  </Link>
-                ))}
-                
-                {/* Admin Link */}
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive("/admin")
-                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
-                    }`}
-                  >
-                    <span className="w-6 h-6 flex items-center justify-center">⚙️</span>
-                    Admin
-                  </Link>
-                )}
-              </div>
-            </>
-          )}
-
-          {/* Mobile Auth Button Removed */}
         </div>
       </div>
     </>
