@@ -62,34 +62,87 @@ export default function Events() {
 
   return (
     <div className="event-page-enter min-h-dvh bg-[#080c16] text-slate-100">
-      <section className="relative overflow-hidden border-b border-white/10">
+      <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-cyan-500/15 blur-[90px]" />
-          <div className="absolute bottom-0 right-0 h-56 w-80 rounded-full bg-blue-600/10 blur-[80px]" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
-            Department of CSE · RNSIT
-          </p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Paradox 2026
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            Three competitions across two days — Capture The Flag, Tech Auction,
-            and AI Film Making. 17–18 September 2026.
-          </p>
+        <div className="relative mx-auto max-w-6xl px-4 pb-8 pt-8 sm:px-6 sm:pb-10 sm:pt-10 lg:px-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+                Department of CSE · RNSIT
+              </p>
+              <h1 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
+                Paradox 2026
+              </h1>
+              <p className="mt-3 text-base leading-relaxed text-slate-300 sm:text-lg">
+                Three competitions · 17–18 September 2026
+              </p>
+            </div>
 
-          <div className="mt-8 grid grid-cols-3 gap-3 sm:max-w-lg">
-            <Stat label="Events" value={String(events.length)} />
-            <Stat label="Prize pool" value={`₹${totalPrize.toLocaleString("en-IN")}`} />
-            <Stat label="Dates" value="17–18 Sep" />
+            <div className="rounded-2xl border border-white/12 bg-[#0d1424] px-5 py-4 sm:px-6">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                Sponsors
+              </p>
+              <div className="mt-3 flex items-center gap-5 sm:gap-7">
+                {SPONSORS.map((sponsor) => (
+                  <img
+                    key={sponsor.name}
+                    src={sponsor.src}
+                    alt={sponsor.name}
+                    className="h-14 w-auto max-w-[8.5rem] object-contain sm:h-16 sm:max-w-[10rem]"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <div className="flex flex-col justify-between rounded-2xl border border-cyan-400/35 bg-cyan-400/[0.12] px-5 py-5 lg:min-h-[11.5rem]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-300">
+                Prize pool
+              </p>
+              <p className="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl">
+                ₹{totalPrize.toLocaleString("en-IN")}
+              </p>
+            </div>
+
+            {events.map((event) => {
+              const poster = event.poster || event.imageUrl;
+              const shortName =
+                event.slug === "capture-the-flag" ? "CTF" : event.title;
+              return (
+                <Link
+                  key={event._id}
+                  to={`/events/${event.slug}`}
+                  className="relative min-h-[8.5rem] overflow-hidden rounded-2xl lg:min-h-[11.5rem]"
+                >
+                  {poster && (
+                    <img
+                      src={poster}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15" />
+                  <div className="relative flex h-full min-h-[8.5rem] flex-col justify-end p-4 lg:min-h-[11.5rem] lg:p-5">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-cyan-200">
+                      {shortName}
+                    </p>
+                    <p className="mt-1 text-2xl font-black text-white sm:text-3xl">
+                      ₹{(event.prize || 0).toLocaleString("en-IN")}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-        <p className="mb-8 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-center text-sm text-slate-300 sm:px-5">
+      <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pb-14">
+        <p className="mb-8 text-center text-sm text-slate-400">
           All participants must read the generic rules and guidelines at the bottom of this page.
         </p>
 
@@ -113,56 +166,7 @@ export default function Events() {
           </div>
         )}
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-              Prize pool
-            </h2>
-            <ul className="mt-5 space-y-3">
-              {events.map((event) => (
-                <li
-                  key={event._id}
-                  className="flex items-center justify-between gap-4 border-b border-white/10 pb-3 last:border-0 last:pb-0"
-                >
-                  <span className="text-sm font-medium text-slate-200">{event.title}</span>
-                  <span className="font-mono text-sm font-semibold text-white">
-                    ₹{(event.prize || 0).toLocaleString("en-IN")}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 flex items-center justify-between rounded-2xl bg-black/30 px-4 py-3">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Total
-              </span>
-              <span className="text-lg font-black text-white">
-                ₹{totalPrize.toLocaleString("en-IN")}
-              </span>
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-              Sponsors
-            </h2>
-            <div className="mt-5 grid grid-cols-2 gap-4">
-              {SPONSORS.map((sponsor) => (
-                <div key={sponsor.name} className="flex flex-col items-center gap-3">
-                  <div className="flex h-24 w-full items-center justify-center rounded-2xl bg-white px-4">
-                    <img
-                      src={sponsor.src}
-                      alt={sponsor.name}
-                      className="max-h-16 w-auto max-w-full object-contain"
-                    />
-                  </div>
-                  <span className="text-sm font-semibold text-slate-200">{sponsor.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <section className="mt-10">
+        <section className="mt-14">
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent">
             <button
               type="button"
@@ -207,15 +211,6 @@ export default function Events() {
           </div>
         </section>
       </div>
-    </div>
-  );
-}
-
-function Stat({ label, value }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.05] px-3 py-3 sm:px-4">
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">{label}</p>
-      <p className="mt-1 text-sm font-bold text-white sm:text-base">{value}</p>
     </div>
   );
 }
