@@ -321,31 +321,10 @@ export default function Domains() {
     <div className="relative min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none z-0 hidden overflow-hidden md:block">
         <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
         <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-w-[100vw] h-[800px] bg-gradient-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
-      </div>
-
-      {/* ===== FLOATING PARTICLES ===== */}
-      <div className="fixed inset-0 pointer-events-none z-1 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full ${
-              activeDomain === 'ml' ? 'bg-cyan-400/30' :
-              activeDomain === 'cc' ? 'bg-purple-400/30' :
-              activeDomain === 'cy' ? 'bg-pink-400/30' :
-              'bg-green-400/30'
-            } animate-float-particle`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${10 + Math.random() * 20}s`
-            }}
-          />
-        ))}
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -353,9 +332,9 @@ export default function Domains() {
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className="text-center mb-16 opacity-0 translate-y-8 transition-all duration-1000"
+          className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 border border-slate-900/10 rounded-full">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
             <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
           </div>
@@ -372,7 +351,7 @@ export default function Domains() {
 
           {/* Quick Stats */}
           <div className="flex flex-wrap justify-center gap-6 mt-12">
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="60" cy="60" r="10" fill="#ffffff"/>
@@ -391,7 +370,7 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Core Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
 
@@ -409,7 +388,7 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Projects</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
@@ -436,14 +415,14 @@ export default function Domains() {
                 onClick={() => setActiveDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-all duration-500 ${
+                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-colors duration-200 ${
                   activeDomain === domain.id
                     ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg sm:scale-105`
                     : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
                 }`}
               >
                 {activeDomain === domain.id && (
-                  <div className={`absolute inset-0 bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse`}></div>
+                  <div className={`absolute inset-0 hidden bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse md:block`}></div>
                 )}
                 
                 <span className="relative w-6 h-6">{domain.icon}</span>
@@ -465,7 +444,6 @@ export default function Domains() {
         {/* ===== ACTIVE DOMAIN DASHBOARD ===== */}
         <section
           key={activeDomain}
-          className="opacity-0 translate-y-8 animate-fade-in-up"
         >
           {/* Domain Hero Banner */}
           <div className={`relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-br ${currentDomain.lightColor} border ${currentDomain.borderColor}`}>
@@ -493,7 +471,7 @@ export default function Domains() {
                 
                 {/* Stats Cards */}
                 <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
+                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.members}
                     </div>
@@ -501,7 +479,7 @@ export default function Domains() {
                       {icons.members} Members
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
+                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.projects}
                     </div>
@@ -509,7 +487,7 @@ export default function Domains() {
                       {icons.projects} Projects
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
+                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.resources}
                     </div>
@@ -529,7 +507,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* About Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-3 flex items-center gap-2`}>
                   {icons.domain} About This Domain
                 </h3>
@@ -539,7 +517,7 @@ export default function Domains() {
               </div>
 
               {/* Career Paths Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.career} Career Paths
                 </h3>
@@ -554,7 +532,7 @@ export default function Domains() {
               </div>
 
               {/* Domain Leads Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.members} Domain Lead
                 </h3>
@@ -575,7 +553,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Skills Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.skills} Skills to Master
                 </h3>
@@ -592,7 +570,7 @@ export default function Domains() {
               </div>
 
               {/* Tools Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.tools} Popular Tools
                 </h3>
@@ -607,7 +585,7 @@ export default function Domains() {
               </div>
 
               {/* Sample Projects Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.projects} Sample Projects
                 </h3>
@@ -637,7 +615,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Learning Roadmap Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.roadmap} Learning Roadmap
                 </h3>
@@ -661,7 +639,7 @@ export default function Domains() {
               </div>
 
               {/* Recommended Resources Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.book} Recommended Resources
                 </h3>
@@ -691,7 +669,7 @@ export default function Domains() {
           </div>
 
           {/* Domain Comparison Table */}
-          <div className="mt-12 bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
+          <div className="mt-12 bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>

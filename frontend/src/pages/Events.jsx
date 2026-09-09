@@ -68,7 +68,7 @@ export default function Events() {
   return (
     <div className="event-page-enter min-h-dvh bg-[#080c16] text-slate-100">
       <header className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
+        <div className="pointer-events-none absolute inset-0 hidden md:block">
           <div className="absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-cyan-500/12 blur-[90px]" />
         </div>
 
@@ -239,7 +239,9 @@ function EventCard({ event, isAdmin, onDelete }) {
             <img
               src={poster}
               alt=""
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
             />
           ) : (
             <div className="h-full w-full bg-slate-800" />

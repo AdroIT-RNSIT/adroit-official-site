@@ -57,13 +57,6 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
-
   const placePill = (el) => {
     const parent = navListRef.current;
     if (!parent || !el) return;
@@ -111,14 +104,14 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] bg-white border-b border-slate-200/80 md:transition-[background-color,border-color,box-shadow] md:duration-300 ${
           isHomePage
             ? scrolled
-              ? "backdrop-blur-xl bg-white/85 border-b border-slate-200/80 shadow-sm"
-              : "bg-white/70 backdrop-blur-md border-b border-slate-200/60"
+              ? "md:backdrop-blur-xl md:bg-white/85 md:border-slate-200/80 md:shadow-sm"
+              : "md:bg-white/70 md:backdrop-blur-md md:border-slate-200/60"
             : scrolled
-              ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
-              : "bg-[#f3e8ff] border-b border-slate-900/5"
+              ? "md:backdrop-blur-xl md:bg-[#f3e8ff]/95 md:border-slate-900/10 md:shadow-xl"
+              : "md:bg-[#f3e8ff] md:border-slate-900/5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
@@ -230,22 +223,17 @@ const Navbar = () => {
 
       {/* ===== MOBILE MENU ===== */}
       {mobileMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/30 backdrop-blur-[2px]"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      <div
-        className={`md:hidden fixed right-3 z-[1001] top-[calc(var(--nav-height)+0.5rem)] w-[min(20.5rem,calc(100vw-1.5rem))] origin-top-right rounded-2xl border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-200 ${
-          mobileMenuOpen
-            ? "pointer-events-auto scale-100 opacity-100"
-            : "pointer-events-none scale-95 opacity-0"
-        }`}
-        aria-hidden={!mobileMenuOpen}
-      >
-        <div className="pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t border-white/70 bg-white/90" />
-        <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-2">
+        <>
+          <div
+            className="md:hidden fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/40"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div
+            className="md:hidden fixed right-3 z-[1001] top-[calc(var(--nav-height)+0.5rem)] w-[min(20.5rem,calc(100vw-1.5rem))] origin-top-right rounded-2xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.18)]"
+            aria-hidden={!mobileMenuOpen}
+          >
+            <div className="pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t border-slate-200 bg-white" />
+            <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-2">
           {isLoggedIn && (
             <div className="mb-2 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-2.5">
               <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 text-sm font-bold text-white">
@@ -369,6 +357,8 @@ const Navbar = () => {
           )}
         </div>
       </div>
+        </>
+      )}
     </>
   );
 };

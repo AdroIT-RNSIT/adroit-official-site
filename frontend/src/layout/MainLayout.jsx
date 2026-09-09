@@ -20,7 +20,7 @@ export default function MainLayout({ children }) {
       }`}
     >
       {!isEventPage && (
-        <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="fixed inset-0 pointer-events-none z-0 hidden md:block">
           <div className={`absolute top-1/3 left-1/4 w-[500px] max-w-[100vw] h-[500px] rounded-full blur-[150px] ${isHomePage ? "bg-sky-600/5" : "bg-sky-600/5"}`}></div>
           <div className={`absolute bottom-1/4 right-1/4 w-[600px] max-w-[100vw] h-[600px] rounded-full blur-[150px] ${isHomePage ? "bg-slate-400/8" : "bg-sky-600/5"}`}></div>
         </div>
