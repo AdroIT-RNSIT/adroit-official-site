@@ -5,24 +5,23 @@
     <link rel="icon" type="image/svg+xml" href="public/ADROIT-logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>AdroIT</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("adroit-theme") || localStorage.getItem("adroit-nav-color");
+          var dark =
+            stored === "dark" ||
+            stored === "black" ||
+            ((!stored) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+          document.documentElement.style.backgroundColor = dark ? "#080c16" : "#f3e8ff";
+        } catch (e) {}
+      })();
+    </script>
     <style>
-      /* Prevent initial white flash */
-html {
-  background-color: #0d1117; /* Same as your page background */
-}
-
-body {
-  background-color: #0d1117;
-  color: white;
-  transition: none; /* Prevent transition on initial load */
-}
-  /* Prevent white flash before React loads */
-  body {
-    background-color: #0d1117 !important;
-    color: white !important;
-    transition: none !important;
-  }
-</style>
+      html, body { background-color: #f3e8ff; color: #0f172a; }
+      html.dark, html.dark body { background-color: #080c16; color: #e2e8f0; }
+    </style>
   </head>
   <body>
     <div id="root"></div>

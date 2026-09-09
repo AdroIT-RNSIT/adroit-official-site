@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
+import { BookOpen, Calendar, Users, UserRound } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const CLOUDINARY_CLOUD_NAME = "adroit"; // Change this to your cloud name
@@ -415,7 +416,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
           <StatCard
             title="Members"
             value={stats.membersCount || 0}
-            gradient="from-blue-500 to-cyan-500"
+            gradient="from-sky-500 to-sky-600"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -425,7 +426,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
           <StatCard
             title="Resources"
             value={stats.resourcesCount || 0}
-            gradient="from-indigo-500 to-purple-500"
+            gradient="from-sky-600 to-blue-700"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -435,7 +436,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
           <StatCard
             title="Events"
             value={stats.eventsCount || 0}
-            gradient="from-purple-500 to-pink-500"
+            gradient="from-sky-500 to-sky-700"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -445,7 +446,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
           <StatCard
             title="Users"
             value={stats.usersCount || 0}
-            gradient="from-pink-500 to-rose-500"
+            gradient="from-sky-600 to-sky-700"
             icon={
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -474,25 +475,25 @@ export default function AdminDashboard({ initialTab = "resources" }) {
           active={activeTab === "resources"}
           onClick={() => setActiveTab("resources")}
         >
-          📚 Resources
+          <BookOpen size={14} strokeWidth={2} /> Resources
         </TabButton>
         <TabButton
           active={activeTab === "events"}
           onClick={() => setActiveTab("events")}
         >
-          📅 Events
+          <Calendar size={14} strokeWidth={2} /> Events
         </TabButton>
         <TabButton
           active={activeTab === "users"}
           onClick={() => setActiveTab("users")}
         >
-          👥 Users
+          <Users size={14} strokeWidth={2} /> Users
         </TabButton>
         <TabButton
           active={activeTab === "members"}
           onClick={() => setActiveTab("members")}
         >
-          🧑‍💻 Members
+          <UserRound size={14} strokeWidth={2} /> Members
         </TabButton>
       </div>
 
@@ -517,7 +518,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                   placeholder="React Fundamentals"
                 />
               </div>
@@ -531,7 +532,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, url: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                   placeholder="https://example.com/resource"
                 />
               </div>
@@ -551,7 +552,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     description: e.target.value,
                   })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all resize-none"
                 placeholder="A comprehensive guide to React..."
               />
             </div>
@@ -566,16 +567,16 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="article">📝 Article</option>
-                  <option value="video">🎬 Video</option>
-                  <option value="course">🎓 Course</option>
-                  <option value="book">📚 Book</option>
-                  <option value="documentation">📄 Documentation</option>
-                  <option value="tool">🛠️ Tool</option>
-                  <option value="paper">📑 Research Paper</option>
-                  <option value="cheatSheet">📋 Cheat Sheet</option>
+                  <option value="article">Article</option>
+                  <option value="video">Video</option>
+                  <option value="course">Course</option>
+                  <option value="book">Book</option>
+                  <option value="documentation">Documentation</option>
+                  <option value="tool">Tool</option>
+                  <option value="paper">Research Paper</option>
+                  <option value="cheatSheet">Cheat Sheet</option>
                 </select>
               </div>
               <div>
@@ -587,12 +588,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, domain: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="ml">🤖 Machine Learning</option>
-                  <option value="cc">☁️ Cloud Computing</option>
-                  <option value="cy">🔒 Cybersecurity</option>
-                  <option value="da">📊 Data Analytics</option>
+                  <option value="ml">Machine Learning</option>
+                  <option value="cc">Cloud Computing</option>
+                  <option value="cy">Cybersecurity</option>
+                  <option value="da">Data Analytics</option>
                 </select>
               </div>
               <div>
@@ -604,11 +605,11 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setResourceForm({ ...resourceForm, difficulty: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="beginner">🟢 Beginner</option>
-                  <option value="intermediate">🟡 Intermediate</option>
-                  <option value="advanced">🔴 Advanced</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
                 </select>
               </div>
             </div>
@@ -622,7 +623,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 onChange={(e) =>
                   setResourceForm({ ...resourceForm, tags: e.target.value })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 placeholder="react, javascript, frontend"
               />
             </div>
@@ -630,7 +631,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {submitting ? "Creating..." : "Create Resource"}
             </button>
@@ -653,7 +654,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, title: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                   placeholder="React Workshop"
                 />
               </div>
@@ -666,13 +667,13 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, type: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="workshop">🛠️ Workshop</option>
-                  <option value="seminar">🎤 Seminar</option>
-                  <option value="hackathon">💻 Hackathon</option>
-                  <option value="meetup">🤝 Meetup</option>
-                  <option value="other">📌 Other</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="seminar">Seminar</option>
+                  <option value="hackathon">Hackathon</option>
+                  <option value="meetup">Meetup</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
             </div>
@@ -688,7 +689,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 onChange={(e) =>
                   setEventForm({ ...eventForm, description: e.target.value })
                 }
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all resize-none"
                 placeholder="Join us for a hands-on workshop..."
               />
             </div>
@@ -705,7 +706,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, date: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 />
               </div>
               <div>
@@ -717,7 +718,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   onChange={(e) =>
                     setEventForm({ ...eventForm, location: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                   placeholder="Room 201, CS Building"
                 />
               </div>
@@ -747,7 +748,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-slate-900/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
+                <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-slate-900/10 rounded-xl cursor-pointer hover:border-sky-500/40 hover:bg-white/[0.02] transition-all">
                   <svg className="w-8 h-8 text-slate-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
@@ -766,7 +767,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             <button
               type="submit"
               disabled={submitting}
-              className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="px-6 py-2.5 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {submitting ? "Creating..." : "Create Event"}
             </button>
@@ -784,7 +785,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
 
             {usersLoading ? (
               <div className="flex justify-center py-8">
-                <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-sky-600 border-t-transparent rounded-full animate-spin"></div>
               </div>
             ) : users.length === 0 ? (
               <p className="text-slate-600 text-center py-8">No users found.</p>
@@ -841,7 +842,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           </span>
                           <button
                             onClick={() => toggleApproval(user.id, true)}
-                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 shadow-sm hover:shadow-md transition-all"
+                            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-600 text-slate-900 shadow-sm hover:shadow-md transition-all"
                           >
                             Approve
                           </button>
@@ -862,7 +863,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
             
             {/* ===== ADD MEMBER FORM ===== */}
             <div className="bg-slate-900/5 rounded-2xl p-6 border border-slate-900/10">
-              <h3 className="text-lg font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-sky-600 mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
@@ -883,7 +884,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         required
                         value={memberForm.name}
                         onChange={(e) => setMemberForm({...memberForm, name: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="John Doe"
                       />
                     </div>
@@ -896,7 +897,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="email"
                         value={memberForm.email}
                         onChange={(e) => setMemberForm({...memberForm, email: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="john@adroit.com"
                       />
                     </div>
@@ -909,12 +910,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         required
                         value={memberForm.domain}
                         onChange={(e) => setMemberForm({...memberForm, domain: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-black focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-black focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       >
-                        <option value="ml">🤖 Machine Learning</option>
-                        <option value="cc">☁️ Cloud Computing</option>
-                        <option value="cy">🔒 Cybersecurity</option>
-                        <option value="da">📊 Data Analytics</option>
+                        <option value="ml">Machine Learning</option>
+                        <option value="cc">Cloud Computing</option>
+                        <option value="cy">Cybersecurity</option>
+                        <option value="da">Data Analytics</option>
                       </select>
                     </div>
 
@@ -926,14 +927,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         required
                         value={memberForm.role}
                         onChange={(e) => setMemberForm({...memberForm, role: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       >
-                        <option value="President">👑 President</option>
-                        <option value="Vice President">👑 Vice President</option>
-                        <option value="General Secretary">📋 General Secretary</option>
-                        <option value="Domain Lead">🎯 Domain Lead</option>
-                        <option value="Core Member">⭐ Core Member</option>
-                        <option value="Member">👥 Member</option>
+                        <option value="President">President</option>
+                        <option value="Vice President">Vice President</option>
+                        <option value="General Secretary">General Secretary</option>
+                        <option value="Domain Lead">Domain Lead</option>
+                        <option value="Core Member">Core Member</option>
+                        <option value="Member">Member</option>
                       </select>
                     </div>
 
@@ -944,7 +945,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                       <select
                         value={memberForm.year}
                         onChange={(e) => setMemberForm({...memberForm, year: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       >
                         <option value="1st">1st Year</option>
                         <option value="2nd">2nd Year</option>
@@ -982,7 +983,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                           </button>
                         </div>
                       ) : (
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-900/10 rounded-xl cursor-pointer hover:border-cyan-500/40 hover:bg-white/[0.02] transition-all">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-900/10 rounded-xl cursor-pointer hover:border-sky-500/40 hover:bg-white/[0.02] transition-all">
                           <svg className="w-8 h-8 text-slate-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
@@ -998,8 +999,8 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         </label>
                       )}
                       {uploadingImage && (
-                        <p className="text-xs text-cyan-400 mt-2 flex items-center gap-2">
-                          <span className="w-3 h-3 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></span>
+                        <p className="text-xs text-sky-600 mt-2 flex items-center gap-2">
+                          <span className="w-3 h-3 border-2 border-sky-600 border-t-transparent rounded-full animate-spin"></span>
                           Uploading to Cloudinary...
                         </p>
                       )}
@@ -1018,7 +1019,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="text"
                         value={memberForm.department}
                         onChange={(e) => setMemberForm({...memberForm, department: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="Computer Science & Engineering"
                       />
                     </div>
@@ -1031,7 +1032,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="url"
                         value={memberForm.linkedin}
                         onChange={(e) => setMemberForm({...memberForm, linkedin: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="https://linkedin.com/in/username"
                       />
                     </div>
@@ -1044,7 +1045,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         type="url"
                         value={memberForm.github}
                         onChange={(e) => setMemberForm({...memberForm, github: e.target.value})}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="https://github.com/username"
                       />
                     </div>
@@ -1060,7 +1061,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                     rows={3}
                     value={memberForm.bio}
                     onChange={(e) => setMemberForm({...memberForm, bio: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all resize-none"
                     placeholder="Tell us about this member..."
                   />
                 </div>
@@ -1068,7 +1069,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                 <button
                   type="submit"
                   disabled={submitting || uploadingImage}
-                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {submitting ? "Adding Member..." : "Add Member"}
                 </button>
@@ -1084,7 +1085,7 @@ export default function AdminDashboard({ initialTab = "resources" }) {
               
               {membersLoading ? (
                 <div className="flex justify-center py-8">
-                  <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-4 border-sky-600 border-t-transparent rounded-full animate-spin"></div>
                 </div>
               ) : members.length === 0 ? (
                 <p className="text-slate-600 text-center py-8">No members added yet.</p>
@@ -1098,10 +1099,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                       <div className="flex items-center gap-3">
                         {/* Avatar */}
                         <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${
-                          member.domain === 'ml' ? 'from-cyan-500 to-cyan-600' :
-                          member.domain === 'cc' ? 'from-purple-500 to-purple-600' :
-                          member.domain === 'cy' ? 'from-pink-500 to-pink-600' :
-                          member.domain === 'da' ? 'from-green-500 to-green-600' :
+                          member.domain === 'ml' ? 'from-sky-500 to-sky-700' :
+                          member.domain === 'cc' ? 'from-sky-500 to-sky-700' :
+                          member.domain === 'cy' ? 'from-sky-500 to-sky-700' :
+                          member.domain === 'da' ? 'from-sky-500 to-sky-700' :
                           'from-gray-500 to-gray-600'
                         } flex items-center justify-center text-slate-900 font-bold`}>
                           {member.name?.charAt(0).toUpperCase()}
@@ -1166,9 +1167,9 @@ function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
+      className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 inline-flex items-center gap-1.5 ${
         active
-          ? "bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-900 shadow-lg shadow-cyan-400/20"
+          ? "bg-sky-600 text-white shadow-lg shadow-sky-600/20"
           : "bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900"
       }`}
     >
