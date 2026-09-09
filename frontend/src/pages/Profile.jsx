@@ -339,7 +339,7 @@ export default function Profile() {
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Please Login</h2>
           <Link
             to="/"
-            className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 rounded-xl"
+            className="px-6 py-3 bg-sky-600 text-slate-900 rounded-xl"
           >
             Go to Login
           </Link>
@@ -353,15 +353,15 @@ export default function Profile() {
 
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 left-20 w-[400px] max-w-[100vw] h-[400px] bg-cyan-500/5 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-20 right-20 w-[500px] max-w-[100vw] h-[500px] bg-purple-600/5 rounded-full blur-[120px]"></div>
+        <div className="absolute top-20 left-20 w-[400px] max-w-[100vw] h-[400px] bg-sky-600/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-20 right-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px]"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== HEADER ===== */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl font-bold text-sky-800">
             My Profile
           </h1>
           <p className="text-slate-600 mt-2">
@@ -426,7 +426,7 @@ export default function Profile() {
                   <div className="relative group">
                     {/* Avatar */}
                     <div className="relative w-32 h-32 md:w-36 md:h-36">
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl blur-xl opacity-50"></div>
+                      <div className="absolute inset-0 bg-sky-600 rounded-2xl blur-xl opacity-50"></div>
                       {profile.imagePublicId || profile.imageUrl ? (
                         <img
                           src={profile.imagePublicId
@@ -437,7 +437,7 @@ export default function Profile() {
                           className="relative w-full h-full object-cover rounded-2xl border-2 border-slate-900/10"
                         />
                       ) : (
-                        <div className="relative w-full h-full rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-4xl md:text-5xl font-bold text-slate-900">
+                        <div className="relative w-full h-full rounded-2xl bg-sky-600 flex items-center justify-center text-4xl md:text-5xl font-bold text-slate-900">
                           {profile.name?.charAt(0).toUpperCase() || session?.user?.name?.charAt(0).toUpperCase() || '?'}
                         </div>
                       )}
@@ -462,7 +462,7 @@ export default function Profile() {
 
                     {/* Upload Status */}
                     {uploading && (
-                      <p className="text-xs text-cyan-400 mt-2 text-center">Uploading...</p>
+                      <p className="text-xs text-sky-600 mt-2 text-center">Uploading...</p>
                     )}
                   </div>
                 </div>
@@ -475,13 +475,13 @@ export default function Profile() {
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${profile.role === 'Admin' ? 'bg-red-500/20 text-red-400' :
                       profile.role === 'President' ? 'bg-yellow-500/20 text-yellow-400' :
-                        profile.role === 'Domain Lead' ? 'bg-purple-500/20 text-purple-400' :
+                        profile.role === 'Domain Lead' ? 'bg-sky-600/20 text-sky-600' :
                           profile.role === 'Core Member' ? 'bg-blue-500/20 text-blue-400' :
                             'bg-gray-500/20 text-slate-600'
                       }`}>
                       {profile.role || 'Member'}
                     </span>
-                    <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs font-medium">
+                    <span className="px-3 py-1 bg-sky-600/20 text-sky-600 rounded-full text-xs font-medium">
                       {profile.email || session?.user?.email}
                     </span>
                   </div>
@@ -505,7 +505,7 @@ export default function Profile() {
                       required
                       value={profile.name}
                       onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="Your full name"
                     />
                   </div>
@@ -519,7 +519,7 @@ export default function Profile() {
                       required
                       value={profile.email}
                       onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="your.email@example.com"
                       disabled // Email cannot be changed directly
                     />
@@ -533,7 +533,7 @@ export default function Profile() {
                     <select
                       value={profile.domain}
                       onChange={(e) => setProfile({ ...profile, domain: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     >
                       {domainOptions.map(opt => (
                         <option key={opt.value} value={opt.value}>{opt.icon} {opt.label}</option>
@@ -548,7 +548,7 @@ export default function Profile() {
                     <select
                       value={profile.year}
                       onChange={(e) => setProfile({ ...profile, year: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     >
                       {yearOptions.map(opt => (
                         <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -564,7 +564,7 @@ export default function Profile() {
                       type="text"
                       value={profile.department}
                       onChange={(e) => setProfile({ ...profile, department: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="Computer Science & Engineering"
                     />
                   </div>
@@ -580,7 +580,7 @@ export default function Profile() {
                       rows={4}
                       value={profile.bio}
                       onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all resize-none"
                       placeholder="Tell us about yourself, your interests, and what you're working on..."
                     />
                     <p className="text-xs text-slate-500 mt-1 text-right">
@@ -602,7 +602,7 @@ export default function Profile() {
                         type="url"
                         value={profile.linkedin}
                         onChange={(e) => setProfile({ ...profile, linkedin: e.target.value })}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="https://linkedin.com/in/username"
                       />
                     </div>
@@ -622,7 +622,7 @@ export default function Profile() {
                         type="url"
                         value={profile.github}
                         onChange={(e) => setProfile({ ...profile, github: e.target.value })}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                         placeholder="https://github.com/username"
                       />
                     </div>
@@ -636,7 +636,7 @@ export default function Profile() {
                       type="tel"
                       value={profile.phone}
                       onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="+91 98765 43210"
                     />
                   </div>
@@ -655,7 +655,7 @@ export default function Profile() {
                 <button
                   type="submit"
                   disabled={loading || uploading}
-                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -670,7 +670,7 @@ export default function Profile() {
               {/* Change Password */}
               <div>
                 <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   Change Password
@@ -686,7 +686,7 @@ export default function Profile() {
                       required
                       value={passwordData.currentPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="••••••••"
                     />
                   </div>
@@ -700,7 +700,7 @@ export default function Profile() {
                       required
                       value={passwordData.newPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="••••••••"
                     />
                     <p className="text-xs text-slate-500 mt-1">Minimum 8 characters</p>
@@ -715,7 +715,7 @@ export default function Profile() {
                       required
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       placeholder="••••••••"
                     />
                   </div>
@@ -723,7 +723,7 @@ export default function Profile() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all disabled:opacity-50"
+                    className="px-6 py-2.5 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 hover:scale-105 transition-all disabled:opacity-50"
                   >
                     {loading ? 'Updating...' : 'Update Password'}
                   </button>
@@ -731,8 +731,8 @@ export default function Profile() {
               </div>
 
               {/* Account Security Tips */}
-              <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-xl p-6">
-                <h4 className="text-cyan-400 font-semibold mb-2 flex items-center gap-2">
+              <div className="bg-sky-600/5 border border-sky-500/20 rounded-xl p-6">
+                <h4 className="text-sky-600 font-semibold mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -755,7 +755,7 @@ export default function Profile() {
               {/* Notification Settings */}
               <div>
                 <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                   Notification Preferences
@@ -770,7 +770,7 @@ export default function Profile() {
                     <button
                       type="button"
                       onClick={() => setSettings({ ...settings, emailNotifications: !settings.emailNotifications })}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.emailNotifications ? 'bg-cyan-500' : 'bg-gray-600'
+                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.emailNotifications ? 'bg-sky-600' : 'bg-gray-600'
                         }`}
                     >
                       <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.emailNotifications ? 'translate-x-6' : ''
@@ -786,7 +786,7 @@ export default function Profile() {
                     <button
                       type="button"
                       onClick={() => setSettings({ ...settings, eventReminders: !settings.eventReminders })}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.eventReminders ? 'bg-cyan-500' : 'bg-gray-600'
+                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.eventReminders ? 'bg-sky-600' : 'bg-gray-600'
                         }`}
                     >
                       <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.eventReminders ? 'translate-x-6' : ''
@@ -802,7 +802,7 @@ export default function Profile() {
                     <button
                       type="button"
                       onClick={() => setSettings({ ...settings, resourceUpdates: !settings.resourceUpdates })}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.resourceUpdates ? 'bg-cyan-500' : 'bg-gray-600'
+                      className={`relative w-12 h-6 rounded-full transition-colors ${settings.resourceUpdates ? 'bg-sky-600' : 'bg-gray-600'
                         }`}
                     >
                       <span className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${settings.resourceUpdates ? 'translate-x-6' : ''
@@ -815,7 +815,7 @@ export default function Profile() {
               {/* Privacy Settings */}
               <div className="pt-6 border-t border-slate-900/10">
                 <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   Privacy Settings
@@ -832,7 +832,7 @@ export default function Profile() {
                           value="public"
                           checked={settings.profileVisibility === 'public'}
                           onChange={(e) => setSettings({ ...settings, profileVisibility: e.target.value })}
-                          className="w-4 h-4 text-cyan-500 bg-slate-900/5 border-slate-900/10 focus:ring-cyan-500 focus:ring-offset-0"
+                          className="w-4 h-4 text-sky-600 bg-slate-900/5 border-slate-900/10 focus:ring-sky-500 focus:ring-offset-0"
                         />
                         <span className="text-sm text-slate-700">Public</span>
                       </label>
@@ -843,7 +843,7 @@ export default function Profile() {
                           value="members"
                           checked={settings.profileVisibility === 'members'}
                           onChange={(e) => setSettings({ ...settings, profileVisibility: e.target.value })}
-                          className="w-4 h-4 text-cyan-500 bg-slate-900/5 border-slate-900/10 focus:ring-cyan-500 focus:ring-offset-0"
+                          className="w-4 h-4 text-sky-600 bg-slate-900/5 border-slate-900/10 focus:ring-sky-500 focus:ring-offset-0"
                         />
                         <span className="text-sm text-slate-700">Members Only</span>
                       </label>
@@ -854,7 +854,7 @@ export default function Profile() {
                           value="private"
                           checked={settings.profileVisibility === 'private'}
                           onChange={(e) => setSettings({ ...settings, profileVisibility: e.target.value })}
-                          className="w-4 h-4 text-cyan-500 bg-slate-900/5 border-slate-900/10 focus:ring-cyan-500 focus:ring-offset-0"
+                          className="w-4 h-4 text-sky-600 bg-slate-900/5 border-slate-900/10 focus:ring-sky-500 focus:ring-offset-0"
                         />
                         <span className="text-sm text-slate-700">Private</span>
                       </label>
@@ -868,7 +868,7 @@ export default function Profile() {
                 <button
                   onClick={handleUpdateSettings}
                   disabled={loading}
-                  className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all disabled:opacity-50"
+                  className="px-6 py-2.5 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 hover:scale-105 transition-all disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : 'Save Settings'}
                 </button>
@@ -880,7 +880,7 @@ export default function Profile() {
           {activeTab === 'activity' && (
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 Activity Overview
@@ -889,15 +889,15 @@ export default function Profile() {
               {/* Stats Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-slate-900/5 rounded-xl p-4 border border-slate-900/10">
-                  <div className="text-2xl font-bold text-cyan-400">12</div>
+                  <div className="text-2xl font-bold text-sky-600">12</div>
                   <div className="text-sm text-slate-600">Resources Accessed</div>
                 </div>
                 <div className="bg-slate-900/5 rounded-xl p-4 border border-slate-900/10">
-                  <div className="text-2xl font-bold text-purple-400">5</div>
+                  <div className="text-2xl font-bold text-sky-600">5</div>
                   <div className="text-sm text-slate-600">Events Attended</div>
                 </div>
                 <div className="bg-slate-900/5 rounded-xl p-4 border border-slate-900/10">
-                  <div className="text-2xl font-bold text-pink-400">3</div>
+                  <div className="text-2xl font-bold text-sky-600">3</div>
                   <div className="text-sm text-slate-600">Projects Contributed</div>
                 </div>
                 <div className="bg-slate-900/5 rounded-xl p-4 border border-slate-900/10">
@@ -912,7 +912,7 @@ export default function Profile() {
                 <div className="space-y-3">
                   {[1, 2, 3].map((_, i) => (
                     <div key={i} className="flex items-center gap-3 p-2 hover:bg-slate-900/5 rounded-lg transition-colors">
-                      <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                      <div className="w-2 h-2 bg-sky-600 rounded-full"></div>
                       <div className="flex-1">
                         <p className="text-sm text-slate-900">Accessed resource: "Machine Learning Fundamentals"</p>
                         <p className="text-xs text-slate-500">2 hours ago</p>
@@ -931,7 +931,7 @@ export default function Profile() {
               {/* API Key Section */}
               <div className="bg-slate-900/5 rounded-xl p-6 border border-slate-900/10">
                 <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <div className="p-2 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg">
+                  <div className="p-2 bg-sky-600 rounded-lg">
                     <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
@@ -950,13 +950,13 @@ export default function Profile() {
                       value={settings.geminiApiKey}
                       onChange={(e) => setSettings({ ...settings, geminiApiKey: e.target.value })}
                       placeholder={settings.hasApiKey ? "API Key is set (Hidden)" : "Paste your Gemini API Key here"}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-white/20 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-white/20 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     />
                   </div>
                   <button
                     onClick={handleSaveApiKey}
                     disabled={loading || !settings.geminiApiKey}
-                    className="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-slate-900 font-semibold rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-2.5 bg-sky-600 hover:bg-sky-500 text-slate-900 font-semibold rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Saving...' : 'Save Key'}
                   </button>
@@ -972,9 +972,9 @@ export default function Profile() {
               </div>
 
               {/* Knowledge Base Upload Section */}
-              <div className="bg-slate-900/5 rounded-xl p-6 border border-slate-900/10 hover:border-purple-500/30 transition-all duration-300">
+              <div className="bg-slate-900/5 rounded-xl p-6 border border-slate-900/10 hover:border-sky-600/30 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
+                  <div className="p-2 rounded-lg bg-sky-600/20 text-sky-600">
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                     </svg>
@@ -989,10 +989,10 @@ export default function Profile() {
                   <div className="flex gap-3 items-center">
                     <label className="flex-1 cursor-pointer">
                       <div className="relative group">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl opacity-30 group-hover:opacity-75 transition duration-200 blur"></div>
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-sky-600 to-sky-700 rounded-xl opacity-30 group-hover:opacity-75 transition duration-200 blur"></div>
                         <div className="relative flex items-center justify-center w-full px-4 py-8 bg-[#f3e8ff] border border-slate-900/10 rounded-xl">
                           {fileStart ? (
-                            <span className="text-purple-300 font-medium truncate">{fileStart.name}</span>
+                            <span className="text-sky-700 font-medium truncate">{fileStart.name}</span>
                           ) : (
                             <div className="text-center">
                               <p className="text-slate-600 text-sm font-medium">Click to select a file</p>
@@ -1011,7 +1011,7 @@ export default function Profile() {
                     <button
                       onClick={handleFileUpload}
                       disabled={fileUploading || !fileStart}
-                      className="px-6 py-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-slate-900 font-bold hover:shadow-lg hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="px-6 py-8 bg-gradient-to-r from-sky-600 to-sky-700 rounded-xl text-slate-900 font-bold hover:shadow-lg hover:shadow-sky-600/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                       {fileUploading ? (
                         <svg className="animate-spin h-5 w-5 text-slate-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -1040,7 +1040,7 @@ function TabButton({ active, onClick, children }) {
     <button
       onClick={onClick}
       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${active
-        ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 shadow-lg shadow-cyan-500/30'
+        ? 'bg-sky-600 text-slate-900 shadow-lg shadow-sky-600/20'
         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-900/5'
         }`}
     >

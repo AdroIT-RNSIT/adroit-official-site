@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const InteractiveBall = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [velocity, setVelocity] = useState({ x: 0.5, y: 0.5 });
-  const [color, setColor] = useState('from-cyan-400 to-purple-600');
+  const [color, setColor] = useState('from-sky-500 to-sky-600');
   const [hitColor, setHitColor] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const ballRef = useRef(null);
@@ -12,21 +12,15 @@ const InteractiveBall = () => {
   const timeoutRef = useRef(null);
 
   const colors = [
-    'from-cyan-400 to-purple-600',
-    'from-green-400 to-blue-600',
-    'from-yellow-400 to-red-600',
-    'from-pink-400 to-indigo-600',
-    'from-orange-400 to-cyan-600',
-    'from-teal-400 to-pink-600'
+    'from-sky-500 to-sky-600',
+    'from-sky-600 to-blue-700',
+    'from-blue-600 to-sky-700',
   ];
 
   const hitEffectColors = [
-    'bg-gradient-to-r from-cyan-400 to-purple-600',
-    'bg-gradient-to-r from-green-400 to-blue-600',
-    'bg-gradient-to-r from-yellow-400 to-red-600',
-    'bg-gradient-to-r from-pink-400 to-indigo-600',
-    'bg-gradient-to-r from-orange-400 to-cyan-600',
-    'bg-gradient-to-r from-teal-400 to-pink-600'
+    'bg-gradient-to-r from-sky-500 to-sky-600',
+    'bg-gradient-to-r from-sky-600 to-blue-700',
+    'bg-gradient-to-r from-blue-600 to-sky-700',
   ];
 
   useEffect(() => {
@@ -204,8 +198,8 @@ const InteractiveBall = () => {
       <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <defs>
           <linearGradient id="spiralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#0284c7" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#0369a1" stopOpacity="0.18" />
           </linearGradient>
         </defs>
         <path
@@ -224,25 +218,25 @@ export default function InteractiveRings({ className = "absolute top-1/2 left-1/
   return (
     <div className={`hero-ring-container aspect-square pointer-events-none z-0 px-4 ${className}`}>
       <div className="relative w-full h-full">
-        <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-r from-cyan-400/5 to-purple-600/5 blur-[20px] animate-pulse-glow"></div>
-        <div className="absolute w-full h-full border border-cyan-500/30 rounded-full animate-spin-slow shadow-[0_0_30px_5px_rgba(34,211,238,0.15)]"></div>
-        <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-purple-500/25 rounded-full animate-spin-slower-reverse shadow-[0_0_25px_5px_rgba(168,85,247,0.1)]"></div>
-        <div className="absolute w-[40%] h-[40%] top-[30%] left-[30%] border border-cyan-400/20 rounded-full animate-spin-slowest shadow-[0_0_20px_3px_rgba(34,211,238,0.1)]"></div>
+        <div className="absolute inset-0 w-full h-full rounded-full bg-sky-600/5 blur-[20px] animate-pulse-glow"></div>
+        <div className="absolute w-full h-full border border-sky-600/20 rounded-full animate-spin-slow shadow-[0_0_30px_5px_rgba(2,132,199,0.08)]"></div>
+        <div className="absolute w-[70%] h-[70%] top-[15%] left-[15%] border border-slate-400/25 rounded-full animate-spin-slower-reverse"></div>
+        <div className="absolute w-[40%] h-[40%] top-[30%] left-[30%] border border-sky-600/15 rounded-full animate-spin-slowest"></div>
 
         <div className="absolute inset-0 animate-move-spiral">
-          <div className="absolute top-1/2 left-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 shadow-[0_0_15px_5px_rgba(34,211,238,0.4)]">
+          <div className="absolute top-1/2 left-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-600 shadow-[0_0_15px_5px_rgba(2,132,199,0.25)]">
             <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
           </div>
         </div>
 
         <div className="absolute inset-0 animate-move-spiral-trail-1">
-          <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/50 shadow-[0_0_8px_2px_rgba(34,211,238,0.3)]"></div>
+          <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-500/50"></div>
         </div>
         <div className="absolute inset-0 animate-move-spiral-trail-2">
-          <div className="absolute top-1/2 left-1/2 w-1 h-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-500/40 shadow-[0_0_6px_1px_rgba(168,85,247,0.3)]"></div>
+          <div className="absolute top-1/2 left-1/2 w-1 h-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-500/40"></div>
         </div>
         <div className="absolute inset-0 animate-move-spiral-trail-3">
-          <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/30 shadow-[0_0_4px_1px_rgba(34,211,238,0.3)]"></div>
+          <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-600/30"></div>
         </div>
 
         <InteractiveBall />

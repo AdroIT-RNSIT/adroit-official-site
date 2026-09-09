@@ -80,9 +80,13 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] transition-all duration-300 ease-in-out ${
-          scrolled
-            ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
-            : "bg-[#f3e8ff] border-b border-slate-900/5"
+          isHomePage
+            ? scrolled
+              ? "backdrop-blur-xl bg-white/85 border-b border-slate-200/80 shadow-sm"
+              : "bg-white/70 backdrop-blur-md border-b border-slate-200/60"
+            : scrolled
+              ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
+              : "bg-[#f3e8ff] border-b border-slate-900/5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
@@ -110,7 +114,7 @@ const Navbar = () => {
                   to={link.path}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive(link.path)
-                      ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                      ? "text-slate-900 bg-sky-500/15 border border-sky-500/30"
                       : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
                   }`}
                 >
@@ -136,7 +140,7 @@ const Navbar = () => {
                       to={link.path}
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                         isActive(link.path)
-                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                          ? "text-slate-900 bg-sky-500/15 border border-sky-500/30"
                           : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
                       }`}
                     >
@@ -150,7 +154,7 @@ const Navbar = () => {
                       to="/admin"
                       className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                         isActive("/admin")
-                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
+                          ? "text-slate-900 bg-sky-500/15 border border-sky-500/30"
                           : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
                       }`}
                     >
@@ -172,7 +176,7 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`md:hidden flex h-10 w-10 items-center justify-center rounded-xl border text-slate-800 transition-colors ${
               mobileMenuOpen
-                ? "border-cyan-500/40 bg-white text-cyan-700 shadow-sm"
+                ? "border-sky-500/40 bg-white text-sky-700 shadow-sm"
                 : "border-slate-900/10 bg-white/50 hover:bg-white/80"
             }`}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -203,7 +207,7 @@ const Navbar = () => {
         <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-2">
           {isLoggedIn && (
             <div className="mb-2 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-2.5">
-              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 text-sm font-bold text-white">
+              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 text-sm font-bold text-white">
                 {session?.user?.image ? (
                   <img src={session.user.image} alt="" className="h-full w-full object-cover" />
                 ) : (
@@ -228,13 +232,13 @@ const Navbar = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-cyan-50 text-slate-900"
+                      ? "bg-sky-50 text-slate-900"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
                   <span
                     className={`flex h-9 w-9 items-center justify-center rounded-xl ${
-                      active ? "bg-cyan-500/15 text-cyan-600" : "bg-slate-100 text-slate-500"
+                      active ? "bg-sky-500/15 text-sky-600" : "bg-slate-100 text-slate-500"
                     }`}
                   >
                     <Icon size={18} strokeWidth={2} />
@@ -250,7 +254,7 @@ const Navbar = () => {
                   </span>
                   <ChevronRight
                     size={16}
-                    className={active ? "text-cyan-500" : "text-slate-300"}
+                    className={active ? "text-sky-500" : "text-slate-300"}
                     strokeWidth={2}
                   />
                 </Link>
@@ -272,13 +276,13 @@ const Navbar = () => {
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                         active
-                          ? "bg-cyan-50 text-slate-900"
+                          ? "bg-sky-50 text-slate-900"
                           : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                       }`}
                     >
                       <span
                         className={`flex h-9 w-9 items-center justify-center rounded-xl ${
-                          active ? "bg-cyan-500/15 text-cyan-600" : "bg-slate-100 text-slate-500"
+                          active ? "bg-sky-500/15 text-sky-600" : "bg-slate-100 text-slate-500"
                         }`}
                       >
                         <Icon size={18} strokeWidth={2} />
@@ -286,7 +290,7 @@ const Navbar = () => {
                       <span className="flex-1">{link.name}</span>
                       <ChevronRight
                         size={16}
-                        className={active ? "text-cyan-500" : "text-slate-300"}
+                        className={active ? "text-sky-500" : "text-slate-300"}
                         strokeWidth={2}
                       />
                     </Link>
@@ -298,14 +302,14 @@ const Navbar = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                       isActive("/admin")
-                        ? "bg-cyan-50 text-slate-900"
+                        ? "bg-sky-50 text-slate-900"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                   >
                     <span
                       className={`flex h-9 w-9 items-center justify-center rounded-xl ${
                         isActive("/admin")
-                          ? "bg-cyan-500/15 text-cyan-600"
+                          ? "bg-sky-500/15 text-sky-600"
                           : "bg-slate-100 text-slate-500"
                       }`}
                     >
@@ -314,7 +318,7 @@ const Navbar = () => {
                     <span className="flex-1">Admin</span>
                     <ChevronRight
                       size={16}
-                      className={isActive("/admin") ? "text-cyan-500" : "text-slate-300"}
+                      className={isActive("/admin") ? "text-sky-500" : "text-slate-300"}
                       strokeWidth={2}
                     />
                   </Link>

@@ -193,9 +193,9 @@ function Resources(){
     
       {/* Background Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-100 h-100 bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-125 h-125 bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-linear-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
+        <div className="absolute top-20 left-20 w-100 h-100 bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-20 right-20 w-125 h-125 bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-sky-500/10 rounded-full blur-[150px]"></div>
       </div>
     
       {/* Particles */}
@@ -208,7 +208,7 @@ function Resources(){
               domain === 'cc' ? 'bg-purple-400/20' :
               domain === 'cy' ? 'bg-pink-400/20' :
               domain === 'da' ? 'bg-green-400/20' :
-              'bg-cyan-400/20'
+              'bg-sky-600/20'
             } animate-float-particle`}
             style={{
               left: `${Math.random() * 100}%`,
@@ -223,7 +223,7 @@ function Resources(){
       <div className="text-center mb-12 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <h1 className="fluid-h1 font-extrabold mb-6">
-          <span className="bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          <span className="text-sky-800">
             {currentDomain?.name || 'Resources'}
           </span>
         </h1>
@@ -241,7 +241,7 @@ function Resources(){
               className={`group relative bg-white/40 backdrop-blur-xl border rounded-xl p-4 transition-all duration-300 hover:scale-105 ${
                 (domain === d.id || (d.id === 'all' && !domain))
                   ? `${d.bgColor} ${d.borderColor} border-2`
-                  : 'border-slate-900/10 hover:border-cyan-500/30'
+                  : 'border-slate-900/10 hover:border-sky-600/30'
               }`}
             >
               <div className="flex flex-col items-center text-center">
@@ -324,7 +324,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
   };
 
   return (
-    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-xl p-5 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-xl p-5 hover:border-sky-600/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-600/5">
       
       {/* Glow effect on hover */}
       <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -364,7 +364,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-sky-600 transition-colors line-clamp-2">
           {resource.title}
         </h3>
 
@@ -425,7 +425,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-linear-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
           >
             Access
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -473,7 +473,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
       </svg>
       <input
         type="text"
-        className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
+        className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all text-sm"
         value={mFilters.search}
         placeholder={`Search ${currentDomainName}...`}
         onChange={(e) => setMFilters({ ...mFilters, search: e.target.value })}
@@ -486,7 +486,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
               ENTER
             </kbd>
             <svg 
-              className="w-4 h-4 text-cyan-500 hover:text-cyan-400" 
+              className="w-4 h-4 text-sky-600 hover:text-sky-500" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -500,7 +500,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Type Filter */}
     <div className="lg:col-span-3">
       <select 
-        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-sky-500/50 transition-all"
         value={mFilters.type}
         onChange={(e) => { onUpdate({ ...mFilters, type: e.target.value }); }}
       >
@@ -514,7 +514,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Difficulty Filter */}
     <div className="lg:col-span-2">
       <select 
-        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-sky-500/50 transition-all"
         value={mFilters.difficulty}
         onChange={(e) => { onUpdate({ ...mFilters, difficulty: e.target.value }); }}
       >

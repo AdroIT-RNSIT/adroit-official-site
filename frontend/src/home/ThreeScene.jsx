@@ -43,7 +43,7 @@ const ThreeScene = () => {
         this.speed = 0.015 + index * 0.008;
         this.offset = (index / total) * Math.PI * 2;
         this.baseY = canvas.height * (0.5 + index * 0.12);
-        this.hue = 180 + index * 25;
+        this.hue = 205 + index * 4;
         this.opacity = 0.12 - index * 0.025;
       }
 
@@ -62,10 +62,10 @@ const ThreeScene = () => {
         if (this.points.length === 0) return;
         
         const gradient = ctx.createLinearGradient(0, this.baseY - this.amplitude, 0, this.baseY + this.amplitude);
-        const hueShift = Math.sin(time * 0.0008 + this.offset) * 20;
-        gradient.addColorStop(0, `hsla(${this.hue + hueShift}, 75%, 55%, 0)`);
-        gradient.addColorStop(0.5, `hsla(${this.hue + hueShift}, 75%, 55%, ${this.opacity})`);
-        gradient.addColorStop(1, `hsla(${this.hue + hueShift}, 75%, 55%, 0)`);
+        const hueShift = Math.sin(time * 0.0008 + this.offset) * 6;
+        gradient.addColorStop(0, `hsla(${this.hue + hueShift}, 42%, 42%, 0)`);
+        gradient.addColorStop(0.5, `hsla(${this.hue + hueShift}, 42%, 42%, ${this.opacity})`);
+        gradient.addColorStop(1, `hsla(${this.hue + hueShift}, 42%, 42%, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -98,7 +98,7 @@ const ThreeScene = () => {
         this.vx = (Math.random() - 0.5) * 1.5;
         this.vy = Math.random() * 0.8 + 0.4;
         this.size = Math.random() * 2.5 + 0.8;
-        this.hue = 180 + Math.random() * 70;
+        this.hue = 205 + Math.random() * 12;
         this.opacity = Math.random() * 0.5 + 0.2;
         this.wobble = Math.random() * 0.04;
       }
@@ -116,8 +116,8 @@ const ThreeScene = () => {
 
       draw(ctx) {
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
-        gradient.addColorStop(0, `hsla(${this.hue}, 75%, 55%, ${this.opacity})`);
-        gradient.addColorStop(1, `hsla(${this.hue}, 75%, 55%, 0)`);
+        gradient.addColorStop(0, `hsla(${this.hue}, 40%, 42%, ${this.opacity})`);
+        gradient.addColorStop(1, `hsla(${this.hue}, 40%, 42%, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -255,7 +255,7 @@ const ThreeScene = () => {
         this.speed = 0.025 + index * 0.012; // FASTER
         this.offset = (index / total) * Math.PI * 2;
         this.baseY = canvas.height * (0.45 + index * 0.13);
-        this.hue = 180 + index * 30;
+        this.hue = 205 + index * 4;
         this.opacity = 0.2 - index * 0.035; // MORE VISIBLE
       }
 
@@ -275,10 +275,10 @@ const ThreeScene = () => {
         if (this.points.length === 0) return;
         
         const gradient = ctx.createLinearGradient(0, this.baseY - this.amplitude, 0, this.baseY + this.amplitude);
-        const hueShift = Math.sin(time * 0.001 + this.offset) * 40; // MORE color shift
-        gradient.addColorStop(0, `hsla(${this.hue + hueShift}, 85%, 60%, 0)`);
-        gradient.addColorStop(0.5, `hsla(${this.hue + hueShift}, 85%, 60%, ${this.opacity})`);
-        gradient.addColorStop(1, `hsla(${this.hue + hueShift}, 85%, 60%, 0)`);
+        const hueShift = Math.sin(time * 0.001 + this.offset) * 8;
+        gradient.addColorStop(0, `hsla(${this.hue + hueShift}, 40%, 42%, 0)`);
+        gradient.addColorStop(0.5, `hsla(${this.hue + hueShift}, 40%, 42%, ${this.opacity})`);
+        gradient.addColorStop(1, `hsla(${this.hue + hueShift}, 40%, 42%, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -296,7 +296,7 @@ const ThreeScene = () => {
         ctx.fill();
         
         // GLOWING EDGE - more prominent
-        ctx.strokeStyle = `hsla(${this.hue + hueShift}, 85%, 70%, ${this.opacity * 3})`;
+        ctx.strokeStyle = `hsla(${this.hue + hueShift}, 38%, 38%, ${this.opacity * 2})`;
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(this.points[0].x, this.points[0].y);
@@ -373,9 +373,9 @@ const ThreeScene = () => {
           this.trail[0].x, this.trail[0].y, currentSize * 4
         );
         gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        gradient.addColorStop(0.3, 'rgba(0, 240, 255, 0.8)');
-        gradient.addColorStop(0.6, 'rgba(139, 92, 246, 0.5)');
-        gradient.addColorStop(1, 'rgba(139, 92, 246, 0)');
+        gradient.addColorStop(0.3, 'rgba(2, 132, 199, 0.55)');
+        gradient.addColorStop(0.6, 'rgba(2, 132, 199, 0.22)');
+        gradient.addColorStop(1, 'rgba(2, 132, 199, 0)');
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -398,7 +398,7 @@ const ThreeScene = () => {
         this.vx = (Math.random() - 0.5) * 2;
         this.vy = Math.random() * 1.2 + 0.6; // FASTER
         this.size = Math.random() * 3 + 1; // BIGGER
-        this.hue = 170 + Math.random() * 80;
+        this.hue = 205 + Math.random() * 12;
         this.opacity = Math.random() * 0.7 + 0.3; // MORE VISIBLE
         this.wobble = Math.random() * 0.05;
       }
@@ -416,8 +416,8 @@ const ThreeScene = () => {
 
       draw(ctx) {
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2.5);
-        gradient.addColorStop(0, `hsla(${this.hue}, 80%, 60%, ${this.opacity})`);
-        gradient.addColorStop(1, `hsla(${this.hue}, 80%, 60%, 0)`);
+        gradient.addColorStop(0, `hsla(${this.hue}, 40%, 42%, ${this.opacity})`);
+        gradient.addColorStop(1, `hsla(${this.hue}, 40%, 42%, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -436,7 +436,7 @@ const ThreeScene = () => {
         this.life = 1;
         this.decay = 0.02;
         this.size = Math.random() * 3 + 2;
-        this.hue = 180 + Math.random() * 80;
+        this.hue = 205 + Math.random() * 12;
       }
 
       update() {
@@ -449,8 +449,8 @@ const ThreeScene = () => {
 
       draw(ctx) {
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-        gradient.addColorStop(0, `hsla(${this.hue}, 90%, 70%, ${this.life})`);
-        gradient.addColorStop(1, `hsla(${this.hue}, 90%, 70%, 0)`);
+        gradient.addColorStop(0, `hsla(${this.hue}, 42%, 48%, ${this.life})`);
+        gradient.addColorStop(1, `hsla(${this.hue}, 42%, 48%, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -594,9 +594,9 @@ const ThreeScene = () => {
       // Glow rings - MORE LAYERS
       for (let i = 5; i > 0; i--) {
         const gradient = ctx.createRadialGradient(coreX, coreY, 0, coreX, coreY, corePulse * i * 1.5);
-        gradient.addColorStop(0, `rgba(139, 92, 246, ${0.15 / i})`);
-        gradient.addColorStop(0.4, `rgba(0, 240, 255, ${0.12 / i})`);
-        gradient.addColorStop(1, 'rgba(0, 240, 255, 0)');
+        gradient.addColorStop(0, `rgba(2, 132, 199, ${0.12 / i})`);
+        gradient.addColorStop(0.4, `rgba(2, 132, 199, ${0.08 / i})`);
+        gradient.addColorStop(1, 'rgba(2, 132, 199, 0)');
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -607,9 +607,9 @@ const ThreeScene = () => {
       // Core center - BRIGHTER
       const coreGradient = ctx.createRadialGradient(coreX, coreY, 0, coreX, coreY, corePulse);
       coreGradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      coreGradient.addColorStop(0.2, 'rgba(0, 240, 255, 0.8)');
-      coreGradient.addColorStop(0.5, 'rgba(139, 92, 246, 0.5)');
-      coreGradient.addColorStop(1, 'rgba(139, 92, 246, 0)');
+      coreGradient.addColorStop(0.2, 'rgba(2, 132, 199, 0.55)');
+      coreGradient.addColorStop(0.5, 'rgba(2, 132, 199, 0.22)');
+      coreGradient.addColorStop(1, 'rgba(2, 132, 199, 0)');
       
       ctx.fillStyle = coreGradient;
       ctx.beginPath();

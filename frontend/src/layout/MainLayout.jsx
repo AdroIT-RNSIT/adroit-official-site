@@ -7,19 +7,22 @@ export default function MainLayout({ children }) {
   const location = useLocation();
   const showMap = location.pathname === "/";
   const isEventPage = location.pathname.startsWith("/events");
+  const isHomePage = location.pathname === "/";
 
   return (
     <div
       className={`min-h-dvh font-sans overflow-x-clip ${
         isEventPage
           ? "bg-[#080c16] text-slate-100"
-          : "bg-gradient-to-b from-white via-[#f9f0ff] to-[#f3e8ff] text-slate-900"
+          : isHomePage
+            ? "bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900"
+            : "bg-gradient-to-b from-white via-[#f9f0ff] to-[#f3e8ff] text-slate-900"
       }`}
     >
       {!isEventPage && (
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute top-1/3 left-1/4 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[150px]"></div>
+          <div className={`absolute top-1/3 left-1/4 w-[500px] max-w-[100vw] h-[500px] rounded-full blur-[150px] ${isHomePage ? "bg-sky-600/5" : "bg-sky-600/5"}`}></div>
+          <div className={`absolute bottom-1/4 right-1/4 w-[600px] max-w-[100vw] h-[600px] rounded-full blur-[150px] ${isHomePage ? "bg-slate-400/8" : "bg-sky-600/5"}`}></div>
         </div>
       )}
 

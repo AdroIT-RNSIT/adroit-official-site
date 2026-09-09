@@ -5,12 +5,18 @@ const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#f3e8ff] border-t border-slate-900/10 overflow-hidden pb-[env(safe-area-inset-bottom,0px)]">
+    <footer
+      className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${
+        showMap
+          ? "bg-white border-t border-slate-200/80"
+          : "bg-[#f3e8ff] border-t border-slate-900/10"
+      }`}
+    >
       
       {/* ===== BACKGROUND DECORATIONS ===== */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-48 -right-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-[100px] animate-float"></div>
-        <div className="absolute -bottom-48 -left-24 w-80 h-80 bg-purple-600/5 rounded-full blur-[100px] animate-float-reverse"></div>
+        <div className={`absolute -top-48 -right-24 w-96 h-96 rounded-full blur-[100px] animate-float ${showMap ? "bg-sky-600/8" : "bg-sky-600/5"}`}></div>
+        <div className={`absolute -bottom-48 -left-24 w-80 h-80 rounded-full blur-[100px] animate-float-reverse ${showMap ? "bg-slate-400/10" : "bg-sky-600/5"}`}></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -23,20 +29,20 @@ const Footer = ({ showMap = false }) => {
             
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400 mt-1 flex-shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky-600 mt-1 flex-shrink-0">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
                 <a 
                   href="mailto:adroit.rnsit@gmail.com" 
-                  className="text-slate-500 hover:text-cyan-400 transition-colors duration-300 text-sm"
+                  className="text-slate-500 hover:text-sky-600 transition-colors duration-300 text-sm"
                 >
                   adroit.rnsit@gmail.com
                 </a>
               </div>
 
               <div className="flex items-start gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-400 mt-1 flex-shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky-600 mt-1 flex-shrink-0">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
@@ -54,19 +60,19 @@ const Footer = ({ showMap = false }) => {
             </h3>
             <ul className="space-y-2">
               <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
+                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
                 Founded 2020
               </li>
               <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
+                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
                 50+ Members
               </li>
               <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
+                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
                 30+ Projects
               </li>
               <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
+                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
                 20+ Events
               </li>
             </ul>
@@ -80,28 +86,28 @@ const Footer = ({ showMap = false }) => {
             <ul className="space-y-3">
 
               <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition"> 
+              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800"> 
               <Brain size={16}/>
               </span>
               Machine Learning
               </li>
 
               <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-purple-500/10 text-purple-400 group-hover:scale-110 transition">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800">
               <Cloud size={16}/>
               </span>
               Cloud Computing
               </li>
 
               <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-pink-500/10 text-pink-400 group-hover:scale-110 transition">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800">
               <ShieldCheck size={16}/>
               </span>
               Cybersecurity
               </li>
 
               <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md bg-green-500/10 text-green-400 group-hover:scale-110 transition">
+              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800">
               <BarChart3 size={16}/>
               </span>
               Data Analytics
@@ -121,7 +127,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://github.com/AdroIT-RNSIT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-cyan-400 transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-sky-600 transition-all duration-300"
                   aria-label="GitHub"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -132,7 +138,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.linkedin.com/company/adroit-rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-cyan-400 transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-sky-600 transition-all duration-300"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -143,7 +149,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.instagram.com/adroit_rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-pink-400 transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-sky-600 transition-all duration-300"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -162,7 +168,7 @@ const Footer = ({ showMap = false }) => {
         {showMap && (
           <div className="lg:col-span-12 mb-8">
             <div className="flex items-center gap-2 mb-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky-600">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
@@ -212,7 +218,7 @@ const Footer = ({ showMap = false }) => {
           
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-1 text-xs text-gray-600 hover:text-cyan-400 transition-colors duration-300"
+            className="flex items-center gap-1 text-xs text-gray-600 hover:text-sky-600 transition-colors duration-300"
             aria-label="Back to top"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

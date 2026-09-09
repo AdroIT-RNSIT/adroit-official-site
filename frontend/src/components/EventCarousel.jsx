@@ -136,13 +136,13 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
             }}
             type="button"
             draggable={false}
-            className="event-strip-card absolute top-6 left-0 w-[72vw] max-w-[22rem] sm:w-[24rem] h-[13.5rem] sm:h-[15rem] rounded-3xl border border-cyan-500/35 bg-gradient-to-br from-cyan-100/70 via-sky-50/90 to-blue-100/70 p-5 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer"
+            className="event-strip-card absolute top-6 left-0 w-[72vw] max-w-[22rem] sm:w-[24rem] h-[13.5rem] sm:h-[15rem] rounded-3xl border border-slate-200/90 bg-white/75 p-5 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer"
           >
             <div className="flex justify-between items-start gap-2 mb-3">
-              <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text text-xs sm:text-sm">
+              <span className="font-semibold text-sky-800 text-xs sm:text-sm tracking-wide uppercase">
                 Paradox 2026
               </span>
-              <span className="text-[11px] sm:text-xs font-semibold text-slate-600 shrink-0">
+              <span className="text-[11px] sm:text-xs font-semibold text-slate-500 shrink-0">
                 {new Date(event.date).toLocaleDateString("en-US", {
                   weekday: "short",
                   month: "short",
@@ -150,7 +150,7 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
                 })}
               </span>
             </div>
-            <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text">
+            <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate text-slate-900">
               {event.title}
             </h3>
             <p className="text-slate-600 text-sm line-clamp-3">{event.description}</p>

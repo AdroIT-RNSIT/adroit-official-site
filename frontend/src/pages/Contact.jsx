@@ -76,15 +76,15 @@ export default function Contact() {
     <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 px-4 sm:px-6 lg:px-8 py-20 relative overflow-x-clip">
       
       {/* ===== ANIMATED BACKGROUND ORBS ===== */}
-      <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-cyan-500/10 blur-[140px] animate-float"></div>
-      <div className="absolute bottom-[-120px] right-[-100px] w-96 h-96 bg-purple-500/10 blur-[140px] animate-float2"></div>
+      <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-sky-600/10 blur-[140px] animate-float"></div>
+      <div className="absolute bottom-[-120px] right-[-100px] w-96 h-96 bg-sky-600/10 blur-[140px] animate-float2"></div>
       
       {/* ===== FLOATING PARTICLES ===== */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-cyan-400/20 rounded-full animate-float-particle"
+            className="absolute w-1 h-1 bg-sky-600/20 rounded-full animate-float-particle"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -100,11 +100,11 @@ export default function Contact() {
         {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-12 opacity-0 animate-fadeIn">
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
             <span className="text-sm text-slate-600">Get in Touch</span>
           </div>
           
-          <h1 className="fluid-h1 font-extrabold mb-4 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
+          <h1 className="fluid-h1 font-extrabold mb-4 text-sky-800 pb-2">
             Connect with AdroIT
           </h1>
 
@@ -149,10 +149,10 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           
           {/* ===== LEFT COLUMN - CONTACT FORM ===== */}
-          <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8 hover:border-cyan-500/30 transition-all duration-300 opacity-0 animate-riseUp">
+          <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8 hover:border-sky-600/30 transition-all duration-300 opacity-0 animate-riseUp">
             
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center">
                 <svg className="w-5 h-5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -180,7 +180,7 @@ export default function Contact() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     placeholder="John Doe"
                   />
                 </div>
@@ -204,7 +204,7 @@ export default function Contact() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -228,7 +228,7 @@ export default function Contact() {
                     required
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     placeholder="Workshop Inquiry"
                   />
                 </div>
@@ -252,7 +252,7 @@ export default function Contact() {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none transition-all resize-none"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 placeholder-gray-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all resize-none"
                     placeholder="Tell us about your query..."
                   />
                 </div>
@@ -262,7 +262,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden group"
+                className="w-full py-3.5 px-4 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   {loading ? (
@@ -287,9 +287,9 @@ export default function Contact() {
           <div className="space-y-6">
             
             {/* Base Location Card */}
-            <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-purple-500/30 hover:-translate-y-1 transition-all duration-300 opacity-0 animate-riseUp delay-200">
+            <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 hover:-translate-y-1 transition-all duration-300 opacity-0 animate-riseUp delay-200">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -306,9 +306,9 @@ export default function Contact() {
             </div>
 
             {/* Contact Details Card */}
-            <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-1 transition-all duration-300 opacity-0 animate-riseUp delay-300">
+            <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 hover:-translate-y-1 transition-all duration-300 opacity-0 animate-riseUp delay-300">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -316,7 +316,7 @@ export default function Contact() {
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-1">Contact Details</h3>
                   <p className="text-slate-600 text-sm">
-                    <a href="mailto:adroit.rnsit@gmail.com" className="hover:text-cyan-400 transition-colors">
+                    <a href="mailto:adroit.rnsit@gmail.com" className="hover:text-sky-600 transition-colors">
                       adroit.rnsit@gmail.com
                     </a>
                   </p>
@@ -326,9 +326,9 @@ export default function Contact() {
             </div>
 
             {/* Social Network Card */}
-            <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-pink-500/30 hover:-translate-y-1 transition-all duration-300 opacity-0 animate-riseUp delay-500">
+            <div className="bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 hover:-translate-y-1 transition-all duration-300 opacity-0 animate-riseUp delay-500">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                   </svg>
@@ -344,7 +344,7 @@ export default function Contact() {
                   href="https://github.com/AdroIT-RNSIT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-600 hover:text-cyan-400 transition-all duration-300 group"
+                  className="w-12 h-12 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-600 hover:text-sky-600 transition-all duration-300 group"
                   aria-label="GitHub"
                 >
                   <FaGithub className="w-6 h-6 group-hover:scale-110 transition-transform" />
@@ -353,7 +353,7 @@ export default function Contact() {
                   href="https://www.linkedin.com/company/adroit-rnsit/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-600 hover:text-cyan-400 transition-all duration-300 group"
+                  className="w-12 h-12 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-600 hover:text-sky-600 transition-all duration-300 group"
                   aria-label="LinkedIn"
                 >
                   <FaLinkedin className="w-6 h-6 group-hover:scale-110 transition-transform" />
@@ -362,7 +362,7 @@ export default function Contact() {
                   href="https://www.instagram.com/adroit_rnsit/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-600 hover:text-pink-400 transition-all duration-300 group"
+                  className="w-12 h-12 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-600 hover:text-sky-600 transition-all duration-300 group"
                   aria-label="Instagram"
                 >
                   <FaInstagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
@@ -371,9 +371,9 @@ export default function Contact() {
             </div>
 
             {/* Quick Response Card */}
-            <div className="bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 border border-slate-900/10 rounded-2xl p-6 opacity-0 animate-riseUp delay-700">
+            <div className="bg-gradient-to-br from-sky-500/10 to-sky-600/10 border border-slate-900/10 rounded-2xl p-6 opacity-0 animate-riseUp delay-700">
               <div className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
