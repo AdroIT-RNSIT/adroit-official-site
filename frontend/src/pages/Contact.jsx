@@ -98,7 +98,6 @@ export default function Contact() {
           </div>
         )}
 
-        <Reveal delay={80}>
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="card p-5 sm:p-8">
             <h2 className="text-xl font-bold text-text-primary mb-6">Send us a Message</h2>
@@ -227,7 +226,6 @@ export default function Contact() {
             </div>
           </div>
         </div>
-        </Reveal>
       </div>
     </div>
   );

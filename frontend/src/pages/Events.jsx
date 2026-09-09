@@ -115,8 +115,8 @@ export default function Events() {
           </div>
         )}
 
-        <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="reveal-item card overflow-hidden" style={{ "--index": 0 }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div className="card overflow-hidden">
             <div className="px-5 py-3 border-b border-border-subtle bg-accent-primary-tint">
               <p className="font-semibold text-accent-primary">Prize Pool</p>
             </div>
@@ -142,7 +142,7 @@ export default function Events() {
             </div>
           </div>
 
-          <div className="reveal-item card overflow-hidden" style={{ "--index": 1 }}>
+          <div className="card overflow-hidden">
             <div className="px-5 py-3 border-b border-border-subtle">
               <p className="font-semibold text-text-primary">Sponsors</p>
             </div>
@@ -181,7 +181,7 @@ export default function Events() {
               </div>
             </div>
           </div>
-        </RevealGroup>
+        </div>
 
         <div className="mb-8 p-4 card text-sm text-text-body">
           All participants must read the generic Rules and Guidelines at the bottom of this page

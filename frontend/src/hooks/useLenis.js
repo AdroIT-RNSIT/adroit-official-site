@@ -7,7 +7,9 @@ import { prefersReducedMotion } from "../lib/revealObserver";
 function shouldEnableLenis() {
   if (typeof window === "undefined") return false;
   if (prefersReducedMotion()) return false;
-  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  return window.matchMedia(
+    "(min-width: 768px) and (hover: hover) and (pointer: fine)"
+  ).matches;
 }
 
 export default function useLenis() {
@@ -15,7 +17,7 @@ export default function useLenis() {
     if (!shouldEnableLenis()) return undefined;
 
     const lenis = new Lenis({
-      lerp: 0.095,
+      lerp: 0.16,
       smoothWheel: true,
       autoRaf: true,
       wheelMultiplier: 1,

@@ -5,6 +5,7 @@ export default function RevealGroup({
   as: Tag = "div",
   className = "",
   immediate = false,
+  mobileStatic = false,
   children,
   ...props
 }) {
@@ -19,11 +20,25 @@ export default function RevealGroup({
       return;
     }
 
+    if (mobileStatic && window.matchMedia("(max-width: 767px)").matches) {
+      el.classList.add("is-visible");
+      return;
+    }
+
     return observeReveal(el, () => el.classList.add("is-visible"));
-  }, [immediate]);
+  }, [immediate, mobileStatic]);
+
+  const classes = [
+    "reveal-group",
+    immediate ? "is-visible" : "",
+    mobileStatic ? "reveal-mobile-static" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <Tag ref={ref} className={`reveal-group ${immediate ? "is-visible" : ""} ${className}`.trim()} {...props}>
+    <Tag ref={ref} className={classes} {...props}>
       {children}
     </Tag>
   );

@@ -232,7 +232,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
   };
 
   return (
-    <div className="card card-hover p-5">
+    <div className="card card-hover resource-card p-5">
       <div>
         
         {/* Header */}

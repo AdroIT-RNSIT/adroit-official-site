@@ -12,7 +12,12 @@ import { Link } from "react-router-dom";
 import { sharedEvents } from "../data/events";
 import Reveal from "../components/Reveal";
 import RevealGroup from "../components/RevealGroup";
+import HeadlineReveal from "../components/HeadlineReveal";
+import WordReveal from "../components/WordReveal";
+import useDesktopParallax from "../hooks/useDesktopParallax";
 import { scrollToTop } from "../lib/scroll";
+
+const HERO_WORDMARK = "AdroIT";
 
 const missionItems = [
   {
@@ -54,6 +59,8 @@ const missionItems = [
 ];
 
 const Home = () => {
+  useDesktopParallax();
+
   const domains = [
     {
       icon: <Brain size={22} strokeWidth={2} />,
@@ -152,18 +159,19 @@ const Home = () => {
 
   return (
     <div className="relative overflow-x-clip">
-      <section className="hero-section relative overflow-hidden">
-        <div className="absolute inset-0 hero-grid pointer-events-none" aria-hidden="true" />
+      {/* Hero — base background */}
+      <section className="hero-section section-base relative overflow-hidden">
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-primary-tint), transparent 70%)",
-          }}
+          className="hero-parallax-bg parallax-scroll-layer absolute inset-0 pointer-events-none"
+          data-parallax
+          data-parallax-rate="0.2"
           aria-hidden="true"
-        />
+        >
+          <div className="hero-grid absolute inset-0" />
+          <div className="hero-parallax-tint absolute inset-0" />
+        </div>
 
-        <div className="page-wrap relative py-8 sm:py-10 lg:py-12">
+        <div className="page-wrap relative z-[1] py-8 sm:py-10 lg:py-12">
           <RevealGroup immediate className="hero-sequence">
             <p
               className="reveal-item text-sm font-medium tracking-[0.18em] uppercase text-text-muted mb-3"
@@ -171,12 +179,26 @@ const Home = () => {
             >
               Welcome to
             </p>
-            <h1
-              className="reveal-item text-[2.5rem] sm:text-6xl lg:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none mb-6"
-              style={{ "--index": 1 }}
-            >
-              AdroIT
-            </h1>
+            <div className="reveal-item hero-wordmark-slot mb-6" style={{ "--index": 1 }}>
+              <h1 className="lg:hidden text-[2.5rem] sm:text-6xl font-extrabold tracking-[0.12em] text-text-primary leading-none">
+                {HERO_WORDMARK}
+              </h1>
+              <h1
+                className="hidden lg:block text-6xl xl:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none"
+                aria-label={HERO_WORDMARK}
+              >
+                {HERO_WORDMARK.split("").map((letter, letterIndex) => (
+                  <span
+                    key={`${letter}-${letterIndex}`}
+                    className="hero-letter"
+                    style={{ "--letter-index": letterIndex }}
+                    aria-hidden="true"
+                  >
+                    {letter}
+                  </span>
+                ))}
+              </h1>
+            </div>
             <div className="reveal-item" style={{ "--index": 2 }}>
               <div className="badge mb-6 max-w-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0" />
@@ -219,16 +241,14 @@ const Home = () => {
                 />
               </div>
             </div>
-          </RevealGroup>
 
-          <div className="mt-6">
-            <RevealGroup className="snap-strip mb-10" data-lenis-prevent>
+            <div className="mt-6 snap-strip mb-10" data-lenis-prevent>
               {sharedEvents.map((event, index) => (
                 <Link
                   key={event._id}
                   to="/events"
                   className="reveal-item snap-card event-card card card-hover p-5 text-left block h-full"
-                  style={{ "--index": index }}
+                  style={{ "--index": 5 + index }}
                 >
                   <div className="flex flex-wrap justify-between items-start gap-2 mb-3">
                     <span className="badge-amber badge text-xs font-semibold">Paradox 2026</span>
@@ -253,11 +273,9 @@ const Home = () => {
                   </span>
                 </Link>
               ))}
-            </RevealGroup>
-          </div>
+            </div>
 
-          <Reveal delay={120}>
-            <div className="flex flex-col items-start gap-2">
+            <div className="reveal-item flex flex-col items-start gap-2" style={{ "--index": 8 }}>
               <button type="button" disabled className="btn btn-primary">
                 Join AdroIT Now
                 <ArrowRight size={18} />
@@ -266,41 +284,26 @@ const Home = () => {
                 Recruitment for this cycle is closed. Next recruitment opens later this year.
               </p>
             </div>
-          </Reveal>
+          </RevealGroup>
         </div>
       </section>
 
+      {/* Why Join — tinted band, sticky storytelling on desktop */}
       <section id="why-join" className="section-block section-tint">
         <div className="page-wrap">
-          <Reveal>
-            <p className="section-kicker">01 // Our Mission</p>
-            <h2 className="section-title">Why Join AdroIT?</h2>
-            <p className="section-lead mb-10">
-              We bridge the gap between academic theory and industry demands, creating
-              <span className="text-text-primary"> future-ready professionals</span> through
-              practical learning and innovation
-            </p>
-          </Reveal>
+          <div className="why-join-layout grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div className="why-join-sticky lg:col-span-5">
+              <p className="section-kicker">01 // Our Mission</p>
+              <HeadlineReveal as="h2" className="section-title">
+                Why Join AdroIT?
+              </HeadlineReveal>
+              <p className="section-lead mb-8 lg:mb-10">
+                We bridge the gap between academic theory and industry demands, creating
+                <span className="text-text-primary"> future-ready professionals</span> through
+                practical learning and innovation
+              </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <RevealGroup as="ol" className="lg:col-span-7 space-y-0">
-              {missionItems.map((item, index) => (
-                <li
-                  key={item.num}
-                  className={`reveal-item ${item.className}`}
-                  style={{ "--index": index }}
-                >
-                  <span className="mission-marker">{item.num}</span>
-                  <div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">{item.title}</h3>
-                    <p className="text-text-body">{item.body}</p>
-                  </div>
-                </li>
-              ))}
-            </RevealGroup>
-
-            <Reveal delay={180} className="lg:col-span-5">
-              <aside className="advantage-panel card card-elevated p-6 sm:p-8 h-full">
+              <aside className="advantage-panel card card-elevated card-hover p-6 sm:p-8">
                 <h3 className="text-lg font-semibold text-text-primary mb-5">The AdroIT Advantage</h3>
                 <ul className="space-y-3">
                   {advantages.map((item) => (
@@ -311,22 +314,35 @@ const Home = () => {
                   ))}
                 </ul>
               </aside>
-            </Reveal>
+            </div>
+
+            <ol className="lg:col-span-7 space-y-0">
+              {missionItems.map((item) => (
+                <Reveal as="li" key={item.num} mobileStatic className={item.className}>
+                  <span className="mission-marker">{item.num}</span>
+                  <div>
+                    <h3 className="text-xl font-semibold text-text-primary mb-2">{item.title}</h3>
+                    <p className="text-text-body">{item.body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
-      <section className="section-block section-surface">
+      {/* Technical Domains — base */}
+      <section className="section-block section-base">
         <div className="page-wrap">
-          <Reveal>
-            <p className="section-kicker">02 // Our Expertise</p>
-            <h2 className="section-title">Technical Domains</h2>
-            <p className="section-lead mb-10">
-              Four pillars of technical excellence driving innovation at AdroIT
-            </p>
-          </Reveal>
+          <p className="section-kicker">02 // Our Expertise</p>
+          <HeadlineReveal as="h2" className="section-title">
+            Technical Domains
+          </HeadlineReveal>
+          <p className="section-lead mb-10">
+            Four pillars of technical excellence driving innovation at AdroIT
+          </p>
 
-          <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" mobileStatic>
             {domains.map((domain, index) => (
               <article
                 key={domain.title}
@@ -344,7 +360,7 @@ const Home = () => {
             ))}
           </RevealGroup>
 
-          <Reveal delay={180} className="mt-8">
+          <div className="mt-8">
             <Link
               to="/domains"
               onClick={() => scrollToTop({ immediate: true })}
@@ -353,41 +369,43 @@ const Home = () => {
               Explore All Domains
               <ArrowRight size={16} />
             </Link>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="section-block section-philosophy">
-        <div className="page-wrap relative">
-          <Reveal>
-            <div className="max-w-2xl philosophy-copy">
-              <h2 className="section-title">Our Learning Philosophy</h2>
-              <p className="text-text-body text-lg leading-relaxed">
-                Like dynamic particles, we believe in adaptive, hands-on learning — not just
-                teaching technology, but building how you{" "}
-                <span className="philosophy-emphasis text-text-body font-medium">think</span>,
-                <span className="philosophy-emphasis text-text-body font-medium"> innovate</span>, and{" "}
-                <span className="philosophy-emphasis text-text-body font-medium">create</span>.
-              </p>
+      {/* Learning Philosophy — tinted band, word reveal */}
+      <section className="section-block section-tint section-philosophy relative overflow-hidden">
+        <div
+          className="philosophy-parallax-bg parallax-scroll-layer absolute inset-0 pointer-events-none"
+          data-parallax
+          data-parallax-rate="0.25"
+          aria-hidden="true"
+        />
+        <div className="page-wrap relative z-[1]">
+          <div className="max-w-2xl philosophy-copy">
+            <h2 className="section-title">Our Learning Philosophy</h2>
+            <p className="text-text-body text-lg leading-relaxed mb-6">
+              We believe in adaptive, hands-on learning — not just teaching technology, but
+              building how you approach problems with clarity and confidence.
+            </p>
+            <div className="philosophy-emphasis-line text-2xl sm:text-3xl font-bold tracking-tight text-text-primary leading-snug">
+              <WordReveal text="Think. Innovate. Create." wordClassName="philosophy-word" />
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="section-block section-tint">
+      {/* Growth — base, header reveal only (no card stagger) */}
+      <section className="section-block section-base">
         <div className="page-wrap">
-          <Reveal>
-            <p className="section-kicker">03 // Your Growth</p>
-            <h2 className="section-title mb-10">How AdroIT Will Transform You</h2>
-          </Reveal>
+          <p className="section-kicker">03 // Your Growth</p>
+          <HeadlineReveal as="h2" className="section-title mb-10">
+            How AdroIT Will Transform You
+          </HeadlineReveal>
 
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {growthPillars.map((pillar, index) => (
-              <article
-                key={pillar.num}
-                className="reveal-item pillar-card card-hover h-full"
-                style={{ "--index": index }}
-              >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {growthPillars.map((pillar) => (
+              <article key={pillar.num} className="pillar-card card card-hover h-full">
                 <div className="pillar-accent" aria-hidden="true" />
                 <p className="font-mono text-sm font-semibold text-accent-primary mb-2">
                   {pillar.num}
@@ -396,22 +414,23 @@ const Home = () => {
                 <p className="text-text-body text-sm leading-relaxed">{pillar.description}</p>
               </article>
             ))}
-          </RevealGroup>
+          </div>
         </div>
       </section>
 
-      <section className="section-block section-surface">
+      {/* Community — tinted band, staggered cards on desktop */}
+      <section className="section-block section-tint">
         <div className="page-wrap">
-          <Reveal>
-            <p className="section-kicker">04 // What We Do</p>
-            <h2 className="section-title">Join the AdroIT Community</h2>
-            <p className="section-lead mb-10">
-              Learn by building through hands-on sessions, collaborative projects, and real-world
-              exposure in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
-            </p>
-          </Reveal>
+          <p className="section-kicker">04 // What We Do</p>
+          <HeadlineReveal as="h2" className="section-title">
+            Join the AdroIT Community
+          </HeadlineReveal>
+          <p className="section-lead mb-10">
+            Learn by building through hands-on sessions, collaborative projects, and real-world
+            exposure in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
+          </p>
 
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4" mobileStatic>
             {communityCards.map((card, index) => (
               <article
                 key={card.title}
@@ -433,11 +452,9 @@ const Home = () => {
             ))}
           </RevealGroup>
 
-          <Reveal delay={120}>
-            <p className="text-sm text-text-muted mt-10">
-              Recruitment for this cycle is closed. Next recruitment opens later this year.
-            </p>
-          </Reveal>
+          <p className="text-sm text-text-muted mt-10">
+            Recruitment for this cycle is closed. Next recruitment opens later this year.
+          </p>
         </div>
       </section>
     </div>
