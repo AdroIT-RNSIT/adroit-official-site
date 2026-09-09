@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import { Link } from "react-router-dom";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import { Users, Brain, Cloud, Shield, BarChart3, Target, Calendar, User } from "lucide-react";
 
 // ============================================
 // DOMAIN CONFIGURATION - MATCHES OTHER PAGES
 // ============================================
 const DOMAINS = [
-  { id: 'all', name: 'All Members', icon: '👥', color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
-  { id: 'ml', name: 'Machine Learning', icon: '🤖', color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
-  { id: 'cc', name: 'Cloud Computing', icon: '☁️', color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
-  { id: 'cy', name: 'Cybersecurity', icon: '🔒', color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
-  { id: 'da', name: 'Data Analytics', icon: '📊', color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
+  { id: 'all', name: 'All Members', icon: Users, color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
+  { id: 'ml', name: 'Machine Learning', icon: Brain, color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
+  { id: 'cc', name: 'Cloud Computing', icon: Cloud, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
+  { id: 'cy', name: 'Cybersecurity', icon: Shield, color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
+  { id: 'da', name: 'Data Analytics', icon: BarChart3, color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
 ];
 
 // ============================================
@@ -61,20 +60,32 @@ export default function Members() {
 
   // ===== FETCH REAL DATA FROM BACKEND =====
   useEffect(() => {
-    fetchMembers();
+    const controller = new AbortController();
+    fetchMembers(controller.signal);
+    return () => controller.abort();
   }, []);
 
-  const fetchMembers = async () => {
+  const fetchMembers = async (signal) => {
+    const API = import.meta.env.VITE_API_URL;
+    const abortSignal = signal instanceof AbortSignal ? signal : undefined;
+    if (!API) {
+      setLoading(false);
+      setMembers([]);
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/members`, {
+      const res = await fetch(`${API}/api/members`, {
         credentials: "include",
+        signal: abortSignal,
       });
       if (!res.ok) throw new Error("Failed to fetch members");
       const data = await res.json();
       setMembers(data);
       setError("");
     } catch (err) {
+      if (err.name === "AbortError") return;
       setError(err.message);
       console.error("Error fetching members:", err);
     } finally {
@@ -152,7 +163,7 @@ export default function Members() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to remove this member?")) return;
     try {
-      const res = await fetch(`${API_URL}/api/members/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/members/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -173,12 +184,12 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center">
+      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center dark:bg-[#080c16]">
         <div className="text-center">
           <div className="relative">
-            <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-sky-600/30 border-t-sky-600 rounded-full animate-spin mx-auto mb-4"></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-2xl">👥</span>
+              <Users size={20} className="text-sky-700" strokeWidth={2} />
             </div>
           </div>
           <p className="text-slate-600 text-sm">Loading member directory...</p>
@@ -188,25 +199,25 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
+    <div className="min-h-dvh text-slate-900 font-sans overflow-x-clip pt-8 pb-16 dark:text-slate-100">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-40 left-20 w-[400px] max-w-[100vw] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-40 right-20 w-[500px] max-w-[100vw] h-[500px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
+      <div className="fixed inset-0 pointer-events-none z-0 hidden md:block">
+        <div className="absolute top-40 left-20 w-[400px] max-w-[100vw] h-[400px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-40 right-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 border border-slate-900/10 rounded-full">
+            <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
             <span className="text-sm text-slate-600">AdroIT Member Directory</span>
           </div>
 
           <h1 className="fluid-h1 font-extrabold mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span className="text-sky-800">
               All Members
             </span>
           </h1>
@@ -218,21 +229,21 @@ export default function Members() {
           {/* ===== QUICK STATS ===== */}
           <div className="flex flex-wrap justify-center gap-4 mt-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <span className="text-xl">👥</span>
+              <Users size={18} className="text-sky-700" strokeWidth={2} />
               <div>
                 <span className="text-slate-900 font-bold">{members.length}</span>
                 <span className="text-slate-600 text-xs ml-1">Total Members</span>
               </div>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <span className="text-xl">🎯</span>
+              <Target size={18} className="text-sky-700" strokeWidth={2} />
               <div>
                 <span className="text-slate-900 font-bold">4</span>
                 <span className="text-slate-600 text-xs ml-1">Domains</span>
               </div>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <span className="text-xl">📅</span>
+              <Calendar size={18} className="text-sky-700" strokeWidth={2} />
               <div>
                 <span className="text-slate-900 font-bold">
                   {members.filter(m => m.year?.includes('1st') || m.year?.includes('2nd')).length}
@@ -244,7 +255,7 @@ export default function Members() {
         </div>
 
         {/* ===== SEARCH & FILTERS BAR ===== */}
-        <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
+        <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
           
           {/* Search Row */}
           <div className="relative mb-4">
@@ -256,7 +267,7 @@ export default function Members() {
               placeholder="Search by name, email, role, or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
+              className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all text-sm"
             />
           </div>
 
@@ -267,23 +278,28 @@ export default function Members() {
             <div>
               <label className="block text-xs text-slate-500 mb-1">Domain</label>
               <div className="flex flex-wrap gap-1.5">
-                {DOMAINS.map((domain) => (
+                {DOMAINS.map((domain) => {
+                  const DomainIcon = domain.icon;
+                  return (
                   <button
                     key={domain.id}
                     onClick={() => setActiveDomain(domain.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 inline-flex items-center ${
                       activeDomain === domain.id
                         ? `bg-gradient-to-r ${domain.color} text-slate-900`
                         : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                     }`}
                   >
-                    <span className="mr-1">{domain.icon}</span>
+                    <span className="mr-1 inline-flex">
+                      <DomainIcon size={12} strokeWidth={2} />
+                    </span>
                     {domain.id === 'all' ? domain.name : ''}
                     <span className="ml-1 text-xs opacity-80">
                       ({getDomainCount(domain.id)})
                     </span>
                   </button>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -322,7 +338,7 @@ export default function Members() {
                     onClick={() => setActiveRole(role.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
                       activeRole === role.id
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-slate-900'
+                        ? 'bg-sky-600 text-white'
                         : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                     }`}
                   >
@@ -344,7 +360,7 @@ export default function Members() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="flex-1 px-3 py-1.5 bg-slate-900/5 border border-slate-900/10 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-cyan-500/50 transition-all"
+                  className="flex-1 px-3 py-1.5 bg-slate-900/5 border border-slate-900/10 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-sky-500/50 transition-all"
                 >
                   <option value="name">Name</option>
                   <option value="year">Year</option>
@@ -391,7 +407,7 @@ export default function Members() {
               {error}
             </div>
             <button
-              onClick={fetchMembers}
+              onClick={() => fetchMembers()}
               className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 text-xs"
             >
               Retry
@@ -403,7 +419,7 @@ export default function Members() {
         {filteredMembers.length === 0 ? (
           <div className="text-center py-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-900/5 border border-slate-900/10 rounded-full mb-4">
-              <span className="text-3xl">👥</span>
+              <Users size={28} className="text-slate-500" strokeWidth={1.75} />
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">No members found</h3>
             <p className="text-slate-500 text-sm max-w-md mx-auto">
@@ -429,8 +445,7 @@ export default function Members() {
         {/* ===== JOIN CTA - Only for non-logged in users ===== */}
         <div className="mt-16 text-center">
             <div className="relative group inline-block">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
+              <div className="relative bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
                   Want to be part of this community?
                 </h3>
@@ -439,7 +454,7 @@ export default function Members() {
                 </p>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl text-sm shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-semibold rounded-xl text-sm shadow-lg shadow-sky-600/20 hover:bg-sky-700 hover:scale-105 transition-all duration-300"
                 >
                   Contact AdroIT
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -482,33 +497,33 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
   };
 
   const domainIcons = {
-    ml: '🤖',
-    cc: '☁️',
-    cy: '🔒',
-    da: '📊'
+    ml: Brain,
+    cc: Cloud,
+    cy: Shield,
+    da: BarChart3
   };
 
   const domain = member.domain || 'ml';
   const color = domainColors[domain] || 'from-gray-500 to-gray-600';
-  const icon = domainIcons[domain] || '👤';
+  const DomainIcon = domainIcons[domain] || User;
 
   // Role badge color
   const getRoleBadgeColor = (role) => {
     if (role === 'President' || role === 'Vice President') return 'bg-yellow-500/20 text-yellow-400';
-    if (role === 'Domain Lead') return 'bg-purple-500/20 text-purple-400';
+    if (role === 'Domain Lead') return 'bg-sky-600/15 text-sky-700';
     if (role === 'Core Member') return 'bg-blue-500/20 text-blue-400';
     if (role === 'Member') return 'bg-gray-500/20 text-slate-600';
     return 'bg-gray-500/20 text-slate-600';
   };
 
   return (
-    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-lg p-3 transition-all duration-200 hover:-translate-y-1 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div className="group relative bg-white border border-slate-200 rounded-lg p-3 md:transition-transform md:duration-200 md:hover:-translate-y-1 md:hover:border-sky-600/30">
       
       <div className="relative">
         
         {/* Avatar */}
         <div className="relative w-14 h-14 mx-auto mb-2">
-          <div className={`absolute inset-0 bg-gradient-to-br ${color} rounded-lg blur-md opacity-50`}></div>
+          <div className={`absolute inset-0 hidden rounded-lg bg-gradient-to-br ${color} opacity-50 blur-md md:block`}></div>
           
           {member.imagePublicId ? (
             <img
@@ -523,8 +538,8 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
           )}
 
           {/* Domain Icon Badge */}
-          <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-[10px] border-2 border-[#0d1117]`}>
-            {icon}
+          <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white border-2 border-[#0d1117]`}>
+            <DomainIcon size={10} strokeWidth={2.5} />
           </div>
 
           {/* Admin Delete Button */}
@@ -543,7 +558,7 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
 
         {/* Member Info */}
         <div className="text-center">
-          <h3 className="text-slate-900 font-medium text-xs truncate group-hover:text-cyan-400 transition-colors">
+          <h3 className="text-slate-900 font-medium text-xs truncate group-hover:text-sky-600 transition-colors">
             {member.name}
           </h3>
           

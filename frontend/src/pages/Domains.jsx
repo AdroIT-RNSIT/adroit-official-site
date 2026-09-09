@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Cloud } from 'lucide-react';
+import {
+  Brain,
+  Cloud,
+  Image,
+  MessageSquare,
+  Eye,
+  Clapperboard,
+  Globe,
+  Search,
+  KeyRound,
+  ClipboardList,
+  TrendingDown,
+  Users,
+  Sparkles,
+  RefreshCw,
+} from 'lucide-react';
 
 export default function Domains() {
   const [activeDomain, setActiveDomain] = useState('ml');
@@ -138,10 +153,10 @@ export default function Domains() {
                 "Weights & Biases"
               ],
       projects: [
-        { name: 'Image Classifier', difficulty: 'Beginner', icon: '🖼️' },
-        { name: 'Sentiment Analysis', difficulty: 'Intermediate', icon: '💬' },
-        { name: 'Object Detection', difficulty: 'Advanced', icon: '👁️' },
-        { name: 'Recommendation System', difficulty: 'Intermediate', icon: '🎬' }
+        { name: 'Image Classifier', difficulty: 'Beginner', icon: Image },
+        { name: 'Sentiment Analysis', difficulty: 'Intermediate', icon: MessageSquare },
+        { name: 'Object Detection', difficulty: 'Advanced', icon: Eye },
+        { name: 'Recommendation System', difficulty: 'Intermediate', icon: Clapperboard }
       ],
       resources: [
         { title: 'ML Crash Course', type: 'Course', provider: 'Google' },
@@ -183,7 +198,7 @@ export default function Domains() {
       skills: ['Linux','Networking', 'AWS', 'Azure', 'GCP', 'Docker', 'Virtual machine', 'Terraform', 'CI/CD', 'Serverless'],
       tools: ['AWS Console', 'Azure Portal', 'Google Cloud Console', 'Docker', 'Kubernetes','GitHub Actions','NGINX','Apache', 'Amazon S3','Firebase'],
       projects: [
-        { name: 'Club website', difficulty: 'Intermediate', icon: '🌐' },
+        { name: 'Club website', difficulty: 'Intermediate', icon: Globe },
       ],
       resources: [
         { title: 'AWS Training', type: 'Certification', provider: 'Amazon' },
@@ -225,10 +240,10 @@ export default function Domains() {
       skills: ['Network Security', 'Ethical Hacking', 'Cryptography', 'Incident Response', 'Risk Assessment', 'Forensics'],
       tools: ['Kali Linux', 'Wireshark', 'Metasploit', 'Burp Suite', 'Nmap', 'John the Ripper',"Hashcat","OWASP ZAP"],
       projects: [
-        { name: 'Network Scanner', difficulty: 'Beginner', icon: '🔍' },
-        { name: 'Password Cracker', difficulty: 'Intermediate', icon: '🔑' },
-        { name: 'Web App Pentest', difficulty: 'Advanced', icon: '🌐' },
-        { name: 'Security Audit', difficulty: 'Intermediate', icon: '📋' }
+        { name: 'Network Scanner', difficulty: 'Beginner', icon: Search },
+        { name: 'Password Cracker', difficulty: 'Intermediate', icon: KeyRound },
+        { name: 'Web App Pentest', difficulty: 'Advanced', icon: Globe },
+        { name: 'Security Audit', difficulty: 'Intermediate', icon: ClipboardList }
       ],
       resources: [
         { title: 'TryHackMe', type: 'Platform', provider: 'Community' },
@@ -267,10 +282,10 @@ export default function Domains() {
       skills: ['SQL', 'Python', 'R', 'Tableau', 'Power BI', 'Excel', 'Statistics', 'Data Visualization'],
       tools: ['PostgreSQL', 'MySQL', 'Tableau', 'Power BI', 'Pandas', 'Matplotlib', 'Looker'],
       projects: [
-        { name: 'Sales Dashboard', difficulty: 'Beginner', icon: '📉' },
-        { name: 'Customer Segmentation', difficulty: 'Intermediate', icon: '👥' },
-        { name: 'Predictive Analytics', difficulty: 'Advanced', icon: '🔮' },
-        { name: 'ETL Pipeline', difficulty: 'Intermediate', icon: '🔄' }
+        { name: 'Sales Dashboard', difficulty: 'Beginner', icon: TrendingDown },
+        { name: 'Customer Segmentation', difficulty: 'Intermediate', icon: Users },
+        { name: 'Predictive Analytics', difficulty: 'Advanced', icon: Sparkles },
+        { name: 'ETL Pipeline', difficulty: 'Intermediate', icon: RefreshCw }
       ],
       resources: [
         { title: 'SQL for Data Science', type: 'Course', provider: 'Coursera' },
@@ -318,34 +333,12 @@ export default function Domains() {
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
 
   return (
-    <div className="relative min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
+    <div className="relative min-h-dvh text-slate-900 font-sans overflow-x-clip pt-20 pb-16 dark:text-slate-100">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-w-[100vw] h-[800px] bg-gradient-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
-      </div>
-
-      {/* ===== FLOATING PARTICLES ===== */}
-      <div className="fixed inset-0 pointer-events-none z-1 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full ${
-              activeDomain === 'ml' ? 'bg-cyan-400/30' :
-              activeDomain === 'cc' ? 'bg-purple-400/30' :
-              activeDomain === 'cy' ? 'bg-pink-400/30' :
-              'bg-green-400/30'
-            } animate-float-particle`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${10 + Math.random() * 20}s`
-            }}
-          />
-        ))}
+      <div className="fixed inset-0 pointer-events-none z-0 hidden overflow-hidden md:block">
+        <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -353,26 +346,26 @@ export default function Domains() {
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className="text-center mb-16 opacity-0 translate-y-8 transition-all duration-1000"
+          className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 border border-slate-900/10 rounded-full">
+            <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
             <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
           </div>
 
-          <h1 className="fluid-h1 font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">
-            Technical Domains
+          <h1 className="fluid-h1 font-extrabold mb-6 pb-2">
+            <span className="text-sky-800">Technical Domains</span>
           </h1>
 
           <p className="fluid-lead text-slate-600 max-w-4xl mx-auto leading-relaxed">
             Master the four pillars of modern technology with our comprehensive learning paths,
-            <span className="text-cyan-400"> hands-on projects</span>, and
-            <span className="text-purple-400"> expert mentorship</span>
+            <span className="text-sky-700"> hands-on projects</span>, and
+            <span className="text-sky-700"> expert mentorship</span>
           </p>
 
           {/* Quick Stats */}
           <div className="flex flex-wrap justify-center gap-6 mt-12">
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="60" cy="60" r="10" fill="#ffffff"/>
@@ -391,7 +384,7 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Core Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
 
@@ -409,7 +402,7 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Projects</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 backdrop-blur px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
@@ -436,14 +429,14 @@ export default function Domains() {
                 onClick={() => setActiveDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-all duration-500 ${
+                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-colors duration-200 ${
                   activeDomain === domain.id
                     ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg sm:scale-105`
                     : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
                 }`}
               >
                 {activeDomain === domain.id && (
-                  <div className={`absolute inset-0 bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse`}></div>
+                  <div className={`absolute inset-0 hidden bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse md:block`}></div>
                 )}
                 
                 <span className="relative w-6 h-6">{domain.icon}</span>
@@ -452,8 +445,8 @@ export default function Domains() {
                 {hoveredDomain === domain.id && activeDomain !== domain.id && (
                   <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-xl border border-slate-900/10 rounded-xl p-3 whitespace-nowrap z-50 animate-fade-in">
                     <div className="flex gap-4 text-xs">
-                      <div><span className="text-cyan-400">{domain.stats.members}</span> members</div>
-                      <div><span className="text-purple-400">{domain.stats.projects}</span> projects</div>
+                      <div><span className="text-sky-400">{domain.stats.members}</span> members</div>
+                      <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
                     </div>
                   </div>
                 )}
@@ -465,7 +458,6 @@ export default function Domains() {
         {/* ===== ACTIVE DOMAIN DASHBOARD ===== */}
         <section
           key={activeDomain}
-          className="opacity-0 translate-y-8 animate-fade-in-up"
         >
           {/* Domain Hero Banner */}
           <div className={`relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-br ${currentDomain.lightColor} border ${currentDomain.borderColor}`}>
@@ -493,7 +485,7 @@ export default function Domains() {
                 
                 {/* Stats Cards */}
                 <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
+                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.members}
                     </div>
@@ -501,7 +493,7 @@ export default function Domains() {
                       {icons.members} Members
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
+                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.projects}
                     </div>
@@ -509,7 +501,7 @@ export default function Domains() {
                       {icons.projects} Projects
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
+                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
                     <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
                       {currentDomain.stats.resources}
                     </div>
@@ -529,7 +521,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* About Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-3 flex items-center gap-2`}>
                   {icons.domain} About This Domain
                 </h3>
@@ -539,14 +531,14 @@ export default function Domains() {
               </div>
 
               {/* Career Paths Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.career} Career Paths
                 </h3>
                 <div className="space-y-2">
                   {currentDomain.careerPaths.map((career, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm">
-                      <span className="text-cyan-400">{icons.check}</span>
+                      <span className="text-sky-600">{icons.check}</span>
                       <span className="text-slate-700">{career}</span>
                     </div>
                   ))}
@@ -554,7 +546,7 @@ export default function Domains() {
               </div>
 
               {/* Domain Leads Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.members} Domain Lead
                 </h3>
@@ -575,7 +567,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Skills Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.skills} Skills to Master
                 </h3>
@@ -592,7 +584,7 @@ export default function Domains() {
               </div>
 
               {/* Tools Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.tools} Popular Tools
                 </h3>
@@ -607,15 +599,19 @@ export default function Domains() {
               </div>
 
               {/* Sample Projects Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.projects} Sample Projects
                 </h3>
                 <div className="space-y-3">
-                  {currentDomain.projects.map((project, idx) => (
+                  {currentDomain.projects.map((project, idx) => {
+                    const ProjectIcon = project.icon;
+                    return (
                     <div key={idx} className="flex items-center justify-between p-3 bg-slate-900/5 rounded-xl">
                       <div className="flex items-center gap-3">
-                        <span className="text-xl">{project.icon}</span>
+                        <span className="inline-flex text-slate-700">
+                          <ProjectIcon size={18} strokeWidth={2} />
+                        </span>
                         <div>
                           <div className="text-slate-900 text-sm font-medium">{project.name}</div>
                           <span className={`text-xs ${
@@ -628,7 +624,8 @@ export default function Domains() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -637,7 +634,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Learning Roadmap Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.roadmap} Learning Roadmap
                 </h3>
@@ -661,7 +658,7 @@ export default function Domains() {
               </div>
 
               {/* Recommended Resources Card */}
-              <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300">
+              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.book} Recommended Resources
                 </h3>
@@ -690,8 +687,8 @@ export default function Domains() {
             </div>
           </div>
 
-          {/* Domain Comparison Table */}
-          <div className="mt-12 bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
+          {/* Domain Comparison Table — laptop only */}
+          <div className="mt-12 hidden bg-white/90 md:block md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>

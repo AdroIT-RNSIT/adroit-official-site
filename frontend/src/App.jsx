@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, Link, Navigate } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 
 // ===== LAYOUT =====
 import MainLayout from "./layout/MainLayout";
@@ -7,6 +7,7 @@ import MainLayout from "./layout/MainLayout";
 // ===== PUBLIC PAGES (No Login Required) =====
 import Home from "./pages/Home";
 import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
 import Domains from "./pages/Domains";
 import Contact from "./pages/Contact";
 // ===== PROTECTED PAGES (Login Required + Approval) =====
@@ -29,10 +30,11 @@ function WithLayout({ children }) {
 }
 
 export default function App() {
-  // Scroll to top on route change
+  const location = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location.pathname]);
 
   return (
     <>
@@ -59,6 +61,14 @@ export default function App() {
           element={
             <WithLayout>
               <Events />
+            </WithLayout>
+          }
+        />
+        <Route
+          path="/events/:slug"
+          element={
+            <WithLayout>
+              <EventDetail />
             </WithLayout>
           }
         />
@@ -194,7 +204,7 @@ export default function App() {
           path="*"
           element={
             <WithLayout>
-              <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center pt-16 px-4">
+              <div className="min-h-dvh bg-[#f3e8ff] dark:bg-[#080c16] flex items-center justify-center pt-16 px-4">
                 <div className="text-center max-w-md">
                   <div className="inline-flex items-center justify-center w-24 h-24 bg-slate-900/5 border border-slate-900/10 rounded-full mb-6">
                     <span className="text-4xl font-bold text-slate-600">404</span>
@@ -211,7 +221,7 @@ export default function App() {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                       to="/"
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 text-slate-900 font-semibold rounded-xl shadow-lg shadow-sky-600/20 hover:bg-sky-700 hover:scale-105 transition-all duration-300"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />

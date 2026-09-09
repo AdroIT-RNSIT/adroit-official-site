@@ -1,18 +1,47 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Calendar,
+  ChevronRight,
+  Home,
+  Layers,
+  Mail,
+  Menu,
+  Settings,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 import { useSession, authClient } from "../lib/auth-client";
+import BrandMark from "./BrandMark";
+import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "../lib/theme";
+
+const NAV_ICONS = {
+  Home,
+  "Paradox 2026": Calendar,
+  Domains: Layers,
+  Members: Users,
+  Contact: Mail,
+  Profile: User,
+};
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { isDark } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pill, setPill] = useState({ x: 0, w: 0, visible: false });
+  const navListRef = useRef(null);
   const { data: session, isPending } = useSession();
 
-  const isActive = (path) => pathname === path;
+  const isActive = (path) =>
+    path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
   const isHomePage = pathname === "/";
+  const isDarkNav = isDark;
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -28,6 +57,40 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  const placePill = (el) => {
+    const parent = navListRef.current;
+    if (!parent || !el) return;
+    const parentBox = parent.getBoundingClientRect();
+    const box = el.getBoundingClientRect();
+    setPill({
+      x: box.left - parentBox.left,
+      w: box.width,
+      visible: true,
+    });
+  };
+
+  const restPillToActive = () => {
+    const parent = navListRef.current;
+    if (!parent) return;
+    const activeEl = parent.querySelector("[data-nav-active='true']");
+    if (activeEl) placePill(activeEl);
+    else setPill((prev) => ({ ...prev, visible: false }));
+  };
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => restPillToActive());
+    const onResize = () => restPillToActive();
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [pathname, isLoggedIn, isAdmin, isDark]);
+
   // ===== PUBLIC LINKS - Visible to everyone =====
   const publicLinks = [
     { name: "Home", path: "/" },
@@ -42,256 +105,314 @@ const Navbar = () => {
     { name: "Profile", path: "/profile" }
   ];
 
+  const linkTone = (active) =>
+    active
+      ? isDarkNav
+        ? "text-white"
+        : "text-slate-900"
+      : isDarkNav
+        ? "text-slate-300 hover:text-white"
+        : "text-slate-700 hover:text-slate-900";
+
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] transition-all duration-300 ease-in-out ${
-          scrolled
-            ? "backdrop-blur-xl bg-[#f3e8ff]/95 border-b border-slate-900/10 shadow-xl"
-            : "bg-[#f3e8ff] border-b border-slate-900/5"
+        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] md:transition-[background-color,border-color,box-shadow] md:duration-300 ${
+          isDarkNav
+            ? scrolled
+              ? "bg-[#080c16] border-b border-white/10 md:backdrop-blur-xl md:bg-[#080c16]/90 md:shadow-sm"
+              : "bg-[#080c16] border-b border-white/10 md:bg-[#080c16]/85 md:backdrop-blur-md"
+            : isHomePage
+              ? scrolled
+                ? "bg-white border-b border-slate-200/80 md:backdrop-blur-xl md:bg-white/85 md:shadow-sm"
+                : "bg-white border-b border-slate-200/80 md:bg-white/70 md:backdrop-blur-md md:border-slate-200/60"
+              : scrolled
+                ? "bg-white border-b border-slate-200/80 md:backdrop-blur-xl md:bg-[#f3e8ff]/95 md:border-slate-900/10 md:shadow-xl"
+                : "bg-white border-b border-slate-200/80 md:bg-[#f3e8ff] md:border-slate-900/5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
           
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-12 h-12">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg blur-sm opacity-70 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
-                <img
-                  src="/ADROIT-logo.webp"
-                  alt="AdroIT"
-                  className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-            </div>
-            <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
-              AdroIT
-            </span>
+            <BrandMark size="nav" />
             <div className="hidden lg:block ml-4 h-12 w-64 overflow-hidden relative">
-            <img
-              src="/ieee_logo.png"
-              alt="IEEE RNSIT"
-              className="absolute h-[180px] w-auto max-w-none left-0 top-[calc(50%+9px)] -translate-y-1/2"
-            />
-          </div>
+              <img
+                src="/ieee_logo.png"
+                alt="IEEE RNSIT"
+                className="absolute h-[180px] w-auto max-w-none left-0 top-[calc(50%+9px)] -translate-y-1/2"
+              />
+            </div>
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
-          <div className="hidden md:flex items-center gap-1">
-            
-            {/* PUBLIC LINKS */}
-            <div className="flex items-center">
-              {publicLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive(link.path)
-                      ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                      : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                  }`}
-                >
-                  {link.name === "Paradox 2026" ? (
-                    <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
-                      {link.name}
-                    </span>
-                  ) : (
-                    link.name
-                  )}
-                </Link>
-              ))}
-            </div>
+          <div className="hidden md:flex items-center gap-3">
+            <div
+              ref={navListRef}
+              className="relative flex items-center"
+              onMouseLeave={restPillToActive}
+            >
+              <span
+                aria-hidden
+                className={`pointer-events-none absolute left-0 top-1/2 h-8 rounded-lg transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                  isDarkNav
+                    ? "bg-sky-400/15 ring-1 ring-sky-400/30"
+                    : "bg-sky-500/15 ring-1 ring-sky-500/25"
+                }`}
+                style={{
+                  width: pill.w,
+                  opacity: pill.visible ? 1 : 0,
+                  transform: `translate3d(${pill.x}px, -50%, 0)`,
+                }}
+              />
 
-            {/* PROTECTED LINKS - Only when logged in */}
-            {isLoggedIn && (
-              <>
-                <span className="w-px h-5 bg-slate-900/10 mx-1"></span>
-                <div className="flex items-center">
-                  {protectedLinks.map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive(link.path)
-                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                  
-                  {/* Admin Link */}
+              {publicLinks.map((link) => {
+                const active = isActive(link.path);
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    data-nav-active={active ? "true" : undefined}
+                    onMouseEnter={(e) => placePill(e.currentTarget)}
+                    className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(active)}`}
+                  >
+                    {link.name === "Paradox 2026" ? (
+                      <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
+                        {link.name}
+                      </span>
+                    ) : (
+                      link.name
+                    )}
+                  </Link>
+                );
+              })}
+
+              {isLoggedIn && (
+                <>
+                  <span className={`mx-1 h-5 w-px ${isDarkNav ? "bg-white/15" : "bg-slate-900/10"}`} />
+                  {protectedLinks.map((link) => {
+                    const active = isActive(link.path);
+                    return (
+                      <Link
+                        key={link.path}
+                        to={link.path}
+                        data-nav-active={active ? "true" : undefined}
+                        onMouseEnter={(e) => placePill(e.currentTarget)}
+                        className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(active)}`}
+                      >
+                        {link.name}
+                      </Link>
+                    );
+                  })}
                   {isAdmin && (
                     <Link
                       to="/admin"
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive("/admin")
-                          ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                      }`}
+                      data-nav-active={isActive("/admin") ? "true" : undefined}
+                      onMouseEnter={(e) => placePill(e.currentTarget)}
+                      className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(isActive("/admin"))}`}
                     >
                       Admin
                     </Link>
                   )}
-                </div>
-              </>
-            )}
-
-            {/* ===== AUTH SECTION REMOVED ===== */}
-            <div className="ml-3 pl-3 border-l border-slate-900/10">
+                </>
+              )}
             </div>
+
+            <ThemeToggle />
           </div>
 
-          {/* ===== MOBILE MENU BUTTON ===== */}
-          <button
+          {/* ===== MOBILE ACTIONS ===== */}
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
+            <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-all duration-200"
+            className={`md:hidden flex h-10 w-10 items-center justify-center rounded-xl border transition-colors ${
+              isDarkNav
+                ? mobileMenuOpen
+                  ? "border-sky-400/40 bg-white/10 text-sky-300 shadow-sm"
+                  : "border-white/15 bg-white/10 text-white hover:bg-white/15"
+                : mobileMenuOpen
+                  ? "border-sky-500/40 bg-white text-sky-700 shadow-sm"
+                  : "border-slate-900/10 bg-white/50 text-slate-800 hover:bg-white/80"
+            }`}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
           >
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : "opacity-100"}`}></span>
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
+            {mobileMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
           </button>
+          </div>
         </div>
       </nav>
 
       {/* ===== MOBILE MENU ===== */}
       {mobileMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] transition-all duration-300"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      <div
-        className={`md:hidden fixed top-0 right-0 w-80 max-w-[85vw] h-full z-[1000] bg-[#f3e8ff] border-l border-slate-900/10 shadow-2xl transform transition-all duration-500 ease-out pt-[env(safe-area-inset-top,0px)] pb-[env(safe-area-inset-bottom,0px)] ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-900/10">
-          <Link to="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-            <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg overflow-hidden">
-              <img src="/ADROIT-logo.webp" alt="AdroIT" className="w-full h-full object-cover opacity-60" />
-            </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
-              AdroIT
-            </span>
-          </Link>
-          <button
+        <>
+          <div
+            className="md:hidden fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/40"
             onClick={() => setMobileMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-colors"
+          />
+          <div
+            className={`md:hidden fixed right-3 z-[1001] top-[calc(var(--nav-height)+0.5rem)] w-[min(20.5rem,calc(100vw-1.5rem))] origin-top-right rounded-2xl border shadow-[0_18px_50px_rgba(15,23,42,0.18)] ${
+              isDarkNav
+                ? "border-white/10 bg-[#080c16]"
+                : "border-slate-200 bg-white"
+            }`}
+            aria-hidden={!mobileMenuOpen}
           >
-            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Menu Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(100vh-200px)]">
-          
-          {/* User Info - Only when logged in */}
+            <div
+              className={`pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t ${
+                isDarkNav ? "border-white/10 bg-[#080c16]" : "border-slate-200 bg-white"
+              }`}
+            />
+            <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-2">
           {isLoggedIn && (
-            <div className="mb-6 p-4 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-slate-900 text-lg font-bold">
-                  {session?.user?.image ? (
-                    <img src={session.user.image} alt={session.user.name} className="w-full h-full object-cover rounded-lg" />
-                  ) : (
-                    session?.user?.name?.charAt(0).toUpperCase() || "U"
-                  )}
-                </div>
-                <div>
-                  <p className="text-slate-900 font-medium">{session?.user?.name}</p>
-                  <p className="text-slate-500 text-xs">{session?.user?.email}</p>
-                </div>
+            <div className={`mb-2 flex items-center gap-3 rounded-xl px-3 py-2.5 ${isDarkNav ? "bg-white/5" : "bg-slate-50"}`}>
+              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 text-sm font-bold text-white">
+                {session?.user?.image ? (
+                  <img src={session.user.image} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  session?.user?.name?.charAt(0).toUpperCase() || "U"
+                )}
+              </div>
+              <div className="min-w-0">
+                <p className={`truncate text-sm font-medium ${isDarkNav ? "text-white" : "text-slate-900"}`}>{session?.user?.name}</p>
+                <p className={`truncate text-xs ${isDarkNav ? "text-slate-400" : "text-slate-500"}`}>{session?.user?.email}</p>
               </div>
             </div>
           )}
 
-          {/* Public Links */}
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Explore</p>
-            {publicLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(link.path)
-                    ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
-                }`}
-              >
-                <span className="w-6 h-6 flex items-center justify-center">
-                  {link.name === "Home" && "🏠"}
-                  {link.name === "Paradox 2026" && "📅"}
-                  {link.name === "Members" && "👥"}
-                  {link.name === "Domains" && "🎯"}
-                  {link.name === "Contact" && "📞"}
-                </span>
-                {link.name === "Paradox 2026" ? (
-                  <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-base">
-                    {link.name}
-                  </span>
-                ) : (
-                  link.name
-                )}
-              </Link>
-            ))}
-          </div>
-
-          {/* Protected Links - Only when logged in */}
-          {isLoggedIn && (
-            <>
-              <div className="my-4 border-t border-slate-900/10"></div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Member</p>
-                {protectedLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive(link.path)
-                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
+          <nav className="flex flex-col gap-0.5">
+            {publicLinks.map((link) => {
+              const Icon = NAV_ICONS[link.name] || Home;
+              const active = isActive(link.path);
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
+                    active
+                      ? isDarkNav
+                        ? "bg-sky-500/15 text-white"
+                        : "bg-sky-50 text-slate-900"
+                      : isDarkNav
+                        ? "text-slate-300 hover:bg-white/5 hover:text-white"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                      active
+                        ? "bg-sky-500/15 text-sky-500"
+                        : isDarkNav
+                          ? "bg-white/10 text-slate-300"
+                          : "bg-slate-100 text-slate-500"
                     }`}
                   >
-                    <span className="w-6 h-6 flex items-center justify-center">
-                      {link.name === "Resources" && "📚"}
-                      {link.name === "Members" && "👥"}
-                      {link.name === "Profile" && "👤"}
-                    </span>
-                    {link.name}
-                  </Link>
-                ))}
-                
-                {/* Admin Link */}
+                    <Icon size={18} strokeWidth={2} />
+                  </span>
+                  <span className="flex-1">
+                    {link.name === "Paradox 2026" ? (
+                      <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text">
+                        {link.name}
+                      </span>
+                    ) : (
+                      link.name
+                    )}
+                  </span>
+                  <ChevronRight
+                    size={16}
+                    className={active ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
+                    strokeWidth={2}
+                  />
+                </Link>
+              );
+            })}
+          </nav>
+
+          {isLoggedIn && (
+            <>
+              <div className={`my-2 h-px ${isDarkNav ? "bg-white/10" : "bg-slate-200"}`} />
+              <nav className="flex flex-col gap-0.5">
+                {protectedLinks.map((link) => {
+                  const Icon = NAV_ICONS[link.name] || User;
+                  const active = isActive(link.path);
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
+                        active
+                          ? isDarkNav
+                            ? "bg-sky-500/15 text-white"
+                            : "bg-sky-50 text-slate-900"
+                          : isDarkNav
+                            ? "text-slate-300 hover:bg-white/5 hover:text-white"
+                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      }`}
+                    >
+                      <span
+                        className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                          active
+                            ? "bg-sky-500/15 text-sky-500"
+                            : isDarkNav
+                              ? "bg-white/10 text-slate-300"
+                              : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        <Icon size={18} strokeWidth={2} />
+                      </span>
+                      <span className="flex-1">{link.name}</span>
+                      <ChevronRight
+                        size={16}
+                        className={active ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
+                        strokeWidth={2}
+                      />
+                    </Link>
+                  );
+                })}
                 {isAdmin && (
                   <Link
                     to="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
                       isActive("/admin")
-                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
+                        ? isDarkNav
+                          ? "bg-sky-500/15 text-white"
+                          : "bg-sky-50 text-slate-900"
+                        : isDarkNav
+                          ? "text-slate-300 hover:bg-white/5 hover:text-white"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                   >
-                    <span className="w-6 h-6 flex items-center justify-center">⚙️</span>
-                    Admin
+                    <span
+                      className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                        isActive("/admin")
+                          ? "bg-sky-500/15 text-sky-500"
+                          : isDarkNav
+                            ? "bg-white/10 text-slate-300"
+                            : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      <Settings size={18} strokeWidth={2} />
+                    </span>
+                    <span className="flex-1">Admin</span>
+                    <ChevronRight
+                      size={16}
+                      className={isActive("/admin") ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
+                      strokeWidth={2}
+                    />
                   </Link>
                 )}
-              </div>
+              </nav>
             </>
           )}
-
-          {/* Mobile Auth Button Removed */}
         </div>
       </div>
+        </>
+      )}
     </>
   );
 };

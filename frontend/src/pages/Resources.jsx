@@ -2,6 +2,20 @@ import { useState, useEffect } from 'react';
 import { useSession } from '../lib/auth-client';
 import { useParams, Link } from 'react-router-dom';
 import LoadingSpinner from "../components/LoadingSpinner";
+import {
+  BookOpen,
+  Brain,
+  Cloud,
+  Shield,
+  BarChart3,
+  FileText,
+  Clapperboard,
+  GraduationCap,
+  File,
+  Wrench,
+  FileStack,
+  ClipboardList,
+} from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -11,7 +25,7 @@ const DOMAINS = [
   { 
     id: 'all', 
     name: 'All Resources', 
-    icon: '📚', 
+    icon: BookOpen, 
     color: 'from-purple-500 to-purple-600',
     textColor: 'text-purple-400',
     bgColor: 'bg-purple-500/10',
@@ -20,7 +34,7 @@ const DOMAINS = [
   { 
     id: 'ml', 
     name: 'Machine Learning', 
-    icon: '🤖', 
+    icon: Brain, 
     color: 'from-cyan-500 to-cyan-600',
     textColor: 'text-cyan-400',
     bgColor: 'bg-cyan-500/10',
@@ -29,7 +43,7 @@ const DOMAINS = [
   { 
     id: 'cc', 
     name: 'Cloud Computing', 
-    icon: '☁️', 
+    icon: Cloud, 
     color: 'from-purple-500 to-purple-600',
     textColor: 'text-purple-400',
     bgColor: 'bg-purple-500/10',
@@ -38,7 +52,7 @@ const DOMAINS = [
   { 
     id: 'cy', 
     name: 'Cybersecurity', 
-    icon: '🔒', 
+    icon: Shield, 
     color: 'from-pink-500 to-pink-600',
     textColor: 'text-pink-400',
     bgColor: 'bg-pink-500/10',
@@ -47,7 +61,7 @@ const DOMAINS = [
   { 
     id: 'da', 
     name: 'Data Analytics', 
-    icon: '📊', 
+    icon: BarChart3, 
     color: 'from-green-500 to-green-600',
     textColor: 'text-green-400',
     bgColor: 'bg-green-500/10',
@@ -58,14 +72,14 @@ const DOMAINS = [
 // RESOURCE TYPE CONFIGURATION
 // ===========================
 const TYPE_CONFIG = {
-  article: { icon: '📝', label: 'Article', color: 'from-blue-500 to-blue-600' },
-  video: { icon: '🎬', label: 'Video', color: 'from-red-500 to-red-600' },
-  course: { icon: '🎓', label: 'Course', color: 'from-amber-500 to-amber-600' },
-  book: { icon: '📚', label: 'Book', color: 'from-emerald-500 to-emerald-600' },
-  documentation: { icon: '📄', label: 'Documentation', color: 'from-indigo-500 to-indigo-600' },
-  tool: { icon: '🛠️', label: 'Tool', color: 'from-orange-500 to-orange-600' },
-  paper: { icon: '📑', label: 'Research Paper', color: 'from-violet-500 to-violet-600' },
-  cheatSheet: { icon: '📋', label: 'Cheat Sheet', color: 'from-teal-500 to-teal-600' }
+  article: { icon: FileText, label: 'Article', color: 'from-blue-500 to-blue-600' },
+  video: { icon: Clapperboard, label: 'Video', color: 'from-red-500 to-red-600' },
+  course: { icon: GraduationCap, label: 'Course', color: 'from-amber-500 to-amber-600' },
+  book: { icon: BookOpen, label: 'Book', color: 'from-emerald-500 to-emerald-600' },
+  documentation: { icon: File, label: 'Documentation', color: 'from-indigo-500 to-indigo-600' },
+  tool: { icon: Wrench, label: 'Tool', color: 'from-orange-500 to-orange-600' },
+  paper: { icon: FileStack, label: 'Research Paper', color: 'from-violet-500 to-violet-600' },
+  cheatSheet: { icon: ClipboardList, label: 'Cheat Sheet', color: 'from-teal-500 to-teal-600' }
 };
 
 // DIFFICULTY CONFIGURATION
@@ -185,17 +199,17 @@ function Resources(){
   },[domain, filters]);
 
   if (loading) {
-    return <LoadingSpinner icon="📚" text="Loading resources..." />;
+    return <LoadingSpinner text="Loading resources..." />;
   }
 
   return (
-    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip">
+    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip dark:bg-[#080c16] dark:text-slate-100">
     
       {/* Background Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-100 h-100 bg-cyan-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-125 h-125 bg-purple-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-linear-to-r from-cyan-500/2 via-purple-500/2 to-pink-500/2 rounded-full blur-[150px]"></div>
+        <div className="absolute top-20 left-20 w-100 h-100 bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-20 right-20 w-125 h-125 bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-sky-500/10 rounded-full blur-[150px]"></div>
       </div>
     
       {/* Particles */}
@@ -208,7 +222,7 @@ function Resources(){
               domain === 'cc' ? 'bg-purple-400/20' :
               domain === 'cy' ? 'bg-pink-400/20' :
               domain === 'da' ? 'bg-green-400/20' :
-              'bg-cyan-400/20'
+              'bg-sky-600/20'
             } animate-float-particle`}
             style={{
               left: `${Math.random() * 100}%`,
@@ -223,7 +237,7 @@ function Resources(){
       <div className="text-center mb-12 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <h1 className="fluid-h1 font-extrabold mb-6">
-          <span className="bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          <span className="text-sky-800">
             {currentDomain?.name || 'Resources'}
           </span>
         </h1>
@@ -234,18 +248,22 @@ function Resources(){
 
         {/* Domain cards */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 ml-3 mr-3 mt-2">
-          {DOMAINS.map((d) => (
+          {DOMAINS.map((d) => {
+            const DomainIcon = d.icon;
+            return (
             <Link
               key={d.id}
               to={`/resources${d.id === 'all' ? '' : `/${d.id}`}`}
               className={`group relative bg-white/40 backdrop-blur-xl border rounded-xl p-4 transition-all duration-300 hover:scale-105 ${
                 (domain === d.id || (d.id === 'all' && !domain))
                   ? `${d.bgColor} ${d.borderColor} border-2`
-                  : 'border-slate-900/10 hover:border-cyan-500/30'
+                  : 'border-slate-900/10 hover:border-sky-600/30'
               }`}
             >
               <div className="flex flex-col items-center text-center">
-                <span className="text-2xl mb-1">{d.icon}</span>
+                <span className="mb-1 inline-flex text-slate-800">
+                  <DomainIcon size={22} strokeWidth={2} />
+                </span>
                 <span className="text-xs font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
                   {d.name}
                 </span>
@@ -256,7 +274,8 @@ function Resources(){
                 
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
 
       </div>
@@ -314,8 +333,10 @@ function Resources(){
 
 function ResourceCard({ resource, isAdmin, onDelete }) {
   const typeConfig = TYPE_CONFIG[resource.type] || TYPE_CONFIG.article;
+  const TypeIcon = typeConfig.icon;
   const difficultyConfig = resource.difficulty ? DIFFICULTY_CONFIG[resource.difficulty] : null;
   const domain = DOMAINS.find(d => d.id === resource.domain) || DOMAINS[0];
+  const DomainIcon = domain.icon;
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -324,7 +345,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
   };
 
   return (
-    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-xl p-5 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-xl p-5 hover:border-sky-600/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-600/5">
       
       {/* Glow effect on hover */}
       <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -334,8 +355,8 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${typeConfig.color} flex items-center justify-center text-xl`}>
-              {typeConfig.icon}
+            <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${typeConfig.color} flex items-center justify-center text-white`}>
+              <TypeIcon size={20} strokeWidth={2} />
             </div>
             <div>
               <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-linear-to-r ${typeConfig.color} bg-opacity-20 text-slate-900`}>
@@ -364,7 +385,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-sky-600 transition-colors line-clamp-2">
           {resource.title}
         </h3>
 
@@ -376,7 +397,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         {/* Domain Badge & Author */}
         <div className="flex items-center justify-between mb-3">
           <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-linear-to-r ${domain.color} bg-opacity-20 text-slate-900`}>
-            <span>{domain.icon}</span>
+            <span className="inline-flex"><DomainIcon size={12} strokeWidth={2} /></span>
             <span>{domain.name}</span>
           </span>
           {resource.author && (
@@ -425,7 +446,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-linear-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
           >
             Access
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -473,7 +494,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
       </svg>
       <input
         type="text"
-        className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
+        className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all text-sm"
         value={mFilters.search}
         placeholder={`Search ${currentDomainName}...`}
         onChange={(e) => setMFilters({ ...mFilters, search: e.target.value })}
@@ -486,7 +507,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
               ENTER
             </kbd>
             <svg 
-              className="w-4 h-4 text-cyan-500 hover:text-cyan-400" 
+              className="w-4 h-4 text-sky-600 hover:text-sky-500" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -500,13 +521,13 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Type Filter */}
     <div className="lg:col-span-3">
       <select 
-        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-sky-500/50 transition-all"
         value={mFilters.type}
         onChange={(e) => { onUpdate({ ...mFilters, type: e.target.value }); }}
       >
         <option value="">All Types</option>
         {Object.entries(TYPE_CONFIG).map(([type, config]) => (
-          <option key={type} value={type}>{config.icon} {config.label}</option>
+          <option key={type} value={type}>{config.label}</option>
         ))}
       </select>
     </div>
@@ -514,7 +535,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Difficulty Filter */}
     <div className="lg:col-span-2">
       <select 
-        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-cyan-500/50 transition-all"
+        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-sky-500/50 transition-all"
         value={mFilters.difficulty}
         onChange={(e) => { onUpdate({ ...mFilters, difficulty: e.target.value }); }}
       >

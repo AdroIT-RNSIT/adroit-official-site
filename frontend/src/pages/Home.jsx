@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
-import { Link } from "react-router-dom";
-import RegistrationModal from '../components/RegistrationModal';
+import { Link, useNavigate } from "react-router-dom";
+import BrandMark from '../components/BrandMark';
+import EventCarousel from '../components/EventCarousel';
 import { sharedEvents } from '../data/events';
 
 // ============================================
@@ -13,12 +14,12 @@ import InteractiveRings from '../components/InteractiveRings';
 // ============================================
 // DOMAIN CARD COMPONENT - NEW!
 // ============================================
-const DomainCard = ({ icon, title, description, color }) => (
-  <div className="group relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-cyan-500/30 hover:-translate-y-2 transition-all duration-300">
-    <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br ${color} text-slate-900 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 mb-4 group-hover:scale-110 transition-all duration-300`}>
+const DomainCard = ({ icon, title, description }) => (
+  <div className="group relative bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 hover:border-sky-600/25 hover:-translate-y-2 transition-all duration-300">
+    <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-sky-600 text-white shadow-lg shadow-sky-900/10 mb-4 group-hover:scale-110 transition-all duration-300">
       {icon}
     </div>
-    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-400 transition-colors">
+    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-sky-800 dark:group-hover:text-sky-300 transition-colors">
       {title}
     </h3>
     <p className="text-slate-600 text-sm leading-relaxed">
@@ -31,6 +32,7 @@ const DomainCard = ({ icon, title, description, color }) => (
 // MAIN HOME COMPONENT
 // ============================================
 const Home = () => {
+  const navigate = useNavigate();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
   const domainsRef = useRef(null);
@@ -40,15 +42,15 @@ const Home = () => {
 
   useEffect(() => {
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
+      threshold: 0,
+      rootMargin: '80px 0px 0px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('opacity-100', 'translate-y-0');
-          entry.target.classList.remove('opacity-0', 'translate-y-12');
+          entry.target.classList.remove('opacity-0', 'translate-y-4', 'translate-y-12');
         }
       });
     }, observerOptions);
@@ -67,28 +69,24 @@ const Home = () => {
       icon: <Brain size={28} strokeWidth={2} />,
       title: 'Machine Learning',
       description: 'Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.',
-      color: 'from-cyan-500 to-cyan-600',
       link: '/resources/ml'
     },
     {
       icon: <Cloud size={28} strokeWidth={2} />,
       title: 'Cloud Computing',
       description: 'Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.',
-      color: 'from-purple-500 to-purple-600',
       link: '/resources/cc'
     },
     {
       icon: <ShieldCheck size={28} strokeWidth={2} />,
       title: 'Cybersecurity',
       description: 'Protect systems from threats. Learn ethical hacking, network security, and cryptography.',
-      color: 'from-pink-500 to-pink-600',
       link: '/resources/cy'
     },
     {
       icon: <BarChart3 size={28} strokeWidth={2} />,
       title: 'Data Analytics',
       description: 'Extract insights from data. Master visualization, SQL, Python, and business intelligence.',
-      color: 'from-green-500 to-green-600',
       link: '/resources/da'
     }
   ];
@@ -96,92 +94,78 @@ const Home = () => {
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
       
-      {/* RNSIT LOGO - FLUSH TOP LEFT */}
-      <div className="absolute top-0 left-0 z-[1001]">
-        <img 
-          src="/rnsit_logo.png" 
-          alt="RNSIT Logo" 
-          className="w-28 sm:w-44 md:w-[26rem] lg:w-[32rem] h-auto drop-shadow-2xl"
-          style={{ mixBlendMode: 'multiply' }}
+      {/* Mobile: original corner sizes in flow so the hero sits below. Laptop: larger aligned pair. */}
+      <div className="lg:hidden relative z-[1001] flex items-center justify-between">
+        <img
+          src="/rnsit_logo.png"
+          alt="RNSIT Logo"
+          className="w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl"
+          style={{ mixBlendMode: "multiply" }}
+        />
+        <img
+          src="/25_years_new.png"
+          alt="25 Years Excellence"
+          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
-
-      {/* 25 YEARS LOGO - FLUSH TOP RIGHT */}
-      <div className="absolute top-0 right-0 z-[1001]">
-        <img 
-          src="/25_years.png" 
-          alt="25 Years Excellence" 
-          className="w-12 sm:w-16 md:w-32 lg:w-40 h-auto drop-shadow-2xl" 
+      <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
+        <img
+          src="/rnsit_logo.png"
+          alt="RNSIT Logo"
+          className="h-[12.6rem] w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+        />
+        <img
+          src="/25_years_new.png"
+          alt="25 Years Excellence"
+          className="h-[10.08rem] w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
 
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="min-h-dvh flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-1000 ease-out overflow-hidden"
+        className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-8 pb-24 sm:pt-10 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
 
-        <div className="max-w-5xl text-center z-10 relative">
-          <span className="block text-sm sm:text-lg md:text-xl lg:text-2xl font-light text-slate-600 uppercase tracking-[0.1em] sm:tracking-[0.2em] mb-2">
-              Welcome to
-            </span>
-          <span className="block fluid-hero font-extrabold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent leading-none tracking-[0.08em] sm:tracking-[0.15em] sm:ml-4">
-              AdroIT
-            </span>
-          <br></br>
-          {/* Badge */}
-          <div className="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-full px-4 sm:px-8 py-3 sm:py-4 mb-8 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full text-xs sm:text-lg md:text-xl text-slate-600 font-medium tracking-wide whitespace-normal text-center">
-            <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse flex-shrink-0"></span>
-            <span>Department of Computer Science & Engineering</span>
-          </div>
+        <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
+          <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
+            Paradox 2026
+          </span>
+          <BrandMark size="home" className="mb-5" />
 
-          {/* Title */}
-          <h1 className="mb-6">
+          <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
+            <span className="sr-only">AdroIT — </span>
+            Department of
+            <span className="mt-0.5 block font-bold">
+              Computer Science &amp; Engineering
+            </span>
           </h1>
 
           {/* Tagline */}
           <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
-            The Premier Technical Club <span className="text-cyan-400">Empowering Tomorrow's Innovators</span> through 
+            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
-          {/* UPCOMING EVENTS MARQUEE */}
-          <div className="my-12 w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden py-4">
-            <div className="flex animate-marquee hover:[animation-play-state:paused] items-center">
-              {/* Repeated sets for infinite scroll */}
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="flex gap-4 sm:gap-8 px-2 sm:px-4">
-                  {sharedEvents.map((event) => (
-                    <Link key={event._id} to="/events" className="block w-[85vw] sm:w-[480px] h-[240px] flex-shrink-0 bg-gradient-to-br from-cyan-100/60 via-sky-50/80 to-blue-100/60 backdrop-blur-sm rounded-3xl border border-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.3)] transition-all p-6 sm:p-7 whitespace-normal text-left group">
-                      <div className="flex justify-between items-start mb-4">
-                        <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-xs sm:text-sm">Paradox 2026</span>
-                        <span className="text-xs sm:text-sm font-semibold text-slate-600">
-                          {new Date(event.date).toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] transition-all">{event.title}</h3>
-                      <p className="text-slate-600 text-sm sm:text-base line-clamp-2">{event.description}</p>
-                    </Link>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
+          <EventCarousel
+            events={sharedEvents}
+            onSelect={(event) => navigate(`/events/${event.slug}`)}
+          />
 
           {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center relative z-20">
+          <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
             <Link
               to="/domains"
-              className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-purple-500/40 hover:scale-105 transition-all duration-300"
+              className="group inline-flex items-center justify-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white rounded-full bg-sky-600 shadow-md shadow-sky-900/15 hover:bg-sky-800 hover:scale-105 transition-all duration-300"
             >
-              <span className="relative z-10">Explore AdroIT</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="relative z-10 group-hover:translate-x-1 transition-transform">
+              <span>Explore AdroIT</span>
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-0.5 transition-transform">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
             <Link
               to="/events"
-              className="px-8 py-4 bg-slate-900/5 border border-slate-900/10 text-slate-900 font-semibold rounded-xl hover:bg-slate-900/10 hover:border-cyan-500/30 transition-all duration-300"
+              className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-slate-800 rounded-full bg-white/70 border border-slate-200 hover:bg-white hover:border-sky-600/30 transition-all duration-300"
             >
               See Events
             </Link>
@@ -190,26 +174,18 @@ const Home = () => {
 
         {/* FIXED: Responsive rings container */}
         <InteractiveRings />
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-slate-500">Scroll</span>
-          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7-7-7m14-6l-7 7-7-7" />
-          </svg>
-        </div>
       </section>
 
       {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000">
+      <section id="why-join" ref={missionRef} className="py-10 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Why Join AdroIT?</h2>
+            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Why Join AdroIT?</h2>
             <p className="text-slate-600 fluid-lead max-w-4xl mx-auto">
               We bridge the gap between academic theory and industry demands, creating 
-              <span className="text-cyan-400"> future-ready professionals</span> through practical learning and innovation
+              <span className="text-sky-800"> future-ready professionals</span> through practical learning and innovation
             </p>
           </div>
 
@@ -219,9 +195,9 @@ const Home = () => {
             {/* Left Column - 3 Cards */}
             <div className="space-y-8">
               
-              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-cyan-500/30 transition-all duration-300">
+              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">01</span>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900">Practical Skill Development</h3>
@@ -231,9 +207,9 @@ const Home = () => {
                 </p>
               </div>
 
-              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-purple-500/30 transition-all duration-300">
+              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">02</span>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900">Industry Exposure</h3>
@@ -243,9 +219,9 @@ const Home = () => {
                 </p>
               </div>
 
-              <div className="p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-pink-500/30 transition-all duration-300">
+              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">03</span>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900">Collaborative Environment</h3>
@@ -260,9 +236,9 @@ const Home = () => {
 
             {/* Right Column - Advantage Card */}
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-              <div className="relative bg-white/40 backdrop-blur-3xl border border-slate-900/10 p-10 rounded-3xl">
-                <h3 className="text-3xl font-bold mb-6 text-center text-cyan-400">The AdroIT Advantage</h3>
+              <div className="absolute -inset-1 bg-sky-600/15 rounded-3xl blur opacity-50 group-hover:opacity-80 transition duration-1000"></div>
+              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-10 rounded-3xl">
+                <h3 className="text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
                 <div className="space-y-6">
                   {[
                     "Build an impressive portfolio with real projects",
@@ -273,7 +249,7 @@ const Home = () => {
                     "Access exclusive learning resources and workshops"
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-6 h-6 rounded-full bg-sky-600/10 text-sky-800 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                           <path d="M20 6L9 17L4 12"/>
                         </svg>
@@ -289,12 +265,12 @@ const Home = () => {
       </section>
 
       {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
-      <section ref={domainsRef} className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 opacity-0 translate-y-12 transition-all duration-1000">
+      <section ref={domainsRef} className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Technical Domains</h2>
+            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Technical Domains</h2>
             <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Four pillars of technical excellence driving innovation at AdroIT
             </p>
@@ -312,7 +288,7 @@ const Home = () => {
             <Link
               to="/domains"
               onClick={()=>window.scrollTo(0,0)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-xl text-cyan-400 hover:text-slate-900 hover:border-cyan-500/30 transition-all duration-300 group"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-xl text-sky-800 hover:text-slate-900 hover:border-sky-600/30 transition-all duration-300 group"
             >
               <span>Explore All Domains</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,18 +300,26 @@ const Home = () => {
       </section>
 
       {/* ===== INTERACTIVE CANVAS SECTION ===== */}
-      <section 
+      <section
         ref={approachRef}
-        className="min-h-[60dvh] relative flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="relative z-0 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-500"
       >
-        <ThreeScene />
+        <div
+          className="pointer-events-none absolute inset-x-0 -top-24 -bottom-24 z-0 sm:-top-32 sm:-bottom-32"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
+          }}
+        >
+          <ThreeScene />
+        </div>
         <div className="relative z-10 text-center">
-          <h2 className="fluid-h2 font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 py-2">
+          <h2 className="fluid-h2 font-bold text-slate-900 mb-4 py-2">
             Our Learning Philosophy
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-            Like dynamic particles, we believe in adaptive, hands-on learning — not just teaching technology, but building how you <span className="text-cyan-400">think</span>, 
-            <span className="text-purple-400"> innovate</span>, and <span className="text-pink-400">create</span>.
+            Like dynamic particles, we believe in adaptive, hands-on learning — not just teaching technology, but building how you <span className="text-sky-800">think</span>, 
+            <span className="text-sky-800"> innovate</span>, and <span className="text-sky-800">create</span>.
           </p>
         </div>
       </section>
@@ -343,48 +327,48 @@ const Home = () => {
       {/* ===== BENEFITS SECTION ===== */}
       <section 
         ref={benefitsRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-12 transition-all duration-1000"
+        className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">How AdroIT Will Transform You</h2>
+            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">How AdroIT Will Transform You</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-cyan-500/50 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
+              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-cyan-400">Technical Excellence</h3>
+              <h3 className="text-xl font-bold mb-4 text-slate-900">Technical Excellence</h3>
               <p className="text-slate-600">
                 Develop strong technical thinking by understanding core concepts, problem-solving approaches,
                 and real-world applications across all four domains.
               </p>
             </div>
 
-            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-purple-500/50 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
+              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-purple-400">Professional Network</h3>
+              <h3 className="text-xl font-bold mb-4 text-slate-900">Professional Network</h3>
               <p className="text-slate-600">
                 Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.
               </p>
             </div>
 
-            <div className="group p-8 border border-slate-900/10 rounded-2xl bg-gradient-to-b from-transparent to-black/20 hover:border-pink-500/50 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
+              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-pink-400">Leadership Skills</h3>
+              <h3 className="text-xl font-bold mb-4 text-slate-900">Leadership Skills</h3>
               <p className="text-slate-600">
                 Take ownership of projects, lead teams in hackathons, and organize events. 
                 Develop the soft skills that complement your technical expertise.
@@ -397,13 +381,13 @@ const Home = () => {
       {/* ===== CLUB ACTIVITIES ===== */}
       <section 
         ref={activitiesRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-12 transition-all duration-1000"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
-            <span className="text-cyan-400 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent pb-2">Join the AdroIT Community</h2>
+            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Join the AdroIT Community</h2>
             <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
               in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
@@ -412,8 +396,8 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-cyan-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Weekly Tech Sessions</h3>
+            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-slate-900">Weekly Tech Sessions</h3>
               <p className="text-slate-600 mb-4">
                 Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
               </p>
@@ -425,8 +409,8 @@ const Home = () => {
               </ul>
             </div>
 
-            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-purple-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-purple-400">Project Sprints</h3>
+            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-slate-900">Project Sprints</h3>
               <p className="text-slate-600 mb-4">
                 Team-based project cycles designed to apply skills through real-world problem solving.
               </p>
@@ -438,8 +422,8 @@ const Home = () => {
               </ul>
             </div>
 
-            <div className="p-8 border border-slate-900/10 rounded-2xl hover:bg-gradient-to-br from-pink-500/10 to-transparent transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-pink-400">Community & Events</h3>
+            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
+              <h3 className="text-2xl font-bold mb-4 text-slate-900">Community & Events</h3>
               <p className="text-slate-600 mb-4">
                 Events that encourage collaboration, innovation, and exposure to industry practices.
               </p>
