@@ -203,7 +203,7 @@ function Resources(){
   }
 
   return (
-    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip">
+    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip dark:bg-[#080c16] dark:text-slate-100">
     
       {/* Background Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">

@@ -15,11 +15,11 @@ import InteractiveRings from '../components/InteractiveRings';
 // DOMAIN CARD COMPONENT - NEW!
 // ============================================
 const DomainCard = ({ icon, title, description }) => (
-  <div className="group relative bg-white/50 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 hover:border-sky-600/25 hover:-translate-y-2 transition-all duration-300">
+  <div className="group relative bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 hover:border-sky-600/25 hover:-translate-y-2 transition-all duration-300">
     <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-sky-600 text-white shadow-lg shadow-sky-900/10 mb-4 group-hover:scale-110 transition-all duration-300">
       {icon}
     </div>
-    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-sky-800 transition-colors">
+    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-sky-800 dark:group-hover:text-sky-300 transition-colors">
       {title}
     </h3>
     <p className="text-slate-600 text-sm leading-relaxed">

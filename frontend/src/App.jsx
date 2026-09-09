@@ -204,7 +204,7 @@ export default function App() {
           path="*"
           element={
             <WithLayout>
-              <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center pt-16 px-4">
+              <div className="min-h-dvh bg-[#f3e8ff] dark:bg-[#080c16] flex items-center justify-center pt-16 px-4">
                 <div className="text-center max-w-md">
                   <div className="inline-flex items-center justify-center w-24 h-24 bg-slate-900/5 border border-slate-900/10 rounded-full mb-6">
                     <span className="text-4xl font-bold text-slate-600">404</span>

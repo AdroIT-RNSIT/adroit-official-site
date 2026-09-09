@@ -92,7 +92,7 @@ const Sidebar = () => {
               aria-label={link.name}
               className="group relative flex h-[3.15rem] w-[3.15rem] items-center justify-center"
             >
-              <div className="social-glass-icon relative flex h-[3.15rem] w-[3.15rem] items-center justify-center rounded-full text-slate-700 transition-all duration-300 group-active:bg-white/60 group-hover:bg-white/55 group-hover:text-slate-900">
+              <div className="social-glass-icon relative flex h-[3.15rem] w-[3.15rem] items-center justify-center rounded-full text-slate-700 transition-all duration-300 group-active:bg-white/60 group-hover:bg-white/55 group-hover:text-slate-900 dark:text-slate-200 dark:group-hover:text-white dark:group-hover:bg-white/10 dark:group-active:bg-white/10">
                 <span className="transition-transform duration-300 group-hover:scale-110">
                   {link.icon}
                 </span>
@@ -139,6 +139,21 @@ const Sidebar = () => {
             -webkit-backdrop-filter: none;
             background: rgba(255, 255, 255, 0.94);
           }
+        }
+        html.dark .social-glass-bar {
+          background: rgba(8, 12, 22, 0.78);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 14px 40px rgba(0, 0, 0, 0.35);
+        }
+        html.dark .social-glass-bar::before {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 48%);
+        }
+        html.dark .social-glass-icon {
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
         }
       `}</style>
     </>

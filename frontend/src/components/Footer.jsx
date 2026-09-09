@@ -1,16 +1,20 @@
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { useTheme } from "../lib/theme";
 
 const Footer = ({ showMap = false, light = false }) => {
   const currentYear = new Date().getFullYear();
-  const lightBg = showMap || light;
+  const { isDark } = useTheme();
+  const lightBg = !isDark && (showMap || light);
 
   return (
     <footer
       className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${
         lightBg
           ? "bg-white border-t border-slate-200/80"
-          : "bg-[#f3e8ff] border-t border-slate-900/10"
+          : isDark
+            ? "bg-[#080c16] border-t border-white/10"
+            : "bg-[#f3e8ff] border-t border-slate-900/10"
       }`}
     >
       

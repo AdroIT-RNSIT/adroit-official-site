@@ -184,7 +184,7 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center">
+      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center dark:bg-[#080c16]">
         <div className="text-center">
           <div className="relative">
             <div className="w-16 h-16 border-4 border-sky-600/30 border-t-sky-600 rounded-full animate-spin mx-auto mb-4"></div>
@@ -199,7 +199,7 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-dvh text-slate-900 font-sans overflow-x-clip pt-8 pb-16">
+    <div className="min-h-dvh text-slate-900 font-sans overflow-x-clip pt-8 pb-16 dark:text-slate-100">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0 hidden md:block">
