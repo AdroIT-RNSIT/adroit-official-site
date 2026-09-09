@@ -14,6 +14,7 @@ import Reveal from "../components/Reveal";
 import RevealGroup from "../components/RevealGroup";
 import HeadlineReveal from "../components/HeadlineReveal";
 import WordReveal from "../components/WordReveal";
+import DotFieldCanvas from "../components/DotFieldCanvas";
 import useDesktopParallax from "../hooks/useDesktopParallax";
 import { scrollToTop } from "../lib/scroll";
 
@@ -167,7 +168,8 @@ const Home = () => {
           data-parallax-rate="0.2"
           aria-hidden="true"
         >
-          <div className="hero-grid absolute inset-0" />
+          <div className="hero-grid absolute inset-0 opacity-40" aria-hidden="true" />
+          <DotFieldCanvas variant="hero" />
           <div className="hero-parallax-tint absolute inset-0" />
         </div>
 
@@ -376,11 +378,13 @@ const Home = () => {
       {/* Learning Philosophy — tinted band, word reveal */}
       <section className="section-block section-tint section-philosophy relative overflow-hidden">
         <div
-          className="philosophy-parallax-bg parallax-scroll-layer absolute inset-0 pointer-events-none"
+          className="philosophy-parallax-wrap parallax-scroll-layer absolute inset-0 pointer-events-none"
           data-parallax
           data-parallax-rate="0.25"
           aria-hidden="true"
-        />
+        >
+          <DotFieldCanvas variant="philosophy" />
+        </div>
         <div className="page-wrap relative z-[1]">
           <div className="max-w-2xl philosophy-copy">
             <h2 className="section-title">Our Learning Philosophy</h2>

@@ -1029,16 +1029,17 @@ html.lenis {
 }
 
 /* ============================================================
-   HERO GRID (static, cheap)
+   HERO / PHILOSOPHY BACKGROUNDS — dot field + faint grid base
    ============================================================ */
-.hero-parallax-bg {
+.hero-parallax-bg,
+.philosophy-parallax-wrap {
   z-index: 0;
 }
 
 .hero-grid {
   background-image:
-    linear-gradient(to right, rgba(226, 232, 240, 0.7) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(226, 232, 240, 0.7) 1px, transparent 1px);
+    linear-gradient(to right, rgba(226, 232, 240, 0.55) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(226, 232, 240, 0.55) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%);
 }
@@ -1051,13 +1052,42 @@ html.lenis {
   );
 }
 
-.philosophy-parallax-bg {
-  z-index: 0;
-  background-image:
-    linear-gradient(to right, rgba(79, 70, 229, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(79, 70, 229, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+.dot-field-wrap {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dot-field-wrap--hero {
+  mask-image: radial-gradient(ellipse at top, black 35%, transparent 78%);
+}
+
+.dot-field-wrap--philosophy {
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
+.dot-field-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@supports (animation-timeline: scroll()) {
+  .parallax-scroll-layer {
+    will-change: transform;
+    animation: parallax-drift linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0px 100vh;
+  }
+}
+
+@keyframes parallax-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 40px, 0);
+  }
 }
 
 /* ============================================================
@@ -1116,24 +1146,6 @@ html.lenis {
     );
   }
 
-  @supports (animation-timeline: scroll()) {
-    .parallax-scroll-layer {
-      will-change: transform;
-      animation: parallax-drift linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0px 100vh;
-    }
-  }
-}
-
-@keyframes parallax-drift {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(0, 40px, 0);
-  }
 }
 
 /* ============================================================
@@ -1199,4 +1211,5 @@ html.lenis {
     animation: none !important;
     transform: none !important;
   }
+
 }

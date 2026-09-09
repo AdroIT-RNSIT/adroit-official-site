@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { prefersReducedMotion } from "../lib/revealObserver";
 
-const DESKTOP_PARALLAX_MQ = "(min-width: 1024px) and (hover: hover) and (pointer: fine)";
 const MAX_OFFSET_PX = 40;
 
-function canUseDesktopParallax() {
+function canUseScrollParallax() {
   if (typeof window === "undefined") return false;
   if (prefersReducedMotion()) return false;
-  return window.matchMedia(DESKTOP_PARALLAX_MQ).matches;
+  return true;
 }
 
 function cssScrollTimelineSupported() {
@@ -32,9 +31,10 @@ function computeLayerOffset(el, scrollY) {
   return Math.min(MAX_OFFSET_PX, progress * sectionHeight * rate * 0.08);
 }
 
+/** Shared scroll parallax for [data-parallax] layers — all breakpoints, JS fallback when CSS scroll timeline unsupported. */
 export default function useDesktopParallax() {
   useEffect(() => {
-    if (!canUseDesktopParallax() || cssScrollTimelineSupported()) {
+    if (!canUseScrollParallax() || cssScrollTimelineSupported()) {
       return undefined;
     }
 
@@ -61,7 +61,7 @@ export default function useDesktopParallax() {
     const onResize = () => {
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
-        if (!canUseDesktopParallax()) {
+        if (!canUseScrollParallax()) {
           layers.forEach((el) => {
             el.style.transform = "";
           });
