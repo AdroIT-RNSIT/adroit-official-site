@@ -251,6 +251,7 @@ function drawFrame(ctx, nodes, width, height, time, signal, pointer, containerRe
 export default function DotFieldCanvas({ className = "", variant = "hero" }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
+  const isGlobal = variant === "global";
 
   useEffect(() => {
     const container = containerRef.current;
@@ -275,38 +276,78 @@ export default function DotFieldCanvas({ className = "", variant = "hero" }) {
       signal: null,
     };
 
-    const setup = () => {
-      const rect = container.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
-      const width = Math.max(1, Math.floor(rect.width));
-      const height = Math.max(1, Math.floor(rect.height));
+    const getViewportSize = () => {
+      const viewport = window.visualViewport;
+      return {
+        width: Math.max(1, Math.floor(viewport?.width ?? window.innerWidth)),
+        height: Math.max(1, Math.floor(viewport?.height ?? window.innerHeight)),
+      };
+    };
 
+    const pickSignalPair = (nodes) => {
+      let from = Math.floor(Math.random() * nodes.length);
+      let to = Math.floor(Math.random() * nodes.length);
+      if (from === to) to = (to + 1) % nodes.length;
+      return { from, to, progress: Math.random() };
+    };
+
+    const readDimensions = () => {
+      const rect = container.getBoundingClientRect();
+      const viewportSize = getViewportSize();
+      const width = Math.max(
+        1,
+        Math.floor(isGlobal ? viewportSize.width : rect.width)
+      );
+      const height = Math.max(
+        1,
+        Math.floor(isGlobal ? viewportSize.height : rect.height)
+      );
+      return { width, height };
+    };
+
+    const applyDimensions = (resetScene = false) => {
+      const { width, height } = readDimensions();
+      const unchanged = width === state.width && height === state.height;
+
+      if (unchanged && !resetScene && state.nodes.length > 0) {
+        return false;
+      }
+
+      const dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const nodes = createNodes(getNodeCount(width), width, height);
-      state.nodes = nodes;
+      if (resetScene || state.nodes.length === 0) {
+        const nodes = createNodes(getNodeCount(width), width, height);
+        state.nodes = nodes;
+        state.time = 0;
+        state.signal = pickSignalPair(nodes);
+      } else if (!unchanged) {
+        const scaleX = width / state.width;
+        const scaleY = height / state.height;
+        for (let i = 0; i < state.nodes.length; i += 1) {
+          state.nodes[i].x *= scaleX;
+          state.nodes[i].y *= scaleY;
+        }
+      }
+
       state.width = width;
       state.height = height;
-      state.time = 0;
-      const pickSignalPair = () => {
-        let from = Math.floor(Math.random() * nodes.length);
-        let to = Math.floor(Math.random() * nodes.length);
-        if (from === to) to = (to + 1) % nodes.length;
-        return { from, to, progress: Math.random() };
-      };
-      state.signal = pickSignalPair();
+      return true;
+    };
 
+    const setup = (resetScene = true) => {
+      applyDimensions(resetScene);
       const pointer = getNetworkPointer();
       drawFrame(
         ctx,
-        nodes,
-        width,
-        height,
-        0,
+        state.nodes,
+        state.width,
+        state.height,
+        state.time,
         state.signal,
         pointer,
         container.getBoundingClientRect()
@@ -318,7 +359,8 @@ export default function DotFieldCanvas({ className = "", variant = "hero" }) {
 
       state.rafId = window.requestAnimationFrame(tick);
 
-      if (!state.inView || !state.tabVisible) return;
+      if (!state.tabVisible) return;
+      if (!isGlobal && !state.inView) return;
       if (now - state.lastFrame < FRAME_MS) return;
 
       const delta = state.lastFrame ? now - state.lastFrame : FRAME_MS;
@@ -369,47 +411,75 @@ export default function DotFieldCanvas({ className = "", variant = "hero" }) {
 
     const syncLoop = () => {
       if (reduced) return;
-      if (state.inView && state.tabVisible) startLoop();
+      const shouldRun = state.tabVisible && (isGlobal || state.inView);
+      if (shouldRun) startLoop();
       else stopLoop();
     };
 
-    setup();
-    if (!reduced) syncLoop();
-
     let resizeTimer = null;
-    const resizeObserver = new ResizeObserver(() => {
+    const scheduleResize = (resetScene = false) => {
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
+        if (isGlobal) {
+          applyDimensions(resetScene);
+          return;
+        }
         stopLoop();
-        setup();
+        setup(true);
         syncLoop();
       }, 150);
-    });
-    resizeObserver.observe(container);
+    };
 
-    const intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        state.inView = entries[0]?.isIntersecting ?? false;
-        syncLoop();
-      },
-      { root: null, rootMargin: "80px 0px", threshold: 0 }
-    );
-    intersectionObserver.observe(container);
+    setup(true);
+    if (!reduced) syncLoop();
+
+    let resizeObserver = null;
+    if (!isGlobal) {
+      resizeObserver = new ResizeObserver(() => {
+        scheduleResize(true);
+      });
+      resizeObserver.observe(container);
+    }
+
+    let intersectionObserver = null;
+    if (!isGlobal) {
+      intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          state.inView = entries[0]?.isIntersecting ?? false;
+          syncLoop();
+        },
+        { root: null, rootMargin: "80px 0px", threshold: 0 }
+      );
+      intersectionObserver.observe(container);
+    }
+
+    const onViewportChange = () => {
+      if (isGlobal) scheduleResize(false);
+    };
 
     const onVisibilityChange = () => {
       state.tabVisible = document.visibilityState === "visible";
       syncLoop();
     };
+
+    if (isGlobal) {
+      window.addEventListener("resize", onViewportChange);
+      window.visualViewport?.addEventListener("resize", onViewportChange);
+    }
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       stopLoop();
-      resizeObserver.disconnect();
-      intersectionObserver.disconnect();
+      resizeObserver?.disconnect();
+      intersectionObserver?.disconnect();
+      if (isGlobal) {
+        window.removeEventListener("resize", onViewportChange);
+        window.visualViewport?.removeEventListener("resize", onViewportChange);
+      }
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.clearTimeout(resizeTimer);
     };
-  }, []);
+  }, [isGlobal]);
 
   const variantClass =
     variant === "philosophy"
@@ -418,10 +488,12 @@ export default function DotFieldCanvas({ className = "", variant = "hero" }) {
         ? "dot-field-wrap--global"
         : "dot-field-wrap--hero";
 
+  const positionClass = isGlobal ? "fixed inset-0" : "absolute inset-0";
+
   return (
     <div
       ref={containerRef}
-      className={`dot-field-wrap ${variantClass} absolute inset-0 ${className}`.trim()}
+      className={`dot-field-wrap ${variantClass} ${positionClass} ${className}`.trim()}
       aria-hidden="true"
     >
       <canvas

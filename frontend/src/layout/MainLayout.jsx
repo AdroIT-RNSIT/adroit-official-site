@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -12,6 +13,16 @@ export default function MainLayout({ children }) {
   const showMap = location.pathname === "/";
   const isPublicSite = isPublicSitePath(location.pathname);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isPublicSite) {
+      root.classList.add("site-public-network");
+    } else {
+      root.classList.remove("site-public-network");
+    }
+    return () => root.classList.remove("site-public-network");
+  }, [isPublicSite]);
+
   useLenis();
 
   return (
@@ -21,7 +32,7 @@ export default function MainLayout({ children }) {
       }`}
     >
       {showMap && <BrandIntro />}
-      {isPublicSite && !showMap && <PublicSiteVisualLayer />}
+      {isPublicSite && <PublicSiteVisualLayer />}
       <div className={`site-chrome ${showMap ? "home-page-reveal" : ""}`.trim()}>
         <Navbar />
         <main className="main-with-nav">{children}</main>

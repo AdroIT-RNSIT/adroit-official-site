@@ -89,7 +89,9 @@ body {
 }
 
 @layer base {
-  img, video, canvas {
+  img,
+  video,
+  canvas:not(.dot-field-canvas) {
     max-width: 100%;
     height: auto;
   }
@@ -1844,12 +1846,112 @@ html.lenis .parallax-scroll-layer {
   background-color: transparent;
 }
 
+@media (max-width: 767px) {
+  html.site-public-network,
+  html.site-public-network body {
+    background-color: transparent;
+  }
+
+  .site-layout--network {
+    --network-glass-surface: color-mix(in srgb, var(--bg-surface) 84%, transparent);
+    --network-glass-base: color-mix(in srgb, var(--bg-base) 80%, transparent);
+    --network-glass-tint: color-mix(in srgb, var(--accent-primary-tint) 68%, transparent);
+    background-color: transparent;
+  }
+
+  .site-layout--network .dot-field-wrap--hero,
+  .site-layout--network .dot-field-wrap--philosophy {
+    display: none;
+  }
+
+  .site-layout--network .hero-section--integrated.section-base {
+    background: transparent;
+  }
+
+  .site-layout--network main .section-base,
+  .site-layout--network main .section-surface,
+  .site-layout--network main .section-tint,
+  .site-layout--network main .card,
+  .site-layout--network main .bg-bg-base,
+  .site-layout--network .footer-surface {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .site-layout--network main .section-base {
+    background: var(--network-glass-base);
+  }
+
+  .site-layout--network main .section-surface {
+    background: var(--network-glass-surface);
+  }
+
+  .site-layout--network main .section-tint {
+    background: var(--network-glass-tint);
+  }
+
+  .site-layout--network main .card {
+    background: var(--network-glass-surface);
+  }
+
+  .site-layout--network main .bg-bg-base {
+    background-color: var(--network-glass-base);
+  }
+
+  .site-layout--network .footer-surface {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-base) 86%, transparent) 0%,
+      color-mix(in srgb, #f1f5f9 82%, transparent) 100%
+    );
+  }
+
+  .public-site-visual-layer {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    isolation: isolate;
+  }
+
+  .dot-field-wrap--global {
+    opacity: 1;
+  }
+
+  .public-site-visual-layer__veil {
+    background: radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      color-mix(in srgb, var(--bg-base) 10%, transparent),
+      transparent 78%
+    );
+  }
+
+  .site-layout--network .modal-root .modal-panel,
+  .site-layout--network .mobile-nav-modal {
+    background: var(--bg-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .site-layout--network .nav-shell {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .public-site-visual-layer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  body:has(.home-page-reveal) > .public-site-visual-layer {
+    display: none;
+  }
 }
 
 .public-site-visual-layer__veil {
@@ -1863,13 +1965,18 @@ html.lenis .parallax-scroll-layer {
 }
 
 .dot-field-wrap--global {
-  opacity: 0.92;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
 }
 
 .dot-field-canvas {
   display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 @media (hover: hover) and (pointer: fine) {
