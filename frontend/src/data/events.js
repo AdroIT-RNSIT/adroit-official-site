@@ -10,6 +10,7 @@ export const sharedEvents = [
     slug: "capture-the-flag",
     poster: "/ctf-img.webp",
     imageUrl: "/ctf-img.webp",
+    prize: 10000,
     registrationCost: { ieee: 250, nonIeee: 300 },
     rules: [
       "Teams of 4; two structured 3-hour sessions with a lunch break in between (total event duration 8.5 hours).",
@@ -31,6 +32,7 @@ export const sharedEvents = [
     slug: "tech-auction",
     poster: "/tech-img.webp",
     imageUrl: "/tech-img.webp",
+    prize: 6000,
     registrationCost: { ieee: 200, nonIeee: 250 },
     rules: [
       "Every team starts with an equal amount of CHIPS - no borrowing or transferring CHIPS between teams.",
@@ -54,6 +56,7 @@ export const sharedEvents = [
     slug: "ai-film-making",
     poster: "/ai-img.webp",
     imageUrl: "/ai-img.webp",
+    prize: 4000,
     registrationCost: { all: 100 },
     rules: [
       "Teams of 1-2 participants each.",
