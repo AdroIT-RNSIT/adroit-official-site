@@ -1,7 +1,28 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import {
+  Calendar,
+  ChevronRight,
+  Home,
+  Layers,
+  Mail,
+  Menu,
+  Settings,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 import { useSession, authClient } from "../lib/auth-client";
 import BrandMark from "./BrandMark";
+
+const NAV_ICONS = {
+  Home,
+  "Paradox 2026": Calendar,
+  Domains: Layers,
+  Members: Users,
+  Contact: Mail,
+  Profile: User,
+};
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -29,6 +50,17 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   // ===== PUBLIC LINKS - Visible to everyone =====
   const publicLinks = [
@@ -136,13 +168,17 @@ const Navbar = () => {
 
           {/* ===== MOBILE MENU BUTTON ===== */}
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-all duration-200"
+            className={`md:hidden flex h-10 w-10 items-center justify-center rounded-xl border text-slate-800 transition-colors ${
+              mobileMenuOpen
+                ? "border-cyan-500/40 bg-white text-cyan-700 shadow-sm"
+                : "border-slate-900/10 bg-white/50 hover:bg-white/80"
+            }`}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
           >
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : "opacity-100"}`}></span>
-            <span className={`w-5 h-0.5 bg-slate-800 rounded-full transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
+            {mobileMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
           </button>
         </div>
       </nav>
@@ -150,131 +186,142 @@ const Navbar = () => {
       {/* ===== MOBILE MENU ===== */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[999] transition-all duration-300"
+          className="md:hidden fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/30 backdrop-blur-[2px]"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       <div
-        className={`md:hidden fixed top-0 right-0 w-80 max-w-[85vw] h-full z-[1000] bg-[#f3e8ff] border-l border-slate-900/10 shadow-2xl transform transition-all duration-500 ease-out pt-[env(safe-area-inset-top,0px)] pb-[env(safe-area-inset-bottom,0px)] ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`md:hidden fixed right-3 z-[1001] top-[calc(var(--nav-height)+0.5rem)] w-[min(20.5rem,calc(100vw-1.5rem))] origin-top-right rounded-2xl border border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-200 ${
+          mobileMenuOpen
+            ? "pointer-events-auto scale-100 opacity-100"
+            : "pointer-events-none scale-95 opacity-0"
         }`}
+        aria-hidden={!mobileMenuOpen}
       >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-900/10">
-          <Link to="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
-            <BrandMark size="nav" />
-          </Link>
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="w-10 h-10 flex items-center justify-center bg-slate-900/5 rounded-lg border border-slate-900/10 hover:bg-slate-900/10 transition-colors"
-          >
-            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Menu Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(100vh-200px)]">
-          
-          {/* User Info - Only when logged in */}
+        <div className="pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t border-white/70 bg-white/90" />
+        <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-2">
           {isLoggedIn && (
-            <div className="mb-6 p-4 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-slate-900 text-lg font-bold">
-                  {session?.user?.image ? (
-                    <img src={session.user.image} alt={session.user.name} className="w-full h-full object-cover rounded-lg" />
-                  ) : (
-                    session?.user?.name?.charAt(0).toUpperCase() || "U"
-                  )}
-                </div>
-                <div>
-                  <p className="text-slate-900 font-medium">{session?.user?.name}</p>
-                  <p className="text-slate-500 text-xs">{session?.user?.email}</p>
-                </div>
+            <div className="mb-2 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-2.5">
+              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 text-sm font-bold text-white">
+                {session?.user?.image ? (
+                  <img src={session.user.image} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  session?.user?.name?.charAt(0).toUpperCase() || "U"
+                )}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-slate-900">{session?.user?.name}</p>
+                <p className="truncate text-xs text-slate-500">{session?.user?.email}</p>
               </div>
             </div>
           )}
 
-          {/* Public Links */}
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Explore</p>
-            {publicLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive(link.path)
-                    ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
-                }`}
-              >
-                <span className="w-6 h-6 flex items-center justify-center">
-                  {link.name === "Home" && "🏠"}
-                  {link.name === "Paradox 2026" && "📅"}
-                  {link.name === "Members" && "👥"}
-                  {link.name === "Domains" && "🎯"}
-                  {link.name === "Contact" && "📞"}
-                </span>
-                {link.name === "Paradox 2026" ? (
-                  <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter text-base">
-                    {link.name}
-                  </span>
-                ) : (
-                  link.name
-                )}
-              </Link>
-            ))}
-          </div>
-
-          {/* Protected Links - Only when logged in */}
-          {isLoggedIn && (
-            <>
-              <div className="my-4 border-t border-slate-900/10"></div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wider text-gray-600 px-3 mb-2">Member</p>
-                {protectedLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive(link.path)
-                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
+          <nav className="flex flex-col gap-0.5">
+            {publicLinks.map((link) => {
+              const Icon = NAV_ICONS[link.name] || Home;
+              const active = isActive(link.path);
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-cyan-50 text-slate-900"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                      active ? "bg-cyan-500/15 text-cyan-600" : "bg-slate-100 text-slate-500"
                     }`}
                   >
-                    <span className="w-6 h-6 flex items-center justify-center">
-                      {link.name === "Resources" && "📚"}
-                      {link.name === "Members" && "👥"}
-                      {link.name === "Profile" && "👤"}
-                    </span>
-                    {link.name}
-                  </Link>
-                ))}
-                
-                {/* Admin Link */}
+                    <Icon size={18} strokeWidth={2} />
+                  </span>
+                  <span className="flex-1">
+                    {link.name === "Paradox 2026" ? (
+                      <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text">
+                        {link.name}
+                      </span>
+                    ) : (
+                      link.name
+                    )}
+                  </span>
+                  <ChevronRight
+                    size={16}
+                    className={active ? "text-cyan-500" : "text-slate-300"}
+                    strokeWidth={2}
+                  />
+                </Link>
+              );
+            })}
+          </nav>
+
+          {isLoggedIn && (
+            <>
+              <div className="my-2 h-px bg-slate-200" />
+              <nav className="flex flex-col gap-0.5">
+                {protectedLinks.map((link) => {
+                  const Icon = NAV_ICONS[link.name] || User;
+                  const active = isActive(link.path);
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
+                        active
+                          ? "bg-cyan-50 text-slate-900"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      }`}
+                    >
+                      <span
+                        className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                          active ? "bg-cyan-500/15 text-cyan-600" : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        <Icon size={18} strokeWidth={2} />
+                      </span>
+                      <span className="flex-1">{link.name}</span>
+                      <ChevronRight
+                        size={16}
+                        className={active ? "text-cyan-500" : "text-slate-300"}
+                        strokeWidth={2}
+                      />
+                    </Link>
+                  );
+                })}
                 {isAdmin && (
                   <Link
                     to="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                       isActive("/admin")
-                        ? "text-slate-900 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 border border-cyan-500/30"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-900/5"
+                        ? "bg-cyan-50 text-slate-900"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                   >
-                    <span className="w-6 h-6 flex items-center justify-center">⚙️</span>
-                    Admin
+                    <span
+                      className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                        isActive("/admin")
+                          ? "bg-cyan-500/15 text-cyan-600"
+                          : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      <Settings size={18} strokeWidth={2} />
+                    </span>
+                    <span className="flex-1">Admin</span>
+                    <ChevronRight
+                      size={16}
+                      className={isActive("/admin") ? "text-cyan-500" : "text-slate-300"}
+                      strokeWidth={2}
+                    />
                   </Link>
                 )}
-              </div>
+              </nav>
             </>
           )}
-
-          {/* Mobile Auth Button Removed */}
         </div>
       </div>
     </>
