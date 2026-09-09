@@ -318,7 +318,7 @@ export default function Domains() {
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
 
   return (
-    <div className="relative min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
+    <div className="relative min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
       <div className="fixed inset-0 pointer-events-none z-0 hidden overflow-hidden md:block">
