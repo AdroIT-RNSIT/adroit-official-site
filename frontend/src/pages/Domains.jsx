@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Cloud } from 'lucide-react';
+import {
+  Brain,
+  Cloud,
+  Image,
+  MessageSquare,
+  Eye,
+  Clapperboard,
+  Globe,
+  Search,
+  KeyRound,
+  ClipboardList,
+  TrendingDown,
+  Users,
+  Sparkles,
+  RefreshCw,
+} from 'lucide-react';
 
 export default function Domains() {
   const [activeDomain, setActiveDomain] = useState('ml');
@@ -138,10 +153,10 @@ export default function Domains() {
                 "Weights & Biases"
               ],
       projects: [
-        { name: 'Image Classifier', difficulty: 'Beginner', icon: '🖼️' },
-        { name: 'Sentiment Analysis', difficulty: 'Intermediate', icon: '💬' },
-        { name: 'Object Detection', difficulty: 'Advanced', icon: '👁️' },
-        { name: 'Recommendation System', difficulty: 'Intermediate', icon: '🎬' }
+        { name: 'Image Classifier', difficulty: 'Beginner', icon: Image },
+        { name: 'Sentiment Analysis', difficulty: 'Intermediate', icon: MessageSquare },
+        { name: 'Object Detection', difficulty: 'Advanced', icon: Eye },
+        { name: 'Recommendation System', difficulty: 'Intermediate', icon: Clapperboard }
       ],
       resources: [
         { title: 'ML Crash Course', type: 'Course', provider: 'Google' },
@@ -183,7 +198,7 @@ export default function Domains() {
       skills: ['Linux','Networking', 'AWS', 'Azure', 'GCP', 'Docker', 'Virtual machine', 'Terraform', 'CI/CD', 'Serverless'],
       tools: ['AWS Console', 'Azure Portal', 'Google Cloud Console', 'Docker', 'Kubernetes','GitHub Actions','NGINX','Apache', 'Amazon S3','Firebase'],
       projects: [
-        { name: 'Club website', difficulty: 'Intermediate', icon: '🌐' },
+        { name: 'Club website', difficulty: 'Intermediate', icon: Globe },
       ],
       resources: [
         { title: 'AWS Training', type: 'Certification', provider: 'Amazon' },
@@ -225,10 +240,10 @@ export default function Domains() {
       skills: ['Network Security', 'Ethical Hacking', 'Cryptography', 'Incident Response', 'Risk Assessment', 'Forensics'],
       tools: ['Kali Linux', 'Wireshark', 'Metasploit', 'Burp Suite', 'Nmap', 'John the Ripper',"Hashcat","OWASP ZAP"],
       projects: [
-        { name: 'Network Scanner', difficulty: 'Beginner', icon: '🔍' },
-        { name: 'Password Cracker', difficulty: 'Intermediate', icon: '🔑' },
-        { name: 'Web App Pentest', difficulty: 'Advanced', icon: '🌐' },
-        { name: 'Security Audit', difficulty: 'Intermediate', icon: '📋' }
+        { name: 'Network Scanner', difficulty: 'Beginner', icon: Search },
+        { name: 'Password Cracker', difficulty: 'Intermediate', icon: KeyRound },
+        { name: 'Web App Pentest', difficulty: 'Advanced', icon: Globe },
+        { name: 'Security Audit', difficulty: 'Intermediate', icon: ClipboardList }
       ],
       resources: [
         { title: 'TryHackMe', type: 'Platform', provider: 'Community' },
@@ -267,10 +282,10 @@ export default function Domains() {
       skills: ['SQL', 'Python', 'R', 'Tableau', 'Power BI', 'Excel', 'Statistics', 'Data Visualization'],
       tools: ['PostgreSQL', 'MySQL', 'Tableau', 'Power BI', 'Pandas', 'Matplotlib', 'Looker'],
       projects: [
-        { name: 'Sales Dashboard', difficulty: 'Beginner', icon: '📉' },
-        { name: 'Customer Segmentation', difficulty: 'Intermediate', icon: '👥' },
-        { name: 'Predictive Analytics', difficulty: 'Advanced', icon: '🔮' },
-        { name: 'ETL Pipeline', difficulty: 'Intermediate', icon: '🔄' }
+        { name: 'Sales Dashboard', difficulty: 'Beginner', icon: TrendingDown },
+        { name: 'Customer Segmentation', difficulty: 'Intermediate', icon: Users },
+        { name: 'Predictive Analytics', difficulty: 'Advanced', icon: Sparkles },
+        { name: 'ETL Pipeline', difficulty: 'Intermediate', icon: RefreshCw }
       ],
       resources: [
         { title: 'SQL for Data Science', type: 'Course', provider: 'Coursera' },
@@ -590,10 +605,14 @@ export default function Domains() {
                   {icons.projects} Sample Projects
                 </h3>
                 <div className="space-y-3">
-                  {currentDomain.projects.map((project, idx) => (
+                  {currentDomain.projects.map((project, idx) => {
+                    const ProjectIcon = project.icon;
+                    return (
                     <div key={idx} className="flex items-center justify-between p-3 bg-slate-900/5 rounded-xl">
                       <div className="flex items-center gap-3">
-                        <span className="text-xl">{project.icon}</span>
+                        <span className="inline-flex text-slate-700">
+                          <ProjectIcon size={18} strokeWidth={2} />
+                        </span>
                         <div>
                           <div className="text-slate-900 text-sm font-medium">{project.name}</div>
                           <span className={`text-xs ${
@@ -606,7 +625,8 @@ export default function Domains() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

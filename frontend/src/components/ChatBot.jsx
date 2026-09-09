@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Lock, Globe } from "lucide-react";
 
 const ChatBot = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -145,7 +146,15 @@ const ChatBot = () => {
                                     </ReactMarkdown>
                                     {msg.mode && (
                                         <div className="mt-1 text-[10px] opacity-50 uppercase tracking-wider font-bold">
-                                            {msg.mode === "personalized" ? "🔒 Private Mode" : "🌐 Knowledge Base"}
+                                            {msg.mode === "personalized" ? (
+                                                <span className="inline-flex items-center gap-1">
+                                                    <Lock size={10} strokeWidth={2.5} /> Private Mode
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1">
+                                                    <Globe size={10} strokeWidth={2.5} /> Knowledge Base
+                                                </span>
+                                            )}
                                         </div>
                                     )}
                                 </div>

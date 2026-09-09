@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from '../lib/auth-client';
 import { Link } from 'react-router-dom';
+import { User, Lock, Settings, BarChart3, Bot } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -314,11 +315,11 @@ export default function Profile() {
 
   // ===== DOMAIN OPTIONS =====
   const domainOptions = [
-    { value: '', label: 'Not Assigned', icon: '❓' },
-    { value: 'ml', label: 'Machine Learning', icon: '🤖', color: 'cyan' },
-    { value: 'cc', label: 'Cloud Computing', icon: '☁️', color: 'purple' },
-    { value: 'cy', label: 'Cybersecurity', icon: '🔒', color: 'pink' },
-    { value: 'da', label: 'Data Analytics', icon: '📊', color: 'green' }
+    { value: '', label: 'Not Assigned' },
+    { value: 'ml', label: 'Machine Learning', color: 'cyan' },
+    { value: 'cc', label: 'Cloud Computing', color: 'purple' },
+    { value: 'cy', label: 'Cybersecurity', color: 'pink' },
+    { value: 'da', label: 'Data Analytics', color: 'green' }
   ];
 
   // ===== YEAR OPTIONS =====
@@ -385,31 +386,31 @@ export default function Profile() {
             active={activeTab === 'profile'}
             onClick={() => setActiveTab('profile')}
           >
-            👤 Profile Information
+            <User size={14} strokeWidth={2} /> Profile Information
           </TabButton>
           <TabButton
             active={activeTab === 'security'}
             onClick={() => setActiveTab('security')}
           >
-            🔐 Security
+            <Lock size={14} strokeWidth={2} /> Security
           </TabButton>
           <TabButton
             active={activeTab === 'settings'}
             onClick={() => setActiveTab('settings')}
           >
-            ⚙️ Settings
+            <Settings size={14} strokeWidth={2} /> Settings
           </TabButton>
           <TabButton
             active={activeTab === 'activity'}
             onClick={() => setActiveTab('activity')}
           >
-            📊 Activity
+            <BarChart3 size={14} strokeWidth={2} /> Activity
           </TabButton>
           <TabButton
             active={activeTab === 'ai'}
             onClick={() => setActiveTab('ai')}
           >
-            🤖 AI Settings
+            <Bot size={14} strokeWidth={2} /> AI Settings
           </TabButton>
         </div>
 
@@ -536,7 +537,7 @@ export default function Profile() {
                       className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                     >
                       {domainOptions.map(opt => (
-                        <option key={opt.value} value={opt.value}>{opt.icon} {opt.label}</option>
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
                       ))}
                     </select>
                   </div>
@@ -1039,7 +1040,7 @@ function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${active
+      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 inline-flex items-center gap-1.5 ${active
         ? 'bg-sky-600 text-slate-900 shadow-lg shadow-sky-600/20'
         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-900/5'
         }`}

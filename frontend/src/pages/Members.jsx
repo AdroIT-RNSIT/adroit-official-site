@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import { Link } from "react-router-dom";
+import { Users, Brain, Cloud, Shield, BarChart3, Target, Calendar, User } from "lucide-react";
 
 // ============================================
 // DOMAIN CONFIGURATION - MATCHES OTHER PAGES
 // ============================================
 const DOMAINS = [
-  { id: 'all', name: 'All Members', icon: '👥', color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
-  { id: 'ml', name: 'Machine Learning', icon: '🤖', color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
-  { id: 'cc', name: 'Cloud Computing', icon: '☁️', color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
-  { id: 'cy', name: 'Cybersecurity', icon: '🔒', color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
-  { id: 'da', name: 'Data Analytics', icon: '📊', color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
+  { id: 'all', name: 'All Members', icon: Users, color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
+  { id: 'ml', name: 'Machine Learning', icon: Brain, color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
+  { id: 'cc', name: 'Cloud Computing', icon: Cloud, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
+  { id: 'cy', name: 'Cybersecurity', icon: Shield, color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
+  { id: 'da', name: 'Data Analytics', icon: BarChart3, color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
 ];
 
 // ============================================
@@ -188,7 +189,7 @@ export default function Members() {
           <div className="relative">
             <div className="w-16 h-16 border-4 border-sky-600/30 border-t-sky-600 rounded-full animate-spin mx-auto mb-4"></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-2xl">👥</span>
+              <Users size={20} className="text-sky-700" strokeWidth={2} />
             </div>
           </div>
           <p className="text-slate-600 text-sm">Loading member directory...</p>
@@ -228,21 +229,21 @@ export default function Members() {
           {/* ===== QUICK STATS ===== */}
           <div className="flex flex-wrap justify-center gap-4 mt-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <span className="text-xl">👥</span>
+              <Users size={18} className="text-sky-700" strokeWidth={2} />
               <div>
                 <span className="text-slate-900 font-bold">{members.length}</span>
                 <span className="text-slate-600 text-xs ml-1">Total Members</span>
               </div>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <span className="text-xl">🎯</span>
+              <Target size={18} className="text-sky-700" strokeWidth={2} />
               <div>
                 <span className="text-slate-900 font-bold">4</span>
                 <span className="text-slate-600 text-xs ml-1">Domains</span>
               </div>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <span className="text-xl">📅</span>
+              <Calendar size={18} className="text-sky-700" strokeWidth={2} />
               <div>
                 <span className="text-slate-900 font-bold">
                   {members.filter(m => m.year?.includes('1st') || m.year?.includes('2nd')).length}
@@ -277,23 +278,28 @@ export default function Members() {
             <div>
               <label className="block text-xs text-slate-500 mb-1">Domain</label>
               <div className="flex flex-wrap gap-1.5">
-                {DOMAINS.map((domain) => (
+                {DOMAINS.map((domain) => {
+                  const DomainIcon = domain.icon;
+                  return (
                   <button
                     key={domain.id}
                     onClick={() => setActiveDomain(domain.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 inline-flex items-center ${
                       activeDomain === domain.id
                         ? `bg-gradient-to-r ${domain.color} text-slate-900`
                         : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                     }`}
                   >
-                    <span className="mr-1">{domain.icon}</span>
+                    <span className="mr-1 inline-flex">
+                      <DomainIcon size={12} strokeWidth={2} />
+                    </span>
                     {domain.id === 'all' ? domain.name : ''}
                     <span className="ml-1 text-xs opacity-80">
                       ({getDomainCount(domain.id)})
                     </span>
                   </button>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -413,7 +419,7 @@ export default function Members() {
         {filteredMembers.length === 0 ? (
           <div className="text-center py-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-900/5 border border-slate-900/10 rounded-full mb-4">
-              <span className="text-3xl">👥</span>
+              <Users size={28} className="text-slate-500" strokeWidth={1.75} />
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">No members found</h3>
             <p className="text-slate-500 text-sm max-w-md mx-auto">
@@ -491,15 +497,15 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
   };
 
   const domainIcons = {
-    ml: '🤖',
-    cc: '☁️',
-    cy: '🔒',
-    da: '📊'
+    ml: Brain,
+    cc: Cloud,
+    cy: Shield,
+    da: BarChart3
   };
 
   const domain = member.domain || 'ml';
   const color = domainColors[domain] || 'from-gray-500 to-gray-600';
-  const icon = domainIcons[domain] || '👤';
+  const DomainIcon = domainIcons[domain] || User;
 
   // Role badge color
   const getRoleBadgeColor = (role) => {
@@ -532,8 +538,8 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
           )}
 
           {/* Domain Icon Badge */}
-          <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-[10px] border-2 border-[#0d1117]`}>
-            {icon}
+          <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white border-2 border-[#0d1117]`}>
+            <DomainIcon size={10} strokeWidth={2.5} />
           </div>
 
           {/* Admin Delete Button */}

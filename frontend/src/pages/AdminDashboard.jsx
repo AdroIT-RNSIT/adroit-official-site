@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
+import { BookOpen, Calendar, Users, UserRound } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const CLOUDINARY_CLOUD_NAME = "adroit"; // Change this to your cloud name
@@ -474,25 +475,25 @@ export default function AdminDashboard({ initialTab = "resources" }) {
           active={activeTab === "resources"}
           onClick={() => setActiveTab("resources")}
         >
-          📚 Resources
+          <BookOpen size={14} strokeWidth={2} /> Resources
         </TabButton>
         <TabButton
           active={activeTab === "events"}
           onClick={() => setActiveTab("events")}
         >
-          📅 Events
+          <Calendar size={14} strokeWidth={2} /> Events
         </TabButton>
         <TabButton
           active={activeTab === "users"}
           onClick={() => setActiveTab("users")}
         >
-          👥 Users
+          <Users size={14} strokeWidth={2} /> Users
         </TabButton>
         <TabButton
           active={activeTab === "members"}
           onClick={() => setActiveTab("members")}
         >
-          🧑‍💻 Members
+          <UserRound size={14} strokeWidth={2} /> Members
         </TabButton>
       </div>
 
@@ -568,14 +569,14 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   }
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="article">📝 Article</option>
-                  <option value="video">🎬 Video</option>
-                  <option value="course">🎓 Course</option>
-                  <option value="book">📚 Book</option>
-                  <option value="documentation">📄 Documentation</option>
-                  <option value="tool">🛠️ Tool</option>
-                  <option value="paper">📑 Research Paper</option>
-                  <option value="cheatSheet">📋 Cheat Sheet</option>
+                  <option value="article">Article</option>
+                  <option value="video">Video</option>
+                  <option value="course">Course</option>
+                  <option value="book">Book</option>
+                  <option value="documentation">Documentation</option>
+                  <option value="tool">Tool</option>
+                  <option value="paper">Research Paper</option>
+                  <option value="cheatSheet">Cheat Sheet</option>
                 </select>
               </div>
               <div>
@@ -589,10 +590,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   }
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="ml">🤖 Machine Learning</option>
-                  <option value="cc">☁️ Cloud Computing</option>
-                  <option value="cy">🔒 Cybersecurity</option>
-                  <option value="da">📊 Data Analytics</option>
+                  <option value="ml">Machine Learning</option>
+                  <option value="cc">Cloud Computing</option>
+                  <option value="cy">Cybersecurity</option>
+                  <option value="da">Data Analytics</option>
                 </select>
               </div>
               <div>
@@ -606,9 +607,9 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   }
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="beginner">🟢 Beginner</option>
-                  <option value="intermediate">🟡 Intermediate</option>
-                  <option value="advanced">🔴 Advanced</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
                 </select>
               </div>
             </div>
@@ -668,11 +669,11 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                   }
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                 >
-                  <option value="workshop">🛠️ Workshop</option>
-                  <option value="seminar">🎤 Seminar</option>
-                  <option value="hackathon">💻 Hackathon</option>
-                  <option value="meetup">🤝 Meetup</option>
-                  <option value="other">📌 Other</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="seminar">Seminar</option>
+                  <option value="hackathon">Hackathon</option>
+                  <option value="meetup">Meetup</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
             </div>
@@ -911,10 +912,10 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         onChange={(e) => setMemberForm({...memberForm, domain: e.target.value})}
                         className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-black focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       >
-                        <option value="ml">🤖 Machine Learning</option>
-                        <option value="cc">☁️ Cloud Computing</option>
-                        <option value="cy">🔒 Cybersecurity</option>
-                        <option value="da">📊 Data Analytics</option>
+                        <option value="ml">Machine Learning</option>
+                        <option value="cc">Cloud Computing</option>
+                        <option value="cy">Cybersecurity</option>
+                        <option value="da">Data Analytics</option>
                       </select>
                     </div>
 
@@ -928,12 +929,12 @@ export default function AdminDashboard({ initialTab = "resources" }) {
                         onChange={(e) => setMemberForm({...memberForm, role: e.target.value})}
                         className="w-full px-4 py-2.5 rounded-xl border border-slate-900/10 bg-slate-900/5 text-slate-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all"
                       >
-                        <option value="President">👑 President</option>
-                        <option value="Vice President">👑 Vice President</option>
-                        <option value="General Secretary">📋 General Secretary</option>
-                        <option value="Domain Lead">🎯 Domain Lead</option>
-                        <option value="Core Member">⭐ Core Member</option>
-                        <option value="Member">👥 Member</option>
+                        <option value="President">President</option>
+                        <option value="Vice President">Vice President</option>
+                        <option value="General Secretary">General Secretary</option>
+                        <option value="Domain Lead">Domain Lead</option>
+                        <option value="Core Member">Core Member</option>
+                        <option value="Member">Member</option>
                       </select>
                     </div>
 
@@ -1166,7 +1167,7 @@ function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 ${
+      className={`px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 inline-flex items-center gap-1.5 ${
         active
           ? "bg-sky-600 text-white shadow-lg shadow-sky-600/20"
           : "bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900"
