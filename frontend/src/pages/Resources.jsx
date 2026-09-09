@@ -3,6 +3,7 @@ import { useSession } from '../lib/auth-client';
 import { useParams, Link } from 'react-router-dom';
 import LoadingSpinner from "../components/LoadingSpinner";
 import Reveal from "../components/Reveal";
+import RevealGroup from "../components/RevealGroup";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -344,17 +345,18 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
 
 function ResourceGrid({ resources, isAdmin, onDelete }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      {resources.map((resource) => (
-        <ResourceCard 
-          key={resource._id} 
-          resource={resource} 
-          isAdmin={isAdmin}
-          onDelete={onDelete}
-        />
+    <RevealGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {resources.map((resource, index) => (
+        <div key={resource._id} className="reveal-item reveal-item-scale h-full" style={{ "--index": index }}>
+          <ResourceCard
+            resource={resource}
+            isAdmin={isAdmin}
+            onDelete={onDelete}
+          />
+        </div>
       ))}
-    </div>
-  )
+    </RevealGroup>
+  );
 }
 
 function SearchBar({ filters, currentDomainName, onUpdate }) {

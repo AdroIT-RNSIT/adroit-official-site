@@ -1,18 +1,34 @@
 import Reveal from "./Reveal";
+import LineReveal from "./LineReveal";
 
 /**
- * Dramatic one-shot headline entrance (scale + translate on desktop, lighter on mobile).
+ * Dramatic section headline — single block or line-by-line masked reveal.
  */
 export default function HeadlineReveal({
   className = "",
-  mobileStatic = false,
+  lines,
+  children,
+  immediate = false,
   ...props
 }) {
+  if (lines?.length) {
+    return (
+      <LineReveal
+        lines={lines}
+        lineClassName={`headline-line ${className}`.trim()}
+        immediate={immediate}
+        {...props}
+      />
+    );
+  }
+
   return (
     <Reveal
-      className={`headline-reveal ${className}`.trim()}
-      mobileStatic={mobileStatic}
+      className={`headline-reveal reveal-mask ${className}`.trim()}
+      immediate={immediate}
       {...props}
-    />
+    >
+      {children}
+    </Reveal>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
+import RevealGroup from "../components/RevealGroup";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -399,19 +400,18 @@ export default function Members() {
             </p>
           </div>
         ) : (
-          <Reveal>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            {filteredMembers.map((member) => (
-              <MemberCard
-                key={member._id}
-                member={member}
-                isAdmin={isAdmin}
-                onDelete={handleDelete}
-                getCloudinaryUrl={getCloudinaryUrl}
-              />
+          <RevealGroup className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {filteredMembers.map((member, index) => (
+              <div key={member._id} className="reveal-item reveal-item-scale h-full" style={{ "--index": index % 12 }}>
+                <MemberCard
+                  member={member}
+                  isAdmin={isAdmin}
+                  onDelete={handleDelete}
+                  getCloudinaryUrl={getCloudinaryUrl}
+                />
+              </div>
             ))}
-          </div>
-          </Reveal>
+          </RevealGroup>
         )}
 
         {/* ===== JOIN CTA - Only for non-logged in users ===== */}

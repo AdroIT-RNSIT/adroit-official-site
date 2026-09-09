@@ -13,6 +13,21 @@ function cssScrollTimelineSupported() {
   return typeof CSS !== "undefined" && CSS.supports("animation-timeline: scroll()");
 }
 
+function isDesktopViewport() {
+  return window.matchMedia("(min-width: 768px)").matches;
+}
+
+function isLenisActive() {
+  return document.documentElement.classList.contains("lenis");
+}
+
+function shouldUseJsParallax() {
+  if (!canUseScrollParallax()) return false;
+  if (!isDesktopViewport()) return false;
+  if (isLenisActive()) return true;
+  return !cssScrollTimelineSupported();
+}
+
 function getScrollOffset() {
   return window.scrollY || document.documentElement.scrollTop || 0;
 }
@@ -31,58 +46,76 @@ function computeLayerOffset(el, scrollY) {
   return Math.min(MAX_OFFSET_PX, progress * sectionHeight * rate * 0.08);
 }
 
-/** Shared scroll parallax for [data-parallax] layers — all breakpoints, JS fallback when CSS scroll timeline unsupported. */
+/** Desktop-only JS parallax fallback for [data-parallax] layers. */
 export default function useDesktopParallax() {
   useEffect(() => {
-    if (!canUseScrollParallax() || cssScrollTimelineSupported()) {
-      return undefined;
-    }
+    let disposed = false;
+    let mountId = null;
+    let teardown = () => {};
 
-    const layers = Array.from(document.querySelectorAll("[data-parallax]"));
-    if (!layers.length) return undefined;
+    const mount = () => {
+      teardown();
 
-    let rafId = null;
+      if (!shouldUseJsParallax()) {
+        return;
+      }
 
-    const apply = () => {
-      rafId = null;
-      const scrollY = getScrollOffset();
-      layers.forEach((el) => {
-        const offset = computeLayerOffset(el, scrollY);
-        el.style.transform = `translate3d(0, ${offset}px, 0)`;
-      });
+      const layers = Array.from(document.querySelectorAll("[data-parallax]"));
+      if (!layers.length) return;
+
+      let rafId = null;
+
+      const apply = () => {
+        rafId = null;
+        const scrollY = getScrollOffset();
+        layers.forEach((el) => {
+          const offset = computeLayerOffset(el, scrollY);
+          el.style.transform = `translate3d(0, ${offset}px, 0)`;
+        });
+      };
+
+      const onScroll = () => {
+        if (rafId !== null) return;
+        rafId = window.requestAnimationFrame(apply);
+      };
+
+      let resizeTimer = null;
+      const onResize = () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => {
+          if (!shouldUseJsParallax()) {
+            layers.forEach((el) => {
+              el.style.transform = "";
+            });
+          } else {
+            onScroll();
+          }
+        }, 150);
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onResize, { passive: true });
+      onScroll();
+
+      teardown = () => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onResize);
+        window.clearTimeout(resizeTimer);
+        if (rafId !== null) window.cancelAnimationFrame(rafId);
+        layers.forEach((el) => {
+          el.style.transform = "";
+        });
+      };
     };
 
-    const onScroll = () => {
-      if (rafId !== null) return;
-      rafId = window.requestAnimationFrame(apply);
-    };
-
-    let resizeTimer = null;
-    const onResize = () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        if (!canUseScrollParallax()) {
-          layers.forEach((el) => {
-            el.style.transform = "";
-          });
-        } else {
-          onScroll();
-        }
-      }, 150);
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize, { passive: true });
-    onScroll();
+    mountId = window.requestAnimationFrame(() => {
+      if (!disposed) mount();
+    });
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      window.clearTimeout(resizeTimer);
-      if (rafId !== null) window.cancelAnimationFrame(rafId);
-      layers.forEach((el) => {
-        el.style.transform = "";
-      });
+      disposed = true;
+      if (mountId !== null) window.cancelAnimationFrame(mountId);
+      teardown();
     };
   }, []);
 }

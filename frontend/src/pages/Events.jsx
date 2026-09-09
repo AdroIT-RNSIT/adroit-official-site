@@ -199,7 +199,7 @@ export default function Events() {
             {upcomingEvents.length > 0 && (
               <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {upcomingEvents.map((event, index) => (
-                  <div key={event._id} className="reveal-item h-full" style={{ "--index": index }}>
+                  <div key={event._id} className="reveal-item reveal-item-scale h-full" style={{ "--index": index }}>
                     <EventCard
                       event={event}
                       typeColors={typeColors}

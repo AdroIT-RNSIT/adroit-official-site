@@ -8,11 +8,13 @@ import {
   Rocket,
   Users,
 } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { sharedEvents } from "../data/events";
 import Reveal from "../components/Reveal";
 import RevealGroup from "../components/RevealGroup";
 import HeadlineReveal from "../components/HeadlineReveal";
+import LineReveal from "../components/LineReveal";
 import WordReveal from "../components/WordReveal";
 import DotFieldCanvas from "../components/DotFieldCanvas";
 import useDesktopParallax from "../hooks/useDesktopParallax";
@@ -60,7 +62,29 @@ const missionItems = [
 ];
 
 const Home = () => {
+  const scrollSentinelRef = useRef(null);
+
   useDesktopParallax();
+
+  useEffect(() => {
+    const sentinel = scrollSentinelRef.current;
+    if (!sentinel) return undefined;
+
+    const root = document.documentElement;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        root.classList.toggle("home-scrolled", !entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+      root.classList.remove("home-scrolled");
+    };
+  }, []);
 
   const domains = [
     {
@@ -161,7 +185,8 @@ const Home = () => {
   return (
     <div className="relative overflow-x-clip">
       {/* Hero — base background */}
-      <section className="hero-section section-base relative overflow-hidden">
+      <section className="hero-section hero-section--integrated section-base relative overflow-hidden">
+        <div ref={scrollSentinelRef} className="nav-scroll-sentinel" aria-hidden="true" />
         <div
           className="hero-parallax-bg parallax-scroll-layer absolute inset-0 pointer-events-none"
           data-parallax
@@ -175,82 +200,77 @@ const Home = () => {
 
         <div className="page-wrap relative z-[1] py-8 sm:py-10 lg:py-12">
           <RevealGroup immediate className="hero-sequence">
-            <p
-              className="reveal-item text-sm font-medium tracking-[0.18em] uppercase text-text-muted mb-3"
-              style={{ "--index": 0 }}
-            >
-              Welcome to
-            </p>
-            <div className="reveal-item hero-wordmark-slot mb-6" style={{ "--index": 1 }}>
-              <h1 className="lg:hidden text-[2.5rem] sm:text-6xl font-extrabold tracking-[0.12em] text-text-primary leading-none">
+            <div className="reveal-item reveal-mask mb-3" style={{ "--index": 0 }}>
+              <p className="text-sm font-medium tracking-[0.18em] uppercase text-text-muted">
+                Welcome to
+              </p>
+            </div>
+
+            <div className="reveal-item reveal-mask hero-wordmark-slot mb-4" style={{ "--index": 1 }}>
+              <h1 className="text-[2.5rem] sm:text-6xl lg:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none">
                 {HERO_WORDMARK}
               </h1>
-              <h1
-                className="hidden lg:block text-6xl xl:text-7xl font-extrabold tracking-[0.12em] text-text-primary leading-none"
-                aria-label={HERO_WORDMARK}
-              >
-                {HERO_WORDMARK.split("").map((letter, letterIndex) => (
-                  <span
-                    key={`${letter}-${letterIndex}`}
-                    className="hero-letter"
-                    style={{ "--letter-index": letterIndex }}
-                    aria-hidden="true"
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </h1>
             </div>
-            <div className="reveal-item" style={{ "--index": 2 }}>
+
+            <div className="hero-heading-lines mb-5" style={{ "--line-base-index": 2 }}>
+              <LineReveal
+                immediate
+                lines={[
+                  "The Premier Technical Club",
+                  "Empowering Tomorrow's Innovators",
+                ]}
+                lineClassName="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-text-primary leading-tight"
+              />
+            </div>
+
+            <div className="reveal-item reveal-mask" style={{ "--index": 3 }}>
               <div className="badge mb-6 max-w-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0" />
                 <span className="text-left">Department of Computer Science &amp; Engineering</span>
               </div>
             </div>
-            <p
-              className="reveal-item text-base sm:text-lg lg:text-xl text-text-body leading-relaxed max-w-3xl"
-              style={{ "--index": 3 }}
-            >
-              The Premier Technical Club{" "}
-              <span className="text-text-primary font-medium">Empowering Tomorrow's Innovators</span>{" "}
-              through cutting-edge technology, collaborative projects, and industry-ready skills
-            </p>
-            <div className="reveal-item hero-branding" style={{ "--index": 4 }}>
-              <div className="hero-branding-college">
-                <img
-                  src="/rnsit_logo.png"
-                  alt="RNS Institute of Technology"
-                  width={120}
-                  height={44}
-                  className="brand-mark hero-brand-rnsit"
-                />
-                <img
-                  src="/25_years.png"
-                  alt="25 Years of RNSIT"
-                  width={88}
-                  height={44}
-                  className="brand-mark hero-brand-25"
-                />
-              </div>
-              <div className="hero-branding-event">
-                <span className="hero-branding-label">In association with</span>
+
+            <div className="reveal-item reveal-mask max-w-3xl mb-6" style={{ "--index": 4 }}>
+              <p className="text-base sm:text-lg lg:text-xl text-text-body leading-relaxed">
+                Through cutting-edge technology, collaborative projects, and industry-ready skills,
+                we bridge academic learning with real-world innovation.
+              </p>
+            </div>
+
+            <div className="reveal-item reveal-mask flex flex-col items-start gap-2 mb-8" style={{ "--index": 5 }}>
+              <button type="button" disabled className="btn btn-primary">
+                Join AdroIT Now
+                <ArrowRight size={18} />
+              </button>
+              <p className="text-xs text-text-muted">
+                Recruitment for this cycle is closed. Next recruitment opens later this year.
+              </p>
+            </div>
+
+            <div className="reveal-item reveal-mask hero-association-label" style={{ "--index": 6 }}>
+              <p className="section-kicker mb-0">In Association With</p>
+            </div>
+
+            <div className="reveal-item reveal-visual hero-association-ieee" style={{ "--index": 7 }}>
+              <div className="hero-association-brand">
                 <img
                   src="/ieee_logo.png"
                   alt="IEEE RNSIT Student Branch"
-                  width={208}
-                  height={32}
-                  className="brand-mark hero-brand-ieee"
+                  width={260}
+                  height={37}
+                  className="brand-mark brand-hero-ieee"
                 />
               </div>
             </div>
 
-            <div className="mt-6 snap-strip mb-10" data-lenis-prevent>
+            <div className="reveal-item reveal-visual snap-strip-outer mb-4" style={{ "--index": 8 }}>
+              <div className="snap-strip">
               {sharedEvents.map((event, index) => (
                 <Link
                   key={event._id}
                   to="/events"
-                  className="reveal-item snap-card event-card card card-hover p-5 text-left block h-full"
-                  style={{ "--index": 5 + index }}
+                  className="reveal-item reveal-item-scale snap-card event-card card card-hover p-5 text-left block h-full"
+                  style={{ "--index": index }}
                 >
                   <div className="flex flex-wrap justify-between items-start gap-2 mb-3">
                     <span className="badge-amber badge text-xs font-semibold">Paradox 2026</span>
@@ -275,16 +295,7 @@ const Home = () => {
                   </span>
                 </Link>
               ))}
-            </div>
-
-            <div className="reveal-item flex flex-col items-start gap-2" style={{ "--index": 8 }}>
-              <button type="button" disabled className="btn btn-primary">
-                Join AdroIT Now
-                <ArrowRight size={18} />
-              </button>
-              <p className="text-xs text-text-muted">
-                Recruitment for this cycle is closed. Next recruitment opens later this year.
-              </p>
+              </div>
             </div>
           </RevealGroup>
         </div>
@@ -295,15 +306,15 @@ const Home = () => {
         <div className="page-wrap">
           <div className="why-join-layout grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div className="why-join-sticky lg:col-span-5">
-              <p className="section-kicker">01 // Our Mission</p>
-              <HeadlineReveal as="h2" className="section-title">
-                Why Join AdroIT?
-              </HeadlineReveal>
-              <p className="section-lead mb-8 lg:mb-10">
+              <Reveal>
+                <p className="section-kicker">01 // Our Mission</p>
+              </Reveal>
+              <HeadlineReveal as="h2" className="section-title" lines={["Why Join AdroIT?"]} />
+              <Reveal delay={120} className="section-lead mb-8 lg:mb-10">
                 We bridge the gap between academic theory and industry demands, creating
                 <span className="text-text-primary"> future-ready professionals</span> through
                 practical learning and innovation
-              </p>
+              </Reveal>
 
               <aside className="advantage-panel card card-elevated card-hover p-6 sm:p-8">
                 <h3 className="text-lg font-semibold text-text-primary mb-5">The AdroIT Advantage</h3>
@@ -320,7 +331,7 @@ const Home = () => {
 
             <ol className="lg:col-span-7 space-y-0">
               {missionItems.map((item) => (
-                <Reveal as="li" key={item.num} mobileStatic className={item.className}>
+                <Reveal as="li" key={item.num} className={item.className}>
                   <span className="mission-marker">{item.num}</span>
                   <div>
                     <h3 className="text-xl font-semibold text-text-primary mb-2">{item.title}</h3>
@@ -336,19 +347,17 @@ const Home = () => {
       {/* Technical Domains — base */}
       <section className="section-block section-base">
         <div className="page-wrap">
-          <p className="section-kicker">02 // Our Expertise</p>
-          <HeadlineReveal as="h2" className="section-title">
-            Technical Domains
-          </HeadlineReveal>
-          <p className="section-lead mb-10">
+          <Reveal><p className="section-kicker">02 // Our Expertise</p></Reveal>
+          <HeadlineReveal as="h2" className="section-title" lines={["Technical Domains"]} />
+          <Reveal delay={100} className="section-lead mb-10">
             Four pillars of technical excellence driving innovation at AdroIT
-          </p>
+          </Reveal>
 
-          <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" mobileStatic>
+          <RevealGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {domains.map((domain, index) => (
               <article
                 key={domain.title}
-                className="reveal-item domain-card card card-hover h-full"
+                className="reveal-item reveal-item-scale domain-card card card-hover h-full"
                 style={{ "--index": index }}
               >
                 <div className="domain-icon">{domain.icon}</div>
@@ -387,11 +396,11 @@ const Home = () => {
         </div>
         <div className="page-wrap relative z-[1]">
           <div className="max-w-2xl philosophy-copy">
-            <h2 className="section-title">Our Learning Philosophy</h2>
-            <p className="text-text-body text-lg leading-relaxed mb-6">
+            <HeadlineReveal as="h2" className="section-title" lines={["Our Learning Philosophy"]} />
+            <Reveal delay={100} className="text-text-body text-lg leading-relaxed mb-6">
               We believe in adaptive, hands-on learning — not just teaching technology, but
               building how you approach problems with clarity and confidence.
-            </p>
+            </Reveal>
             <div className="philosophy-emphasis-line text-2xl sm:text-3xl font-bold tracking-tight text-text-primary leading-snug">
               <WordReveal text="Think. Innovate. Create." wordClassName="philosophy-word" />
             </div>
@@ -402,14 +411,20 @@ const Home = () => {
       {/* Growth — base, header reveal only (no card stagger) */}
       <section className="section-block section-base">
         <div className="page-wrap">
-          <p className="section-kicker">03 // Your Growth</p>
-          <HeadlineReveal as="h2" className="section-title mb-10">
-            How AdroIT Will Transform You
-          </HeadlineReveal>
+          <Reveal><p className="section-kicker">03 // Your Growth</p></Reveal>
+          <HeadlineReveal
+            as="h2"
+            className="section-title mb-10"
+            lines={["How AdroIT Will Transform You"]}
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {growthPillars.map((pillar) => (
-              <article key={pillar.num} className="pillar-card card card-hover h-full">
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {growthPillars.map((pillar, index) => (
+              <article
+                key={pillar.num}
+                className="reveal-item reveal-item-scale pillar-card card card-hover h-full"
+                style={{ "--index": index }}
+              >
                 <div className="pillar-accent" aria-hidden="true" />
                 <p className="font-mono text-sm font-semibold text-accent-primary mb-2">
                   {pillar.num}
@@ -418,27 +433,25 @@ const Home = () => {
                 <p className="text-text-body text-sm leading-relaxed">{pillar.description}</p>
               </article>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
       {/* Community — tinted band, staggered cards on desktop */}
       <section className="section-block section-tint">
         <div className="page-wrap">
-          <p className="section-kicker">04 // What We Do</p>
-          <HeadlineReveal as="h2" className="section-title">
-            Join the AdroIT Community
-          </HeadlineReveal>
-          <p className="section-lead mb-10">
+          <Reveal><p className="section-kicker">04 // What We Do</p></Reveal>
+          <HeadlineReveal as="h2" className="section-title" lines={["Join the AdroIT Community"]} />
+          <Reveal delay={100} className="section-lead mb-10">
             Learn by building through hands-on sessions, collaborative projects, and real-world
             exposure in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
-          </p>
+          </Reveal>
 
-          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4" mobileStatic>
+          <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {communityCards.map((card, index) => (
               <article
                 key={card.title}
-                className="reveal-item community-card card card-hover p-6 h-full"
+                className="reveal-item reveal-item-scale community-card card card-hover p-6 h-full"
                 style={{ "--index": index }}
               >
                 <div className="community-icon">{card.icon}</div>
