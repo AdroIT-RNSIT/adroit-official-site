@@ -24,12 +24,14 @@ const GENERIC_RULES = [
   "The organising team reserves the right to modify these guidelines, event rules, schedules, or venues at any time; changes will be communicated through official channels.",
 ];
 
+const rupees = (amount) => `₹${(amount || 0).toLocaleString("en-IN")}`;
+
 const feeLabel = (cost) => {
   if (!cost) return "";
-  if (cost.all != null) return `₹${cost.all}`;
+  if (cost.all != null) return rupees(cost.all);
   const parts = [];
-  if (cost.ieee != null) parts.push(`IEEE ₹${cost.ieee}`);
-  if (cost.nonIeee != null) parts.push(`Non-IEEE ₹${cost.nonIeee}`);
+  if (cost.ieee != null) parts.push(`IEEE ${rupees(cost.ieee)}`);
+  if (cost.nonIeee != null) parts.push(`Non-IEEE ${rupees(cost.nonIeee)}`);
   return parts.join(" · ");
 };
 
@@ -39,6 +41,9 @@ const formatDay = (dateStr) =>
     month: "short",
     day: "numeric",
   });
+
+const shortName = (event) =>
+  event.slug === "capture-the-flag" ? "CTF" : event.title;
 
 export default function Events() {
   const { data: session } = useSession();
@@ -62,88 +67,77 @@ export default function Events() {
 
   return (
     <div className="event-page-enter min-h-dvh bg-[#080c16] text-slate-100">
-      <section className="relative overflow-hidden">
+      <header className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-cyan-500/15 blur-[90px]" />
+          <div className="absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-cyan-500/12 blur-[90px]" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 pb-8 pt-8 sm:px-6 sm:pb-10 sm:pt-10 lg:px-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
-                Department of CSE · RNSIT
-              </p>
-              <h1 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
-                Paradox 2026
-              </h1>
-              <p className="mt-3 text-base leading-relaxed text-slate-300 sm:text-lg">
-                Three competitions · 17–18 September 2026
-              </p>
-            </div>
+        <div className="relative mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
+            Department of CSE · RNSIT
+          </p>
+          <h1 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Paradox 2026
+          </h1>
+          <p className="mt-3 text-base text-slate-300 sm:text-lg">
+            Three competitions · 17–18 September 2026
+          </p>
+        </div>
+      </header>
 
-            <div className="rounded-2xl border border-white/12 bg-[#0d1424] px-5 py-4 sm:px-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                Sponsors
-              </p>
-              <div className="mt-3 flex items-center gap-5 sm:gap-7">
-                {SPONSORS.map((sponsor) => (
-                  <img
-                    key={sponsor.name}
-                    src={sponsor.src}
-                    alt={sponsor.name}
-                    className="h-14 w-auto max-w-[8.5rem] object-contain sm:h-16 sm:max-w-[10rem]"
-                  />
-                ))}
+      <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid gap-4 lg:grid-cols-5">
+          <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 lg:col-span-3">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                  Prize pool
+                </h2>
+                <p className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
+                  {rupees(totalPrize)}
+                </p>
               </div>
             </div>
-          </div>
-
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            <div className="flex flex-col justify-between rounded-2xl border border-cyan-400/35 bg-cyan-400/[0.12] px-5 py-5 lg:min-h-[11.5rem]">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-300">
-                Prize pool
-              </p>
-              <p className="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl">
-                ₹{totalPrize.toLocaleString("en-IN")}
-              </p>
-            </div>
-
-            {events.map((event) => {
-              const poster = event.poster || event.imageUrl;
-              const shortName =
-                event.slug === "capture-the-flag" ? "CTF" : event.title;
-              return (
-                <Link
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              {events.map((event) => (
+                <div
                   key={event._id}
-                  to={`/events/${event.slug}`}
-                  className="relative min-h-[8.5rem] overflow-hidden rounded-2xl lg:min-h-[11.5rem]"
+                  className="rounded-2xl bg-black/30 px-3 py-3 sm:px-4"
                 >
-                  {poster && (
-                    <img
-                      src={poster}
-                      alt=""
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15" />
-                  <div className="relative flex h-full min-h-[8.5rem] flex-col justify-end p-4 lg:min-h-[11.5rem] lg:p-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-cyan-200">
-                      {shortName}
-                    </p>
-                    <p className="mt-1 text-2xl font-black text-white sm:text-3xl">
-                      ₹{(event.prize || 0).toLocaleString("en-IN")}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                    {shortName(event)}
+                  </p>
+                  <p className="mt-1 text-lg font-bold text-white sm:text-xl">
+                    {rupees(event.prize)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pb-14">
-        <p className="mb-8 text-center text-sm text-slate-400">
-          All participants must read the generic rules and guidelines at the bottom of this page.
+          <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 lg:col-span-2">
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300">
+              Sponsors
+            </h2>
+            <div className="mt-5 grid grid-cols-2 gap-4">
+              {SPONSORS.map((sponsor) => (
+                <div key={sponsor.name} className="flex flex-col items-center gap-2 text-center">
+                  <img
+                    src={sponsor.src}
+                    alt={sponsor.name}
+                    className="h-20 w-auto max-w-full object-contain sm:h-24"
+                  />
+                  <p className="text-sm font-semibold text-white">{sponsor.name}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <p className="mt-8 mb-5 text-center text-sm text-slate-500">
+          <a href="#paradox-rules" className="hover:text-cyan-300 hover:underline underline-offset-4">
+            Read generic rules before registering
+          </a>
         </p>
 
         {events.length === 0 ? (
@@ -166,7 +160,7 @@ export default function Events() {
           </div>
         )}
 
-        <section className="mt-14">
+        <section id="paradox-rules" className="mt-14 scroll-mt-24">
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent">
             <button
               type="button"
@@ -253,7 +247,7 @@ function EventCard({ event, isAdmin, onDelete }) {
           <div className="absolute inset-0 bg-gradient-to-t from-[#080c16] via-[#080c16]/20 to-transparent" />
           {event.prize ? (
             <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-semibold text-cyan-100 backdrop-blur-md">
-              Prize ₹{event.prize.toLocaleString("en-IN")}
+              Prize {rupees(event.prize)}
             </span>
           ) : null}
         </div>
@@ -290,7 +284,7 @@ function EventCard({ event, isAdmin, onDelete }) {
             </p>
           )}
 
-          <span className="mt-auto inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-bold text-slate-950 shadow-[0_0_20px_rgba(34,211,238,0.18)] transition-transform group-hover:from-cyan-300 group-hover:to-blue-400">
+          <span className="mt-auto inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-bold text-slate-950">
             View details &amp; register
           </span>
         </div>
