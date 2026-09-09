@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Calendar,
   ChevronRight,
@@ -29,6 +29,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pill, setPill] = useState({ x: 0, w: 0, visible: false });
+  const navListRef = useRef(null);
   const { data: session, isPending } = useSession();
 
   const isActive = (path) =>
@@ -61,6 +63,36 @@ const Navbar = () => {
       document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
+
+  const placePill = (el) => {
+    const parent = navListRef.current;
+    if (!parent || !el) return;
+    const parentBox = parent.getBoundingClientRect();
+    const box = el.getBoundingClientRect();
+    setPill({
+      x: box.left - parentBox.left,
+      w: box.width,
+      visible: true,
+    });
+  };
+
+  const restPillToActive = () => {
+    const parent = navListRef.current;
+    if (!parent) return;
+    const activeEl = parent.querySelector("[data-nav-active='true']");
+    if (activeEl) placePill(activeEl);
+    else setPill((prev) => ({ ...prev, visible: false }));
+  };
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => restPillToActive());
+    const onResize = () => restPillToActive();
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [pathname, isLoggedIn, isAdmin]);
 
   // ===== PUBLIC LINKS - Visible to everyone =====
   const publicLinks = [
@@ -105,68 +137,77 @@ const Navbar = () => {
 
           {/* ===== DESKTOP NAVIGATION ===== */}
           <div className="hidden md:flex items-center gap-1">
-            
-            {/* PUBLIC LINKS */}
-            <div className="flex items-center">
-              {publicLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive(link.path)
-                      ? "text-slate-900 bg-sky-500/15 border border-sky-500/30"
-                      : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                  }`}
-                >
-                  {link.name === "Paradox 2026" ? (
-                    <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
-                      {link.name}
-                    </span>
-                  ) : (
-                    link.name
-                  )}
-                </Link>
-              ))}
-            </div>
+            <div
+              ref={navListRef}
+              className="relative flex items-center"
+              onMouseLeave={restPillToActive}
+            >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-1/2 h-8 rounded-lg bg-sky-500/15 ring-1 ring-sky-500/25 transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                style={{
+                  width: pill.w,
+                  opacity: pill.visible ? 1 : 0,
+                  transform: `translate3d(${pill.x}px, -50%, 0)`,
+                }}
+              />
 
-            {/* PROTECTED LINKS - Only when logged in */}
-            {isLoggedIn && (
-              <>
-                <span className="w-px h-5 bg-slate-900/10 mx-1"></span>
-                <div className="flex items-center">
-                  {protectedLinks.map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive(link.path)
-                          ? "text-slate-900 bg-sky-500/15 border border-sky-500/30"
-                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                  
-                  {/* Admin Link */}
+              {publicLinks.map((link) => {
+                const active = isActive(link.path);
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    data-nav-active={active ? "true" : undefined}
+                    onMouseEnter={(e) => placePill(e.currentTarget)}
+                    className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${
+                      active ? "text-slate-900" : "text-slate-700 hover:text-slate-900"
+                    }`}
+                  >
+                    {link.name === "Paradox 2026" ? (
+                      <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
+                        {link.name}
+                      </span>
+                    ) : (
+                      link.name
+                    )}
+                  </Link>
+                );
+              })}
+
+              {isLoggedIn && (
+                <>
+                  <span className="mx-1 h-5 w-px bg-slate-900/10" />
+                  {protectedLinks.map((link) => {
+                    const active = isActive(link.path);
+                    return (
+                      <Link
+                        key={link.path}
+                        to={link.path}
+                        data-nav-active={active ? "true" : undefined}
+                        onMouseEnter={(e) => placePill(e.currentTarget)}
+                        className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${
+                          active ? "text-slate-900" : "text-slate-700 hover:text-slate-900"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    );
+                  })}
                   {isAdmin && (
                     <Link
                       to="/admin"
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive("/admin")
-                          ? "text-slate-900 bg-sky-500/15 border border-sky-500/30"
-                          : "text-slate-700 hover:text-slate-900 hover:bg-slate-900/5"
+                      data-nav-active={isActive("/admin") ? "true" : undefined}
+                      onMouseEnter={(e) => placePill(e.currentTarget)}
+                      className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${
+                        isActive("/admin") ? "text-slate-900" : "text-slate-700 hover:text-slate-900"
                       }`}
                     >
                       Admin
                     </Link>
                   )}
-                </div>
-              </>
-            )}
-
-            {/* ===== AUTH SECTION REMOVED ===== */}
-            <div className="ml-3 pl-3 border-l border-slate-900/10">
+                </>
+              )}
             </div>
           </div>
 
@@ -230,7 +271,7 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
                     active
                       ? "bg-sky-50 text-slate-900"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -274,7 +315,7 @@ const Navbar = () => {
                       key={link.path}
                       to={link.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
+                      className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
                         active
                           ? "bg-sky-50 text-slate-900"
                           : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -300,7 +341,7 @@ const Navbar = () => {
                   <Link
                     to="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
                       isActive("/admin")
                         ? "bg-sky-50 text-slate-900"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
