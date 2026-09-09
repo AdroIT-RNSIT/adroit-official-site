@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import { Link } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
 // ============================================
 // DOMAIN CONFIGURATION - MATCHES OTHER PAGES
 // ============================================
@@ -61,20 +59,32 @@ export default function Members() {
 
   // ===== FETCH REAL DATA FROM BACKEND =====
   useEffect(() => {
-    fetchMembers();
+    const controller = new AbortController();
+    fetchMembers(controller.signal);
+    return () => controller.abort();
   }, []);
 
-  const fetchMembers = async () => {
+  const fetchMembers = async (signal) => {
+    const API = import.meta.env.VITE_API_URL;
+    const abortSignal = signal instanceof AbortSignal ? signal : undefined;
+    if (!API) {
+      setLoading(false);
+      setMembers([]);
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/members`, {
+      const res = await fetch(`${API}/api/members`, {
         credentials: "include",
+        signal: abortSignal,
       });
       if (!res.ok) throw new Error("Failed to fetch members");
       const data = await res.json();
       setMembers(data);
       setError("");
     } catch (err) {
+      if (err.name === "AbortError") return;
       setError(err.message);
       console.error("Error fetching members:", err);
     } finally {
@@ -152,7 +162,7 @@ export default function Members() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to remove this member?")) return;
     try {
-      const res = await fetch(`${API_URL}/api/members/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/members/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -188,10 +198,10 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip pt-20 pb-16">
+    <div className="min-h-dvh text-slate-900 font-sans overflow-x-clip pt-8 pb-16">
       
       {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0">
+      <div className="fixed inset-0 pointer-events-none z-0 hidden md:block">
         <div className="absolute top-40 left-20 w-[400px] max-w-[100vw] h-[400px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
         <div className="absolute bottom-40 right-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
       </div>
@@ -200,7 +210,7 @@ export default function Members() {
         
         {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 backdrop-blur-xl border border-slate-900/10 rounded-full">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 border border-slate-900/10 rounded-full">
             <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
             <span className="text-sm text-slate-600">AdroIT Member Directory</span>
           </div>
@@ -244,7 +254,7 @@ export default function Members() {
         </div>
 
         {/* ===== SEARCH & FILTERS BAR ===== */}
-        <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
+        <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
           
           {/* Search Row */}
           <div className="relative mb-4">
@@ -391,7 +401,7 @@ export default function Members() {
               {error}
             </div>
             <button
-              onClick={fetchMembers}
+              onClick={() => fetchMembers()}
               className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 text-xs"
             >
               Retry
@@ -429,8 +439,7 @@ export default function Members() {
         {/* ===== JOIN CTA - Only for non-logged in users ===== */}
         <div className="mt-16 text-center">
             <div className="relative group inline-block">
-              <div className="absolute -inset-1 bg-sky-600/30 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
+              <div className="relative bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
                   Want to be part of this community?
                 </h3>
@@ -502,13 +511,13 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
   };
 
   return (
-    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-lg p-3 transition-all duration-200 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-lg hover:shadow-sky-600/5">
+    <div className="group relative bg-white border border-slate-200 rounded-lg p-3 md:transition-transform md:duration-200 md:hover:-translate-y-1 md:hover:border-sky-600/30">
       
       <div className="relative">
         
         {/* Avatar */}
         <div className="relative w-14 h-14 mx-auto mb-2">
-          <div className={`absolute inset-0 bg-gradient-to-br ${color} rounded-lg blur-md opacity-50`}></div>
+          <div className={`absolute inset-0 hidden rounded-lg bg-gradient-to-br ${color} opacity-50 blur-md md:block`}></div>
           
           {member.imagePublicId ? (
             <img
