@@ -668,8 +668,8 @@ export default function Domains() {
             </div>
           </div>
 
-          {/* Domain Comparison Table */}
-          <div className="mt-12 bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
+          {/* Domain Comparison Table — laptop only */}
+          <div className="mt-12 hidden bg-white/90 md:block md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>
