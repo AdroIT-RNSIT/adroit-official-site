@@ -233,64 +233,65 @@ function EventCard({ event, isAdmin, onDelete }) {
         </button>
       )}
 
-      <Link to={`/events/${event.slug}`} className="flex flex-1 flex-col">
-        <div className="relative aspect-[16/10] overflow-hidden">
-          {poster ? (
-            <img
-              src={poster}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="h-full w-full bg-slate-800" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080c16] via-[#080c16]/20 to-transparent" />
-          {event.prize ? (
-            <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-semibold text-cyan-100 backdrop-blur-md">
-              Prize {rupees(event.prize)}
-            </span>
-          ) : null}
-        </div>
-
-        <div className="flex flex-1 flex-col p-5">
-          <h2 className="text-xl font-black leading-tight text-white">{event.title}</h2>
-          {event.tagline && (
-            <p className="mt-1 text-sm text-cyan-200/80">{event.tagline}</p>
-          )}
-
-          <div className="mt-4 space-y-1.5 text-sm text-slate-400">
-            <p className="flex items-center gap-2">
-              <Calendar size={14} className="shrink-0 text-cyan-400" />
-              {formatDay(event.date)}
-            </p>
-            {event.location && (
-              <p className="flex items-center gap-2">
-                <MapPin size={14} className="shrink-0 text-cyan-400" />
-                {event.location}
-              </p>
+      {event.registrationsOpen === false ? (
+        <div className="flex flex-1 flex-col opacity-60 grayscale">
+          <div className="relative aspect-[16/10] overflow-hidden">
+            {poster ? (
+              <img src={poster} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            ) : (
+              <div className="h-full w-full bg-slate-800" />
             )}
-            {event.teamSize && (
-              <p className="flex items-center gap-2">
-                <Users size={14} className="shrink-0 text-cyan-400" />
-                {event.teamSize}
-                {fees ? ` · ${fees}` : ""}
-              </p>
-            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#080c16] via-[#080c16]/20 to-transparent" />
+            {event.prize ? (
+              <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-semibold text-cyan-100 backdrop-blur-md">
+                Prize {rupees(event.prize)}
+              </span>
+            ) : null}
           </div>
-
-          {event.description && (
-            <p className="mt-4 mb-5 line-clamp-3 text-sm leading-relaxed text-slate-300">
-              {event.description}
-            </p>
-          )}
-
-          <span className="mt-auto inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-bold text-slate-950">
-            View details &amp; register
-          </span>
+          <div className="flex flex-1 flex-col p-5">
+            <h2 className="text-xl font-black leading-tight text-white">{event.title}</h2>
+            {event.tagline && <p className="mt-1 text-sm text-cyan-200/80">{event.tagline}</p>}
+            <div className="mt-4 space-y-1.5 text-sm text-slate-400">
+              <p className="flex items-center gap-2"><Calendar size={14} className="shrink-0 text-cyan-400" />{formatDay(event.date)}</p>
+              {event.location && <p className="flex items-center gap-2"><MapPin size={14} className="shrink-0 text-cyan-400" />{event.location}</p>}
+              {event.teamSize && <p className="flex items-center gap-2"><Users size={14} className="shrink-0 text-cyan-400" />{event.teamSize}{fees ? ` · ${fees}` : ""}</p>}
+            </div>
+            {event.description && <p className="mt-4 mb-5 line-clamp-3 text-sm leading-relaxed text-slate-300">{event.description}</p>}
+            <span className="mt-auto inline-flex w-full cursor-not-allowed justify-center rounded-xl border border-slate-600/50 bg-slate-800/60 px-4 py-2.5 text-sm font-bold text-slate-500">
+              Registrations closed
+            </span>
+          </div>
         </div>
-      </Link>
+      ) : (
+        <Link to={`/events/${event.slug}`} className="flex flex-1 flex-col">
+          <div className="relative aspect-[16/10] overflow-hidden">
+            {poster ? (
+              <img src={poster} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            ) : (
+              <div className="h-full w-full bg-slate-800" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#080c16] via-[#080c16]/20 to-transparent" />
+            {event.prize ? (
+              <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-semibold text-cyan-100 backdrop-blur-md">
+                Prize {rupees(event.prize)}
+              </span>
+            ) : null}
+          </div>
+          <div className="flex flex-1 flex-col p-5">
+            <h2 className="text-xl font-black leading-tight text-white">{event.title}</h2>
+            {event.tagline && <p className="mt-1 text-sm text-cyan-200/80">{event.tagline}</p>}
+            <div className="mt-4 space-y-1.5 text-sm text-slate-400">
+              <p className="flex items-center gap-2"><Calendar size={14} className="shrink-0 text-cyan-400" />{formatDay(event.date)}</p>
+              {event.location && <p className="flex items-center gap-2"><MapPin size={14} className="shrink-0 text-cyan-400" />{event.location}</p>}
+              {event.teamSize && <p className="flex items-center gap-2"><Users size={14} className="shrink-0 text-cyan-400" />{event.teamSize}{fees ? ` · ${fees}` : ""}</p>}
+            </div>
+            {event.description && <p className="mt-4 mb-5 line-clamp-3 text-sm leading-relaxed text-slate-300">{event.description}</p>}
+            <span className="mt-auto inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-bold text-slate-950">
+              View details &amp; register
+            </span>
+          </div>
+        </Link>
+      )}
     </article>
   );
 }

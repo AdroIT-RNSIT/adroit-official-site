@@ -59,13 +59,19 @@ export default function EventDetail() {
             <h1 className="min-w-0 flex-1 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
               {event.title}
             </h1>
-            <button
-              type="button"
-              onClick={() => setIsRegOpen(true)}
-              className="shrink-0 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.28)] transition-transform hover:scale-[1.02] hover:from-cyan-300 hover:to-blue-400 sm:px-8 sm:py-3.5 sm:text-base"
-            >
-              Register now
-            </button>
+            {event.registrationsOpen === false ? (
+              <span className="shrink-0 cursor-not-allowed rounded-2xl border border-slate-600/50 bg-slate-800/60 px-5 py-2.5 text-sm font-bold text-slate-500 sm:px-8 sm:py-3.5 sm:text-base">
+                Registrations closed
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsRegOpen(true)}
+                className="shrink-0 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.28)] transition-transform hover:scale-[1.02] hover:from-cyan-300 hover:to-blue-400 sm:px-8 sm:py-3.5 sm:text-base"
+              >
+                Register now
+              </button>
+            )}
           </div>
           {event.tagline && (
             <p className="mt-3 max-w-2xl text-base text-cyan-100/80 sm:text-lg">
