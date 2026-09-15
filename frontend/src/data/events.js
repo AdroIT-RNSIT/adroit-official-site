@@ -5,7 +5,7 @@ export const sharedEvents = [
     tagline: "Think. Hack. Solve. Repeat.",
     description: "Operation Code Heist is an inter-collegiate cybersecurity competition built around a cyber-heist theme. Teams navigate six rounds, racing to crack the heist on a live scoring leaderboard.",
     date: "2026-09-17T05:00:00Z",
-    location: "Main Auditorium",
+    location: "Library",
     teamSize: "3–4 members",
     slug: "capture-the-flag",
     poster: "/ctf-img.webp",
@@ -72,5 +72,6 @@ export const sharedEvents = [
     ]
   }
 ];
+
 
 export const getEventBySlug = (slug) => sharedEvents.find((event) => event.slug === slug);
