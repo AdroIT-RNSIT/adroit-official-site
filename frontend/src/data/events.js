@@ -59,7 +59,7 @@ export const sharedEvents = [
     poster: "/ai-img.webp",
     imageUrl: "/ai-img.webp",
     prize: 4000,
-    registrationsOpen: true,
+    registrationsOpen: false,
     registrationCost: { all: 100 },
     rules: [
       "Teams of 1-2 participants each.",
