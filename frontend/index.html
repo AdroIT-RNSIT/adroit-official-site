@@ -9,10 +9,7 @@
       (function () {
         try {
           var stored = localStorage.getItem("adroit-theme") || localStorage.getItem("adroit-nav-color");
-          var dark =
-            stored === "dark" ||
-            stored === "black" ||
-            ((!stored) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var dark = stored === "dark" || stored === "black";
           if (dark) document.documentElement.classList.add("dark");
           document.documentElement.style.backgroundColor = dark ? "#080c16" : "#f3e8ff";
         } catch (e) {}
