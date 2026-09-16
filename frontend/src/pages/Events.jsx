@@ -134,7 +134,18 @@ export default function Events() {
           </section>
         </div>
 
-        <p className="mt-8 mb-5 text-center text-sm text-slate-500">
+        <div className="mt-4 flex items-start gap-3 rounded-2xl border border-yellow-400/30 bg-yellow-400/10 px-5 py-4">
+          <span className="mt-0.5 text-yellow-400 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+              <path fillRule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
+            </svg>
+          </span>
+          <p className="text-sm font-semibold uppercase tracking-wide text-yellow-300">
+            All participants are to report to IT Block at 9 AM on the day of their registered event.
+          </p>
+        </div>
+
+        <p className="mt-6 mb-5 text-center text-sm text-slate-500">
           <a href="#paradox-rules" className="hover:text-cyan-300 hover:underline underline-offset-4">
             Read generic rules before registering
           </a>
@@ -260,6 +271,21 @@ function EventCard({ event, isAdmin, onDelete }) {
             <span className="mt-auto inline-flex w-full cursor-not-allowed justify-center rounded-xl border border-slate-600/50 bg-slate-800/60 px-4 py-2.5 text-sm font-bold text-slate-500">
               Registrations closed
             </span>
+            {event.whatsappLink && (
+              <a
+                href={event.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-2.5 text-sm font-bold text-white shadow-[0_0_18px_rgba(34,197,94,0.4)] transition-colors hover:bg-green-400"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.854L.054 23.25a.75.75 0 00.916.916l5.396-1.478A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.715 9.715 0 01-4.953-1.355l-.355-.21-3.683 1.008 1.008-3.683-.21-.355A9.715 9.715 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+                </svg>
+                Join WhatsApp Group
+              </a>
+            )}
           </div>
         </div>
       ) : (
@@ -289,6 +315,21 @@ function EventCard({ event, isAdmin, onDelete }) {
             <span className="mt-auto inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-bold text-slate-950">
               View details &amp; register
             </span>
+            {event.whatsappLink && (
+              <a
+                href={event.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-2.5 text-sm font-bold text-white shadow-[0_0_18px_rgba(34,197,94,0.4)] transition-colors hover:bg-green-400"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.854L.054 23.25a.75.75 0 00.916.916l5.396-1.478A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.715 9.715 0 01-4.953-1.355l-.355-.21-3.683 1.008 1.008-3.683-.21-.355A9.715 9.715 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+                </svg>
+                Join WhatsApp Group
+              </a>
+            )}
           </div>
         </Link>
       )}

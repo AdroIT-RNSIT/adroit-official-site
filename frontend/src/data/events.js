@@ -11,7 +11,8 @@ export const sharedEvents = [
     poster: "/ctf-img.webp",
     imageUrl: "/ctf-img.webp",
     prize: 10000,
-    registrationsOpen: true,
+    registrationsOpen: false,
+    whatsappLink: "https://chat.whatsapp.com/FWsQ83m2HZXHCaiwUyocYg?s=cl&p=a&mlu=4&ilr=4",
     registrationCost: { ieee: 250, nonIeee: 300 },
     rules: [
       "Teams of 4; two structured 3-hour sessions with a lunch break in between (total event duration 8.5 hours).",
@@ -35,6 +36,7 @@ export const sharedEvents = [
     imageUrl: "/tech-img.webp",
     prize: 6000,
     registrationsOpen: false,
+    whatsappLink: "https://chat.whatsapp.com/JxEwYSrmXnmKfMT70jkJJc?s=cl&p=a&mlu=4&ilr=4",
     registrationCost: { ieee: 200, nonIeee: 250 },
     rules: [
       "Every team starts with an equal amount of CHIPS - no borrowing or transferring CHIPS between teams.",
@@ -60,6 +62,7 @@ export const sharedEvents = [
     imageUrl: "/ai-img.webp",
     prize: 4000,
     registrationsOpen: false,
+    whatsappLink: "https://chat.whatsapp.com/HzuygqHOINUA95e0Li434l?s=cl&p=a&mlu=4&ilr=4",
     registrationCost: { all: 100 },
     rules: [
       "Teams of 1-2 participants each.",
