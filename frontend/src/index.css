@@ -103,15 +103,44 @@ input, textarea, select {
   will-change: transform;
 }
 
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 38s linear infinite;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.animate-marquee-slow {
+  animation-duration: 42s;
+}
+
+.glimpse-gallery-track {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+
 @media (max-width: 640px) {
   .animate-marquee {
     animation: marquee 15s linear infinite;
+  }
+  .animate-marquee-reverse {
+    animation: marquee-reverse 22s linear infinite;
+  }
+  .animate-marquee-slow {
+    animation-duration: 24s;
   }
 }
 
 /* Only pause on hover for devices with a real mouse (prevents sticky touch on mobile) */
 @media (hover: hover) and (pointer: fine) {
-  .animate-marquee:hover {
+  .animate-marquee:hover,
+  .animate-marquee-reverse:hover,
+  .glimpse-gallery:hover .animate-marquee,
+  .glimpse-gallery:hover .animate-marquee-reverse {
     animation-play-state: paused;
   }
 }

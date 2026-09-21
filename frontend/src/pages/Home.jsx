@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BrandMark from '../components/BrandMark';
-import EventCarousel from '../components/EventCarousel';
-import { sharedEvents } from '../data/events';
 
 // ============================================
 // FIXED INTERACTIVE BALL COMPONENT
@@ -32,7 +30,6 @@ const DomainCard = ({ icon, title, description }) => (
 // MAIN HOME COMPONENT
 // ============================================
 const Home = () => {
-  const navigate = useNavigate();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
   const domainsRef = useRef(null);
@@ -124,16 +121,14 @@ const Home = () => {
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-8 pb-24 sm:pt-10 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
+        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
+        <InteractiveRings className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-[min(100%,70vmin)] max-w-[650px]" />
 
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
-            Paradox 2026
-          </span>
-          <BrandMark size="home" className="mb-5" />
+          <BrandMark size="hero" className="mb-4" />
 
-          <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
+          <h1 className="mx-auto mb-4 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
             <span className="sr-only">AdroIT — </span>
             Department of
             <span className="mt-0.5 block font-bold">
@@ -141,18 +136,11 @@ const Home = () => {
             </span>
           </h1>
 
-          {/* Tagline */}
-          <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
+          <p className="fluid-lead text-slate-600 leading-relaxed max-w-3xl mx-auto mb-7">
             The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
             cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
-          <EventCarousel
-            events={sharedEvents}
-            onSelect={(event) => navigate(`/events/${event.slug}`)}
-          />
-
-          {/* SINGLE CTA BUTTON - Removed duplicate */}
           <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
             <Link
               to="/domains"
@@ -171,13 +159,10 @@ const Home = () => {
             </Link>
           </div>
         </div>
-
-        {/* FIXED: Responsive rings container */}
-        <InteractiveRings />
       </section>
 
       {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="py-10 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
+      <section id="why-join" ref={missionRef} className="pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">

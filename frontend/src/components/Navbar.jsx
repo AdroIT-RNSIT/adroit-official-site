@@ -19,7 +19,7 @@ import { useTheme } from "../lib/theme";
 
 const NAV_ICONS = {
   Home,
-  "Paradox 2026": Calendar,
+  Events: Calendar,
   Domains: Layers,
   Members: Users,
   Contact: Mail,
@@ -94,7 +94,7 @@ const Navbar = () => {
   // ===== PUBLIC LINKS - Visible to everyone =====
   const publicLinks = [
     { name: "Home", path: "/" },
-    { name: "Paradox 2026", path: "/events" },
+    { name: "Events", path: "/events" },
     { name: "Domains", path: "/domains" },
     { name: "Members", path: "/members" },
     { name: "Contact", path: "/contact" }
@@ -136,13 +136,6 @@ const Navbar = () => {
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
             <BrandMark size="nav" />
-            <div className="hidden lg:block ml-4 h-12 w-64 overflow-hidden relative">
-              <img
-                src="/ieee_logo.png"
-                alt="IEEE RNSIT"
-                className="absolute h-[180px] w-auto max-w-none left-0 top-[calc(50%+9px)] -translate-y-1/2"
-              />
-            </div>
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
@@ -176,13 +169,7 @@ const Navbar = () => {
                     onMouseEnter={(e) => placePill(e.currentTarget)}
                     className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(active)}`}
                   >
-                    {link.name === "Paradox 2026" ? (
-                      <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] filter">
-                        {link.name}
-                      </span>
-                    ) : (
-                      link.name
-                    )}
+                    {link.name}
                   </Link>
                 );
               })}
@@ -313,13 +300,7 @@ const Navbar = () => {
                     <Icon size={18} strokeWidth={2} />
                   </span>
                   <span className="flex-1">
-                    {link.name === "Paradox 2026" ? (
-                      <span className="font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text">
-                        {link.name}
-                      </span>
-                    ) : (
-                      link.name
-                    )}
+                    {link.name}
                   </span>
                   <ChevronRight
                     size={16}

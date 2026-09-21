@@ -1,4 +1,4 @@
-export const sharedEvents = [
+const paradoxCompetitions = [
   {
     _id: "1",
     title: "Capture The Flag",
@@ -26,7 +26,7 @@ export const sharedEvents = [
     title: "Tech Auction",
     tagline: "Bid. Strategize. Win.",
     description: "Tech Auction is a team-based technical strategy event that combines bidding, decision-making, and innovation. Teams start with a fixed amount of virtual currency (CHIPS) and bid for technologies - AI systems, frameworks, databases, hardware, and more. After the auction, teams must build a working prototype using only the technologies they've acquired, based on a problem statement revealed before bidding begins.",
-    date:"2026-09-18T05:00:00Z",
+    date: "2026-09-18T05:00:00Z",
     location: "IT Block Edusat Hall",
     teamSize: "3–4 members",
     slug: "tech-auction",
@@ -50,7 +50,7 @@ export const sharedEvents = [
     title: "AI Film Making",
     tagline: "Ideas · AI · Stories · Beyond reality",
     description: "The AI Film Making Challenge is a creative event where teams use Artificial Intelligence tools to script, generate, and edit a short film based on a theme revealed only after the event begins - so every team starts on equal footing. The event is presented in association with Who VR and is designed to test creativity, storytelling, teamwork, and effective use of AI tools under time pressure.",
-    date:"2026-09-18T05:00:00Z",
+    date: "2026-09-18T05:00:00Z",
     location: "IT Block",
     teamSize: "1–2 members",
     slug: "ai-film-making",
@@ -70,4 +70,30 @@ export const sharedEvents = [
   }
 ];
 
+export const PARADOX_SLUG = "paradox-2026";
+
+export const sharedEvents = [
+  {
+    _id: "paradox-2026",
+    title: "Paradox 2026",
+    tagline: "Three competitions. Two days. One fest.",
+    description: "Paradox 2026 was AdroIT's inter-collegiate technical fest at RNSIT — Capture The Flag, Tech Auction, and AI Film Making — held on 17–18 September 2026.",
+    date: "2026-09-17T05:00:00Z",
+    endDate: "2026-09-18T05:00:00Z",
+    location: "RNSIT",
+    slug: PARADOX_SLUG,
+    status: "completed",
+    poster: "/ctf-img.webp",
+    imageUrl: "/ctf-img.webp",
+    glimpses: ["/ctf-img.webp", "/tech-img.webp", "/ai-img.webp"],
+    competitions: paradoxCompetitions,
+  },
+];
+
+export const upcomingEvents = sharedEvents.filter((event) => event.status === "upcoming");
+export const completedEvents = sharedEvents.filter((event) => event.status === "completed");
+
 export const getEventBySlug = (slug) => sharedEvents.find((event) => event.slug === slug);
+
+export const findEditionForCompetitionSlug = (slug) =>
+  sharedEvents.find((event) => event.competitions?.some((competition) => competition.slug === slug));
