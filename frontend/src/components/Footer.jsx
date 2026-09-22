@@ -13,7 +13,7 @@ const Footer = ({ showMap = false, light = false }) => {
         lightBg
           ? "bg-white border-t border-slate-200/80"
           : isDark
-            ? "bg-[#080c16] border-t border-white/10"
+            ? "bg-[#060b18] border-t border-white/10"
             : "bg-[#f3e8ff] border-t border-slate-900/10"
       }`}
     >
@@ -216,20 +216,20 @@ const Footer = ({ showMap = false, light = false }) => {
         )}
 
         {/* ===== BOTTOM BAR ===== */}
-        <div className="mt-8 pt-6 border-t border-slate-900/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-600">
-            © {currentYear} AdroIT Club. All rights reserved.
+        <div className="mt-8 pt-6 border-t border-slate-900/10 dark:border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-slate-500">
+            © {currentYear} AdroIT Club · IEEE RNSIT Student Branch
           </p>
           
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-1 text-xs text-gray-600 hover:text-sky-600 transition-colors duration-300"
+            className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors duration-300"
             aria-label="Back to top"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
             </svg>
-            Back to Top
+            Back to top
           </button>
         </div>
       </div>

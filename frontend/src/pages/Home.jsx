@@ -3,8 +3,6 @@ import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
 import { Link, useNavigate } from "react-router-dom";
 import BrandMark from '../components/BrandMark';
-import EventCarousel from '../components/EventCarousel';
-import { sharedEvents } from '../data/events';
 
 // ============================================
 // FIXED INTERACTIVE BALL COMPONENT
@@ -15,16 +13,28 @@ import InteractiveRings from '../components/InteractiveRings';
 // DOMAIN CARD COMPONENT - NEW!
 // ============================================
 const DomainCard = ({ icon, title, description }) => (
-  <div className="group relative bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 hover:border-sky-600/25 hover:-translate-y-2 transition-all duration-300">
-    <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-sky-600 text-white shadow-lg shadow-sky-900/10 mb-4 group-hover:scale-110 transition-all duration-300">
-      {icon}
+  <div className="group relative rounded-2xl p-px overflow-hidden transition-all duration-500 hover:-translate-y-2"
+    style={{ background: "linear-gradient(135deg, rgba(56,189,248,0.15), rgba(139,92,246,0.10), rgba(255,255,255,0.04))" }}>
+    {/* Hover gradient border intensifier */}
+    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+      style={{ background: "linear-gradient(135deg, rgba(56,189,248,0.5), rgba(139,92,246,0.35), rgba(56,189,248,0.15))" }} />
+    <div className="relative rounded-2xl p-6 h-full"
+      style={{ background: "rgba(11,18,37,0.85)", backdropFilter: "blur(20px)" }}>
+      {/* Icon */}
+      <div className="relative w-11 h-11 flex items-center justify-center rounded-xl mb-5 transition-all duration-300 group-hover:scale-110"
+        style={{ background: "linear-gradient(135deg, rgba(56,189,248,0.15), rgba(139,92,246,0.10))", border: "1px solid rgba(56,189,248,0.2)" }}>
+        <span className="text-sky-400 group-hover:text-cyan-300 transition-colors duration-300">{icon}</span>
+        {/* icon glow */}
+        <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ boxShadow: "0 0 16px rgba(56,189,248,0.3)" }} />
+      </div>
+      <h3 className="text-base font-semibold text-slate-200 mb-2 group-hover:text-white transition-colors duration-300 tracking-tight">
+        {title}
+      </h3>
+      <p className="text-slate-500 text-sm leading-relaxed group-hover:text-slate-400 transition-colors duration-300">
+        {description}
+      </p>
     </div>
-    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-sky-800 dark:group-hover:text-sky-300 transition-colors">
-      {title}
-    </h3>
-    <p className="text-slate-600 text-sm leading-relaxed">
-      {description}
-    </p>
   </div>
 );
 
@@ -128,23 +138,43 @@ const Home = () => {
       >
 
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
-            Paradox 2026
-          </span>
-          <BrandMark size="home" className="mb-5" />
 
-          <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
-            <span className="sr-only">AdroIT — </span>
-            Department of
-            <span className="mt-0.5 block font-bold">
-              Computer Science &amp; Engineering
+          {/* ── Terminal-style badge ── */}
+          <div className="inline-flex items-center gap-3 mb-6 rounded-full px-4 py-2"
+            style={{
+              background: "rgba(11,18,37,0.8)",
+              border: "1px solid rgba(56,189,248,0.25)",
+              backdropFilter: "blur(16px)",
+              boxShadow: "0 0 24px rgba(56,189,248,0.08), inset 0 1px 0 rgba(255,255,255,0.05)"
+            }}>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-red-500/80" />
+              <span className="w-2 h-2 rounded-full bg-yellow-400/80" />
+              <span className="w-2 h-2 rounded-full bg-green-400/80" />
             </span>
+            <span className="w-px h-4 bg-white/15" />
+            <span className="font-mono-tech text-[10px] sm:text-xs text-cyan-400 tracking-widest">
+              <span className="text-violet-400 mr-1">~/adroit</span>
+              $ event --season paradox-2026
+              <span className="cursor-blink" />
+            </span>
+          </div>
+
+          <BrandMark size="home" className="mb-6 drop-shadow-[0_0_32px_rgba(56,189,248,0.45)]" />
+
+          <h1 className="mx-auto mb-3 max-w-2xl px-4 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight leading-snug"
+            style={{ color: "rgba(220,230,255,0.9)" }}>
+            <span className="sr-only">AdroIT — </span>
+            Department of{" "}
+            <span className="text-gradient-aurora font-bold">Computer Science & Engineering</span>
           </h1>
 
           {/* Tagline */}
-          <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
-            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
-            cutting-edge technology, collaborative projects, and industry-ready skills
+          <p className="fluid-lead leading-relaxed max-w-3xl mx-auto mb-10"
+            style={{ color: "rgba(148,163,184,0.9)" }}>
+            The Premier Technical Club —{" "}
+            <span style={{ color: "rgba(125,211,252,0.95)" }}>empowering tomorrow's innovators</span>{" "}
+            through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
           <EventCarousel
@@ -152,20 +182,31 @@ const Home = () => {
             onSelect={(event) => navigate(`/events/${event.slug}`)}
           />
 
-          {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
+          {/* ── CTA Buttons ── */}
+          <div className="flex flex-row flex-wrap gap-3 justify-center items-center relative z-20">
             <Link
               to="/domains"
-              className="group inline-flex items-center justify-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white rounded-full bg-sky-600 shadow-md shadow-sky-900/15 hover:bg-sky-800 hover:scale-105 transition-all duration-300"
+              className="group inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105"
+              style={{
+                background: "linear-gradient(135deg, #0ea5e9, #7c3aed)",
+                color: "#ffffff",
+                boxShadow: "0 0 24px rgba(14,165,233,0.35), 0 4px 12px rgba(0,0,0,0.3)"
+              }}
             >
               <span>Explore AdroIT</span>
               <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-0.5 transition-transform">
-                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
             <Link
               to="/events"
-              className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-slate-800 rounded-full bg-white/70 border border-slate-200 hover:bg-white hover:border-sky-600/30 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                color: "rgba(220,230,255,0.85)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                backdropFilter: "blur(12px)",
+              }}
             >
               See Events
             </Link>
@@ -181,11 +222,14 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Why Join AdroIT?</h2>
-            <p className="text-slate-600 fluid-lead max-w-4xl mx-auto">
-              We bridge the gap between academic theory and industry demands, creating 
-              <span className="text-sky-800"> future-ready professionals</span> through practical learning and innovation
+            <span className="section-label mb-4 block">01 // Our Mission</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-6 text-slate-900 dark:text-white">
+              Why Join <span className="text-gradient-cyan">AdroIT?</span>
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 fluid-lead max-w-3xl mx-auto">
+              We bridge the gap between academic theory and industry demands, creating{" "}
+              <span className="text-sky-600 dark:text-sky-300 font-medium">future-ready professionals</span>{" "}
+              through practical learning and innovation
             </p>
           </div>
 
@@ -193,53 +237,29 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             
             {/* Left Column - 3 Cards */}
-            <div className="space-y-8">
-              
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
-                    <span className="text-xl font-bold">01</span>
+            <div className="space-y-5">
+              {[
+                { n: "01", title: "Practical Skill Development", body: <>Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.</> },
+                { n: "02", title: "Industry Exposure", body: "Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career." },
+                { n: "03", title: "Collaborative Environment", body: "Join a community of passionate learners and innovators. Collaborate on projects, share knowledge, and grow together. Our senior-junior mentorship model ensures everyone gets the guidance they need to succeed." },
+              ].map(({ n, title, body }) => (
+                <div key={n} className="flex gap-5 p-6 rounded-xl transition-all duration-300 hover:-translate-x-0 group" style={{ background:"rgba(11,18,37,0.5)", border:"1px solid rgba(255,255,255,0.06)", backdropFilter:"blur(12px)" }}>
+                  <span className="font-mono-tech text-cyan-400 text-sm pt-0.5 shrink-0 tabular-nums">{n}</span>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">{title}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{body}</p>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Practical Skill Development</h3>
                 </div>
-                <p className="text-slate-600">
-                  Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
-                </p>
-              </div>
-
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
-                    <span className="text-xl font-bold">02</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Industry Exposure</h3>
-                </div>
-                <p className="text-slate-600">
-                  Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
-                </p>
-              </div>
-
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
-                    <span className="text-xl font-bold">03</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Collaborative Environment</h3>
-                </div>
-                <p className="text-slate-600">
-                  Join a community of passionate learners and innovators. Collaborate on projects, 
-                  share knowledge, and grow together. Our senior-junior mentorship model ensures 
-                  everyone gets the guidance they need to succeed.
-                </p>
-              </div>
+              ))}
             </div>
 
             {/* Right Column - Advantage Card */}
             <div className="relative group">
-              <div className="absolute -inset-1 bg-sky-600/15 rounded-3xl blur opacity-50 group-hover:opacity-80 transition duration-1000"></div>
-              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-10 rounded-3xl">
-                <h3 className="text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
-                <div className="space-y-6">
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{background:"linear-gradient(135deg,rgba(0,212,255,0.06),rgba(124,58,237,0.06))",boxShadow:"0 0 60px rgba(56,189,248,0.12)"}} />
+              <div className="relative p-8 rounded-3xl" style={{background:"rgba(11,18,37,0.75)",backdropFilter:"blur(20px)",border:"1px solid rgba(56,189,248,0.12)"}}>
+                <span className="font-mono-tech text-sky-700 dark:text-sky-400 text-xs tracking-widest uppercase block mb-3">The AdroIT Advantage</span>
+                <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">Why you'll grow faster here</h3>
+                <ul className="space-y-4">
                   {[
                     "Build an impressive portfolio with real projects",
                     "Master in-demand technologies before they're in your syllabus",
@@ -248,16 +268,16 @@ const Home = () => {
                     "Gain confidence through regular presentations and demos",
                     "Access exclusive learning resources and workshops"
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-sky-600/10 text-sky-800 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-sky-500/15 flex items-center justify-center">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" className="text-sky-600 dark:text-sky-400">
                           <path d="M20 6L9 17L4 12"/>
                         </svg>
-                      </div>
-                      <span className="text-slate-700">{item}</span>
-                    </div>
+                      </span>
+                      <span className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{item}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           </div>
@@ -269,9 +289,11 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Technical Domains</h2>
-            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
+            <span className="section-label mb-4 block">02 // Our Expertise</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-6 text-slate-900 dark:text-white">
+              Technical <span className="text-gradient-cyan">Domains</span>
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 text-lg max-w-3xl mx-auto">
               Four pillars of technical excellence driving innovation at AdroIT
             </p>
           </div>
@@ -288,7 +310,7 @@ const Home = () => {
             <Link
               to="/domains"
               onClick={()=>window.scrollTo(0,0)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-xl text-sky-800 hover:text-slate-900 hover:border-sky-600/30 transition-all duration-300 group"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 group" style={{background:"rgba(56,189,248,0.08)",border:"1px solid rgba(56,189,248,0.25)",color:"rgba(125,211,252,0.9)",backdropFilter:"blur(12px)"}}
             >
               <span>Explore All Domains</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,49 +353,38 @@ const Home = () => {
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">How AdroIT Will Transform You</h2>
+            <span className="section-label mb-4 block">03 // Your Growth</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-6 text-slate-900 dark:text-white">
+              How AdroIT Will <span className="text-gradient-cyan">Transform You</span>
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/>
-                </svg>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: <><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/></>,
+                title: "Technical Excellence",
+                body: "Develop strong technical thinking by understanding core concepts, problem-solving approaches, and real-world applications across all four domains."
+              },
+              {
+                icon: <><circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/></>,
+                title: "Professional Network",
+                body: "Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning."
+              },
+              {
+                icon: <><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></>,
+                title: "Leadership Skills",
+                body: "Take ownership of projects, lead teams in hackathons, and organize events. Develop the soft skills that complement your technical expertise."
+              }
+            ].map(({ icon, title, body }) => (
+              <div key={title} className="group relative p-7 rounded-2xl transition-all duration-300 hover:-translate-y-2" style={{background:"rgba(11,18,37,0.5)",border:"1px solid rgba(255,255,255,0.06)",backdropFilter:"blur(12px)"}}>
+                <div className="w-11 h-11 flex items-center justify-center rounded-xl mb-5 text-cyan-400 transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-300" style={{background:"linear-gradient(135deg,rgba(56,189,248,0.12),rgba(139,92,246,0.08))",border:"1px solid rgba(56,189,248,0.18)"}}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{icon}</svg>
+                </div>
+                <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-slate-100">{title}</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{body}</p>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-slate-900">Technical Excellence</h3>
-              <p className="text-slate-600">
-                Develop strong technical thinking by understanding core concepts, problem-solving approaches,
-                and real-world applications across all four domains.
-              </p>
-            </div>
-
-            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-slate-900">Professional Network</h3>
-              <p className="text-slate-600">
-                Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.
-              </p>
-            </div>
-
-            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-slate-900">Leadership Skills</h3>
-              <p className="text-slate-600">
-                Take ownership of projects, lead teams in hackathons, and organize events. 
-                Develop the soft skills that complement your technical expertise.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -386,54 +397,35 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Join the AdroIT Community</h2>
+            <span className="section-label mb-4 block">04 // What We Do</span>
+            <h2 className="fluid-h2 font-bold mt-4 mb-6 text-slate-900 dark:text-white">
+              Join the <span className="text-gradient-cyan">AdroIT Community</span>
+            </h2>
             <p className="text-slate-600 text-xl max-w-3xl mx-auto">
               Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
               in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: "Weekly Tech Sessions", desc: "Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.", items: ["Machine Learning Fundamentals & Projects", "Cloud Computing Concepts & Deployment", "Cybersecurity Basics & Practices", "Data Analytics Tools & Workflows"] },
+              { title: "Project Sprints", desc: "Team-based project cycles designed to apply skills through real-world problem solving.", items: ["ML Model Development", "Cloud-based Application Deployment", "Security Analysis & Testing", "Data-driven Insights Projects"] },
+              { title: "Community & Events", desc: "Events that encourage collaboration, innovation, and exposure to industry practices.", items: ["HackAdroIT Hackathon", "Industry Talks & Expert Sessions", "Project Demo Days", "Peer Learning & Networking Events"] },
+            ].map(({ title, desc, items }) => (
+              <div key={title} className="p-7 rounded-2xl transition-all duration-300 hover:-translate-y-1" style={{background:"rgba(11,18,37,0.5)",border:"1px solid rgba(255,255,255,0.06)",backdropFilter:"blur(12px)"}}>
+                <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-slate-100">{title}</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-5 leading-relaxed">{desc}</p>
+                <ul className="space-y-2">
+                  {items.map(item => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                      <span className="text-sky-500 shrink-0">›</span>{item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
-            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900">Weekly Tech Sessions</h3>
-              <p className="text-slate-600 mb-4">
-                Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• Machine Learning Fundamentals & Projects</li>
-                <li>• Cloud Computing Concepts & Deployment</li>
-                <li>• Cybersecurity Basics & Practices</li>
-                <li>• Data Analytics Tools & Workflows</li>
-              </ul>
-            </div>
-
-            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900">Project Sprints</h3>
-              <p className="text-slate-600 mb-4">
-                Team-based project cycles designed to apply skills through real-world problem solving.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• ML Model Development</li>
-                <li>• Cloud-based Application Deployment</li>
-                <li>• Security Analysis & Testing</li>
-                <li>• Data-driven Insights Projects</li>
-              </ul>
-            </div>
-
-            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900">Community & Events</h3>
-              <p className="text-slate-600 mb-4">
-                Events that encourage collaboration, innovation, and exposure to industry practices.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• HackAdroIT Hackathon</li>
-                <li>• Industry Talks & Expert Sessions</li>
-                <li>• Project Demo Days</li>
-                <li>• Peer Learning & Networking Events</li>
-              </ul>
-            </div>
           </div>
 
           {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}

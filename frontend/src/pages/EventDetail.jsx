@@ -24,7 +24,7 @@ export default function EventDetail() {
     setIsRegOpen(false);
   }, [slug]);
 
-  if (!event) return <Navigate to="/events" replace />;
+  if (!event) return <Navigate to="/archive" replace />;
 
   const poster = event.poster || event.imageUrl;
   const fees = feeItems(event.registrationCost);
@@ -36,7 +36,7 @@ export default function EventDetail() {
   });
 
   return (
-    <div className="event-page-enter min-h-dvh bg-[#080c16] text-slate-100">
+    <div className="event-page-enter min-h-dvh bg-[#060b18] text-slate-100">
       <section className="relative min-h-[52vh] sm:min-h-[58vh] lg:min-h-[70vh] overflow-hidden">
         {poster && (
           <img
@@ -45,14 +45,14 @@ export default function EventDetail() {
             className="absolute inset-0 h-full w-full object-cover scale-105"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080c16] via-[#080c16]/55 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-[#060b18]/55 to-black/30" />
 
         <div className="relative z-10 mx-auto flex min-h-[52vh] sm:min-h-[58vh] lg:min-h-[70vh] max-w-6xl flex-col justify-end px-4 pb-10 pt-8 sm:px-6 lg:px-8 lg:pb-14">
           <Link
-            to="/events"
-            className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3.5 py-1.5 text-sm text-slate-200 backdrop-blur-md transition-colors hover:border-cyan-400/40 hover:text-white"
+            to="/archive"
+            className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3.5 py-1.5 text-sm text-slate-300 backdrop-blur-md transition-colors hover:border-cyan-400/40 hover:text-white font-mono-tech text-xs tracking-wide"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={14} />
             Paradox 2026
           </Link>
           <div className="flex items-center justify-between gap-6 sm:gap-10 lg:gap-16">
