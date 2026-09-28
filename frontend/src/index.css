@@ -387,3 +387,71 @@ html.dark .circuit-group { filter: url(#circuit-glow); }
   }
   html.dark .circuit-group { filter: none; } /* no glow on mobile */
 }
+/* ============================================================
+   DARK MODE — Domains / Members / Contact inner page fixes
+   ============================================================ */
+html.dark .bg-white\/90,
+html.dark .bg-white\/85,
+html.dark .bg-white\/80,
+html.dark .bg-white\/40,
+html.dark .bg-white\/60,
+html.dark .bg-white\/70,
+html.dark .bg-white\/75 {
+  background-color: rgba(11,18,37,0.82) !important;
+  backdrop-filter: blur(12px);
+}
+html.dark .md\:bg-white\/90,
+html.dark .md\:bg-white\/85,
+html.dark .md\:bg-white\/40,
+html.dark .md\:bg-white\/70 {
+  background-color: rgba(11,18,37,0.82) !important;
+}
+
+/* Slate surface cards in dark mode */
+html.dark .bg-slate-900\/5,
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+html.dark .bg-slate-900\/10 {
+  background-color: rgba(255,255,255,0.06) !important;
+}
+html.dark .bg-slate-900\/20 {
+  background-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Borders */
+html.dark .border-slate-900\/10,
+html.dark .border-slate-900\/5 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Text on inner pages */
+html.dark .text-slate-900 { color: #f1f5f9 !important; }
+html.dark .text-slate-800 { color: #e2e8f0 !important; }
+html.dark .text-slate-700 { color: #cbd5e1 !important; }
+html.dark .text-slate-600 { color: #94a3b8 !important; }
+
+/* Hover states */
+html.dark .hover\:bg-slate-900\/10:hover,
+html.dark .hover\:bg-slate-50:hover {
+  background-color: rgba(255,255,255,0.07) !important;
+}
+html.dark .hover\:text-slate-900:hover { color: #f1f5f9 !important; }
+
+/* Page root background for inner pages (Domains/Members/Contact) */
+html.dark .relative.min-h-dvh.text-slate-900 {
+  background-color: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+/* Ring/tab active states on Domains */
+html.dark .bg-white.text-sky-700,
+html.dark .bg-white.shadow-sm {
+  background-color: rgba(14,165,233,0.12) !important;
+  color: #7dd3fc !important;
+}

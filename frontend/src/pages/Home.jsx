@@ -3,6 +3,9 @@ import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
 import { Link, useNavigate } from "react-router-dom";
 import BrandMark from '../components/BrandMark';
+import EventCarousel from '../components/EventCarousel';
+import { sharedEvents } from '../data/events';
+import { useTheme } from '../lib/theme';
 
 // ============================================
 // FIXED INTERACTIVE BALL COMPONENT
@@ -13,25 +16,18 @@ import InteractiveRings from '../components/InteractiveRings';
 // DOMAIN CARD COMPONENT - NEW!
 // ============================================
 const DomainCard = ({ icon, title, description }) => (
-  <div className="group relative rounded-2xl p-px overflow-hidden transition-all duration-500 hover:-translate-y-2"
-    style={{ background: "linear-gradient(135deg, rgba(56,189,248,0.15), rgba(139,92,246,0.10), rgba(255,255,255,0.04))" }}>
-    {/* Hover gradient border intensifier */}
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-      style={{ background: "linear-gradient(135deg, rgba(56,189,248,0.5), rgba(139,92,246,0.35), rgba(56,189,248,0.15))" }} />
-    <div className="relative rounded-2xl p-6 h-full"
-      style={{ background: "rgba(11,18,37,0.85)", backdropFilter: "blur(20px)" }}>
+  <div className="group relative rounded-2xl p-px overflow-hidden transition-all duration-500 hover:-translate-y-2 bg-gradient-to-br from-sky-400/15 via-violet-400/10 to-transparent dark:from-sky-400/20 dark:via-violet-400/12 dark:to-transparent">
+    {/* Hover border intensifier */}
+    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl bg-gradient-to-br from-sky-400/50 via-violet-400/35 to-sky-400/15" />
+    <div className="relative rounded-2xl p-6 h-full bg-white/80 dark:bg-[#0b1225]/90 backdrop-blur-xl">
       {/* Icon */}
-      <div className="relative w-11 h-11 flex items-center justify-center rounded-xl mb-5 transition-all duration-300 group-hover:scale-110"
-        style={{ background: "linear-gradient(135deg, rgba(56,189,248,0.15), rgba(139,92,246,0.10))", border: "1px solid rgba(56,189,248,0.2)" }}>
-        <span className="text-sky-400 group-hover:text-cyan-300 transition-colors duration-300">{icon}</span>
-        {/* icon glow */}
-        <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ boxShadow: "0 0 16px rgba(56,189,248,0.3)" }} />
+      <div className="relative w-11 h-11 flex items-center justify-center rounded-xl mb-5 transition-all duration-300 group-hover:scale-110 bg-sky-50 dark:bg-sky-400/10 border border-sky-200/60 dark:border-sky-400/20">
+        <span className="text-sky-600 dark:text-sky-400 group-hover:text-sky-500 dark:group-hover:text-cyan-300 transition-colors duration-300">{icon}</span>
       </div>
-      <h3 className="text-base font-semibold text-slate-200 mb-2 group-hover:text-white transition-colors duration-300 tracking-tight">
+      <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-2 group-hover:text-sky-700 dark:group-hover:text-white transition-colors duration-300 tracking-tight">
         {title}
       </h3>
-      <p className="text-slate-500 text-sm leading-relaxed group-hover:text-slate-400 transition-colors duration-300">
+      <p className="text-slate-500 dark:text-slate-500 text-sm leading-relaxed group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors duration-300">
         {description}
       </p>
     </div>
@@ -43,6 +39,7 @@ const DomainCard = ({ icon, title, description }) => (
 // ============================================
 const Home = () => {
   const navigate = useNavigate();
+  const { isDark } = useTheme();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
   const domainsRef = useRef(null);
@@ -132,29 +129,30 @@ const Home = () => {
       </div>
 
       {/* ===== HERO SECTION ===== */}
-      <section 
+      <section
         ref={heroRef}
         className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-8 pb-24 sm:pt-10 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
-
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
 
           {/* ── Terminal-style badge ── */}
           <div className="inline-flex items-center gap-3 mb-6 rounded-full px-4 py-2"
             style={{
-              background: "rgba(11,18,37,0.8)",
-              border: "1px solid rgba(56,189,248,0.25)",
+              background: isDark ? "rgba(11,18,37,0.85)" : "rgba(14,165,233,0.06)",
+              border: isDark ? "1px solid rgba(56,189,248,0.28)" : "1px solid rgba(14,165,233,0.22)",
               backdropFilter: "blur(16px)",
-              boxShadow: "0 0 24px rgba(56,189,248,0.08), inset 0 1px 0 rgba(255,255,255,0.05)"
+              boxShadow: isDark
+                ? "0 0 24px rgba(56,189,248,0.10), inset 0 1px 0 rgba(255,255,255,0.05)"
+                : "0 2px 8px rgba(14,165,233,0.08)"
             }}>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-red-500/80" />
-              <span className="w-2 h-2 rounded-full bg-yellow-400/80" />
-              <span className="w-2 h-2 rounded-full bg-green-400/80" />
+              <span className="w-2 h-2 rounded-full bg-red-400" />
+              <span className="w-2 h-2 rounded-full bg-yellow-400" />
+              <span className="w-2 h-2 rounded-full bg-green-400" />
             </span>
-            <span className="w-px h-4 bg-white/15" />
-            <span className="font-mono-tech text-[10px] sm:text-xs text-cyan-400 tracking-widest">
-              <span className="text-violet-400 mr-1">~/adroit</span>
+            <span className="w-px h-4 bg-slate-300 dark:bg-white/15" />
+            <span className="font-mono-tech text-[10px] sm:text-xs text-cyan-600 dark:text-cyan-400 tracking-widest">
+              <span className="text-violet-600 dark:text-violet-400 mr-1">~/adroit</span>
               $ event --season paradox-2026
               <span className="cursor-blink" />
             </span>
@@ -162,18 +160,16 @@ const Home = () => {
 
           <BrandMark size="home" className="mb-6 drop-shadow-[0_0_32px_rgba(56,189,248,0.45)]" />
 
-          <h1 className="mx-auto mb-3 max-w-2xl px-4 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight leading-snug"
-            style={{ color: "rgba(220,230,255,0.9)" }}>
+          <h1 className="mx-auto mb-3 max-w-2xl px-4 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight leading-snug text-slate-800 dark:text-slate-200">
             <span className="sr-only">AdroIT — </span>
             Department of{" "}
             <span className="text-gradient-aurora font-bold">Computer Science & Engineering</span>
           </h1>
 
           {/* Tagline */}
-          <p className="fluid-lead leading-relaxed max-w-3xl mx-auto mb-10"
-            style={{ color: "rgba(148,163,184,0.9)" }}>
+          <p className="fluid-lead leading-relaxed max-w-3xl mx-auto mb-10 text-slate-600 dark:text-slate-400">
             The Premier Technical Club —{" "}
-            <span style={{ color: "rgba(125,211,252,0.95)" }}>empowering tomorrow's innovators</span>{" "}
+            <span className="text-sky-600 dark:text-sky-300 font-medium">empowering tomorrow's innovators</span>{" "}
             through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
 
@@ -186,11 +182,10 @@ const Home = () => {
           <div className="flex flex-row flex-wrap gap-3 justify-center items-center relative z-20">
             <Link
               to="/domains"
-              className="group inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105"
+              className="group inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full text-white transition-all duration-300 hover:scale-105"
               style={{
                 background: "linear-gradient(135deg, #0ea5e9, #7c3aed)",
-                color: "#ffffff",
-                boxShadow: "0 0 24px rgba(14,165,233,0.35), 0 4px 12px rgba(0,0,0,0.3)"
+                boxShadow: "0 0 20px rgba(14,165,233,0.3), 0 4px 12px rgba(0,0,0,0.2)"
               }}
             >
               <span>Explore AdroIT</span>
@@ -200,13 +195,7 @@ const Home = () => {
             </Link>
             <Link
               to="/events"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                color: "rgba(220,230,255,0.85)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                backdropFilter: "blur(12px)",
-              }}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 hover:scale-105 text-slate-700 dark:text-slate-300 bg-white/70 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 backdrop-blur-sm hover:border-sky-400/40"
             >
               See Events
             </Link>
@@ -243,7 +232,7 @@ const Home = () => {
                 { n: "02", title: "Industry Exposure", body: "Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career." },
                 { n: "03", title: "Collaborative Environment", body: "Join a community of passionate learners and innovators. Collaborate on projects, share knowledge, and grow together. Our senior-junior mentorship model ensures everyone gets the guidance they need to succeed." },
               ].map(({ n, title, body }) => (
-                <div key={n} className="flex gap-5 p-6 rounded-xl transition-all duration-300 hover:-translate-x-0 group" style={{ background:"rgba(11,18,37,0.5)", border:"1px solid rgba(255,255,255,0.06)", backdropFilter:"blur(12px)" }}>
+                <div key={n} className="flex gap-5 p-6 rounded-xl transition-all duration-300 group bg-white/70 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.06] hover:border-sky-400/30 dark:hover:border-sky-400/25 hover:shadow-[0_4px_20px_rgba(14,165,233,0.07)] backdrop-blur-sm">
                   <span className="font-mono-tech text-cyan-400 text-sm pt-0.5 shrink-0 tabular-nums">{n}</span>
                   <div>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">{title}</h3>
@@ -256,7 +245,7 @@ const Home = () => {
             {/* Right Column - Advantage Card */}
             <div className="relative group">
               <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{background:"linear-gradient(135deg,rgba(0,212,255,0.06),rgba(124,58,237,0.06))",boxShadow:"0 0 60px rgba(56,189,248,0.12)"}} />
-              <div className="relative p-8 rounded-3xl" style={{background:"rgba(11,18,37,0.75)",backdropFilter:"blur(20px)",border:"1px solid rgba(56,189,248,0.12)"}}>
+              <div className="relative p-8 rounded-3xl bg-white/75 dark:bg-[#0b1225]/85 backdrop-blur-xl border border-slate-100 dark:border-sky-400/12">
                 <span className="font-mono-tech text-sky-700 dark:text-sky-400 text-xs tracking-widest uppercase block mb-3">The AdroIT Advantage</span>
                 <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">Why you'll grow faster here</h3>
                 <ul className="space-y-4">
@@ -377,8 +366,8 @@ const Home = () => {
                 body: "Take ownership of projects, lead teams in hackathons, and organize events. Develop the soft skills that complement your technical expertise."
               }
             ].map(({ icon, title, body }) => (
-              <div key={title} className="group relative p-7 rounded-2xl transition-all duration-300 hover:-translate-y-2" style={{background:"rgba(11,18,37,0.5)",border:"1px solid rgba(255,255,255,0.06)",backdropFilter:"blur(12px)"}}>
-                <div className="w-11 h-11 flex items-center justify-center rounded-xl mb-5 text-cyan-400 transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-300" style={{background:"linear-gradient(135deg,rgba(56,189,248,0.12),rgba(139,92,246,0.08))",border:"1px solid rgba(56,189,248,0.18)"}}>
+              <div key={title} className="group relative p-7 rounded-2xl transition-all duration-300 hover:-translate-y-2 bg-white/70 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.06] hover:border-sky-400/30 dark:hover:border-sky-400/25 hover:shadow-[0_8px_28px_rgba(14,165,233,0.08)] backdrop-blur-sm">
+                <div className="w-11 h-11 flex items-center justify-center rounded-xl mb-5 text-sky-600 dark:text-sky-400 transition-all duration-300 group-hover:scale-110 group-hover:text-sky-500 dark:group-hover:text-cyan-300 bg-sky-50 dark:bg-sky-400/10 border border-sky-200/60 dark:border-sky-400/18">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{icon}</svg>
                 </div>
                 <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-slate-100">{title}</h3>
@@ -413,7 +402,7 @@ const Home = () => {
               { title: "Project Sprints", desc: "Team-based project cycles designed to apply skills through real-world problem solving.", items: ["ML Model Development", "Cloud-based Application Deployment", "Security Analysis & Testing", "Data-driven Insights Projects"] },
               { title: "Community & Events", desc: "Events that encourage collaboration, innovation, and exposure to industry practices.", items: ["HackAdroIT Hackathon", "Industry Talks & Expert Sessions", "Project Demo Days", "Peer Learning & Networking Events"] },
             ].map(({ title, desc, items }) => (
-              <div key={title} className="p-7 rounded-2xl transition-all duration-300 hover:-translate-y-1" style={{background:"rgba(11,18,37,0.5)",border:"1px solid rgba(255,255,255,0.06)",backdropFilter:"blur(12px)"}}>
+              <div key={title} className="p-7 rounded-2xl transition-all duration-300 hover:-translate-y-1 bg-white/70 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.06] hover:border-sky-400/25 hover:shadow-[0_4px_16px_rgba(14,165,233,0.06)] backdrop-blur-sm">
                 <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-slate-100">{title}</h3>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mb-5 leading-relaxed">{desc}</p>
                 <ul className="space-y-2">
