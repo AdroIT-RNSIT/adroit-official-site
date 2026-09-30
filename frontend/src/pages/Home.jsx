@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
 import { Link, useNavigate } from "react-router-dom";
-import BrandMark from '../components/BrandMark';
 import EventCarousel from '../components/EventCarousel';
 
 // ============================================
@@ -140,32 +139,29 @@ const Home = () => {
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-6 sm:pt-8 lg:pt-10 lg:pb-4 opacity-0 translate-y-4 transition-all duration-500 ease-out"
+        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
-        <div className="relative z-10 w-full max-w-5xl mx-auto text-center">
-          <div className="relative mx-auto w-full max-w-3xl pt-[max(0px,calc(33vh-12rem))]">
-            <InteractiveRings className="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 w-[min(100%,68vmin)] max-w-[620px]" />
+        <InteractiveRings className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-[min(100%,70vmin)] max-w-[650px]" />
 
-            <p className="relative z-10 mb-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-sky-800/80">
-              Recruiting soon
-            </p>
-
-            <BrandMark size="hero" className="relative z-10 mb-3" />
-
-            <h1 className="relative z-10 mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
-              <span className="sr-only">AdroIT — </span>
-              Department of
-              <span className="mt-0.5 block font-bold">
-                Computer Science &amp; Engineering
-              </span>
-            </h1>
-
-            <p className="relative z-10 fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
-              The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
-              cutting-edge technology, collaborative projects, and industry-ready skills
-            </p>
-          </div>
-
+        <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
+          <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
+            Recruiting soon
+          </span>
+          <img
+            alt="AdroIT"
+            className="block object-contain drop-shadow-[0_0_18px_rgba(34,211,238,0.35)] h-[5.25rem] sm:h-24 md:h-[7.5rem] w-auto mx-auto mb-5"
+            src="/adroit-ctf-logo.png"
+          />
+          <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
+            <span className="sr-only">AdroIT — </span>
+            Department of
+            <span className="mt-0.5 block font-bold">
+              Computer Science &amp; Engineering
+            </span>
+          </h1>
+          <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
+            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through cutting-edge technology, collaborative projects, and industry-ready skills
+          </p>
           <EventCarousel
             events={domainCards}
             onSelect={(domain) => navigate(domain.link || "/domains")}
