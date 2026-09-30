@@ -10,6 +10,7 @@ import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
 import Domains from "./pages/Domains";
 import Contact from "./pages/Contact";
+import DomainRegister from "./pages/DomainRegister";
 // ===== PROTECTED PAGES (Login Required + Approval) =====
 import Resources from "./pages/Resources";
 import Members from "./pages/Members";
@@ -81,6 +82,15 @@ export default function App() {
           element={
             <WithLayout>
               <Domains />
+            </WithLayout>
+          }
+        />
+
+        <Route
+          path="/register/:domain"
+          element={
+            <WithLayout>
+              <DomainRegister />
             </WithLayout>
           }
         />

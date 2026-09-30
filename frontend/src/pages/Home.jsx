@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import EventCarousel from '../components/EventCarousel';
+import { registrationDomains } from '../data/domainRegistration';
 
 // ============================================
 // DOMAIN CARD COMPONENT - NEW!
@@ -83,22 +84,13 @@ const Home = () => {
     }
   ];
 
-  const domainCards = [
-    ...domains.map((domain) => ({
-      _id: domain.title,
-      title: domain.title,
-      description: domain.description,
-      label: "Technical",
-      link: "/domains",
-    })),
-    {
-      _id: "non-tech",
-      title: "Non-Tech",
-      label: "Non-Tech",
-      description: "Events, social media, marketing, and outreach that keep the club visible and moving.",
-      link: "/domains",
-    },
-  ];
+  const domainCards = registrationDomains.map((domain) => ({
+    _id: domain.slug,
+    title: domain.title,
+    description: domain.description,
+    label: domain.label,
+    link: `/register/${domain.slug}`,
+  }));
 
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
@@ -154,9 +146,12 @@ const Home = () => {
           <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
             The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
+          <p className="text-sm font-semibold tracking-wide text-sky-800">
+            Click to register
+          </p>
           <EventCarousel
             events={domainCards}
-            onSelect={(domain) => navigate(domain.link || "/domains")}
+            onSelect={(domain) => navigate(domain.link || "/")}
           />
         </div>
       </section>
