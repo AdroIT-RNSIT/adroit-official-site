@@ -96,7 +96,7 @@ const Home = () => {
     <div className="home-root relative min-h-dvh overflow-x-clip">
       
       {/* Mobile: original corner sizes in flow so the hero sits below. Laptop: larger aligned pair. */}
-      <div className="lg:hidden relative z-[1001] flex items-center justify-between">
+      <div className="lg:hidden relative z-[1001] flex items-center justify-between px-3">
         <img
           src="/rnsit_logo.png"
           alt="RNSIT Logo"
@@ -146,9 +146,6 @@ const Home = () => {
           <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
             The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
-          <p className="text-sm font-semibold tracking-wide text-sky-800">
-            Click to register
-          </p>
           <EventCarousel
             events={domainCards}
             onSelect={(domain) => navigate(domain.link || "/")}
@@ -175,36 +172,36 @@ const Home = () => {
             {/* Left Column - 3 Cards */}
             <div className="space-y-8">
               
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
+              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">01</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Practical Skill Development</h3>
+                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Practical Skill Development</h3>
                 </div>
                 <p className="text-slate-600">
                   Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
                 </p>
               </div>
 
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
+              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">02</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Industry Exposure</h3>
+                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Industry Exposure</h3>
                 </div>
                 <p className="text-slate-600">
                   Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
                 </p>
               </div>
 
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
+              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">03</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Collaborative Environment</h3>
+                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Collaborative Environment</h3>
                 </div>
                 <p className="text-slate-600">
                   Join a community of passionate learners and innovators. Collaborate on projects, 
@@ -217,8 +214,8 @@ const Home = () => {
             {/* Right Column - Advantage Card */}
             <div className="relative group">
               <div className="absolute -inset-1 bg-sky-600/15 rounded-3xl blur opacity-50 group-hover:opacity-80 transition duration-1000"></div>
-              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-10 rounded-3xl">
-                <h3 className="text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
+              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-6 sm:p-10 rounded-3xl">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
                 <div className="space-y-6">
                   {[
                     "Build an impressive portfolio with real projects",

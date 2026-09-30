@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { findRegistrationDomain } from "../data/domainRegistration";
 import { supabase } from "../lib/supabaseClient";
 
 const fieldClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20";
 
-const SEMESTERS = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const SEMESTERS = ["1", "3"];
 
 export default function DomainRegister() {
   const { domain: slug } = useParams();
@@ -14,6 +15,7 @@ export default function DomainRegister() {
   const [form, setForm] = useState({
     name: "",
     usn: "",
+    mobile: "",
     semester: "",
     section: "",
   });
@@ -25,8 +27,12 @@ export default function DomainRegister() {
     return (
       <div className="mx-auto max-w-lg px-4 py-20 text-center">
         <h1 className="text-2xl font-bold text-slate-900">Domain not found</h1>
-        <Link to="/" className="mt-6 inline-block text-sm font-medium text-sky-800">
-          Back to home
+        <Link
+          to="/"
+          className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
+        >
+          <ArrowLeft size={16} />
+          Back
         </Link>
       </div>
     );
@@ -34,10 +40,11 @@ export default function DomainRegister() {
 
   const update = (event) => {
     const { name, value } = event.target;
-    setForm((current) => ({
-      ...current,
-      [name]: name === "usn" || name === "section" ? value.toUpperCase() : value,
-    }));
+    let next = value;
+    if (name === "usn") next = value.toUpperCase();
+    if (name === "section") next = value.replace(/[^a-z]/gi, "").slice(0, 1).toUpperCase();
+    if (name === "mobile") next = value.replace(/\D/g, "").slice(0, 10);
+    setForm((current) => ({ ...current, [name]: next }));
   };
 
   const handleSubmit = async (event) => {
@@ -50,8 +57,9 @@ export default function DomainRegister() {
       domain_name: domain.title,
       name: form.name.trim(),
       usn: form.usn.trim().toUpperCase(),
+      mobile: form.mobile,
       semester: form.semester,
-      section: form.section.trim().toUpperCase(),
+      section: form.section,
       submitted_at: new Date().toISOString(),
     };
 
@@ -72,8 +80,12 @@ export default function DomainRegister() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
-      <Link to="/" className="text-sm font-medium text-sky-800">
-        Back to home
+      <Link
+        to="/"
+        className="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
+      >
+        <ArrowLeft size={16} />
+        Back
       </Link>
       <p className="mt-6 font-mono text-xs tracking-[0.22em] uppercase text-sky-800">
         {domain.label}
@@ -157,13 +169,38 @@ export default function DomainRegister() {
                 name="section"
                 type="text"
                 required
-                maxLength={3}
+                minLength={1}
+                maxLength={1}
+                pattern="[A-Za-z]"
+                title="Enter one letter, for example A"
                 value={form.section}
                 onChange={update}
                 className={fieldClass}
                 placeholder="A"
               />
             </div>
+          </div>
+
+          <div>
+            <label htmlFor="mobile" className="mb-1.5 block text-sm font-medium text-slate-700">
+              Mobile number
+            </label>
+            <input
+              id="mobile"
+              name="mobile"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel"
+              required
+              minLength={10}
+              maxLength={10}
+              pattern="[0-9]{10}"
+              title="Enter a 10-digit mobile number"
+              value={form.mobile}
+              onChange={update}
+              className={fieldClass}
+              placeholder="9876543210"
+            />
           </div>
 
           {error && (

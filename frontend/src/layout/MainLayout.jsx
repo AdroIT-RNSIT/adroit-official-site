@@ -13,7 +13,7 @@ export default function MainLayout({ children }) {
     <div
       className={`min-h-dvh font-sans overflow-x-clip ${
         isDark ? "bg-[#080c16] text-slate-100" : "bg-white text-slate-900"
-      }`}
+      } ${location.pathname === "/" ? "pb-32 lg:pb-0" : ""}`}
     >
       <Navbar />
       <Sidebar />  {/* No showOnHomepage prop! */}
