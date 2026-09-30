@@ -133,7 +133,7 @@ const Home = () => {
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="h-[12rem] w-auto max-w-[28%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="h-[10rem] w-auto max-w-[28%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
 
