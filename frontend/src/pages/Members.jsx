@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 import { Link } from "react-router-dom";
 import { Users, Brain, Cloud, Shield, BarChart3, Target, Calendar, User } from "lucide-react";
+import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 
 // ============================================
 // DOMAIN CONFIGURATION - MATCHES OTHER PAGES
@@ -176,11 +177,9 @@ export default function Members() {
     }
   };
 
-  // ===== CLOUDINARY URL BUILDER =====
-  const getCloudinaryUrl = (publicId, width = 100, height = 100) => {
-    // Blank section per user request instead of Cloudinary URL
-    return `data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=`;
-  };
+  const getCloudinaryUrl = (publicId, width = 100, height = 100) =>
+    cloudinaryUrl(publicId, { width, height }) ||
+    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
   if (loading) {
     return (

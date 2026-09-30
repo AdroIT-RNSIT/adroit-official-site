@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from '../lib/auth-client';
 import { Link } from 'react-router-dom';
 import { User, Lock, Settings, BarChart3, Bot } from 'lucide-react';
+import { cloudinaryUrl } from '../lib/cloudinaryUrl';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -307,11 +308,9 @@ export default function Profile() {
     setTimeout(() => setMessage({ type: '', text: '' }), 4000);
   };
 
-  // ===== CLOUDINARY URL BUILDER =====
-  const getCloudinaryUrl = (publicId, width = 200, height = 200) => {
-    // Blank section per user request instead of Cloudinary URL
-    return `data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=`;
-  };
+  const getCloudinaryUrl = (publicId, width = 200, height = 200) =>
+    cloudinaryUrl(publicId, { width, height }) ||
+    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
   // ===== DOMAIN OPTIONS =====
   const domainOptions = [

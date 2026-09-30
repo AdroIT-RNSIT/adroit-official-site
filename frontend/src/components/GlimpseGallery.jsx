@@ -9,9 +9,9 @@ const GALLERY_SIZES = [
 function fillMarqueeTrack(images, period = GALLERY_SIZES.length) {
   if (!images.length) return [];
   const base = [...images];
-  while (base.length < 8 || base.length % period !== 0) {
-    base.push(...images);
-    if (base.length > 60) break;
+  const min = Math.max(period * 2, 8);
+  while (base.length < min || base.length % period !== 0) {
+    base.push(images[base.length % images.length]);
   }
   return [...base, ...base];
 }

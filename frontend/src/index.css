@@ -98,7 +98,7 @@ input, textarea, select {
 }
 
 .animate-marquee {
-  animation: marquee 30s linear infinite;
+  animation: marquee 64s linear infinite;
   /* Use hardware acceleration for smoother mobile animation */
   transform: translateZ(0); 
   will-change: transform;
@@ -110,13 +110,13 @@ input, textarea, select {
 }
 
 .animate-marquee-reverse {
-  animation: marquee-reverse 38s linear infinite;
+  animation: marquee-reverse 76s linear infinite;
   transform: translateZ(0);
   will-change: transform;
 }
 
 .animate-marquee-slow {
-  animation-duration: 42s;
+  animation-duration: 84s;
 }
 
 .glimpse-gallery-track {
@@ -126,13 +126,13 @@ input, textarea, select {
 
 @media (max-width: 640px) {
   .animate-marquee {
-    animation: marquee 15s linear infinite;
+    animation: marquee 72s linear infinite;
   }
   .animate-marquee-reverse {
-    animation: marquee-reverse 22s linear infinite;
+    animation: marquee-reverse 84s linear infinite;
   }
   .animate-marquee-slow {
-    animation-duration: 24s;
+    animation-duration: 96s;
   }
 }
 

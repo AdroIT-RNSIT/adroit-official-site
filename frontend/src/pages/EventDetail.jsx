@@ -56,12 +56,15 @@ export default function EventDetail() {
 
   const isCompleted = event.status === "completed";
   const poster = event.poster || event.imageUrl;
-  const glimpses = [
-    ...(event.glimpses || []),
-    ...(event.competitions || []).map((c) => c.poster || c.imageUrl),
-    event.poster,
-    event.imageUrl,
-  ].filter((src, idx, arr) => src && arr.indexOf(src) === idx);
+  const glimpses = (
+    event.glimpses?.length
+      ? event.glimpses
+      : [
+          ...(event.competitions || []).map((c) => c.poster || c.imageUrl),
+          event.poster,
+          event.imageUrl,
+        ]
+  ).filter((src, idx, arr) => src && arr.indexOf(src) === idx);
   const competitions = event.competitions || [];
   const dateLabel = formatRange(event.date, event.endDate);
   const activeGlimpse =
