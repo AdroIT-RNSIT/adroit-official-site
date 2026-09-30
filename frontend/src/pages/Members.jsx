@@ -184,7 +184,7 @@ export default function Members() {
 
   if (loading) {
     return (
-      <div className="min-h-dvh bg-[#f3e8ff] flex items-center justify-center dark:bg-[#080c16]">
+      <div className="min-h-dvh bg-white flex items-center justify-center dark:bg-[#080c16]">
         <div className="text-center">
           <div className="relative">
             <div className="w-16 h-16 border-4 border-sky-600/30 border-t-sky-600 rounded-full animate-spin mx-auto mb-4"></div>
@@ -199,14 +199,7 @@ export default function Members() {
   }
 
   return (
-    <div className="min-h-dvh text-slate-900 font-sans overflow-x-clip pt-8 pb-16 dark:text-slate-100">
-      
-      {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 hidden md:block">
-        <div className="absolute top-40 left-20 w-[400px] max-w-[100vw] h-[400px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-40 right-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-      </div>
-
+    <div className="min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip pt-8 pb-16 dark:bg-[#080c16] dark:text-slate-100">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HEADER SECTION ===== */}

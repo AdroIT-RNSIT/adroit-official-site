@@ -203,37 +203,7 @@ function Resources(){
   }
 
   return (
-    <div className="min-h-dvh bg-[#f3e8ff] text-slate-900 font-sans overflow-x-clip dark:bg-[#080c16] dark:text-slate-100">
-    
-      {/* Background Glow */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-100 h-100 bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-125 h-125 bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-sky-500/10 rounded-full blur-[150px]"></div>
-      </div>
-    
-      {/* Particles */}
-      <div className="fixed inset-0 pointer-events-none z-1 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full ${
-              domain === 'ml' ? 'bg-cyan-400/20' :
-              domain === 'cc' ? 'bg-purple-400/20' :
-              domain === 'cy' ? 'bg-pink-400/20' :
-              domain === 'da' ? 'bg-green-400/20' :
-              'bg-sky-600/20'
-            } animate-float-particle`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${10 + Math.random() * 20}s`
-            }}
-          />
-        ))}
-      </div>
-
+    <div className="min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip dark:bg-[#080c16] dark:text-slate-100">
       <div className="text-center mb-12 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <h1 className="fluid-h1 font-extrabold mb-6">

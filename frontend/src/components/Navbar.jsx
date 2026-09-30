@@ -40,7 +40,6 @@ const Navbar = () => {
     path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
-  const isHomePage = pathname === "/";
   const isDarkNav = isDark;
 
   const handleLogout = async () => {
@@ -122,13 +121,9 @@ const Navbar = () => {
             ? scrolled
               ? "bg-[#080c16] border-b border-white/10 md:backdrop-blur-xl md:bg-[#080c16]/90 md:shadow-sm"
               : "bg-[#080c16] border-b border-white/10 md:bg-[#080c16]/85 md:backdrop-blur-md"
-            : isHomePage
-              ? scrolled
-                ? "bg-white border-b border-slate-200/80 md:backdrop-blur-xl md:bg-white/85 md:shadow-sm"
-                : "bg-white border-b border-slate-200/80 md:bg-white/70 md:backdrop-blur-md md:border-slate-200/60"
-              : scrolled
-                ? "bg-white border-b border-slate-200/80 md:backdrop-blur-xl md:bg-[#f3e8ff]/95 md:border-slate-900/10 md:shadow-xl"
-                : "bg-white border-b border-slate-200/80 md:bg-[#f3e8ff] md:border-slate-900/5"
+            : scrolled
+              ? "bg-white border-b border-slate-200/80 md:shadow-sm"
+              : "bg-white border-b border-slate-200/80"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">

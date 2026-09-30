@@ -80,7 +80,7 @@ const ChatBot = () => {
 
             {/* Chat Window */}
             {isOpen && (
-                <div className="w-[calc(100vw-3rem)] max-w-[400px] h-[500px] bg-[#f3e8ff]/95 backdrop-blur-xl border border-slate-900/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+                <div className="w-[calc(100vw-3rem)] max-w-[400px] h-[500px] bg-white border border-slate-900/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
 
                     {/* Header */}
                     <div className="p-4 bg-gradient-to-r from-sky-500/20 to-sky-600/20 border-b border-slate-900/10 flex items-center justify-between">
@@ -179,7 +179,7 @@ const ChatBot = () => {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 placeholder="Ask about AdroIT..."
-                                className="w-full bg-[#f3e8ff] border border-slate-900/10 rounded-xl px-4 py-3 pr-12 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50 transition-all"
+                                className="w-full bg-white border border-slate-900/10 rounded-xl px-4 py-3 pr-12 text-sm text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50 transition-all"
                             />
                             <button
                                 type="submit"

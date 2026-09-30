@@ -333,14 +333,7 @@ export default function Domains() {
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
 
   return (
-    <div className="relative min-h-dvh text-slate-900 font-sans overflow-x-clip pt-20 pb-16 dark:text-slate-100">
-      
-      {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 hidden overflow-hidden md:block">
-        <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-      </div>
-
+    <div className="relative min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip pt-20 pb-16 dark:bg-[#080c16] dark:text-slate-100">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}

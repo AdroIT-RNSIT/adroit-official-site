@@ -335,7 +335,7 @@ export default function Profile() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-[#f3e8ff] dark:bg-[#080c16] flex items-center justify-center overflow-x-clip">
+      <div className="min-h-screen bg-white dark:bg-[#080c16] flex items-center justify-center overflow-x-clip">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Please Login</h2>
           <Link
@@ -350,14 +350,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f3e8ff] dark:bg-[#080c16] text-slate-900 dark:text-slate-100 font-sans pt-20 pb-16 overflow-x-clip">
-
-      {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 left-20 w-[400px] max-w-[100vw] h-[400px] bg-sky-600/5 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-20 right-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px]"></div>
-      </div>
-
+    <div className="min-h-screen bg-white dark:bg-[#080c16] text-slate-900 dark:text-slate-100 font-sans pt-20 pb-16 overflow-x-clip">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== HEADER ===== */}
@@ -991,7 +984,7 @@ export default function Profile() {
                     <label className="flex-1 cursor-pointer">
                       <div className="relative group">
                         <div className="absolute -inset-0.5 bg-gradient-to-r from-sky-600 to-sky-700 rounded-xl opacity-30 group-hover:opacity-75 transition duration-200 blur"></div>
-                        <div className="relative flex items-center justify-center w-full px-4 py-8 bg-[#f3e8ff] border border-slate-900/10 rounded-xl">
+                        <div className="relative flex items-center justify-center w-full px-4 py-8 bg-white border border-slate-900/10 rounded-xl">
                           {fileStart ? (
                             <span className="text-sky-700 font-medium truncate">{fileStart.name}</span>
                           ) : (

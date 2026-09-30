@@ -2,28 +2,18 @@ import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useTheme } from "../lib/theme";
 
-const Footer = ({ showMap = false, light = false }) => {
+const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
   const { isDark } = useTheme();
-  const lightBg = !isDark && (showMap || light);
 
   return (
     <footer
       className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${
-        lightBg
-          ? "bg-white border-t border-slate-200/80"
-          : isDark
-            ? "bg-[#080c16] border-t border-white/10"
-            : "bg-[#f3e8ff] border-t border-slate-900/10"
+        isDark
+          ? "bg-[#080c16] border-t border-white/10"
+          : "bg-white border-t border-slate-200/80"
       }`}
     >
-      
-      {/* ===== BACKGROUND DECORATIONS ===== */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className={`absolute -top-48 -right-24 w-96 h-96 rounded-full blur-[100px] animate-float ${lightBg ? "bg-sky-600/8" : "bg-sky-600/5"}`}></div>
-        <div className={`absolute -bottom-48 -left-24 w-80 h-80 rounded-full blur-[100px] animate-float-reverse ${lightBg ? "bg-slate-400/10" : "bg-sky-600/5"}`}></div>
-      </div>
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         {/* ===== MAIN FOOTER CONTENT ===== */}

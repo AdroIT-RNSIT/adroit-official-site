@@ -1,13 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
-import ThreeScene from '../home/ThreeScene';
 import { Link, useNavigate } from "react-router-dom";
 import EventCarousel from '../components/EventCarousel';
-
-// ============================================
-// FIXED INTERACTIVE BALL COMPONENT
-// ============================================
-import InteractiveRings from '../components/InteractiveRings';
 
 // ============================================
 // DOMAIN CARD COMPONENT - NEW!
@@ -141,8 +135,6 @@ const Home = () => {
         ref={heroRef}
         className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
-        <InteractiveRings className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-[min(100%,70vmin)] max-w-[650px]" />
-
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
           <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
             Recruiting soon
@@ -292,20 +284,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== INTERACTIVE CANVAS SECTION ===== */}
       <section
         ref={approachRef}
         className="relative z-0 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-500"
       >
-        <div
-          className="pointer-events-none absolute inset-x-0 -top-24 -bottom-24 z-0 sm:-top-32 sm:-bottom-32"
-          style={{
-            maskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
-          }}
-        >
-          <ThreeScene />
-        </div>
         <div className="relative z-10 text-center">
           <h2 className="fluid-h2 font-bold text-slate-900 mb-4 py-2">
             Our Learning Philosophy
@@ -374,7 +356,7 @@ const Home = () => {
       {/* ===== CLUB ACTIVITIES ===== */}
       <section 
         ref={activitiesRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-4 transition-all duration-500"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           
@@ -437,83 +419,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* ===== FIXED: Global Styles - Replaced style jsx with regular style ===== */}
-      <style>{`
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.02); }
-        }
-        @keyframes spin-slow {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @keyframes spin-slower-reverse {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
-        @keyframes spin-slowest {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(720deg); }
-        }
-        @keyframes move-spiral {
-          0% { transform: translate(0, 0) scale(1); opacity: 1; }
-          25% { transform: translate(-18%, -18%) scale(1.2); opacity: 0.8; }
-          50% { transform: translate(18%, -18%) scale(1); opacity: 1; }
-          75% { transform: translate(18%, 18%) scale(1.2); opacity: 0.8; }
-          100% { transform: translate(0, 0) scale(1); opacity: 1; }
-        }
-        @keyframes move-spiral-trail-1 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          10% { transform: translate(-6%, -6%); opacity: 0.5; }
-          20% { transform: translate(-12%, -12%); opacity: 0.3; }
-          30% { transform: translate(-18%, -18%); opacity: 0.1; }
-          100% { transform: translate(-18%, -18%); opacity: 0; }
-        }
-        @keyframes move-spiral-trail-2 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          20% { transform: translate(9%, -9%); opacity: 0.5; }
-          40% { transform: translate(18%, -18%); opacity: 0.3; }
-          60% { transform: translate(27%, -27%); opacity: 0.1; }
-          100% { transform: translate(27%, -27%); opacity: 0; }
-        }
-        @keyframes move-spiral-trail-3 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          30% { transform: translate(9%, 9%); opacity: 0.5; }
-          60% { transform: translate(18%, 18%); opacity: 0.3; }
-          90% { transform: translate(27%, 27%); opacity: 0.1; }
-          100% { transform: translate(27%, 27%); opacity: 0; }
-        }
-        @keyframes float-particle {
-          0%, 100% { transform: translate(0, 0); opacity: 0; }
-          10%, 90% { opacity: 0.3; }
-          50% { opacity: 0.6; transform: translate(20px, -20px); }
-        }
-        @keyframes hit-particle {
-          0% { transform: scale(1); opacity: 0.7; }
-          100% { transform: scale(0); opacity: 0; }
-        }
-        @keyframes ripple {
-          0% { width: 0px; height: 0px; opacity: 0.8; }
-          100% { width: 100px; height: 100px; opacity: 0; }
-        }
-        @keyframes trail {
-          0% { opacity: 0.3; transform: scale(1); }
-          100% { opacity: 0; transform: scale(0.5); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
-        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-        .animate-spin-slower-reverse { animation: spin-slower-reverse 25s linear infinite; }
-        .animate-spin-slowest { animation: spin-slowest 40s linear infinite; }
-        .animate-move-spiral { animation: move-spiral 6s ease-in-out infinite; }
-        .animate-move-spiral-trail-1 { animation: move-spiral-trail-1 6s ease-out infinite; }
-        .animate-move-spiral-trail-2 { animation: move-spiral-trail-2 6s ease-out infinite; animation-delay: 0.3s; }
-        .animate-move-spiral-trail-3 { animation: move-spiral-trail-3 6s ease-out infinite; animation-delay: 0.6s; }
-        .animate-float-particle { animation: float-particle var(--duration) ease-in-out infinite; }
-        .animate-hit-particle { animation: hit-particle 0.8s ease-out forwards; }
-        .animate-ripple { animation: ripple 1.5s ease-out forwards; }
-        .animate-trail { animation: trail 0.5s linear forwards; }
-      `}</style>
 
     </div>
   );
