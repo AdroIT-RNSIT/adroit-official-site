@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import ThreeScene from '../home/ThreeScene';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BrandMark from '../components/BrandMark';
+import EventCarousel from '../components/EventCarousel';
 
 // ============================================
 // FIXED INTERACTIVE BALL COMPONENT
@@ -30,6 +31,7 @@ const DomainCard = ({ icon, title, description }) => (
 // MAIN HOME COMPONENT
 // ============================================
 const Home = () => {
+  const navigate = useNavigate();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
   const domainsRef = useRef(null);
@@ -88,6 +90,23 @@ const Home = () => {
     }
   ];
 
+  const domainCards = [
+    ...domains.map((domain) => ({
+      _id: domain.title,
+      title: domain.title,
+      description: domain.description,
+      label: "Technical",
+      link: "/domains",
+    })),
+    {
+      _id: "non-tech",
+      title: "Non-Tech",
+      label: "Non-Tech",
+      description: "Events, social media, marketing, and outreach that keep the club visible and moving.",
+      link: "/domains",
+    },
+  ];
+
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
       
@@ -109,55 +128,48 @@ const Home = () => {
         <img
           src="/rnsit_logo.png"
           alt="RNSIT Logo"
-          className="h-[12.6rem] w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+          className="h-[12rem] w-auto max-w-[50%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="h-[10.08rem] w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="h-[12rem] w-auto max-w-[28%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
         />
       </div>
 
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-500 ease-out"
+        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-6 sm:pt-8 lg:pt-10 lg:pb-4 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
-        <InteractiveRings className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-[min(100%,70vmin)] max-w-[650px]" />
+        <div className="relative z-10 w-full max-w-5xl mx-auto text-center">
+          <div className="relative mx-auto w-full max-w-3xl pt-[max(0px,calc(33vh-12rem))]">
+            <InteractiveRings className="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 w-[min(100%,68vmin)] max-w-[620px]" />
 
-        <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <BrandMark size="hero" className="mb-4" />
+            <p className="relative z-10 mb-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-sky-800/80">
+              Recruiting soon
+            </p>
 
-          <h1 className="mx-auto mb-4 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
-            <span className="sr-only">AdroIT — </span>
-            Department of
-            <span className="mt-0.5 block font-bold">
-              Computer Science &amp; Engineering
-            </span>
-          </h1>
+            <BrandMark size="hero" className="relative z-10 mb-3" />
 
-          <p className="fluid-lead text-slate-600 leading-relaxed max-w-3xl mx-auto mb-7">
-            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
-            cutting-edge technology, collaborative projects, and industry-ready skills
-          </p>
+            <h1 className="relative z-10 mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
+              <span className="sr-only">AdroIT — </span>
+              Department of
+              <span className="mt-0.5 block font-bold">
+                Computer Science &amp; Engineering
+              </span>
+            </h1>
 
-          <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
-            <Link
-              to="/domains"
-              className="group inline-flex items-center justify-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white rounded-full bg-sky-600 shadow-md shadow-sky-900/15 hover:bg-sky-800 hover:scale-105 transition-all duration-300"
-            >
-              <span>Explore AdroIT</span>
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-0.5 transition-transform">
-                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Link>
-            <Link
-              to="/events"
-              className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-slate-800 rounded-full bg-white/70 border border-slate-200 hover:bg-white hover:border-sky-600/30 transition-all duration-300"
-            >
-              See Events
-            </Link>
+            <p className="relative z-10 fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
+              The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
+              cutting-edge technology, collaborative projects, and industry-ready skills
+            </p>
           </div>
+
+          <EventCarousel
+            events={domainCards}
+            onSelect={(domain) => navigate(domain.link || "/domains")}
+          />
         </div>
       </section>
 
@@ -424,7 +436,7 @@ const Home = () => {
           {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}
           <div className="text-center mt-16">
             <p className="text-slate-500 text-sm">
-              Recruitment for this cycle is closed. Next recruitment opens later this year.
+              Recruiting soon.
             </p>
           </div>
         </div>

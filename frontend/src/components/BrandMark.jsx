@@ -1,6 +1,6 @@
 const sizeClass = {
   nav: "h-8 sm:h-10 w-auto max-w-[9rem] sm:max-w-none",
-  hero: "h-16 sm:h-20 md:h-24 w-auto mx-auto",
+  hero: "h-20 sm:h-24 md:h-28 lg:h-32 w-auto mx-auto",
 };
 
 const BrandMark = ({ size = "nav", className = "" }) => (
