@@ -66,23 +66,26 @@ export default function EventDetail() {
         ]
   ).filter((src, idx, arr) => src && arr.indexOf(src) === idx);
   const competitions = event.competitions || [];
-  const dateLabel = formatRange(event.date, event.endDate);
+  const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
+  const sessions = event.sessions || [];
   const activeGlimpse =
     glimpseIndex == null ? null : ((glimpseIndex % glimpses.length) + glimpses.length) % glimpses.length;
 
   return (
     <div className="relative min-h-dvh overflow-x-clip pb-16 text-slate-900 dark:text-slate-100">
-      <section className="relative min-h-[42vh] overflow-hidden sm:min-h-[48vh]">
+      <section className={`relative overflow-hidden ${poster ? "min-h-[42vh] sm:min-h-[48vh]" : "pt-6"}`}>
         {poster && (
-          <img
-            src={poster}
-            alt=""
-            className="absolute inset-0 h-full w-full scale-105 object-cover"
-          />
+          <>
+            <img
+              src={poster}
+              alt=""
+              className="absolute inset-0 h-full w-full scale-105 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-black/25 dark:from-[#080c16] dark:via-[#080c16]/70 dark:to-black/40" />
+          </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-black/25 dark:from-[#080c16] dark:via-[#080c16]/70 dark:to-black/40" />
 
-        <div className="relative z-10 mx-auto flex min-h-[42vh] max-w-6xl flex-col justify-end px-4 pb-10 pt-8 sm:min-h-[48vh] sm:px-6 lg:px-8">
+        <div className={`relative z-10 mx-auto flex max-w-6xl flex-col justify-end px-4 pb-10 pt-8 sm:px-6 lg:px-8 ${poster ? "min-h-[42vh] sm:min-h-[48vh]" : ""}`}>
           <Link
             to="/events"
             className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
@@ -131,6 +134,27 @@ export default function EventDetail() {
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
               {event.description}
             </p>
+          </section>
+        )}
+
+        {sessions.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+              Sessions
+            </h2>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              {sessions.map((session) => (
+                <article
+                  key={session.title}
+                  className="rounded-2xl border border-slate-200/80 bg-white/80 p-6 shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-white/5"
+                >
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{session.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {session.detail}
+                  </p>
+                </article>
+              ))}
+            </div>
           </section>
         )}
 

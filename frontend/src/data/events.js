@@ -128,6 +128,30 @@ export const sharedEvents = [
     ],
     competitions: paradoxCompetitions,
   },
+  {
+    _id: "internship-2026",
+    title: "Internship Sessions",
+    tagline: "One month of teaching, led by the club.",
+    eyebrow: "Internship",
+    description:
+      "AdroIT members ran a one-month internship for 2nd-year and 3rd-year students through July and August 2026. Fourth-year members took the sessions for the 3rd years, and 3rd-year members of the club took the sessions for the 2nd years.",
+    date: "2026-07-01T05:00:00Z",
+    endDate: "2026-08-31T05:00:00Z",
+    dateLabel: "July – August 2026",
+    location: "RNSIT",
+    slug: "internship-2026",
+    status: "completed",
+    sessions: [
+      {
+        title: "3rd years",
+        detail: "Taught by the current 4th-year members of the club.",
+      },
+      {
+        title: "2nd years",
+        detail: "Taught by the 3rd-year members of the club.",
+      },
+    ],
+  },
 ];
 
 export const upcomingEvents = sharedEvents.filter((event) => event.status === "upcoming");
