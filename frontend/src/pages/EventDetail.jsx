@@ -126,14 +126,18 @@ export default function EventDetail() {
           )}
         </div>
 
-        {event.description && (
+        {(event.about?.length || event.description) && (
           <section className="mt-10">
             <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-              About the event
+              About
             </h2>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
-              {event.description}
-            </p>
+            <div className="mt-4 max-w-3xl space-y-5">
+              {(event.about?.length ? event.about : [event.description]).map((paragraph) => (
+                <p key={paragraph} className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </section>
         )}
 

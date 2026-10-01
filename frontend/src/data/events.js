@@ -130,27 +130,22 @@ export const sharedEvents = [
   },
   {
     _id: "internship-2026",
-    title: "Internship Sessions",
-    tagline: "One month of teaching, led by the club.",
+    title: "Internship Program",
+    tagline: "One month of sessions for CSE students.",
     eyebrow: "Internship",
     description:
-      "AdroIT members ran a one-month internship for 2nd-year and 3rd-year students through July and August 2026. Fourth-year members took the sessions for the 3rd years, and 3rd-year members of the club took the sessions for the 2nd years.",
+      "AdroIT conducted a one-month internship in July and August 2026 for CSE students from the 2025 and 2026 batches.",
+    about: [
+      "During July and August 2026, AdroIT conducted a one-month internship program for CSE students at RNS Institute of Technology. The program was open to students from the 2025 and 2026 batches, with structured technical learning and practical exposure across the month.",
+      "The sessions were conducted by AdroIT club members, who planned, taught, and guided participants throughout the internship. Rather than a single workshop, it was a series of sessions across the month, so students could learn progressively and apply the work through hands-on activities.",
+      "The program gave CSE students practical exposure to relevant technologies, development practices, and industry-oriented concepts, with AdroIT members as the instructors and mentors. It was not an internal program for AdroIT members. Club members conducted it for the wider CSE student community at RNSIT.",
+    ],
     date: "2026-07-01T05:00:00Z",
     endDate: "2026-08-31T05:00:00Z",
     dateLabel: "July – August 2026",
     location: "RNSIT",
     slug: "internship-2026",
     status: "completed",
-    sessions: [
-      {
-        title: "3rd years",
-        detail: "Taught by the current 4th-year members of the club.",
-      },
-      {
-        title: "2nd years",
-        detail: "Taught by the 3rd-year members of the club.",
-      },
-    ],
   },
 ];
 
