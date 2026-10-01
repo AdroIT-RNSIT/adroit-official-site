@@ -17,8 +17,16 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
+const DOMAIN_PANELS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'path', label: 'Path' },
+];
+
 export default function Domains() {
   const [activeDomain, setActiveDomain] = useState('ml');
+  const [activePanel, setActivePanel] = useState('overview');
   const [hoveredDomain, setHoveredDomain] = useState(null);
   
   const sectionRefs = {
@@ -331,33 +339,38 @@ export default function Domains() {
   }, []);
 
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
+  const selectDomain = (id) => {
+    setActiveDomain(id);
+    setActivePanel('overview');
+  };
+  const panelClass = (id) => (activePanel === id ? '' : 'max-lg:hidden');
 
   return (
-    <div className="relative min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip pt-20 pb-16 dark:bg-[#080c16] dark:text-slate-100">
+    <div className="relative min-h-dvh overflow-x-clip bg-white pb-16 pt-6 font-sans text-slate-900 dark:bg-[#080c16] dark:text-slate-100 lg:pt-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className="text-center mb-16"
+          className="mb-8 text-center lg:mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 border border-slate-900/10 rounded-full">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-slate-900/5 px-4 py-2 lg:mb-6">
             <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
             <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
           </div>
 
-          <h1 className="fluid-h1 font-extrabold mb-6 pb-2">
+          <h1 className="fluid-h1 mb-3 pb-2 font-extrabold lg:mb-6">
             <span className="text-sky-800">Technical Domains</span>
           </h1>
 
-          <p className="fluid-lead text-slate-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="mx-auto max-w-4xl text-base leading-relaxed text-slate-600 lg:fluid-lead">
             Master the four pillars of modern technology with our comprehensive learning paths,
             <span className="text-sky-700"> hands-on projects</span>, and
             <span className="text-sky-700"> expert mentorship</span>
           </p>
 
           {/* Quick Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-12">
+          <div className="mt-8 hidden flex-wrap justify-center gap-6 lg:flex">
             <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -414,29 +427,30 @@ export default function Domains() {
         </section>
 
         {/* ===== DOMAIN SELECTOR ===== */}
-        <section className="mb-12">
-          <div className="flex flex-wrap justify-center gap-4">
+        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#080c16]/95 lg:static lg:mx-0 lg:mb-12 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+          <div className="flex gap-2 overflow-x-auto lg:flex-wrap lg:justify-center lg:gap-4 lg:overflow-visible">
             {domains.map((domain) => (
               <button
                 key={domain.id}
-                onClick={() => setActiveDomain(domain.id)}
+                onClick={() => selectDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-colors duration-200 ${
+                className={`group relative flex shrink-0 items-center gap-2 rounded-2xl px-3 py-2 transition-colors duration-200 lg:gap-3 lg:px-6 lg:py-4 ${
                   activeDomain === domain.id
-                    ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg sm:scale-105`
-                    : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
+                    ? `bg-gradient-to-r ${domain.color} text-white shadow-lg lg:scale-105`
+                    : 'border border-slate-900/10 bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
                 }`}
               >
                 {activeDomain === domain.id && (
                   <div className={`absolute inset-0 hidden bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse md:block`}></div>
                 )}
                 
-                <span className="relative w-6 h-6">{domain.icon}</span>
-                <span className="relative font-semibold">{domain.name}</span>
+                <span className="relative hidden h-6 w-6 lg:block">{domain.icon}</span>
+                <span className="relative text-sm font-semibold lg:hidden">{domain.shortName}</span>
+                <span className="relative hidden font-semibold lg:inline">{domain.name}</span>
                 
                 {hoveredDomain === domain.id && activeDomain !== domain.id && (
-                  <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-xl border border-slate-900/10 rounded-xl p-3 whitespace-nowrap z-50 animate-fade-in">
+                  <div className="absolute -bottom-16 left-1/2 z-50 hidden -translate-x-1/2 animate-fade-in whitespace-nowrap rounded-xl border border-slate-900/10 bg-black/90 p-3 backdrop-blur-xl lg:block">
                     <div className="flex gap-4 text-xs">
                       <div><span className="text-sky-400">{domain.stats.members}</span> members</div>
                       <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
@@ -457,7 +471,7 @@ export default function Domains() {
             <div className={`absolute inset-0 bg-gradient-to-r ${currentDomain.color}/10`}></div>
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
             
-            <div className="relative z-10 p-5 sm:p-8 md:p-12">
+            <div className="relative z-10 p-4 sm:p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
                   <div className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-4xl md:text-5xl shadow-xl flex-shrink-0`}>
@@ -472,7 +486,7 @@ export default function Domains() {
                         {currentDomain.shortName}
                       </span>
                     </div>
-                    <p className="text-slate-700 text-lg max-w-2xl">{currentDomain.description}</p>
+                    <p className="max-w-2xl text-sm text-slate-700 sm:text-lg">{currentDomain.description}</p>
                   </div>
                 </div>
                 
@@ -507,14 +521,31 @@ export default function Domains() {
             </div>
           </div>
 
+          <div className="mb-5 grid grid-cols-4 gap-1 rounded-2xl border border-slate-200 bg-slate-50 p-1 lg:hidden dark:border-white/10 dark:bg-white/5">
+            {DOMAIN_PANELS.map((panel) => (
+              <button
+                key={panel.id}
+                type="button"
+                onClick={() => setActivePanel(panel.id)}
+                className={`rounded-xl px-1 py-2 text-xs font-semibold ${
+                  activePanel === panel.id
+                    ? 'bg-white text-sky-800 shadow-sm dark:bg-[#080c16] dark:text-sky-300'
+                    : 'text-slate-500'
+                }`}
+              >
+                {panel.label}
+              </button>
+            ))}
+          </div>
+
           {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
             
             {/* Column 1: About & Career */}
             <div className="lg:col-span-1 space-y-6">
               
               {/* About Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('overview')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-3 flex items-center gap-2`}>
                   {icons.domain} About This Domain
                 </h3>
@@ -524,7 +555,7 @@ export default function Domains() {
               </div>
 
               {/* Career Paths Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('overview')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.career} Career Paths
                 </h3>
@@ -539,7 +570,7 @@ export default function Domains() {
               </div>
 
               {/* Domain Leads Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('overview')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.members} Domain Lead
                 </h3>
@@ -560,7 +591,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Skills Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('skills')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.skills} Skills to Master
                 </h3>
@@ -577,7 +608,7 @@ export default function Domains() {
               </div>
 
               {/* Tools Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('skills')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.tools} Popular Tools
                 </h3>
@@ -592,7 +623,7 @@ export default function Domains() {
               </div>
 
               {/* Sample Projects Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('projects')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.projects} Sample Projects
                 </h3>
@@ -627,7 +658,7 @@ export default function Domains() {
             <div className="lg:col-span-1 space-y-6">
               
               {/* Learning Roadmap Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('path')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.roadmap} Learning Roadmap
                 </h3>
@@ -651,7 +682,7 @@ export default function Domains() {
               </div>
 
               {/* Recommended Resources Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
+              <div className={`${panelClass('path')} rounded-2xl border border-slate-900/10 bg-white/90 p-4 transition-all duration-300 hover:border-sky-600/30 md:bg-white/40 md:p-6 md:backdrop-blur-xl`}>
                 <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
                   {icons.book} Recommended Resources
                 </h3>
@@ -703,7 +734,7 @@ export default function Domains() {
                     className={`border-b border-slate-900/5 hover:bg-slate-900/5 transition-colors cursor-pointer ${
                       activeDomain === domain.id ? 'bg-slate-900/5' : ''
                     }`}
-                    onClick={() => setActiveDomain(domain.id)}
+                    onClick={() => selectDomain(domain.id)}
                   >
                     <td className="py-4 px-2">
                       <div className="flex items-center gap-2">
