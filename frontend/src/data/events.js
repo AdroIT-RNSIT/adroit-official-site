@@ -176,6 +176,50 @@ export const sharedEvents = [
   },
 ];
 
+const IST_OFFSET_MS = (5 * 60 + 30) * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function istDayStartMs(iso) {
+  const date = new Date(iso);
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) - IST_OFFSET_MS;
+}
+
+export function eventPhase(event, now = new Date()) {
+  if (event.status === "completed") return "completed";
+  if (event.status !== "upcoming" || !event.date) return "upcoming";
+  const start = istDayStartMs(event.date);
+  const end = istDayStartMs(event.endDate || event.date) + DAY_MS;
+  const time = now.getTime();
+  if (time < start) return "upcoming";
+  if (time < end) return "live";
+  return "completed";
+}
+
+const SEVEN_PM_MS = 19 * 60 * 60 * 1000;
+
+export function sessionCompleted(event, index, now = new Date()) {
+  if (!event?.date || index < 0) return false;
+  const cutoff = istDayStartMs(event.date) + index * DAY_MS + SEVEN_PM_MS;
+  return now.getTime() >= cutoff;
+}
+
+export function eventStatusLabel(event, now = new Date()) {
+  const phase = eventPhase(event, now);
+  if (phase === "live") return "Event live";
+  if (phase === "upcoming") return "Upcoming";
+  return "Completed";
+}
+
+export function partitionEvents(now = new Date()) {
+  const upcoming = [];
+  const completed = [];
+  for (const event of sharedEvents) {
+    if (eventPhase(event, now) === "completed") completed.push(event);
+    else upcoming.push(event);
+  }
+  return { upcoming, completed };
+}
+
 export const upcomingEvents = sharedEvents.filter((event) => event.status === "upcoming");
 export const completedEvents = sharedEvents.filter((event) => event.status === "completed");
 

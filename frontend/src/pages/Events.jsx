@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Calendar, MapPin } from "lucide-react";
-import { completedEvents, upcomingEvents } from "../data/events";
+import { eventPhase, eventStatusLabel, partitionEvents } from "../data/events";
 
 const formatRange = (start, end) => {
   const startDate = new Date(start);
@@ -22,6 +22,7 @@ const formatRange = (start, end) => {
 };
 
 export default function Events() {
+  const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
     <div className="relative overflow-x-clip pt-8 pb-10 text-slate-900 dark:text-slate-100">
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -81,8 +82,9 @@ function FeaturedEvent({ event }) {
   const posterContained = event.posterFit === "contain";
   const glimpses = event.glimpses?.slice(0, 3) || [];
   const when = event.dateLabel || formatRange(event.date, event.endDate);
-  const upcoming = event.status === "upcoming";
-  const statusLabel = upcoming ? "Upcoming" : "Completed";
+  const phase = eventPhase(event);
+  const upcoming = phase !== "completed";
+  const statusLabel = eventStatusLabel(event);
 
   return (
     <Link

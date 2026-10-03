@@ -4,7 +4,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, BarChart3, Brain, Calendar, ChevronLeft, ChevronRight, Cloud, MapPin, ShieldCheck, X } from "lucide-react";
 import RegistrationModal from "../components/RegistrationModal";
 import GlimpseGallery from "../components/GlimpseGallery";
-import { findEditionForCompetitionSlug, getEventBySlug } from "../data/events";
+import { eventPhase, eventStatusLabel, findEditionForCompetitionSlug, getEventBySlug, sessionCompleted } from "../data/events";
 
 const SESSION_ICONS = {
   "data-analytics": BarChart3,
@@ -155,7 +155,7 @@ export default function EventDetail() {
           <MetaCard
             icon={<span className="text-sky-600">●</span>}
             label="Status"
-            value={isCompleted ? "Completed" : "Upcoming"}
+            value={eventStatusLabel(event)}
           />
         </div>
 
@@ -561,11 +561,82 @@ function ParticleStage({ activeRef, rotateRef }) {
   );
 }
 
+function starPoints(cx, cy, r) {
+  const pts = [];
+  for (let i = 0; i < 10; i += 1) {
+    const radius = i % 2 === 0 ? r : r * 0.4;
+    const angle = -Math.PI / 2 + (i * Math.PI) / 5;
+    pts.push(`${cx + Math.cos(angle) * radius},${cy + Math.sin(angle) * radius}`);
+  }
+  return pts.join(" ");
+}
+
+function scallopPath(cx, cy, r, bumps, tooth) {
+  let d = "";
+  for (let i = 0; i < bumps; i += 1) {
+    const a0 = (i / bumps) * Math.PI * 2 - Math.PI / 2;
+    const a1 = ((i + 1) / bumps) * Math.PI * 2 - Math.PI / 2;
+    const mid = (a0 + a1) / 2;
+    const x0 = cx + Math.cos(a0) * r;
+    const y0 = cy + Math.sin(a0) * r;
+    const x1 = cx + Math.cos(a1) * r;
+    const y1 = cy + Math.sin(a1) * r;
+    const xm = cx + Math.cos(mid) * (r + tooth);
+    const ym = cy + Math.sin(mid) * (r + tooth);
+    d += `${i === 0 ? "M" : "L"} ${x0.toFixed(1)} ${y0.toFixed(1)} Q ${xm.toFixed(1)} ${ym.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)} `;
+  }
+  return `${d}Z`;
+}
+
+function CompletedSeal({ color, compact = false }) {
+  const edge = scallopPath(110, 110, 82, 18, 8);
+  return (
+    <div
+      aria-hidden="true"
+      className={
+        compact
+          ? "pointer-events-none absolute right-2 top-2 z-10 h-14 w-14 -rotate-12"
+          : "pointer-events-none absolute right-0 top-2 z-10 h-44 w-44 -rotate-[14deg] sm:h-52 sm:w-52"
+      }
+      style={{ color }}
+    >
+      <svg viewBox="0 0 220 220" className="h-full w-full overflow-visible" style={{ fontFamily: "inherit" }}>
+        <path d={edge} fill="currentColor" fillOpacity="0.14" stroke="currentColor" strokeWidth="2.2" />
+        <circle cx="110" cy="110" r="70" fill="none" stroke="currentColor" strokeWidth="1.4" />
+        <circle cx="110" cy="110" r="64" fill="none" stroke="currentColor" strokeWidth="0.7" />
+        {compact ? (
+          <path
+            d="M86 112 L104 130 L136 92"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ) : (
+          <>
+            <polygon points={starPoints(110, 70, 4.5)} fill="currentColor" />
+            <line x1="62" y1="84" x2="158" y2="84" stroke="currentColor" strokeWidth="1.15" />
+            <text x="110" y="112" textAnchor="middle" fill="currentColor" fontSize="16" fontWeight="800" letterSpacing="1.4">
+              COMPLETED
+            </text>
+            <line x1="74" y1="124" x2="146" y2="124" stroke="currentColor" strokeWidth="1.15" />
+            <text x="110" y="146" textAnchor="middle" fill="currentColor" fontSize="11" fontWeight="700" letterSpacing="3.4">
+              ADROIT
+            </text>
+          </>
+        )}
+      </svg>
+    </div>
+  );
+}
+
 function BootcampPage({ event }) {
   const sessions = event.sessions || [];
   const paragraphs = event.about?.length ? event.about : event.description ? [event.description] : [];
   const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
-  const isCompleted = event.status === "completed";
+  const phase = eventPhase(event);
+  const [now, setNow] = useState(() => new Date());
 
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -577,6 +648,11 @@ function BootcampPage({ event }) {
   const [reduce] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     if (paused || reduce || sessions.length < 2) return undefined;
@@ -687,8 +763,11 @@ function BootcampPage({ event }) {
                     {dateLabel}
                   </span>
                   <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base">
-                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: accent }} />
-                    {isCompleted ? "Completed" : "Upcoming"}
+                    <span
+                      className={`h-2 w-2 rounded-full ${phase === "live" ? "animate-pulse bg-emerald-400" : ""}`}
+                      style={phase === "live" ? undefined : { backgroundColor: accent }}
+                    />
+                    {eventStatusLabel(event)}
                   </span>
                 </div>
               </div>
@@ -717,7 +796,13 @@ function BootcampPage({ event }) {
 
             <div className="flex flex-1 flex-col justify-end px-6 py-8 sm:px-10 lg:max-w-[48%]">
               {session && (
-                <div key={active} style={{ animation: reduce ? "none" : "bcRise 600ms ease-out both" }}>
+                <div key={active} className="relative" style={{ animation: reduce ? "none" : "bcRise 600ms ease-out both" }}>
+                  {sessionCompleted(event, active, now) && (
+                    <>
+                      <span className="sr-only">This day is completed</span>
+                      <CompletedSeal color={accent} />
+                    </>
+                  )}
                   <p
                     className="text-[8rem] font-black leading-[0.85] tabular-nums sm:text-[11rem]"
                     style={{ color: accent }}
@@ -746,6 +831,7 @@ function BootcampPage({ event }) {
             <div role="tablist" className="grid grid-cols-2 gap-px border-t border-white/10 bg-white/10 lg:grid-cols-4">
               {sessions.map((s, i) => {
                 const on = i === active;
+                const done = sessionCompleted(event, i, now);
                 const TabIcon = SESSION_ICONS[s.slug] || Calendar;
                 const c = ACCENTS[i % ACCENTS.length];
                 return (
@@ -782,6 +868,7 @@ function BootcampPage({ event }) {
                       </span>
                     </span>
                     <TabIcon size={24} style={{ color: on ? c : "rgba(255,255,255,.35)" }} />
+                    {done && <CompletedSeal color={c} compact />}
                   </button>
                 );
               })}
