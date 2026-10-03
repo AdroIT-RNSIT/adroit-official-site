@@ -33,6 +33,20 @@ const formatRange = (start, end) => {
   return `${startDate.toLocaleDateString("en-US", { month: "long", day: "numeric" })} – ${endDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`;
 };
 
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(query).matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
 export default function EventDetail() {
   const { slug } = useParams();
   const event = getEventBySlug(slug);
@@ -87,8 +101,8 @@ export default function EventDetail() {
     glimpseIndex == null ? null : ((glimpseIndex % glimpses.length) + glimpses.length) % glimpses.length;
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip pb-16 text-slate-900 dark:text-slate-100">
-      <section className={`relative overflow-hidden ${poster && !posterContained ? "min-h-[42vh] sm:min-h-[48vh]" : "pt-6"}`}>
+    <div className="relative min-h-dvh overflow-x-clip pb-12 text-slate-900 sm:pb-16 dark:text-slate-100">
+      <section className={`relative overflow-hidden ${poster && !posterContained ? "min-h-[34vh] sm:min-h-[48vh]" : "pt-4 sm:pt-6"}`}>
         {poster && !posterContained && (
           <>
             <img
@@ -100,54 +114,54 @@ export default function EventDetail() {
           </>
         )}
 
-        <div className={`relative z-10 mx-auto flex max-w-6xl flex-col justify-end px-4 pb-10 pt-8 sm:px-6 lg:px-8 ${poster && !posterContained ? "min-h-[42vh] sm:min-h-[48vh]" : ""}`}>
+        <div className={`relative z-10 mx-auto flex max-w-6xl flex-col justify-end px-4 pb-6 pt-6 sm:px-6 sm:pb-10 sm:pt-8 lg:px-8 ${poster && !posterContained ? "min-h-[34vh] sm:min-h-[48vh]" : ""}`}>
           {posterContained && (
             <img
               src={poster}
               alt={`${event.title} poster`}
-              className="mx-auto mb-8 w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 object-contain dark:border-white/10 dark:bg-white/5"
+              className="mx-auto mb-6 w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 object-contain sm:mb-8 dark:border-white/10 dark:bg-white/5"
             />
           )}
           <div>
-          <Link
-            to="/events"
-            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
-          >
-            <ArrowLeft size={16} />
-            Events
-          </Link>
-          <div className="flex items-center justify-between gap-6 sm:gap-10">
-            <div className="min-w-0 flex-1">
-              {event.eyebrow && (
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-                  {event.eyebrow}
-                </p>
+            <Link
+              to="/events"
+              className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800 sm:mb-6"
+            >
+              <ArrowLeft size={16} />
+              Events
+            </Link>
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-10">
+              <div className="min-w-0 flex-1">
+                {event.eyebrow && (
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+                    {event.eyebrow}
+                  </p>
+                )}
+                <h1 className="break-words text-3xl font-extrabold leading-tight text-sky-800 sm:text-5xl">
+                  {event.title}
+                </h1>
+              </div>
+              {!isCompleted && !individualRegistration && (
+                <button
+                  type="button"
+                  onClick={() => setIsRegOpen(true)}
+                  className="w-full shrink-0 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-sky-900/15 hover:bg-sky-700 sm:w-auto sm:px-7"
+                >
+                  Register now
+                </button>
               )}
-              <h1 className="text-4xl font-extrabold leading-tight text-sky-800 sm:text-5xl">
-                {event.title}
-              </h1>
             </div>
-            {!isCompleted && !individualRegistration && (
-              <button
-                type="button"
-                onClick={() => setIsRegOpen(true)}
-                className="shrink-0 rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-sky-900/15 hover:bg-sky-700 sm:px-7 sm:py-3"
-              >
-                Register now
-              </button>
+            {event.tagline && (
+              <p className="mt-3 max-w-2xl text-base text-slate-700 sm:text-lg">
+                {event.tagline}
+              </p>
             )}
-          </div>
-          {event.tagline && (
-            <p className="mt-3 max-w-2xl text-base text-slate-700 sm:text-lg">
-              {event.tagline}
-            </p>
-          )}
           </div>
         </div>
       </section>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 pt-8 sm:px-6 lg:px-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           <MetaCard icon={<Calendar size={16} />} label="Date" value={dateLabel} />
           {event.location && (
             <MetaCard icon={<MapPin size={16} />} label="Venue" value={event.location} />
@@ -160,13 +174,13 @@ export default function EventDetail() {
         </div>
 
         {(event.about?.length || event.description) && (
-          <section className="mt-10">
+          <section className="mt-8 sm:mt-10">
             <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
               About
             </h2>
-            <div className="mt-4 max-w-3xl space-y-5">
+            <div className="mt-3 max-w-3xl space-y-4 sm:mt-4 sm:space-y-5">
               {(event.about?.length ? event.about : [event.description]).map((paragraph) => (
-                <p key={paragraph} className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+                <p key={paragraph} className="text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
                   {paragraph}
                 </p>
               ))}
@@ -175,22 +189,22 @@ export default function EventDetail() {
         )}
 
         {sessions.length > 0 && (
-          <section className="mt-12">
+          <section className="mt-10 sm:mt-12">
             <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
               Domains
             </h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4">
               {sessions.map((session) => (
                 <article
                   key={session.title}
                   className="flex flex-col rounded-2xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03] sm:p-5"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     {poster && (
                       <img
                         src={session.image || poster}
                         alt=""
-                        className="h-12 w-20 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-cover dark:border-white/10 dark:bg-white/5"
+                        className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-cover sm:w-20 dark:border-white/10 dark:bg-white/5"
                       />
                     )}
                     <div className="min-w-0">
@@ -199,7 +213,7 @@ export default function EventDetail() {
                           {session.day}
                         </p>
                       )}
-                      <h3 className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">{session.title}</h3>
+                      <h3 className="mt-1 break-words text-base font-bold text-slate-900 sm:text-lg dark:text-slate-100">{session.title}</h3>
                     </div>
                   </div>
                   {session.detail && (
@@ -210,7 +224,7 @@ export default function EventDetail() {
                   <Link
                     to={session.slug ? `/register/${session.slug}` : "/events"}
                     state={{ back: `/events/${event.slug}` }}
-                    className="mt-4 inline-flex w-fit rounded-xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700"
+                    className="mt-4 inline-flex w-full justify-center rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 sm:w-fit sm:py-2"
                   >
                     Register
                   </Link>
@@ -221,11 +235,11 @@ export default function EventDetail() {
         )}
 
         {competitions.length > 0 && (
-          <section className="mt-12">
+          <section className="mt-10 sm:mt-12">
             <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
               Competitions
             </h2>
-            <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-4 grid gap-4 sm:mt-5 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
               {competitions.map((competition) => (
                 <article
                   key={competition.slug}
@@ -256,7 +270,7 @@ export default function EventDetail() {
         )}
 
         {glimpses.length > 0 && (
-          <div className="mt-12">
+          <div className="mt-10 sm:mt-12">
             <GlimpseGallery images={glimpses} onSelect={setGlimpseIndex} />
           </div>
         )}
@@ -264,12 +278,12 @@ export default function EventDetail() {
 
       {activeGlimpse != null && (
         <div
-          className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/80 p-4"
+          className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/80 p-3 sm:p-4"
           onClick={() => setGlimpseIndex(null)}
         >
           <button
             type="button"
-            className="absolute right-4 top-4 rounded-full border border-white/20 bg-black/40 p-2 text-white"
+            className="absolute right-3 top-3 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:right-4 sm:top-4"
             aria-label="Close"
             onClick={() => setGlimpseIndex(null)}
           >
@@ -279,7 +293,7 @@ export default function EventDetail() {
             <>
               <button
                 type="button"
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:left-6"
+                className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:left-6"
                 aria-label="Previous image"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -290,7 +304,7 @@ export default function EventDetail() {
               </button>
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:right-6"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:right-6"
                 aria-label="Next image"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -304,7 +318,7 @@ export default function EventDetail() {
           <img
             src={glimpses[activeGlimpse]}
             alt=""
-            className="max-h-[85vh] max-w-full rounded-xl object-contain"
+            className="max-h-[85dvh] max-w-full rounded-xl object-contain"
             onClick={(e) => e.stopPropagation()}
           />
         </div>
@@ -323,7 +337,8 @@ export default function EventDetail() {
 
 const ACCENTS = ["#34d399", "#818cf8", "#38bdf8", "#fb7185"];
 const AUTO_MS = 6000;
-const N = 2600;
+const N_DESKTOP = 2600;
+const N_PHONE = 3400;
 
 function mulberry32(seed) {
   let a = seed;
@@ -336,7 +351,7 @@ function mulberry32(seed) {
   };
 }
 
-function buildFormations() {
+function buildFormations(N) {
   const rnd = mulberry32(7);
   const jz = (s) => (rnd() - 0.5) * s;
   const make = (fn) => {
@@ -431,10 +446,18 @@ function ParticleStage({ activeRef, rotateRef }) {
     const host = hostRef.current;
     if (!host) return undefined;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const forms = buildFormations();
+    const phoneAtMount = window.innerWidth < 640;
+    const N = phoneAtMount ? N_PHONE : N_DESKTOP;
+    const forms = buildFormations(N);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !phoneAtMount, powerPreference: "low-power" });
+    } catch {
+      return undefined;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, phoneAtMount ? 1.5 : 2));
+    renderer.domElement.style.display = "block";
     host.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -485,13 +508,25 @@ function ParticleStage({ activeRef, rotateRef }) {
       camera.updateProjectionMatrix();
       const vh = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
       const vw = vh * camera.aspect;
-      const desktop = w >= 1024;
-      group.scale.setScalar(Math.min(0.9, (vw * (desktop ? 0.55 : 0.95)) / 7.4));
+      const desktop = window.matchMedia("(min-width: 1024px)").matches;
+      const phone = window.innerWidth < 640;
+
+      // The formations are about 7.6 wide x 4.6 tall; fit both axes so nothing is cropped on any screen.
+      const fit = Math.min(
+        0.9,
+        (vw * (desktop ? 0.55 : 0.94)) / 7.6,
+        (vh * (desktop ? 0.8 : 0.9)) / 4.6,
+      );
+      group.scale.setScalar(fit);
+
+      const sizeFloor = phone ? 0.85 : 0.55;
+      mat.size = 0.1 * Math.min(1, Math.max(sizeFloor, fit / 0.9));
+      mat.opacity = desktop ? 0.95 : phone ? 1 : 0.95;
+
       const px = desktop ? vw * 0.2 : 0;
       const py = desktop ? vh * 0.05 : 0;
       group.position.set(px, py, 0);
       faceYaw = -Math.atan2(px, camera.position.z);
-      mat.opacity = desktop ? 0.95 : 0.8;
     };
     const ro = new ResizeObserver(resize);
     ro.observe(host);
@@ -500,6 +535,7 @@ function ParticleStage({ activeRef, rotateRef }) {
     const mouse = { x: 0, y: 0 };
     const smooth = { x: 0, y: 0 };
     const onMove = (e) => {
+      if (e.pointerType === "touch") return;
       mouse.x = (e.clientX / window.innerWidth - 0.5) * 0.4;
       mouse.y = (e.clientY / window.innerHeight - 0.5) * 0.25;
     };
@@ -510,15 +546,31 @@ function ParticleStage({ activeRef, rotateRef }) {
       visible = entry.isIntersecting;
     });
     io.observe(host);
+    let tabHidden = document.hidden;
+    const onVis = () => {
+      tabHidden = document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVis);
 
     const accent = new THREE.Color();
     const clock = new THREE.Clock();
+    let spin = 0;
+    let shown = activeRef.current;
     let raf;
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      if (!visible) return;
-      const t = clock.getElapsedTime();
+      if (!visible || tabHidden) return;
+      const dt = clock.getDelta();
       const idx = activeRef.current % forms.length;
+      if (idx !== shown) {
+        shown = idx;
+        spin = 0;
+        if (rotateRef?.current) {
+          rotateRef.current.x = 0;
+          rotateRef.current.y = 0;
+        }
+      }
+      if (!reduce) spin += Math.min(dt, 0.05) * 0.18;
       const tgt = forms[idx];
       for (let i = 0; i < N; i += 1) {
         const k = reduce ? 1 : speeds[i];
@@ -533,7 +585,7 @@ function ParticleStage({ activeRef, rotateRef }) {
       smooth.y += (mouse.y - smooth.y) * 0.05;
       const userY = rotateRef?.current?.y || 0;
       const userX = rotateRef?.current?.x || 0;
-      group.rotation.y = faceYaw + (reduce ? 0 : Math.sin(t * 0.35) * 0.08) + smooth.x * 0.35 + userY;
+      group.rotation.y = faceYaw + spin + smooth.x * 0.35 + userY;
       group.rotation.x = smooth.y * 0.35 + userX;
       renderer.render(scene, camera);
     };
@@ -542,13 +594,14 @@ function ParticleStage({ activeRef, rotateRef }) {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
       io.disconnect();
       geo.dispose();
       mat.dispose();
       tex.dispose();
       renderer.dispose();
-      host.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement);
     };
   }, [activeRef, rotateRef]);
 
@@ -556,7 +609,7 @@ function ParticleStage({ activeRef, rotateRef }) {
     <div
       ref={hostRef}
       aria-hidden="true"
-      className="pointer-events-none h-72 lg:absolute lg:inset-0 lg:-z-10 lg:h-auto"
+      className="pointer-events-none h-full w-full lg:absolute lg:inset-0 lg:-z-10"
     />
   );
 }
@@ -595,8 +648,8 @@ function CompletedSeal({ color, compact = false }) {
       aria-hidden="true"
       className={
         compact
-          ? "pointer-events-none absolute right-2 top-2 z-10 h-14 w-14 -rotate-12"
-          : "pointer-events-none absolute right-0 top-2 z-10 h-44 w-44 -rotate-[14deg] sm:h-52 sm:w-52"
+          ? "pointer-events-none absolute right-1.5 top-1.5 z-10 h-8 w-8 -rotate-12 sm:right-2 sm:top-2 sm:h-12 sm:w-12"
+          : "pointer-events-none absolute -top-2 right-0 z-10 h-24 w-24 -rotate-[14deg] sm:top-2 sm:h-44 sm:w-44 lg:h-52 lg:w-52"
       }
       style={{ color }}
     >
@@ -636,6 +689,7 @@ function BootcampPage({ event }) {
   const paragraphs = event.about?.length ? event.about : event.description ? [event.description] : [];
   const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
   const phase = eventPhase(event);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [now, setNow] = useState(() => new Date());
 
   const [active, setActive] = useState(0);
@@ -653,6 +707,11 @@ function BootcampPage({ event }) {
     const id = setInterval(() => setNow(new Date()), 30000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    rotateRef.current.x = 0;
+    rotateRef.current.y = 0;
+  }, [active]);
 
   useEffect(() => {
     if (paused || reduce || sessions.length < 2) return undefined;
@@ -690,22 +749,25 @@ function BootcampPage({ event }) {
     }
   };
 
+  const glowPos = isDesktop ? "72% 42%" : "50% 50%";
+  const maskPos = isDesktop ? "70% 40%" : "50% 45%";
+
   return (
-    <div className="relative min-h-dvh overflow-x-clip pb-16 text-slate-900 dark:text-slate-100">
+    <div className="relative min-h-dvh overflow-x-clip pb-10 text-slate-900 sm:pb-16 dark:text-slate-100">
       <style>{`
         @keyframes bcFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-        @keyframes bcRise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+        @keyframes bcRise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
       `}</style>
 
-      <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-3 pt-4 sm:px-6 sm:pt-6 lg:px-8">
         {paragraphs.length > 0 && (
-          <section className="glass mb-6 rounded-3xl border border-white/80 px-6 py-6 shadow-[0_12px_36px_rgba(15,23,42,0.08)] sm:px-8 dark:border-white/10">
-            <h2 className="text-3xl font-bold text-sky-800 dark:text-sky-300">About</h2>
-            <div className="mt-4 max-w-4xl space-y-4">
+          <section className="glass mb-4 rounded-2xl border border-white/80 px-5 py-5 shadow-[0_12px_36px_rgba(15,23,42,0.08)] sm:mb-6 sm:rounded-3xl sm:px-8 sm:py-6 dark:border-white/10">
+            <h2 className="text-2xl font-bold text-sky-800 sm:text-3xl dark:text-sky-300">About</h2>
+            <div className="mt-3 max-w-4xl space-y-3 sm:mt-4 sm:space-y-4">
               {paragraphs.map((p, i) => (
                 <p
                   key={p}
-                  className={`text-lg leading-8 ${
+                  className={`text-base leading-7 sm:text-lg sm:leading-8 ${
                     i === 0 ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
                   }`}
                 >
@@ -717,9 +779,12 @@ function BootcampPage({ event }) {
         )}
 
         <div
-          className="relative overflow-hidden rounded-[2rem] bg-[#060a14] text-white ring-1 ring-white/10"
-          onPointerEnter={() => setPaused(true)}
-          onPointerLeave={() => {
+          className="relative overflow-hidden rounded-3xl bg-[#060a14] text-white ring-1 ring-white/10 sm:rounded-[2rem]"
+          onPointerEnter={(e) => {
+            if (e.pointerType !== "touch") setPaused(true);
+          }}
+          onPointerLeave={(e) => {
+            if (e.pointerType === "touch") return;
             setPaused(false);
             setTick((t) => t + 1);
           }}
@@ -731,7 +796,7 @@ function BootcampPage({ event }) {
               className="absolute inset-0 transition-opacity duration-700"
               style={{
                 opacity: i === active % ACCENTS.length ? 1 : 0,
-                background: `radial-gradient(60% 70% at 72% 42%, ${c}33, transparent 70%)`,
+                background: `radial-gradient(60% 70% at ${glowPos}, ${c}33, transparent 70%)`,
               }}
             />
           ))}
@@ -741,28 +806,28 @@ function BootcampPage({ event }) {
             style={{
               backgroundImage:
                 "linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px)",
-              backgroundSize: "56px 56px",
-              maskImage: "radial-gradient(ellipse at 70% 40%, black 15%, transparent 75%)",
-              WebkitMaskImage: "radial-gradient(ellipse at 70% 40%, black 15%, transparent 75%)",
+              backgroundSize: isDesktop ? "56px 56px" : "36px 36px",
+              maskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
+              WebkitMaskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
             }}
           />
 
-          <div className="relative z-10 flex min-h-[46rem] flex-col">
-            <div className="px-6 pt-6 sm:px-10 sm:pt-8">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="relative z-10 flex flex-col lg:min-h-[46rem]">
+            <div className="px-5 pt-5 sm:px-10 sm:pt-8">
+              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
                 <Link
                   to="/events"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base text-white/90 transition-colors hover:bg-white/10"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-sm text-white/90 transition-colors hover:bg-white/10 sm:gap-2 sm:px-4 sm:py-2 sm:text-base"
                 >
-                  <ArrowLeft size={18} />
+                  <ArrowLeft size={16} />
                   Events
                 </Link>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base">
-                    <Calendar size={17} style={{ color: accent }} />
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs sm:gap-2 sm:px-4 sm:py-2 sm:text-base">
+                    <Calendar size={15} style={{ color: accent }} />
                     {dateLabel}
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs sm:gap-2 sm:px-4 sm:py-2 sm:text-base">
                     <span
                       className={`h-2 w-2 rounded-full ${phase === "live" ? "animate-pulse bg-emerald-400" : ""}`}
                       style={phase === "live" ? undefined : { backgroundColor: accent }}
@@ -771,22 +836,22 @@ function BootcampPage({ event }) {
                   </span>
                 </div>
               </div>
-              <div className="mt-8">
+              <div className="mt-5 sm:mt-8">
                 {event.eyebrow && (
-                  <p className="text-lg font-semibold" style={{ color: accent }}>
+                  <p className="text-base font-semibold sm:text-lg" style={{ color: accent }}>
                     {event.eyebrow}
                   </p>
                 )}
-                <h1 className="mt-1 text-5xl font-black leading-[1.05] sm:text-6xl">{event.title}</h1>
-                {event.tagline && <p className="mt-3 max-w-xl text-lg text-white/70">{event.tagline}</p>}
+                <h1 className="mt-1 break-words text-4xl font-black leading-[1.05] sm:text-6xl">{event.title}</h1>
+                {event.tagline && <p className="mt-2 max-w-xl text-base text-white/70 sm:mt-3 sm:text-lg">{event.tagline}</p>}
               </div>
             </div>
 
-            <div className="relative h-72 lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:h-auto">
+            <div className="relative mt-2 h-[clamp(13rem,56vw,22rem)] lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:mt-0 lg:h-auto">
               <ParticleStage activeRef={activeRef} rotateRef={rotateRef} />
               <div
-                aria-label="Drag to rotate the shape"
-                className="pointer-events-auto absolute inset-0 z-20 cursor-grab touch-none select-none active:cursor-grabbing lg:inset-auto lg:bottom-36 lg:left-[48%] lg:right-0 lg:top-[22%]"
+                aria-label="Drag sideways to rotate the shape"
+                className="pointer-events-auto absolute inset-0 z-20 cursor-grab touch-pan-y select-none active:cursor-grabbing lg:inset-auto lg:bottom-36 lg:left-[48%] lg:right-0 lg:top-[22%] lg:touch-none"
                 onPointerDown={onRotateStart}
                 onPointerMove={onRotateMove}
                 onPointerUp={onRotateEnd}
@@ -794,7 +859,7 @@ function BootcampPage({ event }) {
               />
             </div>
 
-            <div className="flex flex-1 flex-col justify-end px-6 py-8 sm:px-10 lg:max-w-[48%]">
+            <div className="flex flex-1 flex-col justify-end px-5 pb-6 pt-2 sm:px-10 sm:py-8 lg:max-w-[48%]">
               {session && (
                 <div key={active} className="relative" style={{ animation: reduce ? "none" : "bcRise 600ms ease-out both" }}>
                   {sessionCompleted(event, active, now) && (
@@ -803,26 +868,30 @@ function BootcampPage({ event }) {
                       <CompletedSeal color={accent} />
                     </>
                   )}
-                  <p
-                    className="text-[8rem] font-black leading-[0.85] tabular-nums sm:text-[11rem]"
-                    style={{ color: accent }}
-                  >
-                    {num}
-                  </p>
-                  <p className="mt-4 flex items-center gap-2 text-xl font-semibold text-white/80">
-                    <Icon size={22} style={{ color: accent }} />
-                    {session.day}
-                  </p>
-                  <h2 className="mt-1 text-4xl font-extrabold sm:text-5xl">{session.title}</h2>
-                  {session.detail && <p className="mt-3 max-w-md text-lg text-white/70">{session.detail}</p>}
+                  <div className="flex items-end gap-4 sm:gap-6 lg:block">
+                    <p
+                      className="text-[4.25rem] font-black leading-[0.85] tabular-nums sm:text-[7rem] lg:text-[11rem]"
+                      style={{ color: accent }}
+                    >
+                      {num}
+                    </p>
+                    <div className="min-w-0 pb-0.5 lg:pb-0">
+                      <p className="flex items-center gap-2 text-sm font-semibold text-white/80 sm:text-xl lg:mt-4">
+                        <Icon size={18} className="shrink-0" style={{ color: accent }} />
+                        {session.day}
+                      </p>
+                      <h2 className="mt-1 break-words text-2xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">{session.title}</h2>
+                    </div>
+                  </div>
+                  {session.detail && <p className="mt-3 max-w-md text-base text-white/70 sm:text-lg">{session.detail}</p>}
                   <Link
                     to={session.slug ? `/register/${session.slug}` : "/events"}
                     state={{ back: `/events/${event.slug}` }}
-                    className="mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-lg font-bold text-[#06101a] transition-transform hover:scale-105"
+                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-[#06101a] transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"
                     style={{ backgroundColor: accent }}
                   >
                     Register for {session.title}
-                    <ArrowUpRight size={20} />
+                    <ArrowUpRight size={20} className="shrink-0" />
                   </Link>
                 </div>
               )}
@@ -844,7 +913,7 @@ function BootcampPage({ event }) {
                       setActive(i);
                       setTick((t) => t + 1);
                     }}
-                    className={`relative flex items-center justify-between gap-3 px-5 py-5 text-left transition-colors sm:px-7 ${
+                    className={`relative flex min-h-[3.75rem] items-center justify-between gap-2 px-4 py-3 text-left transition-colors sm:gap-3 sm:px-7 sm:py-5 ${
                       on ? "bg-[#0d1424]" : "bg-[#060a14] hover:bg-[#0a1020]"
                     }`}
                   >
@@ -859,15 +928,15 @@ function BootcampPage({ event }) {
                         }}
                       />
                     )}
-                    <span className="min-w-0">
-                      <span className="block text-lg font-semibold" style={{ color: on ? c : "rgba(255,255,255,.55)" }}>
+                    <span className="min-w-0 pr-5 sm:pr-0">
+                      <span className="block text-xs font-semibold sm:text-lg" style={{ color: on ? c : "rgba(255,255,255,.55)" }}>
                         {s.day?.replace("October", "Oct")}
                       </span>
-                      <span className={`block text-xl font-bold ${on ? "text-white" : "text-white/70"}`}>
+                      <span className={`block text-sm font-bold leading-tight sm:text-xl ${on ? "text-white" : "text-white/70"}`}>
                         {s.title}
                       </span>
                     </span>
-                    <TabIcon size={24} style={{ color: on ? c : "rgba(255,255,255,.35)" }} />
+                    <TabIcon className="hidden shrink-0 sm:block" size={24} style={{ color: on ? c : "rgba(255,255,255,.35)" }} />
                     {done && <CompletedSeal color={c} compact />}
                   </button>
                 );
@@ -882,12 +951,12 @@ function BootcampPage({ event }) {
 
 function MetaCard({ icon, label, value }) {
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-4 shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-white/5">
+    <div className="rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm shadow-slate-900/5 sm:py-4 dark:border-white/10 dark:bg-white/5">
       <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
         <span className="text-sky-600">{icon}</span>
         {label}
       </p>
-      <p className="mt-1.5 text-sm font-medium leading-snug text-slate-900 dark:text-slate-100">{value}</p>
+      <p className="mt-1 text-sm font-medium leading-snug text-slate-900 sm:mt-1.5 dark:text-slate-100">{value}</p>
     </div>
   );
 }
