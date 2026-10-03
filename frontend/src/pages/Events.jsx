@@ -28,10 +28,6 @@ export default function Events() {
     <div className="relative overflow-x-clip pt-8 pb-10 text-slate-900 dark:text-slate-100">
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-slate-900/5 px-4 py-2 dark:border-white/10 dark:bg-white/5">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-sky-600" />
-            <span className="text-sm text-slate-600 dark:text-slate-400">Department of CSE · RNSIT</span>
-          </div>
           <h1 className="fluid-h1 mb-4 font-extrabold">
             <span className="text-sky-800">Events</span>
           </h1>
@@ -90,24 +86,26 @@ function FeaturedEvent({ event }) {
 
   return (
     <article
-      className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? "md:grid-cols-[minmax(0,14rem)_1fr]" : ""}`}
+      className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,46%)_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
     >
       {poster && (
         <Link
           to={`/events/${event.slug}`}
-          className={`relative block overflow-hidden ${posterContained ? "aspect-video bg-slate-50 dark:bg-white/5 md:aspect-auto md:flex md:h-full md:min-h-40 md:items-center md:justify-center md:p-3" : "h-36 sm:h-40"}`}
+          className={`relative block overflow-hidden ${posterContained ? "aspect-video w-full" : "h-36 sm:h-40"}`}
         >
           <img
             src={poster}
             alt=""
-            className={posterContained ? "h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
+            className={posterContained ? "absolute inset-0 h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
           />
           {!posterContained && (
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#000000]/40" />
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#000000]/40" />
+              <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
+                {statusLabel}
+              </span>
+            </>
           )}
-          <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
-            {statusLabel}
-          </span>
         </Link>
       )}
 
@@ -117,7 +115,7 @@ function FeaturedEvent({ event }) {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
               {event.eyebrow || "Fest recap"}
             </p>
-            {!poster && (
+            {(!poster || posterContained) && (
               <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 dark:border-white/10 dark:bg-white/5 dark:text-sky-300">
                 {statusLabel}
               </span>

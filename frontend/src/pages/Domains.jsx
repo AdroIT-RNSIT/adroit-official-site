@@ -357,13 +357,8 @@ export default function Domains() {
           ref={sectionRefs.hero}
           className="mb-8 text-center lg:mb-16"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-slate-900/5 px-4 py-2 lg:mb-6">
-            <span className="h-2 w-2 rounded-full bg-sky-600"></span>
-            <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
-          </div>
-
           <h1 className="fluid-h1 mb-3 pb-2 font-extrabold lg:mb-6">
-            <span className="text-sky-800">Technical Domains</span>
+            <span className="text-sky-800">Domains</span>
           </h1>
 
           <p className="mx-auto max-w-4xl text-base leading-relaxed text-slate-600 lg:fluid-lead">
