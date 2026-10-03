@@ -95,12 +95,12 @@ function FeaturedEvent({ event }) {
       {poster && (
         <Link
           to={`/events/${event.slug}`}
-          className={`relative block h-36 overflow-hidden sm:h-40 ${posterContained ? "flex items-center justify-center bg-slate-50 p-3 dark:bg-white/5" : ""}`}
+          className={`relative block overflow-hidden ${posterContained ? "aspect-video bg-slate-50 dark:bg-white/5 md:aspect-auto md:flex md:h-full md:min-h-40 md:items-center md:justify-center md:p-3" : "h-36 sm:h-40"}`}
         >
           <img
             src={poster}
             alt=""
-            className={posterContained ? "max-h-full w-full object-contain" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
+            className={posterContained ? "h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
           />
           {!posterContained && (
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#080c16]/40" />
