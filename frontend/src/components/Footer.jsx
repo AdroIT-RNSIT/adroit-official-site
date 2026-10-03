@@ -12,7 +12,7 @@ const Footer = ({ showMap = false }) => {
     <footer
       className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${
         onGrid
-          ? "border-t border-slate-200/80 bg-transparent dark:border-white/10"
+          ? "relative z-10 border-t border-slate-200/80 bg-white dark:border-white/10"
           : isDark
           ? "bg-[#080c16] border-t border-white/10"
           : "bg-white border-t border-slate-200/80"

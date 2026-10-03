@@ -2,6 +2,13 @@ import { useEffect, useRef } from "react";
 import { useTheme } from "../lib/theme";
 
 const CELL = 28;
+const WAVE = 220;
+const AMP = 2.4;
+const STEP = 18;
+
+function sway(along, seed) {
+  return Math.sin(along / WAVE + seed) * AMP;
+}
 
 export default function InteractiveGrid() {
   const canvasRef = useRef(null);
@@ -27,21 +34,25 @@ export default function InteractiveGrid() {
 
       const scrollX = window.scrollX;
       const scrollY = window.scrollY;
-      const line = isDark ? "rgba(148, 163, 184, 0.14)" : "rgba(100, 116, 139, 0.13)";
+      const line = isDark ? "rgba(186, 214, 232, 0.22)" : "rgba(71, 85, 105, 0.28)";
       ctx.strokeStyle = line;
       ctx.lineWidth = 1;
       ctx.beginPath();
       const startX = -(scrollX % CELL);
       const startY = -(scrollY % CELL);
-      for (let x = startX; x <= w; x += CELL) {
-        const px = Math.round(x) + 0.5;
-        ctx.moveTo(px, 0);
-        ctx.lineTo(px, h);
+      for (let x = startX; x <= w + CELL; x += CELL) {
+        const seed = Math.round((x + scrollX) / CELL) * 0.85;
+        ctx.moveTo(x + sway(scrollY, seed), 0);
+        for (let y = STEP; y <= h + STEP; y += STEP) {
+          ctx.lineTo(x + sway(y + scrollY, seed), Math.min(y, h));
+        }
       }
-      for (let y = startY; y <= h; y += CELL) {
-        const py = Math.round(y) + 0.5;
-        ctx.moveTo(0, py);
-        ctx.lineTo(w, py);
+      for (let y = startY; y <= h + CELL; y += CELL) {
+        const seed = Math.round((y + scrollY) / CELL) * 1.15;
+        ctx.moveTo(0, y + sway(scrollX, seed));
+        for (let x = STEP; x <= w + STEP; x += STEP) {
+          ctx.lineTo(Math.min(x, w), y + sway(x + scrollX, seed));
+        }
       }
       ctx.stroke();
 
@@ -59,8 +70,8 @@ export default function InteractiveGrid() {
           const vy = (row + dy) * CELL - scrollY;
           const strength = dx === 0 && dy === 0 ? 1 : 0.45 / dist;
           ctx.fillStyle = isDark
-            ? `rgba(125, 211, 252, ${0.09 * strength})`
-            : `rgba(2, 132, 199, ${0.07 * strength})`;
+            ? `rgba(125, 211, 252, ${0.14 * strength})`
+            : `rgba(2, 132, 199, ${0.12 * strength})`;
           ctx.fillRect(vx, vy, CELL, CELL);
         }
       }
@@ -111,7 +122,7 @@ export default function InteractiveGrid() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-30 h-dvh w-full"
+      className="pointer-events-none fixed inset-0 z-0 h-dvh w-full"
     />
   );
 }

@@ -1,9 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, ChevronLeft, ChevronRight, MapPin, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BarChart3, Brain, Calendar, ChevronLeft, ChevronRight, Cloud, MapPin, ShieldCheck, X } from "lucide-react";
 import RegistrationModal from "../components/RegistrationModal";
 import GlimpseGallery from "../components/GlimpseGallery";
 import { findEditionForCompetitionSlug, getEventBySlug } from "../data/events";
+
+const SESSION_ICONS = {
+  "data-analytics": BarChart3,
+  "cloud-computing": Cloud,
+  "machine-learning": Brain,
+  cybersecurity: ShieldCheck,
+};
 
 const formatRange = (start, end) => {
   const startDate = new Date(start);
@@ -53,6 +61,9 @@ export default function EventDetail() {
   }
 
   if (!event) return <Navigate to="/events" replace />;
+  if (event.slug === "skill-up-bootcamp") {
+    return <BootcampPage event={event} />;
+  }
 
   const isCompleted = event.status === "completed";
   const individualRegistration = event.registration === "individual";
@@ -100,15 +111,22 @@ export default function EventDetail() {
           <div>
           <Link
             to="/events"
-            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
+            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
           >
             <ArrowLeft size={16} />
             Events
           </Link>
           <div className="flex items-center justify-between gap-6 sm:gap-10">
-            <h1 className="min-w-0 flex-1 text-4xl font-extrabold leading-tight text-sky-800 sm:text-5xl">
-              {event.title}
-            </h1>
+            <div className="min-w-0 flex-1">
+              {event.eyebrow && (
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+                  {event.eyebrow}
+                </p>
+              )}
+              <h1 className="text-4xl font-extrabold leading-tight text-sky-800 sm:text-5xl">
+                {event.title}
+              </h1>
+            </div>
             {!isCompleted && !individualRegistration && (
               <button
                 type="button"
@@ -299,6 +317,440 @@ export default function EventDetail() {
           event={event}
         />
       )}
+    </div>
+  );
+}
+
+const ACCENTS = ["#34d399", "#818cf8", "#38bdf8", "#fb7185"];
+const AUTO_MS = 6000;
+const N = 2600;
+
+function mulberry32(seed) {
+  let a = seed;
+  return () => {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function buildFormations() {
+  const rnd = mulberry32(7);
+  const jz = (s) => (rnd() - 0.5) * s;
+  const make = (fn) => {
+    const arr = new Float32Array(N * 3);
+    for (let i = 0; i < N; i += 1) {
+      const [x, y, z] = fn();
+      arr[i * 3] = x;
+      arr[i * 3 + 1] = y;
+      arr[i * 3 + 2] = z;
+    }
+    return arr;
+  };
+
+  const hs = [1.2, 1.9, 1.5, 2.6, 2.2, 3.1, 2.5, 3.5, 2.9, 3.8, 3.2, 4.1];
+  const total = hs.reduce((a, b) => a + b, 0);
+  const bars = make(() => {
+    if (rnd() < 0.08) return [(rnd() - 0.5) * 7.6, -2, jz(0.4)];
+    let r = rnd() * total;
+    let i = 0;
+    while (i < hs.length - 1 && r > hs[i]) {
+      r -= hs[i];
+      i += 1;
+    }
+    return [-3.3 + i * 0.6 + (rnd() - 0.5) * 0.4, -2 + rnd() * hs[i], jz(0.5)];
+  });
+
+  const blobs = [
+    [-2.0, -0.1, 0.9],
+    [-1.0, 0.6, 1.1],
+    [0.2, 0.9, 1.3],
+    [1.4, 0.4, 1.0],
+    [2.1, -0.2, 0.8],
+    [0.3, -0.2, 1.0],
+  ];
+  const cloud = make(() => {
+    if (rnd() < 0.18) {
+      const col = Math.floor(rnd() * 9);
+      return [-2.4 + col * 0.6, -2.1 + rnd() * 1.1, jz(0.3)];
+    }
+    const [cx, cy, r] = blobs[Math.floor(rnd() * blobs.length)];
+    const a = rnd() * Math.PI * 2;
+    const d = Math.sqrt(rnd()) * r;
+    let y = cy + Math.sin(a) * d + 0.4;
+    if (y < -0.5) y = -0.5 + rnd() * 0.05;
+    return [cx + Math.cos(a) * d, y, jz(1.0)];
+  });
+
+  const layers = [4, 6, 6, 3];
+  const xs = [-3.2, -1.1, 1.1, 3.2];
+  const nodes = layers.map((n, l) =>
+    Array.from({ length: n }, (_, k) => [xs[l], (k - (n - 1) / 2) * (3.6 / Math.max(n - 1, 1))]),
+  );
+  const net = make(() => {
+    if (rnd() < 0.3) {
+      const l = Math.floor(rnd() * layers.length);
+      const [nx, ny] = nodes[l][Math.floor(rnd() * nodes[l].length)];
+      return [nx + (rnd() + rnd() - 1) * 0.16, ny + (rnd() + rnd() - 1) * 0.16, jz(0.3)];
+    }
+    const l = Math.floor(rnd() * (layers.length - 1));
+    const a = nodes[l][Math.floor(rnd() * nodes[l].length)];
+    const b = nodes[l + 1][Math.floor(rnd() * nodes[l + 1].length)];
+    const t = rnd();
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, jz(0.4)];
+  });
+
+  const halfW = (y) => (y > 0 ? 1.6 : 1.6 * Math.sqrt(Math.max(0, (y + 2) / 2)));
+  const shield = make(() => {
+    const r = rnd();
+    if (r < 0.3) {
+      const y = -2 + rnd() * 3.8;
+      return [(rnd() < 0.5 ? -1 : 1) * halfW(y) * 1.15, y, jz(0.4)];
+    }
+    if (r < 0.42) return [(rnd() - 0.5) * 3.7, 1.8, jz(0.4)];
+    if (r < 0.7) {
+      const y = -2 + rnd() * 3.8;
+      return [(rnd() - 0.5) * 2 * halfW(y) * 1.15, y, jz(0.5)];
+    }
+    if (r < 0.88) {
+      const a = rnd() * Math.PI * 2;
+      return [Math.cos(a) * 0.4, 0.45 + Math.sin(a) * 0.4, jz(0.3)];
+    }
+    return [(rnd() - 0.5) * 0.24, -0.9 + rnd() * 0.95, jz(0.3)];
+  });
+
+  return [bars, cloud, net, shield];
+}
+
+function ParticleStage({ activeRef }) {
+  const hostRef = useRef(null);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return undefined;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const forms = buildFormations();
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    host.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+    camera.position.z = 8;
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const cur = new Float32Array(forms[0]);
+    const speeds = new Float32Array(N);
+    const r2 = mulberry32(99);
+    for (let i = 0; i < N; i += 1) {
+      speeds[i] = 0.025 + r2() * 0.05;
+      if (!reduce) {
+        cur[i * 3] = (r2() - 0.5) * 12;
+        cur[i * 3 + 1] = (r2() - 0.5) * 8;
+        cur[i * 3 + 2] = (r2() - 0.5) * 6;
+      }
+    }
+    const geo = new THREE.BufferGeometry();
+    const attr = new THREE.BufferAttribute(cur, 3);
+    geo.setAttribute("position", attr);
+
+    const c = document.createElement("canvas");
+    c.width = 64;
+    c.height = 64;
+    const ctx = c.getContext("2d");
+    const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grad.addColorStop(0, "rgba(255,255,255,1)");
+    grad.addColorStop(0.4, "rgba(255,255,255,0.6)");
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 64, 64);
+    const tex = new THREE.CanvasTexture(c);
+
+    const mat = new THREE.PointsMaterial({
+      size: 0.1,
+      map: tex,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      color: new THREE.Color(ACCENTS[0]),
+    });
+    group.add(new THREE.Points(geo, mat));
+
+    const resize = () => {
+      const w = host.clientWidth;
+      const h = host.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      const vh = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const vw = vh * camera.aspect;
+      const desktop = w >= 1024;
+      group.scale.setScalar(Math.min(0.9, (vw * (desktop ? 0.55 : 0.95)) / 7.4));
+      group.position.set(desktop ? vw * 0.2 : 0, desktop ? vh * 0.05 : 0, 0);
+      mat.opacity = desktop ? 0.95 : 0.8;
+    };
+    const ro = new ResizeObserver(resize);
+    ro.observe(host);
+    resize();
+
+    const mouse = { x: 0, y: 0 };
+    const smooth = { x: 0, y: 0 };
+    const onMove = (e) => {
+      mouse.x = (e.clientX / window.innerWidth - 0.5) * 0.4;
+      mouse.y = (e.clientY / window.innerHeight - 0.5) * 0.25;
+    };
+    window.addEventListener("pointermove", onMove);
+
+    let visible = true;
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    io.observe(host);
+
+    const accent = new THREE.Color();
+    const clock = new THREE.Clock();
+    let raf;
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      if (!visible) return;
+      const t = clock.getElapsedTime();
+      const idx = activeRef.current % forms.length;
+      const tgt = forms[idx];
+      for (let i = 0; i < N; i += 1) {
+        const k = reduce ? 1 : speeds[i];
+        const b = i * 3;
+        cur[b] += (tgt[b] - cur[b]) * k;
+        cur[b + 1] += (tgt[b + 1] - cur[b + 1]) * k;
+        cur[b + 2] += (tgt[b + 2] - cur[b + 2]) * k;
+      }
+      attr.needsUpdate = true;
+      mat.color.lerp(accent.set(ACCENTS[idx]), 0.06);
+      smooth.x += (mouse.x - smooth.x) * 0.05;
+      smooth.y += (mouse.y - smooth.y) * 0.05;
+      group.rotation.y = (reduce ? 0 : Math.sin(t * 0.35) * 0.4) + smooth.x;
+      group.rotation.x = smooth.y;
+      renderer.render(scene, camera);
+    };
+    tick();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+      ro.disconnect();
+      io.disconnect();
+      geo.dispose();
+      mat.dispose();
+      tex.dispose();
+      renderer.dispose();
+      host.removeChild(renderer.domElement);
+    };
+  }, [activeRef]);
+
+  return (
+    <div
+      ref={hostRef}
+      aria-hidden="true"
+      className="pointer-events-none h-72 lg:absolute lg:inset-0 lg:-z-10 lg:h-auto"
+    />
+  );
+}
+
+function BootcampPage({ event }) {
+  const sessions = event.sessions || [];
+  const paragraphs = event.about?.length ? event.about : event.description ? [event.description] : [];
+  const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
+  const isCompleted = event.status === "completed";
+
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0);
+  const activeRef = useRef(0);
+  activeRef.current = active;
+  const [reduce] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  useEffect(() => {
+    if (paused || reduce || sessions.length < 2) return undefined;
+    const id = setTimeout(() => setActive((a) => (a + 1) % sessions.length), AUTO_MS);
+    return () => clearTimeout(id);
+  }, [active, paused, tick, reduce, sessions.length]);
+
+  const session = sessions[active];
+  const accent = ACCENTS[active % ACCENTS.length];
+  const Icon = SESSION_ICONS[session?.slug] || Calendar;
+  const num = (session?.day?.match(/\d+/)?.[0] || "").padStart(2, "0");
+
+  return (
+    <div className="relative min-h-dvh overflow-x-clip pb-16 text-slate-900 dark:text-slate-100">
+      <style>{`
+        @keyframes bcFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        @keyframes bcRise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+      `}</style>
+
+      <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+        <div
+          className="relative overflow-hidden rounded-[2rem] bg-[#060a14] text-white ring-1 ring-white/10"
+          onPointerEnter={() => setPaused(true)}
+          onPointerLeave={() => {
+            setPaused(false);
+            setTick((t) => t + 1);
+          }}
+        >
+          {ACCENTS.map((c, i) => (
+            <div
+              key={c}
+              aria-hidden="true"
+              className="absolute inset-0 transition-opacity duration-700"
+              style={{
+                opacity: i === active % ACCENTS.length ? 1 : 0,
+                background: `radial-gradient(60% 70% at 72% 42%, ${c}33, transparent 70%)`,
+              }}
+            />
+          ))}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+              maskImage: "radial-gradient(ellipse at 70% 40%, black 15%, transparent 75%)",
+              WebkitMaskImage: "radial-gradient(ellipse at 70% 40%, black 15%, transparent 75%)",
+            }}
+          />
+
+          <div className="relative z-10 flex min-h-[46rem] flex-col">
+            <div className="px-6 pt-6 sm:px-10 sm:pt-8">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <Link
+                  to="/events"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base text-white/90 transition-colors hover:bg-white/10"
+                >
+                  <ArrowLeft size={18} />
+                  Events
+                </Link>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base">
+                    <Calendar size={17} style={{ color: accent }} />
+                    {dateLabel}
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-base">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: accent }} />
+                    {isCompleted ? "Completed" : "Upcoming"}
+                  </span>
+                </div>
+              </div>
+              <div className="mt-8">
+                {event.eyebrow && (
+                  <p className="text-lg font-semibold" style={{ color: accent }}>
+                    {event.eyebrow}
+                  </p>
+                )}
+                <h1 className="mt-1 text-5xl font-black leading-[1.05] sm:text-6xl">{event.title}</h1>
+                {event.tagline && <p className="mt-3 max-w-xl text-lg text-white/70">{event.tagline}</p>}
+              </div>
+            </div>
+
+            <ParticleStage activeRef={activeRef} />
+
+            <div className="flex flex-1 flex-col justify-end px-6 py-8 sm:px-10 lg:max-w-[48%]">
+              {session && (
+                <div key={active} style={{ animation: reduce ? "none" : "bcRise 600ms ease-out both" }}>
+                  <p
+                    className="text-[8rem] font-black leading-[0.85] tabular-nums sm:text-[11rem]"
+                    style={{ color: accent }}
+                  >
+                    {num}
+                  </p>
+                  <p className="mt-4 flex items-center gap-2 text-xl font-semibold text-white/80">
+                    <Icon size={22} style={{ color: accent }} />
+                    {session.day}
+                  </p>
+                  <h2 className="mt-1 text-4xl font-extrabold sm:text-5xl">{session.title}</h2>
+                  {session.detail && <p className="mt-3 max-w-md text-lg text-white/70">{session.detail}</p>}
+                  <Link
+                    to={session.slug ? `/register/${session.slug}` : "/events"}
+                    state={{ back: `/events/${event.slug}` }}
+                    className="mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-lg font-bold text-[#06101a] transition-transform hover:scale-105"
+                    style={{ backgroundColor: accent }}
+                  >
+                    Register for {session.title}
+                    <ArrowUpRight size={20} />
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <div role="tablist" className="grid grid-cols-2 gap-px border-t border-white/10 bg-white/10 lg:grid-cols-4">
+              {sessions.map((s, i) => {
+                const on = i === active;
+                const TabIcon = SESSION_ICONS[s.slug] || Calendar;
+                const c = ACCENTS[i % ACCENTS.length];
+                return (
+                  <button
+                    key={s.title}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => {
+                      setActive(i);
+                      setTick((t) => t + 1);
+                    }}
+                    className={`relative flex items-center justify-between gap-3 px-5 py-5 text-left transition-colors sm:px-7 ${
+                      on ? "bg-[#0d1424]" : "bg-[#060a14] hover:bg-[#0a1020]"
+                    }`}
+                  >
+                    {on && (
+                      <span
+                        key={`${active}-${tick}`}
+                        className="absolute left-0 top-0 h-[3px] w-full origin-left"
+                        style={{
+                          backgroundColor: c,
+                          animation: reduce ? "none" : `bcFill ${AUTO_MS}ms linear forwards`,
+                          animationPlayState: paused ? "paused" : "running",
+                        }}
+                      />
+                    )}
+                    <span className="min-w-0">
+                      <span className="block text-lg font-semibold" style={{ color: on ? c : "rgba(255,255,255,.55)" }}>
+                        {s.day?.replace("October", "Oct")}
+                      </span>
+                      <span className={`block text-xl font-bold ${on ? "text-white" : "text-white/70"}`}>
+                        {s.title}
+                      </span>
+                    </span>
+                    <TabIcon size={24} style={{ color: on ? c : "rgba(255,255,255,.35)" }} />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {paragraphs.length > 0 && (
+          <section className="mt-10 grid gap-6 border-t border-slate-300 pt-8 lg:grid-cols-[16rem_1fr] dark:border-white/15">
+            <h2 className="text-3xl font-bold text-sky-800 dark:text-sky-300">About</h2>
+            <div className="max-w-3xl space-y-5">
+              {paragraphs.map((p, i) => (
+                <p
+                  key={p}
+                  className={`text-xl leading-9 ${
+                    i === 0 ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
+                  }`}
+                >
+                  {p}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 }

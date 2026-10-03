@@ -41,6 +41,7 @@ const Navbar = () => {
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
   const isDarkNav = isDark;
+  const glassy = pathname === "/events/skill-up-bootcamp";
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -117,7 +118,9 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] md:transition-[background-color,border-color,box-shadow] md:duration-300 ${
-          isDarkNav
+          glassy
+            ? "border-b border-slate-200/80 bg-white dark:border-white/10"
+            : isDarkNav
             ? scrolled
               ? "bg-[#080c16] border-b border-white/10 md:backdrop-blur-xl md:bg-[#080c16]/90 md:shadow-sm"
               : "bg-[#080c16] border-b border-white/10 md:bg-[#080c16]/85 md:backdrop-blur-md"

@@ -17,11 +17,29 @@ html.dark #root {
 }
 
 .grid-lines {
-  background-color: #f7f9fc;
+  background-color: #eef3f8;
+  background-image:
+    radial-gradient(900px 460px at 0% 0%, rgba(186, 230, 253, 0.72), transparent 62%),
+    radial-gradient(720px 420px at 100% 6%, rgba(199, 210, 254, 0.5), transparent 58%);
 }
 
 html.dark .grid-lines {
   background-color: #080c16;
+  background-image:
+    radial-gradient(900px 460px at 0% 0%, rgba(14, 165, 233, 0.16), transparent 62%),
+    radial-gradient(720px 420px at 100% 6%, rgba(99, 102, 241, 0.14), transparent 58%);
+}
+
+.glass {
+  background-color: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(22px) saturate(1.7);
+  backdrop-filter: blur(22px) saturate(1.7);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html.dark .glass {
+  background-color: rgba(16, 24, 42, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 html.dark .text-slate-900 { color: #f1f5f9; }
