@@ -448,11 +448,6 @@ function ParticleStage({ activeRef, rotateRef }) {
     const r2 = mulberry32(99);
     for (let i = 0; i < N; i += 1) {
       speeds[i] = 0.025 + r2() * 0.05;
-      if (!reduce) {
-        cur[i * 3] = (r2() - 0.5) * 12;
-        cur[i * 3 + 1] = (r2() - 0.5) * 8;
-        cur[i * 3 + 2] = (r2() - 0.5) * 6;
-      }
     }
     const geo = new THREE.BufferGeometry();
     const attr = new THREE.BufferAttribute(cur, 3);
@@ -480,6 +475,7 @@ function ParticleStage({ activeRef, rotateRef }) {
     });
     group.add(new THREE.Points(geo, mat));
 
+    let faceYaw = 0;
     const resize = () => {
       const w = host.clientWidth;
       const h = host.clientHeight;
@@ -491,7 +487,10 @@ function ParticleStage({ activeRef, rotateRef }) {
       const vw = vh * camera.aspect;
       const desktop = w >= 1024;
       group.scale.setScalar(Math.min(0.9, (vw * (desktop ? 0.55 : 0.95)) / 7.4));
-      group.position.set(desktop ? vw * 0.2 : 0, desktop ? vh * 0.05 : 0, 0);
+      const px = desktop ? vw * 0.2 : 0;
+      const py = desktop ? vh * 0.05 : 0;
+      group.position.set(px, py, 0);
+      faceYaw = -Math.atan2(px, camera.position.z);
       mat.opacity = desktop ? 0.95 : 0.8;
     };
     const ro = new ResizeObserver(resize);
@@ -534,8 +533,8 @@ function ParticleStage({ activeRef, rotateRef }) {
       smooth.y += (mouse.y - smooth.y) * 0.05;
       const userY = rotateRef?.current?.y || 0;
       const userX = rotateRef?.current?.x || 0;
-      group.rotation.y = (reduce ? 0 : Math.sin(t * 0.35) * 0.4) + smooth.x + userY;
-      group.rotation.x = smooth.y + userX;
+      group.rotation.y = faceYaw + (reduce ? 0 : Math.sin(t * 0.35) * 0.08) + smooth.x * 0.35 + userY;
+      group.rotation.x = smooth.y * 0.35 + userX;
       renderer.render(scene, camera);
     };
     tick();
@@ -590,25 +589,29 @@ function BootcampPage({ event }) {
   const Icon = SESSION_ICONS[session?.slug] || Calendar;
   const num = (session?.day?.match(/\d+/)?.[0] || "").padStart(2, "0");
 
-  const onDragStart = (e) => {
+  const onRotateStart = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
     dragRef.current.down = true;
     dragRef.current.x = e.clientX;
     dragRef.current.y = e.clientY;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
   };
 
-  const onDragMove = (e) => {
+  const onRotateMove = (e) => {
     if (!dragRef.current.down) return;
     const dx = e.clientX - dragRef.current.x;
     const dy = e.clientY - dragRef.current.y;
     dragRef.current.x = e.clientX;
     dragRef.current.y = e.clientY;
-    rotateRef.current.y += dx * 0.0045;
-    rotateRef.current.x += dy * 0.0035;
-    rotateRef.current.x = THREE.MathUtils.clamp(rotateRef.current.x, -0.65, 0.65);
+    rotateRef.current.y += dx * 0.006;
+    rotateRef.current.x = THREE.MathUtils.clamp(rotateRef.current.x + dy * 0.004, -0.7, 0.7);
   };
 
-  const onDragEnd = () => {
+  const onRotateEnd = (e) => {
     dragRef.current.down = false;
+    if (e?.currentTarget?.hasPointerCapture?.(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
   };
 
   return (
@@ -643,12 +646,7 @@ function BootcampPage({ event }) {
           onPointerLeave={() => {
             setPaused(false);
             setTick((t) => t + 1);
-            onDragEnd();
           }}
-          onPointerUp={onDragEnd}
-          onPointerCancel={onDragEnd}
-          onPointerDown={onDragStart}
-          onPointerMove={onDragMove}
         >
           {ACCENTS.map((c, i) => (
             <div
@@ -705,7 +703,17 @@ function BootcampPage({ event }) {
               </div>
             </div>
 
-            <ParticleStage activeRef={activeRef} rotateRef={rotateRef} />
+            <div className="relative h-72 lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:h-auto">
+              <ParticleStage activeRef={activeRef} rotateRef={rotateRef} />
+              <div
+                aria-label="Drag to rotate the shape"
+                className="pointer-events-auto absolute inset-0 z-20 cursor-grab touch-none select-none active:cursor-grabbing lg:inset-auto lg:bottom-36 lg:left-[48%] lg:right-0 lg:top-[22%]"
+                onPointerDown={onRotateStart}
+                onPointerMove={onRotateMove}
+                onPointerUp={onRotateEnd}
+                onPointerCancel={onRotateEnd}
+              />
+            </div>
 
             <div className="flex flex-1 flex-col justify-end px-6 py-8 sm:px-10 lg:max-w-[48%]">
               {session && (
