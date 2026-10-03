@@ -1,29 +1,95 @@
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
 
+function absoluteUrl(path) {
+  return new URL(path, window.location.origin).href;
+}
+
+function sharePayload(title, text, url) {
+  const withAll = { title, text, url };
+  const withUrl = { title, url };
+  const textOnly = { title, text: text ? `${text}\n${url}` : url };
+  const candidates = [withAll, withUrl, textOnly, { url }];
+  if (!navigator.canShare) return withUrl;
+  return candidates.find((data) => navigator.canShare(data)) || { url };
+}
+
+function copyText(value) {
+  const field = document.createElement("textarea");
+  field.value = value;
+  field.setAttribute("contenteditable", "true");
+  field.style.position = "fixed";
+  field.style.top = "0";
+  field.style.left = "0";
+  field.style.width = "2em";
+  field.style.height = "2em";
+  field.style.padding = "0";
+  field.style.border = "none";
+  field.style.outline = "none";
+  field.style.boxShadow = "none";
+  field.style.background = "transparent";
+  field.style.fontSize = "16px";
+  document.body.appendChild(field);
+  field.focus();
+  field.select();
+  try {
+    field.setSelectionRange(0, field.value.length);
+  } catch {
+    /* iOS can reject setSelectionRange on some fields */
+  }
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
+  field.remove();
+  return ok;
+}
+
 export default function ShareEventButton({ title, text, path, tone = "light", className = "" }) {
   const [copied, setCopied] = useState(false);
+  const [link, setLink] = useState("");
 
-  const onShare = async (e) => {
+  const markCopied = () => {
+    setCopied(true);
+    setLink("");
+    window.setTimeout(() => setCopied(false), 2000);
+  };
+
+  const onShare = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const url = new URL(path, window.location.origin).href;
-    const payload = { title, text: `${text}\n${url}`, url };
-    try {
-      if (navigator.share) {
-        await navigator.share(payload);
+    const url = absoluteUrl(path);
+    const message = text ? `${text}\n${url}` : url;
+
+    if (typeof navigator.share === "function") {
+      try {
+        Promise.resolve(navigator.share(sharePayload(title, text, url))).then(() => {
+          setLink("");
+        }).catch((err) => {
+          if (err?.name === "AbortError") return;
+          if (copyText(message)) markCopied();
+          else setLink(url);
+        });
         return;
+      } catch {
+        if (copyText(message)) {
+          markCopied();
+          return;
+        }
       }
-    } catch (err) {
-      if (err?.name === "AbortError") return;
     }
-    try {
-      await navigator.clipboard.writeText(`${text}\n${url}`);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      window.prompt("Copy this link to share", url);
+
+    if (copyText(message)) {
+      markCopied();
+      return;
     }
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(message).then(markCopied).catch(() => setLink(url));
+      return;
+    }
+    setLink(url);
   };
 
   const toneClass =
@@ -32,13 +98,27 @@ export default function ShareEventButton({ title, text, path, tone = "light", cl
       : "border-slate-200 bg-white text-slate-800 shadow-sm hover:border-sky-600/40 hover:text-sky-800 dark:border-white/10 dark:bg-[#10182a] dark:text-slate-100";
 
   return (
-    <button
-      type="button"
-      onClick={onShare}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:px-3.5 sm:text-sm ${toneClass} ${className}`}
-    >
-      {copied ? <Check size={15} /> : <Share2 size={15} />}
-      {copied ? "Link copied" : "Share"}
-    </button>
+    <span className={`inline-flex max-w-full flex-col items-stretch gap-1 ${className}`}>
+      <button
+        type="button"
+        onClick={onShare}
+        className={`inline-flex touch-manipulation items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:px-3.5 sm:text-sm ${toneClass}`}
+      >
+        {copied ? <Check size={15} /> : <Share2 size={15} />}
+        {copied ? "Link copied" : "Share"}
+      </button>
+      {link && (
+        <input
+          readOnly
+          value={link}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.currentTarget.select();
+          }}
+          className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] text-slate-700"
+          aria-label="Event link"
+        />
+      )}
+    </span>
   );
 }
