@@ -424,7 +424,7 @@ function buildFormations() {
   return [bars, cloud, net, shield];
 }
 
-function ParticleStage({ activeRef }) {
+function ParticleStage({ activeRef, rotateRef }) {
   const hostRef = useRef(null);
 
   useEffect(() => {
@@ -532,8 +532,10 @@ function ParticleStage({ activeRef }) {
       mat.color.lerp(accent.set(ACCENTS[idx]), 0.06);
       smooth.x += (mouse.x - smooth.x) * 0.05;
       smooth.y += (mouse.y - smooth.y) * 0.05;
-      group.rotation.y = (reduce ? 0 : Math.sin(t * 0.35) * 0.4) + smooth.x;
-      group.rotation.x = smooth.y;
+      const userY = rotateRef?.current?.y || 0;
+      const userX = rotateRef?.current?.x || 0;
+      group.rotation.y = (reduce ? 0 : Math.sin(t * 0.35) * 0.4) + smooth.x + userY;
+      group.rotation.x = smooth.y + userX;
       renderer.render(scene, camera);
     };
     tick();
@@ -549,7 +551,7 @@ function ParticleStage({ activeRef }) {
       renderer.dispose();
       host.removeChild(renderer.domElement);
     };
-  }, [activeRef]);
+  }, [activeRef, rotateRef]);
 
   return (
     <div
@@ -570,6 +572,8 @@ function BootcampPage({ event }) {
   const [paused, setPaused] = useState(false);
   const [tick, setTick] = useState(0);
   const activeRef = useRef(0);
+  const rotateRef = useRef({ x: 0, y: 0 });
+  const dragRef = useRef({ down: false, x: 0, y: 0 });
   activeRef.current = active;
   const [reduce] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -586,6 +590,27 @@ function BootcampPage({ event }) {
   const Icon = SESSION_ICONS[session?.slug] || Calendar;
   const num = (session?.day?.match(/\d+/)?.[0] || "").padStart(2, "0");
 
+  const onDragStart = (e) => {
+    dragRef.current.down = true;
+    dragRef.current.x = e.clientX;
+    dragRef.current.y = e.clientY;
+  };
+
+  const onDragMove = (e) => {
+    if (!dragRef.current.down) return;
+    const dx = e.clientX - dragRef.current.x;
+    const dy = e.clientY - dragRef.current.y;
+    dragRef.current.x = e.clientX;
+    dragRef.current.y = e.clientY;
+    rotateRef.current.y += dx * 0.0045;
+    rotateRef.current.x += dy * 0.0035;
+    rotateRef.current.x = THREE.MathUtils.clamp(rotateRef.current.x, -0.65, 0.65);
+  };
+
+  const onDragEnd = () => {
+    dragRef.current.down = false;
+  };
+
   return (
     <div className="relative min-h-dvh overflow-x-clip pb-16 text-slate-900 dark:text-slate-100">
       <style>{`
@@ -594,13 +619,36 @@ function BootcampPage({ event }) {
       `}</style>
 
       <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+        {paragraphs.length > 0 && (
+          <section className="glass mb-6 rounded-3xl border border-white/80 px-6 py-6 shadow-[0_12px_36px_rgba(15,23,42,0.08)] sm:px-8 dark:border-white/10">
+            <h2 className="text-3xl font-bold text-sky-800 dark:text-sky-300">About</h2>
+            <div className="mt-4 max-w-4xl space-y-4">
+              {paragraphs.map((p, i) => (
+                <p
+                  key={p}
+                  className={`text-lg leading-8 ${
+                    i === 0 ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
+                  }`}
+                >
+                  {p}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
+
         <div
           className="relative overflow-hidden rounded-[2rem] bg-[#060a14] text-white ring-1 ring-white/10"
           onPointerEnter={() => setPaused(true)}
           onPointerLeave={() => {
             setPaused(false);
             setTick((t) => t + 1);
+            onDragEnd();
           }}
+          onPointerUp={onDragEnd}
+          onPointerCancel={onDragEnd}
+          onPointerDown={onDragStart}
+          onPointerMove={onDragMove}
         >
           {ACCENTS.map((c, i) => (
             <div
@@ -657,7 +705,7 @@ function BootcampPage({ event }) {
               </div>
             </div>
 
-            <ParticleStage activeRef={activeRef} />
+            <ParticleStage activeRef={activeRef} rotateRef={rotateRef} />
 
             <div className="flex flex-1 flex-col justify-end px-6 py-8 sm:px-10 lg:max-w-[48%]">
               {session && (
@@ -732,24 +780,6 @@ function BootcampPage({ event }) {
             </div>
           </div>
         </div>
-
-        {paragraphs.length > 0 && (
-          <section className="mt-10 grid gap-6 border-t border-slate-300 pt-8 lg:grid-cols-[16rem_1fr] dark:border-white/15">
-            <h2 className="text-3xl font-bold text-sky-800 dark:text-sky-300">About</h2>
-            <div className="max-w-3xl space-y-5">
-              {paragraphs.map((p, i) => (
-                <p
-                  key={p}
-                  className={`text-xl leading-9 ${
-                    i === 0 ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
-                  }`}
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
-          </section>
-        )}
       </div>
     </div>
   );
