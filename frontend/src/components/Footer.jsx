@@ -1,15 +1,19 @@
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from "../lib/theme";
 
 const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
   const { isDark } = useTheme();
+  const { pathname } = useLocation();
+  const onGrid = pathname === "/events/skill-up-bootcamp";
 
   return (
     <footer
       className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${
-        isDark
+        onGrid
+          ? "border-t border-slate-200/80 bg-transparent dark:border-white/10"
+          : isDark
           ? "bg-[#080c16] border-t border-white/10"
           : "bg-white border-t border-slate-200/80"
       }`}

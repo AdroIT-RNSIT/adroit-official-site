@@ -16,6 +16,14 @@ html.dark #root {
   color: #e2e8f0;
 }
 
+.grid-lines {
+  background-color: #f7f9fc;
+}
+
+html.dark .grid-lines {
+  background-color: #080c16;
+}
+
 html.dark .text-slate-900 { color: #f1f5f9; }
 html.dark .text-slate-800 { color: #e2e8f0; }
 html.dark .text-slate-700 { color: #cbd5e1; }

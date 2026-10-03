@@ -55,15 +55,19 @@ export default function EventDetail() {
   if (!event) return <Navigate to="/events" replace />;
 
   const isCompleted = event.status === "completed";
+  const individualRegistration = event.registration === "individual";
   const poster = event.poster || event.imageUrl;
+  const posterContained = event.posterFit === "contain";
   const glimpses = (
     event.glimpses?.length
       ? event.glimpses
-      : [
-          ...(event.competitions || []).map((c) => c.poster || c.imageUrl),
-          event.poster,
-          event.imageUrl,
-        ]
+      : event.competitions?.length
+        ? [
+            ...event.competitions.map((c) => c.poster || c.imageUrl),
+            event.poster,
+            event.imageUrl,
+          ]
+        : []
   ).filter((src, idx, arr) => src && arr.indexOf(src) === idx);
   const competitions = event.competitions || [];
   const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
@@ -73,8 +77,8 @@ export default function EventDetail() {
 
   return (
     <div className="relative min-h-dvh overflow-x-clip pb-16 text-slate-900 dark:text-slate-100">
-      <section className={`relative overflow-hidden ${poster ? "min-h-[42vh] sm:min-h-[48vh]" : "pt-6"}`}>
-        {poster && (
+      <section className={`relative overflow-hidden ${poster && !posterContained ? "min-h-[42vh] sm:min-h-[48vh]" : "pt-6"}`}>
+        {poster && !posterContained && (
           <>
             <img
               src={poster}
@@ -85,7 +89,15 @@ export default function EventDetail() {
           </>
         )}
 
-        <div className={`relative z-10 mx-auto flex max-w-6xl flex-col justify-end px-4 pb-10 pt-8 sm:px-6 lg:px-8 ${poster ? "min-h-[42vh] sm:min-h-[48vh]" : ""}`}>
+        <div className={`relative z-10 mx-auto flex max-w-6xl flex-col justify-end px-4 pb-10 pt-8 sm:px-6 lg:px-8 ${poster && !posterContained ? "min-h-[42vh] sm:min-h-[48vh]" : ""}`}>
+          {posterContained && (
+            <img
+              src={poster}
+              alt={`${event.title} poster`}
+              className="mx-auto mb-8 w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 object-contain dark:border-white/10 dark:bg-white/5"
+            />
+          )}
+          <div>
           <Link
             to="/events"
             className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
@@ -97,7 +109,7 @@ export default function EventDetail() {
             <h1 className="min-w-0 flex-1 text-4xl font-extrabold leading-tight text-sky-800 sm:text-5xl">
               {event.title}
             </h1>
-            {!isCompleted && (
+            {!isCompleted && !individualRegistration && (
               <button
                 type="button"
                 onClick={() => setIsRegOpen(true)}
@@ -112,6 +124,7 @@ export default function EventDetail() {
               {event.tagline}
             </p>
           )}
+          </div>
         </div>
       </section>
 
@@ -121,9 +134,11 @@ export default function EventDetail() {
           {event.location && (
             <MetaCard icon={<MapPin size={16} />} label="Venue" value={event.location} />
           )}
-          {isCompleted && (
-            <MetaCard icon={<span className="text-sky-600">●</span>} label="Status" value="Completed" />
-          )}
+          <MetaCard
+            icon={<span className="text-sky-600">●</span>}
+            label="Status"
+            value={isCompleted ? "Completed" : "Upcoming"}
+          />
         </div>
 
         {(event.about?.length || event.description) && (
@@ -144,18 +159,43 @@ export default function EventDetail() {
         {sessions.length > 0 && (
           <section className="mt-12">
             <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-              Sessions
+              Domains
             </h2>
-            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {sessions.map((session) => (
                 <article
                   key={session.title}
-                  className="rounded-2xl border border-slate-200/80 bg-white/80 p-6 shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-white/5"
+                  className="flex flex-col rounded-2xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03] sm:p-5"
                 >
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">{session.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                    {session.detail}
-                  </p>
+                  <div className="flex items-center gap-4">
+                    {poster && (
+                      <img
+                        src={session.image || poster}
+                        alt=""
+                        className="h-12 w-20 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-cover dark:border-white/10 dark:bg-white/5"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      {session.day && (
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+                          {session.day}
+                        </p>
+                      )}
+                      <h3 className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">{session.title}</h3>
+                    </div>
+                  </div>
+                  {session.detail && (
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                      {session.detail}
+                    </p>
+                  )}
+                  <Link
+                    to={session.slug ? `/register/${session.slug}` : "/events"}
+                    state={{ back: `/events/${event.slug}` }}
+                    className="mt-4 inline-flex w-fit rounded-xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700"
+                  >
+                    Register
+                  </Link>
                 </article>
               ))}
             </div>
@@ -252,7 +292,7 @@ export default function EventDetail() {
         </div>
       )}
 
-      {!isCompleted && (
+      {!isCompleted && !individualRegistration && (
         <RegistrationModal
           isOpen={isRegOpen}
           onClose={() => setIsRegOpen(false)}

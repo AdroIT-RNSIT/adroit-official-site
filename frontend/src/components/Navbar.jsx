@@ -231,11 +231,11 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <>
           <div
-            className="md:hidden fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/40"
+            className="fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/40 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
           <div
-            className={`md:hidden fixed right-3 z-[1001] top-[calc(var(--nav-height)+0.5rem)] w-[min(20.5rem,calc(100vw-1.5rem))] origin-top-right rounded-2xl border shadow-[0_18px_50px_rgba(15,23,42,0.18)] ${
+            className={`fixed right-3 top-[calc(var(--nav-height)+0.5rem)] z-[1001] w-44 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-2xl border shadow-[0_18px_50px_rgba(15,23,42,0.18)] md:hidden ${
               isDarkNav
                 ? "border-white/10 bg-[#080c16]"
                 : "border-slate-200 bg-white"
@@ -247,24 +247,24 @@ const Navbar = () => {
                 isDarkNav ? "border-white/10 bg-[#080c16]" : "border-slate-200 bg-white"
               }`}
             />
-            <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-2">
+            <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-1.5">
           {isLoggedIn && (
-            <div className={`mb-2 flex items-center gap-3 rounded-xl px-3 py-2.5 ${isDarkNav ? "bg-white/5" : "bg-slate-50"}`}>
-              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 text-sm font-bold text-white">
+            <div className={`mb-1 flex items-center gap-2.5 rounded-xl px-2 py-2 ${isDarkNav ? "bg-white/5" : "bg-slate-50"}`}>
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 text-sm font-bold text-white">
                 {session?.user?.image ? (
                   <img src={session.user.image} alt="" className="h-full w-full object-cover" />
                 ) : (
                   session?.user?.name?.charAt(0).toUpperCase() || "U"
                 )}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 max-w-[11rem]">
                 <p className={`truncate text-sm font-medium ${isDarkNav ? "text-white" : "text-slate-900"}`}>{session?.user?.name}</p>
                 <p className={`truncate text-xs ${isDarkNav ? "text-slate-400" : "text-slate-500"}`}>{session?.user?.email}</p>
               </div>
             </div>
           )}
 
-          <nav className="flex flex-col gap-0.5">
+          <nav className="flex flex-col">
             {publicLinks.map((link) => {
               const Icon = NAV_ICONS[link.name] || Home;
               const active = isActive(link.path);
@@ -273,7 +273,7 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
+                  className={`flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out ${
                     active
                       ? isDarkNav
                         ? "bg-sky-500/15 text-white"
@@ -284,7 +284,7 @@ const Navbar = () => {
                   }`}
                 >
                   <span
-                    className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
                       active
                         ? "bg-sky-500/15 text-sky-500"
                         : isDarkNav
@@ -292,13 +292,11 @@ const Navbar = () => {
                           : "bg-slate-100 text-slate-500"
                     }`}
                   >
-                    <Icon size={18} strokeWidth={2} />
+                    <Icon size={16} strokeWidth={2} />
                   </span>
-                  <span className="flex-1">
-                    {link.name}
-                  </span>
+                  <span className="flex-1 pr-2">{link.name}</span>
                   <ChevronRight
-                    size={16}
+                    size={14}
                     className={active ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
                     strokeWidth={2}
                   />
@@ -309,8 +307,8 @@ const Navbar = () => {
 
           {isLoggedIn && (
             <>
-              <div className={`my-2 h-px ${isDarkNav ? "bg-white/10" : "bg-slate-200"}`} />
-              <nav className="flex flex-col gap-0.5">
+              <div className={`my-1.5 h-px ${isDarkNav ? "bg-white/10" : "bg-slate-200"}`} />
+              <nav className="flex flex-col">
                 {protectedLinks.map((link) => {
                   const Icon = NAV_ICONS[link.name] || User;
                   const active = isActive(link.path);
@@ -319,7 +317,7 @@ const Navbar = () => {
                       key={link.path}
                       to={link.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
+                      className={`flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out ${
                         active
                           ? isDarkNav
                             ? "bg-sky-500/15 text-white"
@@ -330,7 +328,7 @@ const Navbar = () => {
                       }`}
                     >
                       <span
-                        className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
                           active
                             ? "bg-sky-500/15 text-sky-500"
                             : isDarkNav
@@ -338,11 +336,11 @@ const Navbar = () => {
                               : "bg-slate-100 text-slate-500"
                         }`}
                       >
-                        <Icon size={18} strokeWidth={2} />
+                        <Icon size={16} strokeWidth={2} />
                       </span>
-                      <span className="flex-1">{link.name}</span>
+                      <span className="flex-1 pr-2">{link.name}</span>
                       <ChevronRight
-                        size={16}
+                        size={14}
                         className={active ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
                         strokeWidth={2}
                       />
@@ -353,7 +351,7 @@ const Navbar = () => {
                   <Link
                     to="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-300 ease-out ${
+                    className={`flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out ${
                       isActive("/admin")
                         ? isDarkNav
                           ? "bg-sky-500/15 text-white"
@@ -364,7 +362,7 @@ const Navbar = () => {
                     }`}
                   >
                     <span
-                      className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
                         isActive("/admin")
                           ? "bg-sky-500/15 text-sky-500"
                           : isDarkNav
@@ -372,11 +370,11 @@ const Navbar = () => {
                             : "bg-slate-100 text-slate-500"
                       }`}
                     >
-                      <Settings size={18} strokeWidth={2} />
+                      <Settings size={16} strokeWidth={2} />
                     </span>
-                    <span className="flex-1">Admin</span>
+                    <span className="flex-1 pr-2">Admin</span>
                     <ChevronRight
-                      size={16}
+                      size={14}
                       className={isActive("/admin") ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
                       strokeWidth={2}
                     />

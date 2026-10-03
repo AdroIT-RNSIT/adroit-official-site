@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { findRegistrationDomain } from "../data/domainRegistration";
+import { sharedEvents } from "../data/events";
 import { supabase } from "../lib/supabaseClient";
 
 const fieldClass =
@@ -11,7 +12,11 @@ const SEMESTERS = ["1", "3"];
 
 export default function DomainRegister() {
   const { domain: slug } = useParams();
+  const location = useLocation();
   const domain = findRegistrationDomain(slug);
+  const bootcamp = sharedEvents.find((item) => item.slug === "skill-up-bootcamp");
+  const session = bootcamp?.sessions?.find((item) => item.slug === slug) || null;
+  const backTo = location.state?.back || "/";
   const [form, setForm] = useState({
     name: "",
     usn: "",
@@ -81,7 +86,7 @@ export default function DomainRegister() {
   return (
     <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
       <Link
-        to="/"
+        to={backTo}
         className="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
       >
         <ArrowLeft size={16} />
@@ -91,7 +96,6 @@ export default function DomainRegister() {
         {domain.label}
       </p>
       <h1 className="mt-3 text-3xl font-bold text-slate-900">{domain.title}</h1>
-      <p className="mt-3 text-slate-600 leading-relaxed">{domain.description}</p>
 
       {done ? (
         <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-8">
@@ -218,6 +222,27 @@ export default function DomainRegister() {
           </button>
         </form>
       )}
+
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="flex items-start gap-4">
+          {bootcamp?.poster && session && (
+            <img
+              src={bootcamp.poster}
+              alt=""
+              className="h-14 w-24 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-cover"
+            />
+          )}
+          <div>
+            {session?.day && (
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">{session.day}</p>
+            )}
+            <h2 className="text-lg font-bold text-slate-900">{session?.title || domain.title}</h2>
+            {(session?.detail || domain.description) && (
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{session?.detail || domain.description}</p>
+            )}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

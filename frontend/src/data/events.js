@@ -74,6 +74,33 @@ export const PARADOX_SLUG = "paradox-2026";
 
 export const sharedEvents = [
   {
+    _id: "skill-up-bootcamp-2026",
+    title: "Skill Up Boot Camp",
+    tagline: "A 4-day hands-on tech bootcamp.",
+    eyebrow: "Bootcamp",
+    description:
+      "AdroIT is hosting Skill Up Boot Camp, a 4-day hands-on tech bootcamp from October 6 to 9, 2026. Each day covers one domain.",
+    about: [
+      "Skill Up Boot Camp is a 4-day hands-on tech bootcamp by AdroIT at RNS Institute of Technology, running from October 6 to October 9, 2026.",
+      "Each day is one domain: Data Analytics, Cloud Computing, Machine Learning, and Cybersecurity. Sessions are practical, so you work with the topic instead of only hearing about it.",
+    ],
+    date: "2026-10-06T05:00:00Z",
+    endDate: "2026-10-09T05:00:00Z",
+    dateLabel: "October 6–9, 2026",
+    slug: "skill-up-bootcamp",
+    status: "upcoming",
+    registration: "individual",
+    poster: "/skill-up-bootcamp.webp",
+    imageUrl: "/skill-up-bootcamp.webp",
+    posterFit: "contain",
+    sessions: [
+      { day: "October 6", title: "Data Analytics", slug: "data-analytics" },
+      { day: "October 7", title: "Cloud Computing", slug: "cloud-computing" },
+      { day: "October 8", title: "Machine Learning", slug: "machine-learning" },
+      { day: "October 9", title: "Cybersecurity", slug: "cybersecurity" },
+    ],
+  },
+  {
     _id: "paradox-2026",
     title: "Paradox 2026",
     tagline: "Three competitions. Two days. One fest.",
