@@ -96,6 +96,23 @@ export default function DomainRegister() {
         {domain.label}
       </p>
       <h1 className="mt-3 text-3xl font-bold text-slate-900">{domain.title}</h1>
+      {session?.day && (
+        <p className="mt-2 text-sm font-medium text-slate-500">{session.day}</p>
+      )}
+
+      {session?.topics?.length > 0 && (
+        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-900">What We'll Cover</h2>
+          <ul className="mt-4 space-y-2.5">
+            {session.topics.map((topic) => (
+              <li key={topic} className="flex gap-2.5 text-sm leading-relaxed text-slate-700">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-600" aria-hidden="true" />
+                <span>{topic}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {done ? (
         <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-8">
@@ -223,6 +240,7 @@ export default function DomainRegister() {
         </form>
       )}
 
+      {!session?.topics?.length && (
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5">
         <div className="flex items-start gap-4">
           {bootcamp?.poster && session && (
@@ -243,6 +261,7 @@ export default function DomainRegister() {
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }

@@ -95,7 +95,18 @@ export const sharedEvents = [
     posterFit: "contain",
     sessions: [
       { day: "October 6", title: "Data Analytics", slug: "data-analytics" },
-      { day: "October 7", title: "Cloud Computing", slug: "cloud-computing" },
+      {
+        day: "October 7",
+        title: "Cloud Computing",
+        slug: "cloud-computing",
+        topics: [
+          "Introduction to Cloud Computing",
+          "Deployment Practical",
+          "AWS Services",
+          "System Design with Real-World Example",
+          "Mini Game",
+        ],
+      },
       { day: "October 8", title: "Machine Learning", slug: "machine-learning" },
       { day: "October 9", title: "Cybersecurity", slug: "cybersecurity" },
     ],
