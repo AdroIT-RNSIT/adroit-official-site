@@ -86,13 +86,15 @@ const Home = () => {
     }
   ];
 
-  const domainCards = registrationDomains.map((domain) => ({
-    _id: domain.slug,
-    title: domain.title,
-    description: domain.description,
-    label: domain.label,
-    link: `/register/${domain.slug}`,
-  }));
+  const domainCards = registrationDomains
+    .filter((domain) => domain.slug !== "non-tech")
+    .map((domain) => ({
+      _id: domain.slug,
+      title: domain.title,
+      description: domain.description,
+      label: domain.label,
+      link: `/register/${domain.slug}`,
+    }));
 
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
@@ -114,12 +116,12 @@ const Home = () => {
         <img
           src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className={`h-[12rem] w-auto max-w-[50%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
+          className={`h-[9rem] w-auto max-w-[37.5%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="h-[10rem] w-auto max-w-[28%] object-contain object-right mix-blend-multiply"
+          className="h-[7.5rem] w-auto max-w-[21%] object-contain object-right mix-blend-multiply"
         />
       </div>
 
@@ -150,12 +152,7 @@ const Home = () => {
           <EventCarousel
             events={domainCards}
             onSelect={(domain) => {
-              const bootcampDays = ["data-analytics", "cloud-computing", "machine-learning", "cybersecurity"];
-              if (bootcampDays.includes(domain._id)) {
-                navigate(`/events/skill-up-bootcamp?domain=${domain._id}`);
-                return;
-              }
-              navigate(domain.link || "/");
+              navigate(`/events/skill-up-bootcamp?domain=${domain._id}`);
             }}
           />
         </div>
