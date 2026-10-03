@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, BarChart3, Brain, Calendar, ChevronLeft, ChevronRight, Cloud, MapPin, ShieldCheck, X } from "lucide-react";
 import RegistrationModal from "../components/RegistrationModal";
 import GlimpseGallery from "../components/GlimpseGallery";
+import ShareEventButton from "../components/ShareEventButton";
 import { eventPhase, eventStatusLabel, findEditionForCompetitionSlug, getEventBySlug, sessionCompleted } from "../data/events";
 
 const SESSION_ICONS = {
@@ -141,15 +142,22 @@ export default function EventDetail() {
                   {event.title}
                 </h1>
               </div>
-              {!isCompleted && !individualRegistration && (
-                <button
-                  type="button"
-                  onClick={() => setIsRegOpen(true)}
-                  className="w-full shrink-0 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-sky-900/15 hover:bg-sky-700 sm:w-auto sm:px-7"
-                >
-                  Register now
-                </button>
-              )}
+              <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto">
+                <ShareEventButton
+                  title={event.title}
+                  text={isCompleted ? `${event.title} — AdroIT.` : `Attend ${event.title}${dateLabel ? ` on ${dateLabel}` : ""} with AdroIT.`}
+                  path={`/events/${event.slug}`}
+                />
+                {!isCompleted && !individualRegistration && (
+                  <button
+                    type="button"
+                    onClick={() => setIsRegOpen(true)}
+                    className="w-full shrink-0 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-sky-900/15 hover:bg-sky-700 sm:w-auto sm:px-7"
+                  >
+                    Register now
+                  </button>
+                )}
+              </div>
             </div>
             {event.tagline && (
               <p className="mt-3 max-w-2xl text-base text-slate-700 sm:text-lg">
@@ -687,13 +695,15 @@ function CompletedSeal({ color, compact = false }) {
 function BootcampPage({ event }) {
   const sessions = event.sessions || [];
   const paragraphs = event.about?.length ? event.about : event.description ? [event.description] : [];
-  const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
   const phase = eventPhase(event);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const [searchParams] = useSearchParams();
+  const chosenDomain = searchParams.get("domain");
+  const chosenIndex = sessions.findIndex((session) => session.slug === chosenDomain);
   const [now, setNow] = useState(() => new Date());
 
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [active, setActive] = useState(chosenIndex >= 0 ? chosenIndex : 0);
+  const [paused, setPaused] = useState(chosenIndex >= 0);
   const [tick, setTick] = useState(0);
   const activeRef = useRef(0);
   const rotateRef = useRef({ x: 0, y: 0 });
@@ -712,6 +722,17 @@ function BootcampPage({ event }) {
     rotateRef.current.x = 0;
     rotateRef.current.y = 0;
   }, [active]);
+
+  useEffect(() => {
+    if (chosenIndex < 0) return undefined;
+    setActive(chosenIndex);
+    setPaused(true);
+    setTick((n) => n + 1);
+    const frame = requestAnimationFrame(() => {
+      document.getElementById("bootcamp-register")?.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [chosenIndex]);
 
   useEffect(() => {
     if (paused || reduce || sessions.length < 2) return undefined;
@@ -823,10 +844,12 @@ function BootcampPage({ event }) {
                   Events
                 </Link>
                 <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs sm:gap-2 sm:px-4 sm:py-2 sm:text-base">
-                    <Calendar size={15} style={{ color: accent }} />
-                    {dateLabel}
-                  </span>
+                  <ShareEventButton
+                    title={event.title}
+                    text={`Attend ${event.title}${session ? `, ${session.title} on ${session.day}` : ""} with AdroIT.`}
+                    path={`/events/${event.slug}${session?.slug ? `?domain=${session.slug}` : ""}`}
+                    tone="dark"
+                  />
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs sm:gap-2 sm:px-4 sm:py-2 sm:text-base">
                     <span
                       className={`h-2 w-2 rounded-full ${phase === "live" ? "animate-pulse bg-emerald-400" : ""}`}
@@ -885,6 +908,7 @@ function BootcampPage({ event }) {
                   </div>
                   {session.detail && <p className="mt-3 max-w-md text-base text-white/70 sm:text-lg">{session.detail}</p>}
                   <Link
+                    id="bootcamp-register"
                     to={session.slug ? `/register/${session.slug}` : "/events"}
                     state={{ back: `/events/${event.slug}` }}
                     className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-[#06101a] transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"

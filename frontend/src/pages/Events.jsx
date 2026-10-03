@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Calendar, MapPin } from "lucide-react";
 import { eventPhase, eventStatusLabel, partitionEvents } from "../data/events";
+import ShareEventButton from "../components/ShareEventButton";
 
 const formatRange = (start, end) => {
   const startDate = new Date(start);
@@ -81,34 +82,37 @@ function FeaturedEvent({ event }) {
   const poster = event.poster || event.imageUrl;
   const posterContained = event.posterFit === "contain";
   const glimpses = event.glimpses?.slice(0, 3) || [];
-  const when = event.dateLabel || formatRange(event.date, event.endDate);
+  const when = event.slug === "skill-up-bootcamp" ? "" : event.dateLabel || formatRange(event.date, event.endDate);
   const phase = eventPhase(event);
   const upcoming = phase !== "completed";
   const statusLabel = eventStatusLabel(event);
+  const shareText = upcoming ? `Attend ${event.title} with AdroIT.` : `${event.title} — AdroIT.`;
 
   return (
-    <Link
-      to={`/events/${event.slug}`}
+    <article
       className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? "md:grid-cols-[minmax(0,14rem)_1fr]" : ""}`}
     >
       {poster && (
-      <div className={`relative h-36 overflow-hidden sm:h-40 ${posterContained ? "flex items-center justify-center bg-slate-50 p-3 dark:bg-white/5" : ""}`}>
-        <img
-          src={poster}
-          alt=""
-          className={posterContained ? "max-h-full w-full object-contain" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
-        />
-        {!posterContained && (
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#080c16]/40" />
-        )}
-        <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
-          {statusLabel}
-        </span>
-      </div>
+        <Link
+          to={`/events/${event.slug}`}
+          className={`relative block h-36 overflow-hidden sm:h-40 ${posterContained ? "flex items-center justify-center bg-slate-50 p-3 dark:bg-white/5" : ""}`}
+        >
+          <img
+            src={poster}
+            alt=""
+            className={posterContained ? "max-h-full w-full object-contain" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
+          />
+          {!posterContained && (
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#080c16]/40" />
+          )}
+          <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
+            {statusLabel}
+          </span>
+        </Link>
       )}
 
       <div className="relative flex flex-col justify-between p-4 sm:p-5">
-        <div>
+        <Link to={`/events/${event.slug}`} className="block">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
               {event.eyebrow || "Fest recap"}
@@ -125,26 +129,30 @@ function FeaturedEvent({ event }) {
           {event.tagline && (
             <p className="mt-2 text-base text-sky-700">{event.tagline}</p>
           )}
-          <div className="mt-3 flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
-              <Calendar size={13} className="text-sky-600" />
-              {when}
-            </span>
-            {event.location && (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
-                <MapPin size={13} className="text-sky-600" />
-                {event.location}
-              </span>
-            )}
-          </div>
+          {(when || event.location) && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {when && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                  <Calendar size={13} className="text-sky-600" />
+                  {when}
+                </span>
+              )}
+              {event.location && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                  <MapPin size={13} className="text-sky-600" />
+                  {event.location}
+                </span>
+              )}
+            </div>
+          )}
           {event.description && (
             <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
               {event.description}
             </p>
           )}
-        </div>
+        </Link>
 
-        <div className="mt-4 flex items-end justify-between gap-4">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           {glimpses.length > 0 && (
             <div className="flex -space-x-3">
               {glimpses.map((src, idx) => (
@@ -157,12 +165,18 @@ function FeaturedEvent({ event }) {
               ))}
             </div>
           )}
-          <span className="ml-auto inline-flex items-center gap-1.5 text-sm font-semibold text-sky-700 transition-transform duration-300 group-hover:translate-x-0.5">
-            {upcoming ? "View and register" : poster ? "View recap" : "View details"}
-            <ArrowUpRight size={16} />
-          </span>
+          <div className="ml-auto flex items-center gap-3">
+            <ShareEventButton title={event.title} text={shareText} path={`/events/${event.slug}`} />
+            <Link
+              to={`/events/${event.slug}`}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-700 transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              {upcoming ? "View and register" : poster ? "View recap" : "View details"}
+              <ArrowUpRight size={16} />
+            </Link>
+          </div>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }

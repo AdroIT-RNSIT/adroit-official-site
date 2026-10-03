@@ -149,7 +149,14 @@ const Home = () => {
           </p>
           <EventCarousel
             events={domainCards}
-            onSelect={(domain) => navigate(domain.link || "/")}
+            onSelect={(domain) => {
+              const bootcampDays = ["data-analytics", "cloud-computing", "machine-learning", "cybersecurity"];
+              if (bootcampDays.includes(domain._id)) {
+                navigate(`/events/skill-up-bootcamp?domain=${domain._id}`);
+                return;
+              }
+              navigate(domain.link || "/");
+            }}
           />
         </div>
       </section>
