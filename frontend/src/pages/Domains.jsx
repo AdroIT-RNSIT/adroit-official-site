@@ -15,6 +15,9 @@ import {
   Users,
   Sparkles,
   RefreshCw,
+  Megaphone,
+  PenLine,
+  CalendarCheck,
 } from 'lucide-react';
 
 const CARD =
@@ -55,6 +58,9 @@ export default function Domains() {
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
       </svg>
+    ),
+    nt: (
+      <Megaphone size={26} />
     ),
     members: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -217,7 +223,7 @@ export default function Domains() {
         { title: 'DevOps Roadmap', type: 'Guide', provider: 'Community' }
       ],
       stats: {
-        members: 13,
+        members: 9,
         projects: 1,
         events: 0,
         resources: 2
@@ -317,6 +323,57 @@ export default function Domains() {
         'Visualization',
         'Advanced Analytics'
       ]
+    },
+    {
+      id: 'nt',
+      name: 'Non-Tech',
+      shortName: 'Non-Tech',
+      icon: icons.nt,
+      color: 'from-amber-500 to-amber-600',
+      lightColor: 'from-amber-400/20 to-amber-600/20',
+      borderColor: 'border-amber-500/30',
+      textColor: 'text-amber-400',
+      bgColor: 'bg-amber-500/10',
+      gradient: 'bg-gradient-to-br from-amber-500/20 via-orange-500/10 to-transparent',
+      description: 'The club work outside the technical tracks, from creative production to how events get run.',
+      longDescription: 'Non-Tech is how AdroIT shows up beyond the technical tracks. Members edit videos, shoot event photos, draft letters, design posters, run marketing, and handle the logistics that take a session or fest from a plan to a finished day.',
+      careerPaths: ['Video Editor', 'Photographer', 'Content Writer', 'Graphic Designer', 'Marketing Coordinator', 'Event Coordinator'],
+      skills: [
+        'Video Editing',
+        'Photography',
+        'Letter Drafting',
+        'Poster Making',
+        'Marketing',
+        'Logistics',
+      ],
+      tools: ['CapCut', 'DaVinci Resolve', 'Adobe Lightroom', 'Canva', 'Figma', 'Google Docs', 'Instagram', 'Google Sheets'],
+      projects: [
+        { name: 'Event Recap Video', difficulty: 'Beginner', icon: Clapperboard },
+        { name: 'Event Photo Set', difficulty: 'Beginner', icon: Image },
+        { name: 'Official Letter', difficulty: 'Beginner', icon: PenLine },
+        { name: 'Event Poster', difficulty: 'Intermediate', icon: Sparkles },
+        { name: 'Social Media Campaign', difficulty: 'Intermediate', icon: Megaphone },
+        { name: 'Event Run of Show', difficulty: 'Intermediate', icon: CalendarCheck },
+      ],
+      resources: [
+        { title: 'Canva Design School', type: 'Course', provider: 'Canva' },
+        { title: 'DaVinci Resolve Training', type: 'Course', provider: 'Blackmagic Design' },
+        { title: 'Google Docs', type: 'Tool', provider: 'Google' },
+      ],
+      stats: {
+        members: 8,
+        projects: null,
+        resources: null,
+      },
+      leads: ['Poorvika Nagaraj'],
+      roadmap: [
+        'Poster Making',
+        'Photography',
+        'Video Editing',
+        'Letter Drafting',
+        'Marketing',
+        'Event Logistics',
+      ],
     }
   ];
 
@@ -347,6 +404,13 @@ export default function Domains() {
     setActivePanel('overview');
   };
   const panelClass = (id) => (activePanel === id ? '' : 'max-lg:hidden');
+  const visiblePanels = DOMAIN_PANELS.filter((panel) => {
+    if (panel.id === 'overview') return true;
+    if (panel.id === 'skills') return currentDomain.skills.length > 0 || currentDomain.tools.length > 0;
+    if (panel.id === 'projects') return currentDomain.projects.length > 0;
+    return currentDomain.roadmap.length > 0 || currentDomain.resources.length > 0;
+  });
+  const showStats = currentDomain.stats.members != null;
 
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pb-16 pt-6 font-sans text-slate-900 dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
@@ -362,8 +426,8 @@ export default function Domains() {
           </h1>
 
           <p className="mx-auto max-w-4xl text-base leading-relaxed text-slate-600 lg:fluid-lead">
-            Master the four pillars of modern technology with our comprehensive learning paths,
-            <span className="text-sky-700"> hands-on projects</span>, and
+            Explore AdroIT's technical tracks and the non-tech work behind events and outreach, with
+            <span className="text-sky-700"> hands-on projects</span> and
             <span className="text-sky-700"> expert mentorship</span>
           </p>
 
@@ -384,8 +448,8 @@ export default function Domains() {
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-slate-900">4</span>
-                <span className="text-slate-600 text-sm ml-2">Core Domains</span>
+                <span className="text-2xl font-bold text-slate-900">{domains.length}</span>
+                <span className="text-slate-600 text-sm ml-2">Domains</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
@@ -443,11 +507,13 @@ export default function Domains() {
                 <span className="relative text-sm font-semibold lg:hidden">{domain.shortName}</span>
                 <span className="relative hidden font-semibold lg:inline">{domain.name}</span>
                 
-                {hoveredDomain === domain.id && activeDomain !== domain.id && (
+                {hoveredDomain === domain.id && activeDomain !== domain.id && domain.stats.members != null && (
                   <div className="absolute -bottom-16 left-1/2 z-50 hidden -translate-x-1/2 animate-fade-in whitespace-nowrap rounded-xl border border-slate-900/10 bg-black/90 p-3 backdrop-blur-xl lg:block">
                     <div className="flex gap-4 text-xs">
                       <div><span className="text-sky-400">{domain.stats.members}</span> members</div>
-                      <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
+                      {domain.stats.projects != null && (
+                        <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -482,6 +548,7 @@ export default function Domains() {
                 </div>
                 
                 {/* Stats Cards */}
+                {showStats && (
                 <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
                   <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
                     <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
@@ -491,6 +558,7 @@ export default function Domains() {
                       {icons.members} Members
                     </div>
                   </div>
+                  {currentDomain.stats.projects != null && (
                   <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
                     <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.projects}
@@ -499,6 +567,8 @@ export default function Domains() {
                       {icons.projects} Projects
                     </div>
                   </div>
+                  )}
+                  {currentDomain.stats.resources != null && (
                   <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
                     <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.resources}
@@ -507,13 +577,15 @@ export default function Domains() {
                       {icons.resources} Resources
                     </div>
                   </div>
+                  )}
                 </div>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="mb-5 grid grid-cols-4 gap-1 rounded-2xl border border-slate-200 bg-slate-50 p-1 lg:hidden dark:border-white/10 dark:bg-white/5">
-            {DOMAIN_PANELS.map((panel) => (
+          <div className={`mb-5 grid gap-1 rounded-2xl border border-slate-200 bg-slate-50 p-1 lg:hidden dark:border-white/10 dark:bg-white/5 ${visiblePanels.length > 2 ? "grid-cols-4" : "grid-cols-2"}`}>
+            {visiblePanels.map((panel) => (
               <button
                 key={panel.id}
                 type="button"
@@ -546,6 +618,7 @@ export default function Domains() {
               </div>
 
               {/* Career Paths Card */}
+              {currentDomain.careerPaths.length > 0 && (
               <div className={`${panelClass('overview')} ${CARD}`}>
                 <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.career} Career Paths
@@ -559,8 +632,10 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
 
               {/* Domain Leads Card */}
+              {currentDomain.leads.length > 0 && (
               <div className={`${panelClass('overview')} ${CARD}`}>
                 <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.members} Domain Lead
@@ -576,6 +651,7 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
             </div>
 
             {/* Column 2: Skills, Tools, Projects */}
@@ -599,6 +675,7 @@ export default function Domains() {
               </div>
 
               {/* Tools Card */}
+              {currentDomain.tools.length > 0 && (
               <div className={`${panelClass('skills')} ${CARD}`}>
                 <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.tools} Popular Tools
@@ -612,8 +689,9 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
 
-              {/* Sample Projects Card */}
+              {currentDomain.projects.length > 0 && (
               <div className={`${panelClass('projects')} ${CARD}`}>
                 <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.projects} Sample Projects
@@ -643,12 +721,14 @@ export default function Domains() {
                   })}
                 </div>
               </div>
+              )}
             </div>
 
             {/* Column 3: Roadmap & Resources */}
             <div className="lg:col-span-1 space-y-6">
               
               {/* Learning Roadmap Card */}
+              {currentDomain.roadmap.length > 0 && (
               <div className={`${panelClass('path')} ${CARD}`}>
                 <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.roadmap} Learning Roadmap
@@ -671,8 +751,9 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
 
-              {/* Recommended Resources Card */}
+              {currentDomain.resources.length > 0 && (
               <div className={`${panelClass('path')} ${CARD}`}>
                 <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.book} Recommended Resources
@@ -699,6 +780,7 @@ export default function Domains() {
                   Become a member to get access to more resources
                 </div>
               </div>
+              )}
             </div>
           </div>
 
@@ -733,11 +815,11 @@ export default function Domains() {
                         <span className="text-slate-900 font-medium">{domain.name}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.members}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.members ?? "—"}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects ?? "—"}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources ?? "—"}</td>
                     <td className="py-4 px-2">
-                      <span className="text-slate-700">{domain.leads[0]}</span>
+                      <span className="text-slate-700">{domain.leads[0] || "—"}</span>
                     </td>
                   </tr>
                 ))}
