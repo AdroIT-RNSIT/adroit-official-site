@@ -3,6 +3,7 @@ import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import EventCarousel from '../components/EventCarousel';
 import { registrationDomains } from '../data/domainRegistration';
+import { useTheme } from '../lib/theme';
 
 // ============================================
 // DOMAIN CARD COMPONENT - NEW!
@@ -25,6 +26,7 @@ const DomainCard = ({ icon, title, description }) => (
 // MAIN HOME COMPONENT
 // ============================================
 const Home = () => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
@@ -98,10 +100,9 @@ const Home = () => {
       {/* Mobile: original corner sizes in flow so the hero sits below. Laptop: larger aligned pair. */}
       <div className="lg:hidden relative z-[1001] flex items-center justify-between px-3">
         <img
-          src="/rnsit_logo.png"
+          src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className="w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl"
-          style={{ mixBlendMode: "multiply" }}
+          className={`w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
@@ -111,9 +112,9 @@ const Home = () => {
       </div>
       <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
         <img
-          src="/rnsit_logo.png"
+          src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className="h-[12rem] w-auto max-w-[50%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+          className={`h-[12rem] w-auto max-w-[50%] object-contain object-left drop-shadow-2xl ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
@@ -134,7 +135,7 @@ const Home = () => {
           <img
             alt="AdroIT"
             className="block object-contain drop-shadow-[0_0_18px_rgba(34,211,238,0.35)] h-[5.25rem] sm:h-24 md:h-[7.5rem] w-auto mx-auto mb-5"
-            src="/adroit-ctf-logo.png"
+            src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
           />
           <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
             <span className="sr-only">AdroIT — </span>

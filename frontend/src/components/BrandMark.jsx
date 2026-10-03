@@ -3,9 +3,9 @@ const sizeClass = {
   hero: "h-20 sm:h-24 md:h-28 lg:h-32 w-auto mx-auto",
 };
 
-const BrandMark = ({ size = "nav", className = "" }) => (
+const BrandMark = ({ size = "nav", className = "", onDark = false }) => (
   <img
-    src="/adroit-ctf-logo.png"
+    src={onDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
     alt="AdroIT"
     className={`block object-contain drop-shadow-[0_0_14px_rgba(2,132,199,0.22)] ${sizeClass[size] || sizeClass.nav} ${className}`.trim()}
   />

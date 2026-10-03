@@ -133,7 +133,7 @@ const Navbar = () => {
           
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <BrandMark size="nav" />
+            <BrandMark size="nav" onDark={isDarkNav} />
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
