@@ -7,7 +7,7 @@ const BrandMark = ({ size = "nav", className = "", onDark = false }) => (
   <img
     src={onDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
     alt="AdroIT"
-    className={`block object-contain drop-shadow-[0_0_14px_rgba(2,132,199,0.22)] ${sizeClass[size] || sizeClass.nav} ${className}`.trim()}
+    className={`block object-contain ${sizeClass[size] || sizeClass.nav} ${className}`.trim()}
   />
 );
 

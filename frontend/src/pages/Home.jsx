@@ -102,24 +102,24 @@ const Home = () => {
         <img
           src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className={`w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl ${isDark ? "" : "mix-blend-multiply"}`}
+          className={`w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right mix-blend-multiply"
         />
       </div>
       <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
         <img
           src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className={`h-[12rem] w-auto max-w-[50%] object-contain object-left drop-shadow-2xl ${isDark ? "" : "mix-blend-multiply"}`}
+          className={`h-[12rem] w-auto max-w-[50%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="h-[10rem] w-auto max-w-[28%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="h-[10rem] w-auto max-w-[28%] object-contain object-right mix-blend-multiply"
         />
       </div>
 
@@ -134,7 +134,7 @@ const Home = () => {
           </span>
           <img
             alt="AdroIT"
-            className="block object-contain drop-shadow-[0_0_18px_rgba(34,211,238,0.35)] h-[5.25rem] sm:h-24 md:h-[7.5rem] w-auto mx-auto mb-5"
+            className="block object-contain h-[5.25rem] sm:h-24 md:h-[7.5rem] w-auto mx-auto mb-5"
             src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
           />
           <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
