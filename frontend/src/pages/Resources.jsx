@@ -203,7 +203,7 @@ function Resources(){
   }
 
   return (
-    <div className="min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip dark:bg-[#080c16] dark:text-slate-100">
+    <div className="min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip dark:bg-[#000000] dark:text-slate-100">
       <div className="text-center mb-12 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <h1 className="fluid-h1 font-extrabold mb-6">

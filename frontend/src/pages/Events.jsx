@@ -103,7 +103,7 @@ function FeaturedEvent({ event }) {
             className={posterContained ? "h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
           />
           {!posterContained && (
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#080c16]/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#000000]/40" />
           )}
           <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
             {statusLabel}
@@ -160,7 +160,7 @@ function FeaturedEvent({ event }) {
                   key={`${src}-${idx}`}
                   src={src}
                   alt=""
-                  className="h-9 w-9 rounded-lg border-2 border-white object-cover shadow-sm dark:border-[#080c16]"
+                  className="h-9 w-9 rounded-lg border-2 border-white object-cover shadow-sm dark:border-[#000000]"
                 />
               ))}
             </div>

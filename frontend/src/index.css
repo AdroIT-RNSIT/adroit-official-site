@@ -7,12 +7,12 @@
 
 html.dark {
   color-scheme: dark;
-  background-color: #080c16;
+  background-color: #000000;
 }
 
 html.dark body,
 html.dark #root {
-  background-color: #080c16;
+  background-color: #000000;
   color: #e2e8f0;
 }
 
@@ -24,10 +24,8 @@ html.dark #root {
 }
 
 html.dark .grid-lines {
-  background-color: #080c16;
-  background-image:
-    radial-gradient(900px 460px at 0% 0%, rgba(14, 165, 233, 0.16), transparent 62%),
-    radial-gradient(720px 420px at 100% 6%, rgba(99, 102, 241, 0.14), transparent 58%);
+  background-color: #000000;
+  background-image: none;
 }
 
 .glass {
@@ -38,7 +36,7 @@ html.dark .grid-lines {
 }
 
 html.dark .glass {
-  background-color: rgba(16, 24, 42, 0.58);
+  background-color: rgba(17, 17, 17, 0.72);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -49,16 +47,16 @@ html.dark .text-slate-600 { color: #94a3b8; }
 html.dark .text-sky-800 { color: #7dd3fc; }
 html.dark .text-sky-700 { color: #38bdf8; }
 
-html.dark .bg-white { background-color: #10182a; }
-html.dark .bg-white\/90 { background-color: rgb(16 24 42 / 0.94); }
-html.dark .bg-white\/80 { background-color: rgb(16 24 42 / 0.88); }
-html.dark .bg-white\/75 { background-color: rgb(16 24 42 / 0.82); }
-html.dark .bg-white\/70 { background-color: rgb(16 24 42 / 0.78); }
-html.dark .bg-white\/60 { background-color: rgb(16 24 42 / 0.7); }
+html.dark .bg-white { background-color: #111111; }
+html.dark .bg-white\/90 { background-color: rgb(17 17 17 / 0.94); }
+html.dark .bg-white\/80 { background-color: rgb(17 17 17 / 0.88); }
+html.dark .bg-white\/75 { background-color: rgb(17 17 17 / 0.82); }
+html.dark .bg-white\/70 { background-color: rgb(17 17 17 / 0.78); }
+html.dark .bg-white\/60 { background-color: rgb(17 17 17 / 0.7); }
 html.dark .bg-white\/50 { background-color: rgb(255 255 255 / 0.06); }
 html.dark .bg-white\/40 { background-color: rgb(255 255 255 / 0.06); }
-html.dark .bg-\[\#f3e8ff\] { background-color: #080c16; }
-html.dark .bg-\[\#f3e8ff\]\/95 { background-color: rgb(8 12 22 / 0.95); }
+html.dark .bg-\[\#f3e8ff\] { background-color: #000000; }
+html.dark .bg-\[\#f3e8ff\]\/95 { background-color: rgb(0 0 0 / 0.95); }
 html.dark .bg-slate-50 { background-color: rgb(255 255 255 / 0.06); }
 html.dark .bg-slate-100 { background-color: rgb(255 255 255 / 0.08); }
 html.dark .bg-slate-900\/5 { background-color: rgb(255 255 255 / 0.05); }
@@ -73,12 +71,12 @@ html.dark .hover\:bg-slate-900\/10:hover { background-color: rgb(255 255 255 / 0
 html.dark .hover\:bg-white\/80:hover { background-color: rgb(255 255 255 / 0.12); }
 
 @media (min-width: 768px) {
-  html.dark .md\:bg-white\/90 { background-color: rgb(16 24 42 / 0.94); }
-  html.dark .md\:bg-white\/85 { background-color: rgb(8 12 22 / 0.88); }
-  html.dark .md\:bg-white\/70 { background-color: rgb(8 12 22 / 0.78); }
+  html.dark .md\:bg-white\/90 { background-color: rgb(17 17 17 / 0.94); }
+  html.dark .md\:bg-white\/85 { background-color: rgb(0 0 0 / 0.88); }
+  html.dark .md\:bg-white\/70 { background-color: rgb(0 0 0 / 0.78); }
   html.dark .md\:bg-white\/40 { background-color: rgb(255 255 255 / 0.06); }
-  html.dark .md\:bg-\[\#f3e8ff\] { background-color: #080c16; }
-  html.dark .md\:bg-\[\#f3e8ff\]\/95 { background-color: rgb(8 12 22 / 0.95); }
+  html.dark .md\:bg-\[\#f3e8ff\] { background-color: #000000; }
+  html.dark .md\:bg-\[\#f3e8ff\]\/95 { background-color: rgb(0 0 0 / 0.95); }
 }
 
 html.dark .placeholder-gray-500::placeholder,

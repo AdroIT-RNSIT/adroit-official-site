@@ -122,8 +122,8 @@ const Navbar = () => {
             ? "border-b border-slate-200/80 bg-white dark:border-white/10"
             : isDarkNav
             ? scrolled
-              ? "bg-[#080c16] border-b border-white/10 md:backdrop-blur-xl md:bg-[#080c16]/90 md:shadow-sm"
-              : "bg-[#080c16] border-b border-white/10 md:bg-[#080c16]/85 md:backdrop-blur-md"
+              ? "bg-[#000000] border-b border-white/10 md:backdrop-blur-xl md:bg-[#000000]/90 md:shadow-sm"
+              : "bg-[#000000] border-b border-white/10 md:bg-[#000000]/85 md:backdrop-blur-md"
             : scrolled
               ? "bg-white border-b border-slate-200/80 md:shadow-sm"
               : "bg-white border-b border-slate-200/80"
@@ -240,14 +240,14 @@ const Navbar = () => {
           <div
             className={`fixed right-3 top-[calc(var(--nav-height)+0.5rem)] z-[1001] w-44 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-2xl border shadow-[0_18px_50px_rgba(15,23,42,0.18)] md:hidden ${
               isDarkNav
-                ? "border-white/10 bg-[#080c16]"
+                ? "border-white/10 bg-[#000000]"
                 : "border-slate-200 bg-white"
             }`}
             aria-hidden={!mobileMenuOpen}
           >
             <div
               className={`pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t ${
-                isDarkNav ? "border-white/10 bg-[#080c16]" : "border-slate-200 bg-white"
+                isDarkNav ? "border-white/10 bg-[#000000]" : "border-slate-200 bg-white"
               }`}
             />
             <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-1.5">

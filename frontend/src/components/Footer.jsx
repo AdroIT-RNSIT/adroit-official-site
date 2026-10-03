@@ -14,7 +14,7 @@ const Footer = ({ showMap = false }) => {
         onGrid
           ? "relative z-10 border-t border-slate-200/80 bg-white dark:border-white/10"
           : isDark
-          ? "bg-[#080c16] border-t border-white/10"
+          ? "bg-[#000000] border-t border-white/10"
           : "bg-white border-t border-slate-200/80"
       }`}
     >

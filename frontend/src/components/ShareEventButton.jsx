@@ -95,7 +95,7 @@ export default function ShareEventButton({ title, text, path, tone = "light", cl
   const toneClass =
     tone === "dark"
       ? "border-white/20 bg-white/10 text-white hover:bg-white/15"
-      : "border-slate-200 bg-white text-slate-800 shadow-sm hover:border-sky-600/40 hover:text-sky-800 dark:border-white/10 dark:bg-[#10182a] dark:text-slate-100";
+      : "border-slate-200 bg-white text-slate-800 shadow-sm hover:border-sky-600/40 hover:text-sky-800 dark:border-white/10 dark:bg-[#111111] dark:text-slate-100";
 
   return (
     <span className={`inline-flex max-w-full flex-col items-stretch gap-1 ${className}`}>

@@ -14,7 +14,7 @@ export default function MainLayout({ children }) {
   return (
     <div
       className={`min-h-dvh font-sans overflow-x-clip ${
-        isDark ? "bg-[#080c16] text-slate-100" : "bg-white text-slate-900"
+        isDark ? "bg-[#000000] text-slate-100" : "bg-white text-slate-900"
       } ${gridLines ? "grid-lines" : ""} ${location.pathname === "/" ? "pb-32 lg:pb-0" : ""}`}
     >
       {gridLines && <InteractiveGrid />}

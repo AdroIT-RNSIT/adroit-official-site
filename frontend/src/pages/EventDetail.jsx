@@ -111,7 +111,7 @@ export default function EventDetail() {
               alt=""
               className="absolute inset-0 h-full w-full scale-105 object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-black/25 dark:from-[#080c16] dark:via-[#080c16]/70 dark:to-black/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-black/25 dark:from-[#000000] dark:via-[#000000]/70 dark:to-black/40" />
           </>
         )}
 
@@ -800,7 +800,7 @@ function BootcampPage({ event }) {
         )}
 
         <div
-          className="relative overflow-hidden rounded-3xl bg-[#060a14] text-white ring-1 ring-white/10 sm:rounded-[2rem]"
+          className="relative overflow-hidden rounded-3xl bg-black text-white ring-1 ring-white/10 sm:rounded-[2rem]"
           onPointerEnter={(e) => {
             if (e.pointerType !== "touch") setPaused(true);
           }}
@@ -911,7 +911,7 @@ function BootcampPage({ event }) {
                     id="bootcamp-register"
                     to={session.slug ? `/register/${session.slug}` : "/events"}
                     state={{ back: `/events/${event.slug}` }}
-                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-[#06101a] transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"
+                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-black transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"
                     style={{ backgroundColor: accent }}
                   >
                     Register for {session.title}
@@ -938,7 +938,7 @@ function BootcampPage({ event }) {
                       setTick((t) => t + 1);
                     }}
                     className={`relative flex min-h-[3.75rem] items-center justify-between gap-2 px-4 py-3 text-left transition-colors sm:gap-3 sm:px-7 sm:py-5 ${
-                      on ? "bg-[#0d1424]" : "bg-[#060a14] hover:bg-[#0a1020]"
+                      on ? "bg-[#111111]" : "bg-black hover:bg-[#1a1a1a]"
                     }`}
                   >
                     {on && (

@@ -349,7 +349,7 @@ export default function Domains() {
   const panelClass = (id) => (activePanel === id ? '' : 'max-lg:hidden');
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip bg-white pb-16 pt-6 font-sans text-slate-900 dark:bg-[#080c16] dark:text-slate-100 lg:pt-8">
+    <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pb-16 pt-6 font-sans text-slate-900 dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}
@@ -430,7 +430,7 @@ export default function Domains() {
         </section>
 
         {/* ===== DOMAIN SELECTOR ===== */}
-        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#080c16]/95 lg:static lg:mx-0 lg:mb-12 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#000000]/95 lg:static lg:mx-0 lg:mb-12 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
           <div className="flex gap-2 overflow-x-auto lg:flex-wrap lg:justify-center lg:gap-4 lg:overflow-visible">
             {domains.map((domain) => (
               <button
@@ -525,7 +525,7 @@ export default function Domains() {
                 onClick={() => setActivePanel(panel.id)}
                 className={`rounded-xl px-1 py-2 text-xs font-semibold ${
                   activePanel === panel.id
-                    ? 'bg-white text-sky-800 shadow-sm dark:bg-[#080c16] dark:text-sky-300'
+                    ? 'bg-white text-sky-800 shadow-sm dark:bg-[#000000] dark:text-sky-300'
                     : 'text-slate-500'
                 }`}
               >

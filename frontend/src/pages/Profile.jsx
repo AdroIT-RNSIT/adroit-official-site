@@ -334,7 +334,7 @@ export default function Profile() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#080c16] flex items-center justify-center overflow-x-clip">
+      <div className="min-h-screen bg-white dark:bg-[#000000] flex items-center justify-center overflow-x-clip">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Please Login</h2>
           <Link
@@ -349,7 +349,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#080c16] text-slate-900 dark:text-slate-100 font-sans pt-20 pb-16 overflow-x-clip">
+    <div className="min-h-screen bg-white dark:bg-[#000000] text-slate-900 dark:text-slate-100 font-sans pt-20 pb-16 overflow-x-clip">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== HEADER ===== */}
