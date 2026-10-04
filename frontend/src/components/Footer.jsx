@@ -126,7 +126,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://github.com/AdroIT-RNSIT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-sky-600 transition-all duration-300"
+                  className="social-github w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 transition-colors duration-300"
                   aria-label="GitHub"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -137,7 +137,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.linkedin.com/company/adroit-rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-sky-600 transition-all duration-300"
+                  className="social-linkedin w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 transition-colors duration-300"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -148,7 +148,7 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.instagram.com/adroit_rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 hover:text-sky-600 transition-all duration-300"
+                  className="social-instagram w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 transition-colors duration-300"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

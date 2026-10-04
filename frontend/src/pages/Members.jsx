@@ -37,18 +37,15 @@ function LinkedInMark({ className = "h-4 w-4" }) {
   );
 }
 
-const GROUPS = memberGroups.map((g, gi) => ({
+const GROUPS = memberGroups.map((g) => ({
   ...g,
-  index: gi + 1,
   items: [...g.members]
     .sort((a, b) => (b.role === "Domain Lead") - (a.role === "Domain Lead"))
     .map((m, i) => ({
       ...m,
       key: `${g.id}-${pad(i + 1)}`,
-      nodeId: `${g.id}-${pad(i + 1)}`,
       gid: g.id,
       gname: g.name,
-      gindex: gi + 1,
       isLead: m.role === "Domain Lead",
     })),
 }));
@@ -64,7 +61,21 @@ const CSS = `
 .am-up { animation: am-up .3s cubic-bezier(.2,.8,.2,1); }
 .am-blink { animation: am-blink 1.05s steps(1) infinite; }
 .am-pulse { animation: am-pulse 2.6s ease-in-out infinite; }
+.am-glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.42));
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 28px rgba(15,23,42,0.06);
+}
+html.dark .am-glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 28px rgba(0,0,0,0.35);
+}
 @media (prefers-reduced-motion: reduce) { .am-in, .am-up, .am-blink, .am-pulse { animation: none; } }
+@media (prefers-reduced-transparency: reduce) {
+  .am-glass { background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  html.dark .am-glass { background: #111111; }
+}
 `;
 
 export default function Members() {
@@ -120,7 +131,7 @@ export default function Members() {
           </p>
           <p style={{ animationDelay: "260ms" }} className="am-in mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-slate-500">
             <span><b className="font-semibold text-slate-900">{ALL.length}</b> nodes</span>
-            <span><b className="font-semibold text-slate-900">{GROUPS.length}</b> clusters</span>
+            <span><b className="font-semibold text-slate-900">{GROUPS.length}</b> domains</span>
             <span><b className="font-semibold text-slate-900">{LEADS}</b> leads</span>
           </p>
         </div>
@@ -129,7 +140,7 @@ export default function Members() {
 
       <div className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div role="group" aria-label="Highlight a cluster" className="-mx-4 flex min-w-0 gap-2 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div role="group" aria-label="Filter by domain" className="-mx-4 flex min-w-0 gap-2 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <KeyChip on={active === "all"} onClick={() => pickDomain("all")} label="All" count={ALL.length} />
             {GROUPS.map((g) => (
               <KeyChip key={g.id} on={active === g.id} onClick={() => pickDomain(g.id)} label={g.name} count={g.items.length} id={g.id} Icon={dom(g.id).icon} />
@@ -150,7 +161,7 @@ export default function Members() {
                 }
               }}
               placeholder="grep name…"
-              className="w-full appearance-none rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus-visible:border-sky-600/40 focus-visible:ring-2 focus-visible:ring-sky-600/30 dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500 [&::-webkit-search-cancel-button]:hidden"
+              className="am-glass w-full appearance-none rounded-2xl border border-white/80 py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus-visible:border-sky-600/40 focus-visible:ring-2 focus-visible:ring-sky-600/30 dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500 [&::-webkit-search-cancel-button]:hidden"
             />
             {query && (
               <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white">
@@ -169,7 +180,7 @@ export default function Members() {
       <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-12 lg:px-8">
         <main className={`min-w-0 space-y-12 ${selected ? "pb-[min(70dvh,22rem)] lg:pb-0" : "pb-10"}`}>
           {matchCount === 0 && (
-            <p className="rounded-2xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-500 dark:border-white/15">
+            <p className="am-glass rounded-2xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-500 dark:border-white/15">
               <span className="font-mono text-sky-800">error:</span> no node matches “{query}”
             </p>
           )}
@@ -185,7 +196,6 @@ export default function Members() {
                     <Icon size={22} aria-hidden="true" />
                   </span>
                   <div className="min-w-0">
-                    <p className="font-mono text-xs text-slate-500">// cluster {pad(g.index)}</p>
                     <h2 id={`h-${g.id}`} className="text-xl font-bold leading-tight text-slate-900 sm:text-2xl">{g.name}</h2>
                   </div>
                   <div aria-hidden="true" className="ml-1 hidden h-px min-w-8 flex-1 bg-slate-200 dark:bg-white/10 sm:block" />
@@ -211,7 +221,7 @@ export default function Members() {
       </div>
 
       {selected && (
-        <div role="dialog" aria-label="Node inspector" className="am-up fixed inset-x-0 bottom-0 z-40 max-h-[min(70dvh,24rem)] overflow-y-auto rounded-t-3xl border-t border-slate-200 bg-white p-3 pb-5 shadow-[0_-24px_60px_-20px_rgba(15,23,42,0.18)] dark:border-white/10 lg:hidden">
+        <div role="dialog" aria-label="Node inspector" className="am-up am-glass fixed inset-x-0 bottom-0 z-40 max-h-[min(70dvh,24rem)] overflow-y-auto rounded-t-3xl border border-white/80 p-3 pb-5 dark:border-white/10 lg:hidden">
           <div aria-hidden="true" className="mx-auto mb-3 h-1 w-10 rounded-full bg-slate-300 dark:bg-white/20" />
           <Inspector el={selected} onClose={() => setSelKey(null)} compact />
         </div>
@@ -247,7 +257,7 @@ function KeyChip({ on, onClick, label, count, id, Icon }) {
       className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl border px-3 py-2 text-sm font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 ${
         on
           ? "border-sky-600 bg-sky-600 text-white"
-          : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-transparent dark:text-slate-300 dark:hover:border-white/25 dark:hover:text-white"
+          : "am-glass border-white/80 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:text-slate-300 dark:hover:border-white/25 dark:hover:text-white"
       }`}
     >
       {Icon && <Icon size={16} aria-hidden="true" style={{ color: "var(--c)" }} />}
@@ -281,10 +291,10 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
     <div
       style={{ animationDelay: `${delay}ms` }}
       className={[
-        "am-node am-in flex h-full w-full min-w-0 items-center rounded-2xl border bg-white transition-colors duration-200",
+        "am-node am-in am-glass flex h-full w-full min-w-0 items-center rounded-2xl border transition-colors duration-200",
         selected
           ? "border-slate-900 dark:border-white"
-          : "border-slate-200 hover:border-slate-300 dark:border-white/10 dark:hover:border-white/25",
+          : "border-white/80 hover:border-slate-300 dark:border-white/10 dark:hover:border-white/25",
         dim ? "opacity-40" : "",
       ].join(" ")}
     >
@@ -298,15 +308,12 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
         <Avatar el={el} size={40} />
         <span className="min-w-0 flex-1">
           <span className="block break-words text-sm font-semibold leading-snug text-slate-900">{el.name}</span>
-          <span className="mt-1 flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-slate-500">
-            {el.nodeId}
-            {el.isLead && (
-              <span className="inline-flex items-center gap-0.5 rounded bg-slate-900 px-1 font-semibold text-white dark:bg-white dark:text-slate-950">
-                <Crown size={9} aria-hidden="true" />
-                LEAD
-              </span>
-            )}
-          </span>
+          {el.isLead && (
+            <span className="mt-1 inline-flex items-center gap-0.5 rounded bg-slate-900 px-1 font-mono text-[11px] font-semibold text-white dark:bg-white dark:text-slate-950">
+              <Crown size={9} aria-hidden="true" />
+              LEAD
+            </span>
+          )}
         </span>
       </button>
       {linkedin && (
@@ -315,7 +322,7 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${el.name} on LinkedIn`}
-          className="mr-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:text-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
+          className="social-linkedin mr-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
         >
           <LinkedInMark />
         </a>
@@ -324,24 +331,38 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
   );
 }
 
+function MemberPhoto({ el, compact }) {
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [el.key]);
+  if (failed) return <Avatar el={el} size={compact ? 64 : 112} />;
+  return (
+    <img
+      src={el.photo}
+      alt=""
+      loading="lazy"
+      onError={() => setFailed(true)}
+      className={`aspect-square shrink-0 rounded-xl object-cover ${compact ? "h-16 w-16" : "w-full max-w-[13rem]"}`}
+    />
+  );
+}
+
 function Inspector({ el, onClose, compact }) {
   const linkedin = linkedinHref(el.linkedin);
   const rows = [
     ["name", el.name],
     ["role", el.isLead ? "Domain Lead" : el.role || "Member"],
-    ["cluster", el.gname],
-    ["id", el.nodeId],
+    ["domain", el.gname],
     ...(el.year ? [["year", `${el.year}`]] : []),
   ];
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10">
-      <div className="flex items-center gap-2 border-b border-slate-200 px-3 py-2 dark:border-white/10">
+    <div className="am-glass overflow-hidden rounded-2xl border border-dotted border-slate-400 dark:border-white/40">
+      <div className="flex items-center gap-2 border-b border-dotted border-slate-300 px-3 py-2 dark:border-white/25">
         <span aria-hidden="true" className="flex shrink-0 gap-1.5">
-          <i className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/15" />
-          <i className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/15" />
-          <i className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/15" />
+          <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+          <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+          <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         </span>
-        <span className="ml-2 min-w-0 truncate font-mono text-xs text-slate-500">inspect {el.nodeId}</span>
+        <span className="ml-2 min-w-0 truncate font-mono text-xs text-slate-500">{el.name}</span>
         <button type="button" onClick={onClose} aria-label="Close inspector" className="ml-auto shrink-0 rounded-lg p-1 text-slate-500 hover:text-slate-900 dark:hover:text-white">
           <X size={16} />
         </button>
@@ -349,11 +370,11 @@ function Inspector({ el, onClose, compact }) {
 
       <div className={`flex gap-4 p-4 ${compact ? "items-start" : "flex-col"}`}>
         <div className={compact ? "shrink-0" : "flex justify-center py-2"}>
-          <Avatar el={el} size={compact ? 64 : 112} />
+          {el.photo ? <MemberPhoto el={el} compact={compact} /> : <Avatar el={el} size={compact ? 64 : 112} />}
         </div>
         <div className="min-w-0 flex-1">
           <p className="font-mono text-xs">
-            <span className="text-sky-700">$</span> <span className="text-slate-500">inspect {el.nodeId}</span>
+            <span className="text-sky-700">$</span> <span className="text-slate-500">{el.name}</span>
           </p>
           <dl className="mt-3 space-y-1.5 text-sm">
             {rows.map(([k, v]) => (
@@ -369,7 +390,7 @@ function Inspector({ el, onClose, compact }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${el.name} on LinkedIn`}
-              className="mt-4 inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:text-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
+              className="social-linkedin mt-4 inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
             >
               <LinkedInMark className="h-5 w-5" />
             </a>
@@ -382,7 +403,12 @@ function Inspector({ el, onClose, compact }) {
 
 function Idle() {
   return (
-    <div className="rounded-2xl border border-dashed border-slate-200 p-6 text-sm text-slate-500 dark:border-white/15">
+    <div className="am-glass rounded-2xl border border-dotted border-slate-400 p-6 text-sm text-slate-500 dark:border-white/40">
+      <span aria-hidden="true" className="mb-4 flex gap-1.5">
+        <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+        <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+        <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+      </span>
       <p className="font-mono text-xs">
         <span className="text-sky-700">$</span> select a node
         <span aria-hidden="true" className="am-blink ml-1 inline-block h-3 w-1.5 translate-y-0.5 bg-sky-700" />

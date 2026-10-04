@@ -1,5 +1,15 @@
-const lead = (name, linkedin) => ({ name, role: "Domain Lead", ...(linkedin ? { linkedin } : {}) });
-const member = (name, linkedin) => ({ name, role: "Member", ...(linkedin ? { linkedin } : {}) });
+const lead = (name, linkedin, photo) => ({
+  name,
+  role: "Domain Lead",
+  ...(linkedin ? { linkedin } : {}),
+  ...(photo ? { photo } : {}),
+});
+const member = (name, linkedin, photo) => ({
+  name,
+  role: "Member",
+  ...(linkedin ? { linkedin } : {}),
+  ...(photo ? { photo } : {}),
+});
 
 export const memberGroups = [
   {
@@ -22,10 +32,18 @@ export const memberGroups = [
     id: "cc",
     name: "Cloud Computing",
     members: [
-      lead("Praveen Kumar M", "https://www.linkedin.com/in/praveen-kumar-m-880952246/"),
+      lead(
+        "Praveen Kumar M",
+        "https://www.linkedin.com/in/praveen-kumar-m-880952246/",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/c_fill,g_face,w_800,h_800,f_auto,q_auto/v1791091063/WhatsApp_Image_2026-10-01_at_16.49.50.webp",
+      ),
       member("Ifrah"),
       member("Sudhanva"),
-      member("Shitanshu"),
+      member(
+        "Shitanshu Kumar",
+        "https://www.linkedin.com/in/shitanshukumar607",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/c_fill,g_face,w_800,h_800,f_auto,q_auto/v1791092709/WhatsApp_Image_2026-10-04_at_11.08.55.webp",
+      ),
       member("Karthik Dhavala"),
       member("Divya"),
       member("Anoushka Kanchi"),

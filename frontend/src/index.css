@@ -188,6 +188,43 @@ input, textarea, select {
   }
 }
 
+.social-linkedin:is(:hover, :focus-visible),
+.social-linkedin:is(:hover, :focus-visible) svg,
+.group:is(:hover, :focus-within) .social-linkedin,
+.group:is(:hover, :focus-within) .social-linkedin svg {
+  color: #0a66c2;
+}
+
+.social-github:is(:hover, :focus-visible),
+.social-github:is(:hover, :focus-visible) svg,
+.group:is(:hover, :focus-within) .social-github,
+.group:is(:hover, :focus-within) .social-github svg {
+  color: #181717;
+}
+
+html.dark .social-github:is(:hover, :focus-visible),
+html.dark .social-github:is(:hover, :focus-visible) svg,
+html.dark .group:is(:hover, :focus-within) .social-github,
+html.dark .group:is(:hover, :focus-within) .social-github svg {
+  color: #ffffff;
+}
+
+.social-instagram:is(:hover, :focus-visible),
+.social-instagram:is(:hover, :focus-visible) svg,
+.social-instagram-stroke:is(:hover, :focus-visible),
+.social-instagram-stroke:is(:hover, :focus-visible) svg {
+  color: #e1306c;
+}
+
+.social-instagram:is(:hover, :focus-visible) svg {
+  fill: url("#brand-instagram");
+}
+
+.social-instagram-stroke:is(:hover, :focus-visible) svg {
+  fill: none;
+  stroke: url("#brand-instagram");
+}
+
 .event-strip {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
