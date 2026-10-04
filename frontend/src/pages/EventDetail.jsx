@@ -79,6 +79,9 @@ export default function EventDetail() {
   if (event.slug === "skill-up-bootcamp") {
     return <BootcampPage event={event} />;
   }
+  if (event.slug === "paradox-2026") {
+    return <ParadoxPage event={event} glimpseIndex={glimpseIndex} setGlimpseIndex={setGlimpseIndex} />;
+  }
 
   const isCompleted = event.status === "completed";
   const individualRegistration = event.registration === "individual";
@@ -700,6 +703,125 @@ function CompletedSeal({ color, compact = false }) {
           </>
         )}
       </svg>
+    </div>
+  );
+}
+
+function ParadoxPage({ event, glimpseIndex, setGlimpseIndex }) {
+  const poster = event.poster || event.imageUrl;
+  const competitions = event.competitions || [];
+  const glimpses = (event.glimpses || []).filter(Boolean);
+  const dateLabel = event.dateLabel || formatRange(event.date, event.endDate);
+  const prizePool = competitions.reduce((sum, item) => sum + (Number(item.prize) || 0), 0);
+  const activeGlimpse =
+    glimpseIndex == null ? null : ((glimpseIndex % glimpses.length) + glimpses.length) % glimpses.length;
+
+  return (
+    <div className="relative min-h-dvh overflow-x-clip pb-14 text-slate-900 dark:text-slate-100">
+      <section className="relative overflow-hidden bg-[#05070d] text-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-70"
+          style={{
+            backgroundImage:
+              "radial-gradient(ellipse 55% 70% at 78% 40%, rgba(56,189,248,0.28), transparent 60%), radial-gradient(ellipse 40% 50% at 12% 80%, rgba(99,102,241,0.22), transparent 65%)",
+          }}
+        />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)] lg:px-8">
+          <div>
+            <Link
+              to="/events"
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm text-white/90 hover:bg-white/10"
+            >
+              <ArrowLeft size={16} />
+              Events
+            </Link>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300">Intercollegiate fest</p>
+            <h1 className="mt-2 text-4xl font-black leading-none tracking-tight sm:text-6xl">{event.title}</h1>
+            {event.tagline && <p className="mt-4 max-w-xl text-lg text-white/75">{event.tagline}</p>}
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm">{dateLabel}</span>
+              {event.location && <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm">{event.location}</span>}
+              {prizePool > 0 && (
+                <span className="rounded-full border border-sky-300/40 bg-sky-400/15 px-3 py-1.5 text-sm font-semibold text-sky-100">
+                  Prize pool ₹{prizePool.toLocaleString("en-IN")}+
+                </span>
+              )}
+            </div>
+            <div className="mt-6">
+              <ShareEventButton title={event.title} text={`${event.title} — AdroIT.`} path={`/events/${event.slug}`} tone="dark" />
+            </div>
+          </div>
+          {poster && (
+            <img
+              src={poster}
+              alt={`${event.title} poster`}
+              className="mx-auto w-full max-w-sm rounded-2xl border border-white/15 object-contain shadow-[0_20px_60px_rgba(56,189,248,0.18)] lg:max-w-none"
+            />
+          )}
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 lg:px-8">
+        {event.description && (
+          <p className="max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">{event.description}</p>
+        )}
+
+        {competitions.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Three competitions</h2>
+            <div className="mt-5 grid gap-5 lg:grid-cols-3">
+              {competitions.map((competition) => (
+                <article key={competition.slug} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.03]">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
+                    <img src={competition.poster || competition.imageUrl} alt="" className="h-full w-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <h3 className="text-xl font-bold text-white">{competition.title}</h3>
+                      {competition.tagline && <p className="mt-1 text-sm text-sky-200">{competition.tagline}</p>}
+                    </div>
+                  </div>
+                  <div className="space-y-3 p-4">
+                    {competition.description && (
+                      <p className="line-clamp-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{competition.description}</p>
+                    )}
+                    <div className="flex flex-wrap gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+                      {competition.date && (
+                        <span className="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-white/10">
+                          {new Date(competition.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        </span>
+                      )}
+                      {competition.prize && (
+                        <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-800 dark:bg-sky-400/15 dark:text-sky-200">
+                          ₹{Number(competition.prize).toLocaleString("en-IN")}
+                        </span>
+                      )}
+                      {competition.teamSize && (
+                        <span className="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-white/10">{competition.teamSize}</span>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {glimpses.length > 0 && (
+          <div className="mt-12">
+            <GlimpseGallery images={glimpses} onSelect={setGlimpseIndex} />
+          </div>
+        )}
+      </div>
+
+      {activeGlimpse != null && (
+        <div className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/80 p-4" onClick={() => setGlimpseIndex(null)}>
+          <button type="button" className="absolute right-4 top-4 rounded-full border border-white/20 bg-black/40 p-2 text-white" aria-label="Close" onClick={() => setGlimpseIndex(null)}>
+            <X size={18} />
+          </button>
+          <img src={glimpses[activeGlimpse]} alt="" className="max-h-[85dvh] max-w-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
     </div>
   );
 }
