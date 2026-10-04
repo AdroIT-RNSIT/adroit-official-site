@@ -122,8 +122,8 @@ const Navbar = () => {
             ? "border-b border-slate-200/80 bg-white dark:border-white/10"
             : isDarkNav
             ? scrolled
-              ? "bg-[#000000] border-b border-white/10 md:backdrop-blur-xl md:bg-[#000000]/90 md:shadow-sm"
-              : "bg-[#000000] border-b border-white/10 md:bg-[#000000]/85 md:backdrop-blur-md"
+              ? "bg-[#000000] border-b border-white/15 md:backdrop-blur-xl md:bg-[#000000]/95 md:shadow-sm"
+              : "bg-[#000000] border-b border-white/15 md:bg-[#000000]/92 md:backdrop-blur-md"
             : scrolled
               ? "bg-white border-b border-slate-200/80 md:shadow-sm"
               : "bg-white border-b border-slate-200/80"
