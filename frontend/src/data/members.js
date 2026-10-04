@@ -73,7 +73,11 @@ export const memberGroups = [
     members: [
       lead("Sanjay"),
       member("Krishna"),
-      member("Jaysakthi"),
+      member(
+        "Jayasakthi PV",
+        "https://www.linkedin.com/in/jayasakthi-pv-41015a412",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791097671/WhatsApp_Image_2026-10-04_at_10.28.20.webp",
+      ),
       member("Likhit"),
       member("Chandranshu"),
       member("Krish Jaiswal"),

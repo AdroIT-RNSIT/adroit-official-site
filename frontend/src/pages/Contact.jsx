@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Mail, MapPin, Send, Clock, ExternalLink } from "lucide-react";
 
 const CONTACT_EMAIL = "adroit.rnsit@gmail.com";
+const RATE_LIMIT_KEY = "adroit_contact_submissions";
+const RATE_LIMIT_MAX = 2;
+const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 const CAMPUS_MAP =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3519.4201134668556!2d77.51600707454556!3d12.902195416397204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3fa747acf84b%3A0x97a5cf1952c2fe3a!2sRNSIT%20CSE%20Department!5e1!3m2!1sen!2sin!4v1770548920832!5m2!1sen!2sin";
 
@@ -19,6 +22,28 @@ export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
+  const getRecentSubmissions = () => {
+    try {
+      const raw = localStorage.getItem(RATE_LIMIT_KEY);
+      const now = Date.now();
+      const list = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(list)) return [];
+      return list
+        .map((ts) => Number(ts))
+        .filter((ts) => Number.isFinite(ts) && now - ts < RATE_LIMIT_WINDOW_MS);
+    } catch {
+      return [];
+    }
+  };
+
+  const saveRecentSubmissions = (timestamps) => {
+    try {
+      localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify(timestamps));
+    } catch {
+      // Ignore storage write errors; submit already succeeded.
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -32,6 +57,16 @@ export default function Contact() {
     if (formData.website) {
       setLoading(false);
       setMessage({ type: "success", text: "Message sent. We'll get back to you soon." });
+      return;
+    }
+
+    const recentSubmissions = getRecentSubmissions();
+    if (recentSubmissions.length >= RATE_LIMIT_MAX) {
+      setLoading(false);
+      setMessage({
+        type: "error",
+        text: "Rate limit reached. You can send up to 2 messages every 24 hours from this browser.",
+      });
       return;
     }
 
@@ -61,6 +96,7 @@ export default function Contact() {
         throw new Error(data.message || "Failed to send message");
       }
 
+      saveRecentSubmissions([...recentSubmissions, Date.now()]);
       setFormData({ name: "", email: "", subject: "", message: "", website: "" });
       setMessage({
         type: "success",
