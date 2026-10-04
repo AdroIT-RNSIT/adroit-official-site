@@ -179,7 +179,7 @@ export const sharedEvents = [
     tagline: "One month of sessions for CSE students.",
     eyebrow: "Internship",
     description:
-      "AdroIT conducted a one-month internship in July and August 2026 for CSE students from the 2025 and 2026 batches.",
+      "AdroIT conducted a one-month internship in July and August 2026 for CSE students from the 2028 and 2029 batches.",
     about: [
       "During July and August 2026, AdroIT conducted a one-month internship program for CSE students at RNS Institute of Technology. The program was open to students from the 2025 and 2026 batches, with structured technical learning and practical exposure across the month.",
       "The sessions were conducted by AdroIT club members, who planned, taught, and guided participants throughout the internship. Rather than a single workshop, it was a series of sessions across the month, so students could learn progressively and apply the work through hands-on activities.",
