@@ -77,6 +77,7 @@ export default function Events() {
 function FeaturedEvent({ event }) {
   const poster = event.poster || event.imageUrl;
   const posterContained = event.posterFit === "contain";
+  const posterColumn = event.posterColumn || "52%";
   const glimpses = event.glimpses?.slice(0, 3) || [];
   const when = event.slug === "skill-up-bootcamp" ? "" : event.dateLabel || formatRange(event.date, event.endDate);
   const phase = eventPhase(event);
@@ -86,12 +87,13 @@ function FeaturedEvent({ event }) {
 
   return (
     <article
-      className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,46%)_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
+      className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
+      style={posterContained ? { "--poster-col": posterColumn } : undefined}
     >
       {poster && (
         <Link
           to={`/events/${event.slug}`}
-          className={`relative block overflow-hidden ${posterContained ? "aspect-video w-full" : "h-36 sm:h-40"}`}
+          className={`relative block overflow-hidden bg-black ${posterContained ? "aspect-video w-full" : "h-36 sm:h-40"}`}
         >
           <img
             src={poster}
