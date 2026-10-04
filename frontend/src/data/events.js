@@ -101,7 +101,19 @@ export const sharedEvents = [
     imageUrl: "/skill-up-bootcamp.webp",
     posterFit: "contain",
     sessions: [
-      { day: "October 6", title: "Data Analytics", slug: "data-analytics" },
+      {
+        day: "October 6",
+        title: "Data Analytics",
+        slug: "data-analytics",
+        topics: [
+          "Introduction to Data Analytics & Power BI",
+          "Explore & Clean Real-World College Data",
+          "Build Interactive Dashboards",
+          "Analyze Campus Footfall & Student Preferences",
+          "Make a Data-Driven Business Decision",
+          "Mini Challenge: Where Should the Next Campus Stall Be?",
+        ],
+      },
       {
         day: "October 7",
         title: "Cloud Computing",
@@ -128,8 +140,10 @@ export const sharedEvents = [
     location: "RNSIT",
     slug: PARADOX_SLUG,
     status: "completed",
-    poster: "/ctf-img.webp",
-    imageUrl: "/ctf-img.webp",
+    poster: "https://res.cloudinary.com/vkdnztnm/image/upload/v1791109091/Neon_Cyberpunk_Tech_Fest_Poster.webp",
+    imageUrl: "https://res.cloudinary.com/vkdnztnm/image/upload/v1791109091/Neon_Cyberpunk_Tech_Fest_Poster.webp",
+    posterFit: "contain",
+    posterColumn: "30%",
     glimpses: [
       "https://res.cloudinary.com/vkdnztnm/image/upload/v1790800792/IMG_0975.webp",
       "https://res.cloudinary.com/vkdnztnm/image/upload/v1790800793/IMG_1258.webp",
