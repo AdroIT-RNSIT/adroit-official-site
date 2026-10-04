@@ -345,8 +345,8 @@ export default function EventDetail() {
 
 const ACCENTS = ["#34d399", "#818cf8", "#38bdf8", "#fb7185"];
 const AUTO_MS = 6000;
-const N_DESKTOP = 2600;
-const N_PHONE = 3400;
+const N_DESKTOP = 3200;
+const N_PHONE = 4200;
 
 function mulberry32(seed) {
   let a = seed;
@@ -507,6 +507,13 @@ function ParticleStage({ activeRef, rotateRef }) {
     group.add(new THREE.Points(geo, mat));
 
     let faceYaw = 0;
+    const applyThemeToParticles = () => {
+      const darkMode = document.documentElement.classList.contains("dark");
+      mat.blending = darkMode ? THREE.AdditiveBlending : THREE.NormalBlending;
+      mat.needsUpdate = true;
+    };
+    applyThemeToParticles();
+
     const resize = () => {
       const w = host.clientWidth;
       const h = host.clientHeight;
@@ -518,6 +525,7 @@ function ParticleStage({ activeRef, rotateRef }) {
       const vw = vh * camera.aspect;
       const desktop = window.matchMedia("(min-width: 1024px)").matches;
       const phone = window.innerWidth < 640;
+      const darkMode = document.documentElement.classList.contains("dark");
 
       // The formations are about 7.6 wide x 4.6 tall; fit both axes so nothing is cropped on any screen.
       const fit = Math.min(
@@ -527,9 +535,10 @@ function ParticleStage({ activeRef, rotateRef }) {
       );
       group.scale.setScalar(fit);
 
-      const sizeFloor = phone ? 0.85 : 0.55;
-      mat.size = 0.1 * Math.min(1, Math.max(sizeFloor, fit / 0.9));
-      mat.opacity = desktop ? 0.95 : phone ? 1 : 0.95;
+      const sizeFloor = phone ? (darkMode ? 0.85 : 0.95) : darkMode ? 0.55 : 0.72;
+      mat.size = 0.1 * Math.min(darkMode ? 1 : 1.15, Math.max(sizeFloor, fit / (darkMode ? 0.9 : 0.78)));
+      mat.opacity = darkMode ? (desktop ? 0.95 : phone ? 1 : 0.95) : desktop ? 0.88 : 0.95;
+      applyThemeToParticles();
 
       const px = desktop ? vw * 0.2 : 0;
       const py = desktop ? vh * 0.05 : 0;
@@ -539,6 +548,8 @@ function ParticleStage({ activeRef, rotateRef }) {
     const ro = new ResizeObserver(resize);
     ro.observe(host);
     resize();
+    const themeObserver = new MutationObserver(() => resize());
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     const mouse = { x: 0, y: 0 };
     const smooth = { x: 0, y: 0 };
@@ -604,6 +615,7 @@ function ParticleStage({ activeRef, rotateRef }) {
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
+      themeObserver.disconnect();
       io.disconnect();
       geo.dispose();
       mat.dispose();
@@ -781,26 +793,8 @@ function BootcampPage({ event }) {
       `}</style>
 
       <div className="mx-auto max-w-6xl px-3 pt-4 sm:px-6 sm:pt-6 lg:px-8">
-        {paragraphs.length > 0 && (
-          <section className="glass mb-4 rounded-2xl border border-white/80 px-5 py-5 shadow-[0_12px_36px_rgba(15,23,42,0.08)] sm:mb-6 sm:rounded-3xl sm:px-8 sm:py-6 dark:border-white/10">
-            <h2 className="text-2xl font-bold text-sky-800 sm:text-3xl dark:text-sky-300">About</h2>
-            <div className="mt-3 max-w-4xl space-y-3 sm:mt-4 sm:space-y-4">
-              {paragraphs.map((p, i) => (
-                <p
-                  key={p}
-                  className={`text-base leading-7 sm:text-lg sm:leading-8 ${
-                    i === 0 ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
-                  }`}
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
-          </section>
-        )}
-
         <div
-          className="relative overflow-hidden rounded-3xl bg-black text-white ring-1 ring-white/10 sm:rounded-[2rem]"
+          className="relative overflow-hidden rounded-3xl bg-white text-slate-900 ring-1 ring-slate-200 sm:rounded-[2rem] dark:bg-black dark:text-white dark:ring-white/10"
           onPointerEnter={(e) => {
             if (e.pointerType !== "touch") setPaused(true);
           }}
@@ -823,7 +817,18 @@ function BootcampPage({ event }) {
           ))}
           <div
             aria-hidden="true"
-            className="absolute inset-0"
+            className="absolute inset-0 dark:hidden"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(15,23,42,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.08) 1px, transparent 1px)",
+              backgroundSize: isDesktop ? "56px 56px" : "36px 36px",
+              maskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
+              WebkitMaskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 hidden dark:block"
             style={{
               backgroundImage:
                 "linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px)",
@@ -838,7 +843,7 @@ function BootcampPage({ event }) {
               <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
                 <Link
                   to="/events"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-sm text-white/90 transition-colors hover:bg-white/10 sm:gap-2 sm:px-4 sm:py-2 sm:text-base"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/70 px-3 py-1.5 text-sm text-slate-800 transition-colors hover:bg-white sm:gap-2 sm:px-4 sm:py-2 sm:text-base dark:border-white/20 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
                 >
                   <ArrowLeft size={16} />
                   Events
@@ -850,7 +855,7 @@ function BootcampPage({ event }) {
                     path={`/events/${event.slug}${session?.slug ? `?domain=${session.slug}` : ""}`}
                     tone="dark"
                   />
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs sm:gap-2 sm:px-4 sm:py-2 sm:text-base">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/70 px-3 py-1.5 text-xs text-slate-700 sm:gap-2 sm:px-4 sm:py-2 sm:text-base dark:border-white/20 dark:bg-white/5 dark:text-white/90">
                     <span
                       className={`h-2 w-2 rounded-full ${phase === "live" ? "animate-pulse bg-emerald-400" : ""}`}
                       style={phase === "live" ? undefined : { backgroundColor: accent }}
@@ -866,7 +871,7 @@ function BootcampPage({ event }) {
                   </p>
                 )}
                 <h1 className="mt-1 break-words text-4xl font-black leading-[1.05] sm:text-6xl">{event.title}</h1>
-                {event.tagline && <p className="mt-2 max-w-xl text-base text-white/70 sm:mt-3 sm:text-lg">{event.tagline}</p>}
+                {event.tagline && <p className="mt-2 max-w-xl text-base text-slate-600 sm:mt-3 sm:text-lg dark:text-white/70">{event.tagline}</p>}
               </div>
             </div>
 
@@ -899,14 +904,14 @@ function BootcampPage({ event }) {
                       {num}
                     </p>
                     <div className="min-w-0 pb-0.5 lg:pb-0">
-                      <p className="flex items-center gap-2 text-sm font-semibold text-white/80 sm:text-xl lg:mt-4">
+                      <p className="flex items-center gap-2 text-sm font-semibold text-slate-700 sm:text-xl lg:mt-4 dark:text-white/80">
                         <Icon size={18} className="shrink-0" style={{ color: accent }} />
                         {session.day}
                       </p>
                       <h2 className="mt-1 break-words text-2xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">{session.title}</h2>
                     </div>
                   </div>
-                  {session.detail && <p className="mt-3 max-w-md text-base text-white/70 sm:text-lg">{session.detail}</p>}
+                  {session.detail && <p className="mt-3 max-w-md text-base text-slate-600 sm:text-lg dark:text-white/70">{session.detail}</p>}
                   <Link
                     id="bootcamp-register"
                     to={session.slug ? `/register/${session.slug}` : "/events"}
@@ -921,7 +926,7 @@ function BootcampPage({ event }) {
               )}
             </div>
 
-            <div role="tablist" className="grid grid-cols-2 gap-px border-t border-white/10 bg-white/10 lg:grid-cols-4">
+            <div role="tablist" className="grid grid-cols-2 gap-px border-t border-slate-200 bg-slate-100 lg:grid-cols-4 dark:border-white/10 dark:bg-white/10">
               {sessions.map((s, i) => {
                 const on = i === active;
                 const done = sessionCompleted(event, i, now);
@@ -938,7 +943,7 @@ function BootcampPage({ event }) {
                       setTick((t) => t + 1);
                     }}
                     className={`relative flex min-h-[3.75rem] items-center justify-between gap-2 px-4 py-3 text-left transition-colors sm:gap-3 sm:px-7 sm:py-5 ${
-                      on ? "bg-[#111111]" : "bg-black hover:bg-[#1a1a1a]"
+                      on ? "bg-white dark:bg-[#111111]" : "bg-slate-50 hover:bg-slate-100 dark:bg-black dark:hover:bg-[#1a1a1a]"
                     }`}
                   >
                     {on && (
@@ -953,14 +958,14 @@ function BootcampPage({ event }) {
                       />
                     )}
                     <span className="min-w-0 pr-5 sm:pr-0">
-                      <span className="block text-xs font-semibold sm:text-lg" style={{ color: on ? c : "rgba(255,255,255,.55)" }}>
+                      <span className="block text-xs font-semibold sm:text-lg" style={{ color: on ? c : "rgba(51,65,85,.7)" }}>
                         {s.day?.replace("October", "Oct")}
                       </span>
-                      <span className={`block text-sm font-bold leading-tight sm:text-xl ${on ? "text-white" : "text-white/70"}`}>
+                      <span className={`block text-sm font-bold leading-tight sm:text-xl ${on ? "text-slate-900 dark:text-white" : "text-slate-600 dark:text-white/70"}`}>
                         {s.title}
                       </span>
                     </span>
-                    <TabIcon className="hidden shrink-0 sm:block" size={24} style={{ color: on ? c : "rgba(255,255,255,.35)" }} />
+                    <TabIcon className="hidden shrink-0 sm:block" size={24} style={{ color: on ? c : "rgba(71,85,105,.5)" }} />
                     {done && <CompletedSeal color={c} compact />}
                   </button>
                 );
@@ -968,6 +973,24 @@ function BootcampPage({ event }) {
             </div>
           </div>
         </div>
+
+        {paragraphs.length > 0 && (
+          <section className="mt-4 rounded-2xl border border-slate-200 bg-[#ffffff] px-5 py-5 text-slate-900 sm:mt-6 sm:rounded-3xl sm:px-8 sm:py-6 dark:border-white/10 dark:bg-[#000000] dark:text-slate-100">
+            <h2 className="text-2xl font-bold text-sky-800 sm:text-3xl">About</h2>
+            <div className="mt-3 max-w-4xl space-y-3 sm:mt-4 sm:space-y-4">
+              {paragraphs.map((p, i) => (
+                <p
+                  key={p}
+                  className={`text-base leading-7 sm:text-lg sm:leading-8 ${
+                    i === 0 ? "text-slate-900" : "text-slate-600 dark:text-slate-400"
+                  }`}
+                >
+                  {p}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
