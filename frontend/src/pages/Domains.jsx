@@ -15,10 +15,24 @@ import {
   Users,
   Sparkles,
   RefreshCw,
+  Megaphone,
+  PenLine,
+  CalendarCheck,
 } from 'lucide-react';
+
+const CARD =
+  "rounded-2xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03] md:p-6";
+
+const DOMAIN_PANELS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'path', label: 'Path' },
+];
 
 export default function Domains() {
   const [activeDomain, setActiveDomain] = useState('ml');
+  const [activePanel, setActivePanel] = useState('overview');
   const [hoveredDomain, setHoveredDomain] = useState(null);
   
   const sectionRefs = {
@@ -44,6 +58,9 @@ export default function Domains() {
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
       </svg>
+    ),
+    nt: (
+      <Megaphone size={26} />
     ),
     members: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,7 +181,7 @@ export default function Domains() {
         { title: 'Fast.ai', type: 'Course', provider: 'Jeremy Howard' }
       ],
       stats: {
-        members: 17,
+        members: 10,
         projects: 4,
         events: 6,
         resources: 3
@@ -206,7 +223,7 @@ export default function Domains() {
         { title: 'DevOps Roadmap', type: 'Guide', provider: 'Community' }
       ],
       stats: {
-        members: 13,
+        members: 9,
         projects: 1,
         events: 0,
         resources: 2
@@ -251,7 +268,7 @@ export default function Domains() {
         { title: 'OWASP Top 10', type: 'Guide', provider: 'OWASP' }
       ],
       stats: {
-        members: 12,
+        members: 9,
         projects: 4,
         events: 3,
         resources: 3
@@ -293,7 +310,7 @@ export default function Domains() {
         { title: 'Tableau Public', type: 'Tool', provider: 'Salesforce' }
       ],
       stats: {
-        members: 15,
+        members: 12,
         projects: 4,
         events: 5,
         resources: 3
@@ -306,6 +323,57 @@ export default function Domains() {
         'Visualization',
         'Advanced Analytics'
       ]
+    },
+    {
+      id: 'nt',
+      name: 'Non-Tech',
+      shortName: 'Non-Tech',
+      icon: icons.nt,
+      color: 'from-amber-500 to-amber-600',
+      lightColor: 'from-amber-400/20 to-amber-600/20',
+      borderColor: 'border-amber-500/30',
+      textColor: 'text-amber-400',
+      bgColor: 'bg-amber-500/10',
+      gradient: 'bg-gradient-to-br from-amber-500/20 via-orange-500/10 to-transparent',
+      description: 'The club work outside the technical tracks, from creative production to how events get run.',
+      longDescription: 'Non-Tech is how AdroIT shows up beyond the technical tracks. Members edit videos, shoot event photos, draft letters, design posters, run marketing, and handle the logistics that take a session or fest from a plan to a finished day.',
+      careerPaths: ['Video Editor', 'Photographer', 'Content Writer', 'Graphic Designer', 'Marketing Coordinator', 'Event Coordinator'],
+      skills: [
+        'Video Editing',
+        'Photography',
+        'Letter Drafting',
+        'Poster Making',
+        'Marketing',
+        'Logistics',
+      ],
+      tools: ['CapCut', 'DaVinci Resolve', 'Adobe Lightroom', 'Canva', 'Figma', 'Google Docs', 'Instagram', 'Google Sheets'],
+      projects: [
+        { name: 'Event Recap Video', difficulty: 'Beginner', icon: Clapperboard },
+        { name: 'Event Photo Set', difficulty: 'Beginner', icon: Image },
+        { name: 'Official Letter', difficulty: 'Beginner', icon: PenLine },
+        { name: 'Event Poster', difficulty: 'Intermediate', icon: Sparkles },
+        { name: 'Social Media Campaign', difficulty: 'Intermediate', icon: Megaphone },
+        { name: 'Event Run of Show', difficulty: 'Intermediate', icon: CalendarCheck },
+      ],
+      resources: [
+        { title: 'Canva Design School', type: 'Course', provider: 'Canva' },
+        { title: 'DaVinci Resolve Training', type: 'Course', provider: 'Blackmagic Design' },
+        { title: 'Google Docs', type: 'Tool', provider: 'Google' },
+      ],
+      stats: {
+        members: 8,
+        projects: null,
+        resources: null,
+      },
+      leads: ['Poorvika Nagaraj'],
+      roadmap: [
+        'Poster Making',
+        'Photography',
+        'Video Editing',
+        'Letter Drafting',
+        'Marketing',
+        'Event Logistics',
+      ],
     }
   ];
 
@@ -331,40 +399,40 @@ export default function Domains() {
   }, []);
 
   const currentDomain = domains.find(d => d.id === activeDomain) || domains[0];
+  const selectDomain = (id) => {
+    setActiveDomain(id);
+    setActivePanel('overview');
+  };
+  const panelClass = (id) => (activePanel === id ? '' : 'max-lg:hidden');
+  const visiblePanels = DOMAIN_PANELS.filter((panel) => {
+    if (panel.id === 'overview') return true;
+    if (panel.id === 'skills') return currentDomain.skills.length > 0 || currentDomain.tools.length > 0;
+    if (panel.id === 'projects') return currentDomain.projects.length > 0;
+    return currentDomain.roadmap.length > 0 || currentDomain.resources.length > 0;
+  });
+  const showStats = currentDomain.stats.members != null;
 
   return (
-    <div className="relative min-h-dvh text-slate-900 font-sans overflow-x-clip pt-20 pb-16 dark:text-slate-100">
-      
-      {/* ===== BACKGROUND EFFECTS ===== */}
-      <div className="fixed inset-0 pointer-events-none z-0 hidden overflow-hidden md:block">
-        <div className="absolute top-20 left-20 w-[500px] max-w-[100vw] h-[500px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-20 w-[600px] max-w-[100vw] h-[600px] bg-sky-600/5 rounded-full blur-[120px] animate-pulse-slower"></div>
-      </div>
-
+    <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pb-16 pt-6 font-sans text-slate-900 dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className="text-center mb-16"
+          className="mb-8 text-center lg:mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-slate-900/5 border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
-            <span className="text-sm text-slate-600">AdroIT Knowledge Hub</span>
-          </div>
-
-          <h1 className="fluid-h1 font-extrabold mb-6 pb-2">
-            <span className="text-sky-800">Technical Domains</span>
+          <h1 className="fluid-h1 mb-3 pb-2 font-extrabold lg:mb-6">
+            <span className="text-sky-800">Domains</span>
           </h1>
 
-          <p className="fluid-lead text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            Master the four pillars of modern technology with our comprehensive learning paths,
-            <span className="text-sky-700"> hands-on projects</span>, and
+          <p className="mx-auto max-w-4xl text-base leading-relaxed text-slate-600 lg:fluid-lead">
+            Explore AdroIT's technical tracks and the non-tech work behind events and outreach, with
+            <span className="text-sky-700"> hands-on projects</span> and
             <span className="text-sky-700"> expert mentorship</span>
           </p>
 
           {/* Quick Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-12">
+          <div className="mt-8 hidden flex-wrap justify-center gap-6 lg:flex">
             <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -380,8 +448,8 @@ export default function Domains() {
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-slate-900">4</span>
-                <span className="text-slate-600 text-sm ml-2">Core Domains</span>
+                <span className="text-2xl font-bold text-slate-900">{domains.length}</span>
+                <span className="text-slate-600 text-sm ml-2">Domains</span>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
@@ -421,32 +489,31 @@ export default function Domains() {
         </section>
 
         {/* ===== DOMAIN SELECTOR ===== */}
-        <section className="mb-12">
-          <div className="flex flex-wrap justify-center gap-4">
+        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#000000]/95 lg:static lg:mx-0 lg:mb-12 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+          <div className="flex gap-2 overflow-x-auto lg:flex-wrap lg:justify-center lg:gap-4 lg:overflow-visible">
             {domains.map((domain) => (
               <button
                 key={domain.id}
-                onClick={() => setActiveDomain(domain.id)}
+                onClick={() => selectDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl transition-colors duration-200 ${
+                className={`group relative flex shrink-0 items-center gap-2 rounded-2xl border px-3 py-2 transition-colors duration-200 lg:gap-3 lg:px-6 lg:py-4 ${
                   activeDomain === domain.id
-                    ? `bg-gradient-to-r ${domain.color} text-slate-900 shadow-lg sm:scale-105`
-                    : 'bg-slate-900/5 text-slate-600 border border-slate-900/10 hover:bg-slate-900/10 hover:text-slate-900'
+                    ? 'border-sky-600 bg-sky-600 text-white'
+                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-transparent'
                 }`}
               >
-                {activeDomain === domain.id && (
-                  <div className={`absolute inset-0 hidden bg-gradient-to-r ${domain.color} rounded-2xl blur-xl opacity-50 animate-pulse md:block`}></div>
-                )}
+                <span className="relative hidden h-6 w-6 lg:block">{domain.icon}</span>
+                <span className="relative text-sm font-semibold lg:hidden">{domain.shortName}</span>
+                <span className="relative hidden font-semibold lg:inline">{domain.name}</span>
                 
-                <span className="relative w-6 h-6">{domain.icon}</span>
-                <span className="relative font-semibold">{domain.name}</span>
-                
-                {hoveredDomain === domain.id && activeDomain !== domain.id && (
-                  <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/90 backdrop-blur-xl border border-slate-900/10 rounded-xl p-3 whitespace-nowrap z-50 animate-fade-in">
+                {hoveredDomain === domain.id && activeDomain !== domain.id && domain.stats.members != null && (
+                  <div className="absolute -bottom-16 left-1/2 z-50 hidden -translate-x-1/2 animate-fade-in whitespace-nowrap rounded-xl border border-slate-900/10 bg-black/90 p-3 backdrop-blur-xl lg:block">
                     <div className="flex gap-4 text-xs">
                       <div><span className="text-sky-400">{domain.stats.members}</span> members</div>
-                      <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
+                      {domain.stats.projects != null && (
+                        <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -460,69 +527,89 @@ export default function Domains() {
           key={activeDomain}
         >
           {/* Domain Hero Banner */}
-          <div className={`relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-br ${currentDomain.lightColor} border ${currentDomain.borderColor}`}>
-            <div className={`absolute inset-0 bg-gradient-to-r ${currentDomain.color}/10`}></div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10 p-5 sm:p-8 md:p-12">
+          <div className="relative mb-8 overflow-hidden rounded-3xl border border-slate-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
+            <div className="relative z-10 p-4 sm:p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-4xl md:text-5xl shadow-xl flex-shrink-0`}>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-sky-600 text-white sm:h-16 sm:w-16">
+                    <div className="h-7 w-7 sm:h-8 sm:w-8">
                       {currentDomain.icon}
                     </div>
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-3 mb-2">
                       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">{currentDomain.name}</h2>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium bg-slate-900/20 text-slate-900 border ${currentDomain.borderColor}`}>
+                      <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:text-slate-300">
                         {currentDomain.shortName}
                       </span>
                     </div>
-                    <p className="text-slate-700 text-lg max-w-2xl">{currentDomain.description}</p>
+                    <p className="max-w-2xl text-sm text-slate-700 sm:text-lg">{currentDomain.description}</p>
                   </div>
                 </div>
                 
                 {/* Stats Cards */}
+                {showStats && (
                 <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
-                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
-                    <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
+                  <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.members}
                     </div>
                     <div className="text-xs text-slate-600 flex items-center gap-1">
                       {icons.members} Members
                     </div>
                   </div>
-                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
-                    <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
+                  {currentDomain.stats.projects != null && (
+                  <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.projects}
                     </div>
                     <div className="text-xs text-slate-600 flex items-center gap-1">
                       {icons.projects} Projects
                     </div>
                   </div>
-                  <div className="bg-white/90 md:bg-white/40 md:backdrop-blur px-3 py-2 sm:px-4 sm:py-3 rounded-xl border border-slate-900/10 flex-1 min-w-[5.5rem] md:flex-none">
-                    <div className={`text-2xl font-bold ${currentDomain.textColor}`}>
+                  )}
+                  {currentDomain.stats.resources != null && (
+                  <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.resources}
                     </div>
                     <div className="text-xs text-slate-600 flex items-center gap-1">
                       {icons.resources} Resources
                     </div>
                   </div>
+                  )}
                 </div>
+                )}
               </div>
             </div>
           </div>
 
+          <div className={`mb-5 grid gap-1 rounded-2xl border border-slate-200 bg-slate-50 p-1 lg:hidden dark:border-white/10 dark:bg-white/5 ${visiblePanels.length > 2 ? "grid-cols-4" : "grid-cols-2"}`}>
+            {visiblePanels.map((panel) => (
+              <button
+                key={panel.id}
+                type="button"
+                onClick={() => setActivePanel(panel.id)}
+                className={`rounded-xl px-1 py-2 text-xs font-semibold ${
+                  activePanel === panel.id
+                    ? 'bg-white text-sky-800 shadow-sm dark:bg-[#000000] dark:text-sky-300'
+                    : 'text-slate-500'
+                }`}
+              >
+                {panel.label}
+              </button>
+            ))}
+          </div>
+
           {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
             
             {/* Column 1: About & Career */}
             <div className="lg:col-span-1 space-y-6">
               
               {/* About Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-3 flex items-center gap-2`}>
+              <div className={`${panelClass('overview')} ${CARD}`}>
+                <h3 className={`mb-3 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.domain} About This Domain
                 </h3>
                 <p className="text-slate-700 text-sm leading-relaxed">
@@ -531,8 +618,9 @@ export default function Domains() {
               </div>
 
               {/* Career Paths Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              {currentDomain.careerPaths.length > 0 && (
+              <div className={`${panelClass('overview')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.career} Career Paths
                 </h3>
                 <div className="space-y-2">
@@ -544,16 +632,18 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
 
               {/* Domain Leads Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              {currentDomain.leads.length > 0 && (
+              <div className={`${panelClass('overview')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.members} Domain Lead
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.leads.map((lead, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-slate-900 text-xs font-bold`}>
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-xs font-bold text-white">
                         {lead.charAt(0)}
                       </div>
                       <span className="text-slate-900 text-sm font-medium">{lead}</span>
@@ -561,21 +651,22 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
             </div>
 
             {/* Column 2: Skills, Tools, Projects */}
             <div className="lg:col-span-1 space-y-6">
               
               {/* Skills Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              <div className={`${panelClass('skills')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.skills} Skills to Master
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {currentDomain.skills.map((skill, idx) => (
                     <span
                       key={idx}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium ${currentDomain.bgColor} ${currentDomain.textColor} border ${currentDomain.borderColor}`}
+                      className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
                     >
                       {skill}
                     </span>
@@ -584,8 +675,9 @@ export default function Domains() {
               </div>
 
               {/* Tools Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              {currentDomain.tools.length > 0 && (
+              <div className={`${panelClass('skills')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.tools} Popular Tools
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -597,10 +689,11 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
 
-              {/* Sample Projects Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              {currentDomain.projects.length > 0 && (
+              <div className={`${panelClass('projects')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.projects} Sample Projects
                 </h3>
                 <div className="space-y-3">
@@ -615,9 +708,9 @@ export default function Domains() {
                         <div>
                           <div className="text-slate-900 text-sm font-medium">{project.name}</div>
                           <span className={`text-xs ${
-                            project.difficulty === 'Beginner' ? 'text-green-400' :
-                            project.difficulty === 'Intermediate' ? 'text-yellow-400' :
-                            'text-red-400'
+                            project.difficulty === 'Beginner' ? 'text-emerald-700' :
+                            project.difficulty === 'Intermediate' ? 'text-amber-700' :
+                            'text-rose-700'
                           }`}>
                             {project.difficulty}
                           </span>
@@ -628,25 +721,27 @@ export default function Domains() {
                   })}
                 </div>
               </div>
+              )}
             </div>
 
             {/* Column 3: Roadmap & Resources */}
             <div className="lg:col-span-1 space-y-6">
               
               {/* Learning Roadmap Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              {currentDomain.roadmap.length > 0 && (
+              <div className={`${panelClass('path')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.roadmap} Learning Roadmap
                 </h3>
                 <div className="relative">
                   {currentDomain.roadmap.map((step, idx) => (
                     <div key={idx} className="flex items-start gap-3 mb-4 last:mb-0">
                       <div className="relative">
-                        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${currentDomain.color} flex items-center justify-center text-slate-900 text-xs font-bold`}>
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-600 text-xs font-bold text-white">
                           {idx + 1}
                         </div>
                         {idx < currentDomain.roadmap.length - 1 && (
-                          <div className={`absolute top-6 left-3 w-0.5 h-8 bg-gradient-to-b ${currentDomain.color}`}></div>
+                          <div className="absolute left-3 top-6 h-8 w-0.5 bg-slate-200 dark:bg-white/15"></div>
                         )}
                       </div>
                       <div>
@@ -656,10 +751,11 @@ export default function Domains() {
                   ))}
                 </div>
               </div>
+              )}
 
-              {/* Recommended Resources Card */}
-              <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 hover:border-sky-600/30 transition-all duration-300">
-                <h3 className={`text-lg font-bold ${currentDomain.textColor} mb-4 flex items-center gap-2`}>
+              {currentDomain.resources.length > 0 && (
+              <div className={`${panelClass('path')} ${CARD}`}>
+                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
                   {icons.book} Recommended Resources
                 </h3>
                 <div className="space-y-3">
@@ -684,11 +780,12 @@ export default function Domains() {
                   Become a member to get access to more resources
                 </div>
               </div>
+              )}
             </div>
           </div>
 
           {/* Domain Comparison Table — laptop only */}
-          <div className="mt-12 hidden bg-white/90 md:block md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 overflow-x-auto">
+          <div className="mt-12 hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white p-6 md:block dark:border-white/10 dark:bg-white/[0.03]">
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>
@@ -710,7 +807,7 @@ export default function Domains() {
                     className={`border-b border-slate-900/5 hover:bg-slate-900/5 transition-colors cursor-pointer ${
                       activeDomain === domain.id ? 'bg-slate-900/5' : ''
                     }`}
-                    onClick={() => setActiveDomain(domain.id)}
+                    onClick={() => selectDomain(domain.id)}
                   >
                     <td className="py-4 px-2">
                       <div className="flex items-center gap-2">
@@ -718,11 +815,11 @@ export default function Domains() {
                         <span className="text-slate-900 font-medium">{domain.name}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.members}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.members ?? "—"}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects ?? "—"}</td>
+                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources ?? "—"}</td>
                     <td className="py-4 px-2">
-                      <span className="text-slate-700">{domain.leads[0]}</span>
+                      <span className="text-slate-700">{domain.leads[0] || "—"}</span>
                     </td>
                   </tr>
                 ))}

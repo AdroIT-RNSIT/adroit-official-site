@@ -3,8 +3,6 @@ import { useSession } from "../lib/auth-client";
 import { BookOpen, Calendar, Users, UserRound } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-const CLOUDINARY_CLOUD_NAME = "adroit"; // Change this to your cloud name
-const CLOUDINARY_UPLOAD_PRESET = "adroit_members"; // Create this in Cloudinary dashboard
 
 export default function AdminDashboard({ initialTab = "resources" }) {
   const { data: session } = useSession();

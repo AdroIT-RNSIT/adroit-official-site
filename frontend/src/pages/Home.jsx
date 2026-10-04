@@ -1,15 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
-import ThreeScene from '../home/ThreeScene';
 import { Link, useNavigate } from "react-router-dom";
-import BrandMark from '../components/BrandMark';
 import EventCarousel from '../components/EventCarousel';
-import { sharedEvents } from '../data/events';
-
-// ============================================
-// FIXED INTERACTIVE BALL COMPONENT
-// ============================================
-import InteractiveRings from '../components/InteractiveRings';
+import { registrationDomains } from '../data/domainRegistration';
+import { useTheme } from '../lib/theme';
 
 // ============================================
 // DOMAIN CARD COMPONENT - NEW!
@@ -32,6 +26,7 @@ const DomainCard = ({ icon, title, description }) => (
 // MAIN HOME COMPONENT
 // ============================================
 const Home = () => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const heroRef = useRef(null);
   const missionRef = useRef(null);
@@ -91,48 +86,59 @@ const Home = () => {
     }
   ];
 
+  const domainCards = registrationDomains
+    .filter((domain) => domain.slug !== "non-tech")
+    .map((domain) => ({
+      _id: domain.slug,
+      title: domain.title,
+      description: domain.description,
+      label: domain.label,
+      link: `/register/${domain.slug}`,
+    }));
+
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
       
       {/* Mobile: original corner sizes in flow so the hero sits below. Laptop: larger aligned pair. */}
-      <div className="lg:hidden relative z-[1001] flex items-center justify-between">
+      <div className="lg:hidden relative z-[1001] flex items-center justify-between px-3">
         <img
-          src="/rnsit_logo.png"
+          src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className="w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left drop-shadow-2xl"
-          style={{ mixBlendMode: "multiply" }}
+          className={`w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right mix-blend-multiply"
         />
       </div>
       <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
         <img
-          src="/rnsit_logo.png"
+          src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
           alt="RNSIT Logo"
-          className="h-[12.6rem] w-auto max-w-[80%] object-contain object-left drop-shadow-2xl mix-blend-multiply"
+          className={`h-[9rem] w-auto max-w-[37.5%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
         />
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="h-[10.08rem] w-auto max-w-[40%] object-contain object-right drop-shadow-2xl mix-blend-multiply"
+          className="h-[7.5rem] w-auto max-w-[21%] object-contain object-right mix-blend-multiply"
         />
       </div>
 
       {/* ===== HERO SECTION ===== */}
       <section 
         ref={heroRef}
-        className="relative flex flex-col justify-start overflow-x-clip px-4 sm:px-6 lg:px-8 pt-8 pb-24 sm:pt-10 lg:min-h-dvh lg:justify-center lg:py-20 opacity-0 translate-y-4 transition-all duration-500 ease-out"
+        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-500 ease-out"
       >
-
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
           <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
-            Paradox 2026
+            Recruiting soon
           </span>
-          <BrandMark size="home" className="mb-5" />
-
+          <img
+            alt="AdroIT"
+            className="block object-contain h-[5.25rem] sm:h-24 md:h-[7.5rem] w-auto mx-auto mb-5"
+            src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
+          />
           <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
             <span className="sr-only">AdroIT — </span>
             Department of
@@ -140,44 +146,20 @@ const Home = () => {
               Computer Science &amp; Engineering
             </span>
           </h1>
-
-          {/* Tagline */}
           <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
-            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through 
-            cutting-edge technology, collaborative projects, and industry-ready skills
+            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
-
           <EventCarousel
-            events={sharedEvents}
-            onSelect={(event) => navigate(`/events/${event.slug}`)}
+            events={domainCards}
+            onSelect={(domain) => {
+              navigate(`/events/skill-up-bootcamp?domain=${domain._id}`);
+            }}
           />
-
-          {/* SINGLE CTA BUTTON - Removed duplicate */}
-          <div className="flex flex-row flex-wrap gap-2.5 justify-center items-center relative z-20">
-            <Link
-              to="/domains"
-              className="group inline-flex items-center justify-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white rounded-full bg-sky-600 shadow-md shadow-sky-900/15 hover:bg-sky-800 hover:scale-105 transition-all duration-300"
-            >
-              <span>Explore AdroIT</span>
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="group-hover:translate-x-0.5 transition-transform">
-                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Link>
-            <Link
-              to="/events"
-              className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-slate-800 rounded-full bg-white/70 border border-slate-200 hover:bg-white hover:border-sky-600/30 transition-all duration-300"
-            >
-              See Events
-            </Link>
-          </div>
         </div>
-
-        {/* FIXED: Responsive rings container */}
-        <InteractiveRings />
       </section>
 
       {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="py-10 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
+      <section id="why-join" ref={missionRef} className="pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-16">
@@ -195,36 +177,36 @@ const Home = () => {
             {/* Left Column - 3 Cards */}
             <div className="space-y-8">
               
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
+              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">01</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Practical Skill Development</h3>
+                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Practical Skill Development</h3>
                 </div>
                 <p className="text-slate-600">
                   Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
                 </p>
               </div>
 
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
+              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">02</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Industry Exposure</h3>
+                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Industry Exposure</h3>
                 </div>
                 <p className="text-slate-600">
                   Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
                 </p>
               </div>
 
-              <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
+              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
                     <span className="text-xl font-bold">03</span>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Collaborative Environment</h3>
+                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Collaborative Environment</h3>
                 </div>
                 <p className="text-slate-600">
                   Join a community of passionate learners and innovators. Collaborate on projects, 
@@ -237,8 +219,8 @@ const Home = () => {
             {/* Right Column - Advantage Card */}
             <div className="relative group">
               <div className="absolute -inset-1 bg-sky-600/15 rounded-3xl blur opacity-50 group-hover:opacity-80 transition duration-1000"></div>
-              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-10 rounded-3xl">
-                <h3 className="text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
+              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-6 sm:p-10 rounded-3xl">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
                 <div className="space-y-6">
                   {[
                     "Build an impressive portfolio with real projects",
@@ -299,20 +281,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== INTERACTIVE CANVAS SECTION ===== */}
       <section
         ref={approachRef}
         className="relative z-0 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-500"
       >
-        <div
-          className="pointer-events-none absolute inset-x-0 -top-24 -bottom-24 z-0 sm:-top-32 sm:-bottom-32"
-          style={{
-            maskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)",
-          }}
-        >
-          <ThreeScene />
-        </div>
         <div className="relative z-10 text-center">
           <h2 className="fluid-h2 font-bold text-slate-900 mb-4 py-2">
             Our Learning Philosophy
@@ -381,7 +353,7 @@ const Home = () => {
       {/* ===== CLUB ACTIVITIES ===== */}
       <section 
         ref={activitiesRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-white/5 backdrop-blur-sm opacity-0 translate-y-4 transition-all duration-500"
+        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto">
           
@@ -439,88 +411,11 @@ const Home = () => {
           {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}
           <div className="text-center mt-16">
             <p className="text-slate-500 text-sm">
-              Recruitment for this cycle is closed. Next recruitment opens later this year.
+              Recruiting soon.
             </p>
           </div>
         </div>
       </section>
-
-      {/* ===== FIXED: Global Styles - Replaced style jsx with regular style ===== */}
-      <style>{`
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.02); }
-        }
-        @keyframes spin-slow {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @keyframes spin-slower-reverse {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
-        @keyframes spin-slowest {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(720deg); }
-        }
-        @keyframes move-spiral {
-          0% { transform: translate(0, 0) scale(1); opacity: 1; }
-          25% { transform: translate(-18%, -18%) scale(1.2); opacity: 0.8; }
-          50% { transform: translate(18%, -18%) scale(1); opacity: 1; }
-          75% { transform: translate(18%, 18%) scale(1.2); opacity: 0.8; }
-          100% { transform: translate(0, 0) scale(1); opacity: 1; }
-        }
-        @keyframes move-spiral-trail-1 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          10% { transform: translate(-6%, -6%); opacity: 0.5; }
-          20% { transform: translate(-12%, -12%); opacity: 0.3; }
-          30% { transform: translate(-18%, -18%); opacity: 0.1; }
-          100% { transform: translate(-18%, -18%); opacity: 0; }
-        }
-        @keyframes move-spiral-trail-2 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          20% { transform: translate(9%, -9%); opacity: 0.5; }
-          40% { transform: translate(18%, -18%); opacity: 0.3; }
-          60% { transform: translate(27%, -27%); opacity: 0.1; }
-          100% { transform: translate(27%, -27%); opacity: 0; }
-        }
-        @keyframes move-spiral-trail-3 {
-          0% { transform: translate(0, 0); opacity: 0; }
-          30% { transform: translate(9%, 9%); opacity: 0.5; }
-          60% { transform: translate(18%, 18%); opacity: 0.3; }
-          90% { transform: translate(27%, 27%); opacity: 0.1; }
-          100% { transform: translate(27%, 27%); opacity: 0; }
-        }
-        @keyframes float-particle {
-          0%, 100% { transform: translate(0, 0); opacity: 0; }
-          10%, 90% { opacity: 0.3; }
-          50% { opacity: 0.6; transform: translate(20px, -20px); }
-        }
-        @keyframes hit-particle {
-          0% { transform: scale(1); opacity: 0.7; }
-          100% { transform: scale(0); opacity: 0; }
-        }
-        @keyframes ripple {
-          0% { width: 0px; height: 0px; opacity: 0.8; }
-          100% { width: 100px; height: 100px; opacity: 0; }
-        }
-        @keyframes trail {
-          0% { opacity: 0.3; transform: scale(1); }
-          100% { opacity: 0; transform: scale(0.5); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
-        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
-        .animate-spin-slower-reverse { animation: spin-slower-reverse 25s linear infinite; }
-        .animate-spin-slowest { animation: spin-slowest 40s linear infinite; }
-        .animate-move-spiral { animation: move-spiral 6s ease-in-out infinite; }
-        .animate-move-spiral-trail-1 { animation: move-spiral-trail-1 6s ease-out infinite; }
-        .animate-move-spiral-trail-2 { animation: move-spiral-trail-2 6s ease-out infinite; animation-delay: 0.3s; }
-        .animate-move-spiral-trail-3 { animation: move-spiral-trail-3 6s ease-out infinite; animation-delay: 0.6s; }
-        .animate-float-particle { animation: float-particle var(--duration) ease-in-out infinite; }
-        .animate-hit-particle { animation: hit-particle 0.8s ease-out forwards; }
-        .animate-ripple { animation: ripple 1.5s ease-out forwards; }
-        .animate-trail { animation: trail 0.5s linear forwards; }
-      `}</style>
 
     </div>
   );

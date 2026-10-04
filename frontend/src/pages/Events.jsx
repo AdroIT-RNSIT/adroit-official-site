@@ -1,296 +1,180 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, ChevronDown, MapPin, Users } from "lucide-react";
-import { useSession } from "../lib/auth-client";
-import { sharedEvents } from "../data/events";
+import { ArrowUpRight, Calendar, MapPin } from "lucide-react";
+import { eventPhase, eventStatusLabel, partitionEvents } from "../data/events";
+import ShareEventButton from "../components/ShareEventButton";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-const SPONSORS = [
-  { name: "WHO VR", src: "/whovr.png" },
-  { name: "Nexploit", src: "/nexploit.jpeg" },
-];
-
-const GENERIC_RULES = [
-  "To avail the IEEE member discounted fee, at least one member of the team must hold a valid IEEE membership, and the registration must be made under that member's name and membership ID.",
-  "Membership details will be verified. Any discrepancy found will lead to immediate invalidation of the registration, with no refund.",
-  "Payment must be made only through the official payment gateway linked on this website.",
-  "The payment amount must be entered manually at checkout - please double-check it against the fee applicable to your event/category before paying.",
-  "If the amount entered does not match the actual fee applicable, the registration will be considered invalid and no refund will be initiated. Exceptions will be considered only in cases of a genuine, verifiable error.",
-  "A registration is confirmed only after payment and membership details (where applicable) are verified. A confirmation email will follow within 48 hours - please retain your payment reference until then.",
-  "All team member details (name, institution, email, phone, IEEE ID where applicable) must be accurate at the time of registration.",
-  "Multiple/Duplicate registrations for the same team in the same event are not allowed and may lead to cancellation of all such entries.",
-  "All participants must carry a valid college/institution ID card to the venue.",
-  "The organising team reserves the right to modify these guidelines, event rules, schedules, or venues at any time; changes will be communicated through official channels.",
-];
-
-const rupees = (amount) => `₹${(amount || 0).toLocaleString("en-IN")}`;
-
-const feeLabel = (cost) => {
-  if (!cost) return "";
-  if (cost.all != null) return rupees(cost.all);
-  const parts = [];
-  if (cost.ieee != null) parts.push(`IEEE ${rupees(cost.ieee)}`);
-  if (cost.nonIeee != null) parts.push(`Non-IEEE ${rupees(cost.nonIeee)}`);
-  return parts.join(" · ");
+const formatRange = (start, end) => {
+  const startDate = new Date(start);
+  const endDate = end ? new Date(end) : null;
+  if (!endDate || startDate.toDateString() === endDate.toDateString()) {
+    return startDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+  const sameMonth =
+    startDate.getMonth() === endDate.getMonth() &&
+    startDate.getFullYear() === endDate.getFullYear();
+  if (sameMonth) {
+    return `${startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}–${endDate.getDate()}, ${endDate.getFullYear()}`;
+  }
+  return `${startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} – ${endDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
 };
 
-const formatDay = (dateStr) =>
-  new Date(dateStr).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-
-const shortName = (event) =>
-  event.slug === "capture-the-flag" ? "CTF" : event.title;
-
 export default function Events() {
-  const { data: session } = useSession();
-  const [events, setEvents] = useState(sharedEvents);
-  const [rulesOpen, setRulesOpen] = useState(false);
-  const isAdmin = session?.user?.role === "admin";
-  const totalPrize = events.reduce((sum, event) => sum + (event.prize || 0), 0);
-
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this event?")) return;
-    try {
-      await fetch(`${API_URL}/api/events/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      setEvents((prev) => prev.filter((event) => event._id !== id));
-    } catch {
-      alert("Failed to delete event");
-    }
-  };
-
+  const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
-    <div className="event-page-enter min-h-dvh bg-[#080c16] text-slate-100">
-      <header className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 hidden md:block">
-          <div className="absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-cyan-500/12 blur-[90px]" />
-        </div>
-
-        <div className="relative mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">
-            Department of CSE · RNSIT
-          </p>
-          <h1 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
-            Paradox 2026
+    <div className="relative overflow-x-clip pt-8 pb-10 text-slate-900 dark:text-slate-100">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <header className="mb-12 text-center">
+          <h1 className="fluid-h1 mb-4 font-extrabold">
+            <span className="text-sky-800">Events</span>
           </h1>
-          <p className="mt-3 text-base text-slate-300 sm:text-lg">
-            Three competitions · 17–18 September 2026
+          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
+            Upcoming sessions and recaps from AdroIT.
           </p>
-        </div>
-      </header>
+        </header>
 
-      <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-4 lg:grid-cols-5">
-          <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 lg:col-span-3">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                  Prize pool
-                </h2>
-                <p className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
-                  {rupees(totalPrize)}
-                </p>
-              </div>
+        {upcomingEvents.length > 0 && (
+          <section className="mb-14">
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+                Upcoming
+              </h2>
             </div>
-            <div className="mt-6 grid grid-cols-3 gap-3">
-              {events.map((event) => (
-                <div
-                  key={event._id}
-                  className="rounded-2xl bg-black/30 px-3 py-3 sm:px-4"
-                >
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                    {shortName(event)}
-                  </p>
-                  <p className="mt-1 text-lg font-bold text-white sm:text-xl">
-                    {rupees(event.prize)}
-                  </p>
-                </div>
+            <div className="space-y-6">
+              {upcomingEvents.map((event) => (
+                <FeaturedEvent key={event._id} event={event} />
               ))}
             </div>
           </section>
-
-          <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 lg:col-span-2">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300">
-              Sponsors
-            </h2>
-            <div className="mt-5 grid grid-cols-2 gap-4">
-              {SPONSORS.map((sponsor) => (
-                <div key={sponsor.name} className="flex flex-col items-center gap-2 text-center">
-                  <img
-                    src={sponsor.src}
-                    alt={sponsor.name}
-                    className="h-20 w-auto max-w-full object-contain sm:h-24"
-                  />
-                  <p className="text-sm font-semibold text-white">{sponsor.name}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        <p className="mt-8 mb-5 text-center text-sm text-slate-500">
-          <a href="#paradox-rules" className="hover:text-cyan-300 hover:underline underline-offset-4">
-            Read generic rules before registering
-          </a>
-        </p>
-
-        {events.length === 0 ? (
-          <div className="rounded-3xl border border-white/10 bg-white/[0.04] px-6 py-20 text-center">
-            <h2 className="text-xl font-bold text-white">No events yet</h2>
-            <p className="mx-auto mt-2 max-w-sm text-slate-400">
-              Stay tuned — upcoming competitions will appear here.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {events.map((event) => (
-              <EventCard
-                key={event._id}
-                event={event}
-                isAdmin={isAdmin}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
         )}
 
-        <section id="paradox-rules" className="mt-14 scroll-mt-24">
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent">
-            <button
-              type="button"
-              onClick={() => setRulesOpen((open) => !open)}
-              className="flex min-h-14 w-full items-center justify-between gap-4 px-4 py-3.5 text-left sm:px-5 lg:pointer-events-none lg:min-h-0 lg:cursor-default lg:px-0 lg:py-0"
-              aria-expanded={rulesOpen}
-            >
-              <div>
-                <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                  Rules &amp; guidelines
-                </h2>
-                <p className="mt-1 text-sm text-slate-400 lg:hidden">
-                  {GENERIC_RULES.length} points · tap to {rulesOpen ? "hide" : "read"}
-                </p>
-                <p className="mt-2 hidden max-w-3xl text-sm text-slate-400 lg:block">
-                  These apply across every Paradox 2026 event. Event-specific additions are listed on each event page.
-                </p>
-              </div>
-              <ChevronDown
-                size={20}
-                className={`shrink-0 text-cyan-300 transition-transform lg:hidden ${rulesOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            <ol
-              className={`gap-3 border-t border-white/10 p-3 sm:grid-cols-2 sm:p-4 lg:mt-5 lg:border-0 lg:p-0 ${
-                rulesOpen ? "grid" : "hidden lg:grid"
-              }`}
-            >
-              {GENERIC_RULES.map((rule, idx) => (
-                <li
-                  key={idx}
-                  className="flex gap-3 rounded-xl bg-black/25 px-3.5 py-3.5 sm:rounded-2xl sm:px-5 sm:py-4 lg:border lg:border-white/10 lg:bg-white/[0.04]"
-                >
-                  <span className="mt-0.5 font-mono text-xs font-semibold text-cyan-400 sm:text-sm">
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-[15px] leading-relaxed text-slate-200">{rule}</p>
-                </li>
-              ))}
-            </ol>
+        <section>
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+              Completed
+            </h2>
           </div>
+          {completedEvents.length === 0 ? (
+            <div className="rounded-2xl border border-slate-200/80 bg-white/80 px-6 py-16 text-center shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-white/5">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">No past events yet</h3>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {completedEvents.map((event) => (
+                <FeaturedEvent key={event._id} event={event} />
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>
   );
 }
 
-function EventCard({ event, isAdmin, onDelete }) {
+function FeaturedEvent({ event }) {
   const poster = event.poster || event.imageUrl;
-  const fees = feeLabel(event.registrationCost);
+  const posterContained = event.posterFit === "contain";
+  const glimpses = event.glimpses?.slice(0, 3) || [];
+  const when = event.slug === "skill-up-bootcamp" ? "" : event.dateLabel || formatRange(event.date, event.endDate);
+  const phase = eventPhase(event);
+  const upcoming = phase !== "completed";
+  const statusLabel = eventStatusLabel(event);
+  const shareText = upcoming ? `Attend ${event.title} with AdroIT.` : `${event.title} — AdroIT.`;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] transition-colors hover:border-cyan-400/35 hover:bg-white/[0.06]">
-      {isAdmin && (
-        <button
-          type="button"
-          onClick={() => onDelete(event._id)}
-          className="absolute right-3 top-3 z-20 rounded-lg bg-black/50 p-2 text-red-300/80 backdrop-blur-sm hover:bg-red-500/20 hover:text-red-200"
-          title="Delete event"
+    <article
+      className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,46%)_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
+    >
+      {poster && (
+        <Link
+          to={`/events/${event.slug}`}
+          className={`relative block overflow-hidden ${posterContained ? "aspect-video w-full" : "h-36 sm:h-40"}`}
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-        </button>
+          <img
+            src={poster}
+            alt=""
+            className={posterContained ? "absolute inset-0 h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
+          />
+          {!posterContained && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#000000]/40" />
+              <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
+                {statusLabel}
+              </span>
+            </>
+          )}
+        </Link>
       )}
 
-      <Link to={`/events/${event.slug}`} className="flex flex-1 flex-col">
-        <div className="relative aspect-[16/10] overflow-hidden">
-          {poster ? (
-            <img
-              src={poster}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="h-full w-full bg-slate-800" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080c16] via-[#080c16]/20 to-transparent" />
-          {event.prize ? (
-            <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-black/55 px-3 py-1 text-xs font-semibold text-cyan-100 backdrop-blur-md">
-              Prize {rupees(event.prize)}
-            </span>
-          ) : null}
-        </div>
-
-        <div className="flex flex-1 flex-col p-5">
-          <h2 className="text-xl font-black leading-tight text-white">{event.title}</h2>
-          {event.tagline && (
-            <p className="mt-1 text-sm text-cyan-200/80">{event.tagline}</p>
-          )}
-
-          <div className="mt-4 space-y-1.5 text-sm text-slate-400">
-            <p className="flex items-center gap-2">
-              <Calendar size={14} className="shrink-0 text-cyan-400" />
-              {formatDay(event.date)}
+      <div className="relative flex flex-col justify-between p-4 sm:p-5">
+        <Link to={`/events/${event.slug}`} className="block">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+              {event.eyebrow || "Fest recap"}
             </p>
-            {event.location && (
-              <p className="flex items-center gap-2">
-                <MapPin size={14} className="shrink-0 text-cyan-400" />
-                {event.location}
-              </p>
-            )}
-            {event.teamSize && (
-              <p className="flex items-center gap-2">
-                <Users size={14} className="shrink-0 text-cyan-400" />
-                {event.teamSize}
-                {fees ? ` · ${fees}` : ""}
-              </p>
+            {(!poster || posterContained) && (
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 dark:border-white/10 dark:bg-white/5 dark:text-sky-300">
+                {statusLabel}
+              </span>
             )}
           </div>
-
+          <h3 className="mt-1 text-xl font-extrabold leading-tight text-slate-900 dark:text-slate-100 sm:text-2xl">
+            {event.title}
+          </h3>
+          {event.tagline && (
+            <p className="mt-2 text-base text-sky-700">{event.tagline}</p>
+          )}
+          {(when || event.location) && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {when && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                  <Calendar size={13} className="text-sky-600" />
+                  {when}
+                </span>
+              )}
+              {event.location && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                  <MapPin size={13} className="text-sky-600" />
+                  {event.location}
+                </span>
+              )}
+            </div>
+          )}
           {event.description && (
-            <p className="mt-4 mb-5 line-clamp-3 text-sm leading-relaxed text-slate-300">
+            <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
               {event.description}
             </p>
           )}
+        </Link>
 
-          <span className="mt-auto inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-bold text-slate-950">
-            View details &amp; register
-          </span>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          {glimpses.length > 0 && (
+            <div className="flex -space-x-3">
+              {glimpses.map((src, idx) => (
+                <img
+                  key={`${src}-${idx}`}
+                  src={src}
+                  alt=""
+                  className="h-9 w-9 rounded-lg border-2 border-white object-cover shadow-sm dark:border-[#000000]"
+                />
+              ))}
+            </div>
+          )}
+          <div className="ml-auto flex items-center gap-3">
+            <ShareEventButton title={event.title} text={shareText} path={`/events/${event.slug}`} />
+            <Link
+              to={`/events/${event.slug}`}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-700 transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              {upcoming ? "View and register" : poster ? "View recap" : "View details"}
+              <ArrowUpRight size={16} />
+            </Link>
+          </div>
         </div>
-      </Link>
+      </div>
     </article>
   );
 }

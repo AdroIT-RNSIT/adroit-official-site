@@ -140,14 +140,10 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
           >
             <div className="flex justify-between items-start gap-2 mb-3">
               <span className="font-semibold text-sky-800 text-xs sm:text-sm tracking-wide uppercase">
-                Paradox 2026
+                {event.label || "Paradox 2026"}
               </span>
-              <span className="text-[11px] sm:text-xs font-semibold text-slate-500 shrink-0">
-                {new Date(event.date).toLocaleDateString("en-US", {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                })}
+              <span className="shrink-0 rounded-full bg-sky-600 px-2.5 py-1 text-[10px] sm:text-[11px] font-semibold leading-none text-white">
+                Click to register
               </span>
             </div>
             <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate text-slate-900">

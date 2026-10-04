@@ -12,6 +12,7 @@ const Sidebar = () => {
   const socialLinks = [
     {
       name: 'Instagram',
+      brand: 'social-instagram-stroke',
       url: 'https://www.instagram.com/AdroIT_RNSIT',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -22,6 +23,7 @@ const Sidebar = () => {
     },
     {
       name: 'GitHub',
+      brand: 'social-github',
       url: 'https://github.com/AdroIT-RNSIT',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -31,6 +33,7 @@ const Sidebar = () => {
     },
     {
       name: 'LinkedIn',
+      brand: 'social-linkedin',
       url: 'https://www.linkedin.com/company/adroit-rnsit',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -63,10 +66,10 @@ const Sidebar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.name}
-                className="group relative w-10 h-10 flex items-center justify-center"
+                className={`group relative w-10 h-10 flex items-center justify-center ${link.brand}`}
               >
-                <div className="relative w-10 h-10 flex items-center justify-center rounded-full bg-transparent group-hover:bg-sky-600/15 border border-gray-700/50 group-hover:border-sky-600/40 group-hover:shadow-[0_0_15px_3px_rgba(2,132,199,0.3)] transition-all duration-300">
-                  <div className="text-slate-500 group-hover:text-sky-600 group-hover:scale-110 transition-all duration-300">
+                <div className="relative w-10 h-10 flex items-center justify-center rounded-full bg-transparent border border-gray-700/50 transition-all duration-300">
+                  <div className="text-slate-500 transition-all duration-300 group-hover:scale-110 group-focus-visible:scale-110">
                     {link.icon}
                   </div>
                 </div>
@@ -90,9 +93,9 @@ const Sidebar = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.name}
-              className="group relative flex h-[3.15rem] w-[3.15rem] items-center justify-center"
+              className={`group relative flex h-[3.15rem] w-[3.15rem] items-center justify-center ${link.brand}`}
             >
-              <div className="social-glass-icon relative flex h-[3.15rem] w-[3.15rem] items-center justify-center rounded-full text-slate-700 transition-all duration-300 group-active:bg-white/60 group-hover:bg-white/55 group-hover:text-slate-900 dark:text-slate-200 dark:group-hover:text-white dark:group-hover:bg-white/10 dark:group-active:bg-white/10">
+              <div className="social-glass-icon relative flex h-[3.15rem] w-[3.15rem] items-center justify-center rounded-full text-slate-700 transition-all duration-300 group-active:bg-white/60 group-hover:bg-white/55 dark:text-slate-200 dark:group-hover:bg-white/10 dark:group-active:bg-white/10">
                 <span className="transition-transform duration-300 group-hover:scale-110">
                   {link.icon}
                 </span>
