@@ -68,14 +68,52 @@ const CSS = `
 .am-blink { animation: am-blink 1.05s steps(1) infinite; }
 .am-pulse { animation: am-pulse 2.6s ease-in-out infinite; }
 .am-glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.42));
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  backdrop-filter: blur(18px) saturate(1.6);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 28px rgba(15,23,42,0.06);
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.68), rgba(255,255,255,0.32) 55%, rgba(255,255,255,0.22)),
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0));
+  -webkit-backdrop-filter: blur(24px) saturate(1.9);
+  backdrop-filter: blur(24px) saturate(1.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(255,255,255,0.35),
+    0 14px 34px rgba(15,23,42,0.10),
+    0 1px 0 rgba(255,255,255,0.6);
 }
 html.dark .am-glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 28px rgba(0,0,0,0.35);
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0.04)),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(255,255,255,0.06),
+    0 14px 34px rgba(0,0,0,0.45),
+    0 1px 0 rgba(255,255,255,0.08);
+}
+.am-node--open {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 16px 36px rgba(15,23,42,0.16);
+}
+html.dark .am-node--open {
+  background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    0 18px 38px rgba(0,0,0,0.5);
+}
+.am-inspector {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 18px 40px rgba(15,23,42,0.14);
+}
+html.dark .am-inspector {
+  background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 20px 42px rgba(0,0,0,0.5);
 }
 @media (prefers-reduced-motion: reduce) { .am-in, .am-up, .am-blink, .am-pulse { animation: none; } }
 @media (prefers-reduced-transparency: reduce) {
@@ -245,7 +283,7 @@ export default function Members() {
           role="dialog"
           aria-modal="true"
           aria-label="Node inspector"
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/45 p-4 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-white/35 p-4 backdrop-blur-md dark:bg-black/45 lg:hidden"
           onClick={() => setSelKey(null)}
         >
           <div className="am-up max-h-[min(88dvh,44rem)] w-full max-w-sm overflow-y-auto" onClick={(e) => e.stopPropagation()}>
@@ -308,10 +346,11 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
     <div
       style={{ animationDelay: `${delay}ms` }}
       className={[
-        "am-node am-in am-glass flex h-full w-full min-w-0 items-center rounded-2xl border transition-colors duration-200",
+        "am-node am-in am-glass flex h-full w-full min-w-0 items-center rounded-2xl border transition-all duration-200",
+        selected ? "am-node--open" : "",
         selected
-          ? "border-slate-900 dark:border-white"
-          : "border-white/80 hover:border-slate-300 dark:border-white/10 dark:hover:border-white/25",
+          ? "border-slate-900/55 shadow-[0_14px_35px_rgba(15,23,42,0.16)] dark:border-white/65 dark:shadow-[0_16px_36px_rgba(0,0,0,0.5)]"
+          : "border-white/80 hover:border-white/95 hover:shadow-[0_12px_30px_rgba(15,23,42,0.14)] dark:border-white/15 dark:hover:border-white/35 dark:hover:shadow-[0_14px_34px_rgba(0,0,0,0.46)]",
         dim ? "opacity-40" : "",
       ].join(" ")}
     >
@@ -372,8 +411,8 @@ function Inspector({ el, onClose, compact }) {
     ...(el.year ? [["year", `${el.year}`]] : []),
   ];
   return (
-    <div className="am-glass overflow-hidden rounded-2xl border border-dotted border-slate-400 dark:border-white/40">
-      <div className="flex items-center gap-2 border-b border-dotted border-slate-300 px-3 py-2 dark:border-white/25">
+    <div className="am-inspector overflow-hidden rounded-2xl border border-dotted border-slate-300 text-slate-900 dark:border-white/30 dark:text-slate-100">
+      <div className="flex items-center gap-2 border-b border-dotted border-slate-300 px-3 py-2">
         <span aria-hidden="true" className="flex shrink-0 gap-1.5">
           <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
           <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />

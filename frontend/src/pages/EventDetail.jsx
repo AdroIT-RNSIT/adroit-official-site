@@ -345,8 +345,8 @@ export default function EventDetail() {
 
 const ACCENTS = ["#34d399", "#818cf8", "#38bdf8", "#fb7185"];
 const AUTO_MS = 6000;
-const N_DESKTOP = 3200;
-const N_PHONE = 4200;
+const N_DESKTOP = 4200;
+const N_PHONE = 5200;
 
 function mulberry32(seed) {
   let a = seed;
