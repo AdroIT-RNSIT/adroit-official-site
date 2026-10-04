@@ -18,6 +18,25 @@ const pad = (n) => String(n).padStart(2, "0");
 const initialsOf = (name) =>
   name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
 
+const linkedinHref = (value) => {
+  if (typeof value !== "string" || !value.trim()) return null;
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    return url.href;
+  } catch {
+    return null;
+  }
+};
+
+function LinkedInMark({ className = "h-4 w-4" }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
+
 const GROUPS = memberGroups.map((g, gi) => ({
   ...g,
   index: gi + 1,
@@ -45,7 +64,6 @@ const CSS = `
 .am-up { animation: am-up .3s cubic-bezier(.2,.8,.2,1); }
 .am-blink { animation: am-blink 1.05s steps(1) infinite; }
 .am-pulse { animation: am-pulse 2.6s ease-in-out infinite; }
-.am-node:hover { border-color: color-mix(in srgb, var(--c) 55%, transparent); }
 @media (prefers-reduced-motion: reduce) { .am-in, .am-up, .am-blink, .am-pulse { animation: none; } }
 `;
 
@@ -170,7 +188,7 @@ export default function Members() {
                     <p className="font-mono text-xs text-slate-500">// cluster {pad(g.index)}</p>
                     <h2 id={`h-${g.id}`} className="text-xl font-bold leading-tight text-slate-900 sm:text-2xl">{g.name}</h2>
                   </div>
-                  <div aria-hidden="true" className="ml-1 hidden h-px min-w-8 flex-1 sm:block" style={{ backgroundColor: "color-mix(in srgb, var(--c) 40%, transparent)" }} />
+                  <div aria-hidden="true" className="ml-1 hidden h-px min-w-8 flex-1 bg-slate-200 dark:bg-white/10 sm:block" />
                   <span className="font-mono text-xs text-slate-500 sm:ml-0">{g.items.length} nodes</span>
                 </div>
                 <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -225,19 +243,14 @@ function KeyChip({ on, onClick, label, count, id, Icon }) {
       type="button"
       onClick={onClick}
       aria-pressed={on}
-      style={{
-        ...(colored ? vars(id) : {}),
-        ...(on && colored ? { backgroundColor: "var(--c)", borderColor: "var(--c)", color: "#0f172a" } : {}),
-      }}
+      style={colored ? vars(id) : undefined}
       className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl border px-3 py-2 text-sm font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 ${
-        on && !colored
+        on
           ? "border-sky-600 bg-sky-600 text-white"
-          : on
-            ? ""
-            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-transparent dark:text-slate-300 dark:hover:border-white/25 dark:hover:text-white"
+          : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-transparent dark:text-slate-300 dark:hover:border-white/25 dark:hover:text-white"
       }`}
     >
-      {Icon && <Icon size={16} aria-hidden="true" style={on ? undefined : { color: "var(--c)" }} />}
+      {Icon && <Icon size={16} aria-hidden="true" style={{ color: "var(--c)" }} />}
       {label}
       <span className="font-mono text-xs font-medium opacity-70">{count}</span>
     </button>
@@ -254,8 +267,8 @@ function Avatar({ el, size = 44 }) {
   return (
     <span
       aria-hidden="true"
-      style={{ width: size, height: size, color: "var(--c)", backgroundColor: "color-mix(in srgb, var(--c) 16%, transparent)" }}
-      className={`flex shrink-0 items-center justify-center rounded-xl font-bold ${size >= 64 ? "text-xl" : "text-sm"}`}
+      style={{ width: size, height: size }}
+      className={`flex shrink-0 items-center justify-center rounded-xl bg-slate-100 font-bold text-slate-700 dark:bg-white/10 dark:text-slate-200 ${size >= 64 ? "text-xl" : "text-sm"}`}
     >
       {initialsOf(el.name)}
     </span>
@@ -263,41 +276,56 @@ function Avatar({ el, size = 44 }) {
 }
 
 function NodeCard({ el, dim, selected, delay, onSelect }) {
+  const linkedin = linkedinHref(el.linkedin);
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      aria-pressed={selected}
-      aria-label={`${el.name}, ${el.gname}${el.isLead ? ", domain lead" : ""}`}
-      style={{
-        ...vars(el.gid),
-        animationDelay: `${delay}ms`,
-        ...(el.isLead ? { borderColor: "color-mix(in srgb, var(--c) 45%, transparent)" } : {}),
-        ...(selected ? { borderColor: "var(--c)", boxShadow: "inset 0 0 0 1px var(--c)" } : {}),
-      }}
+    <div
+      style={{ animationDelay: `${delay}ms` }}
       className={[
-        "am-node am-in flex h-full w-full min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-left transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 dark:border-white/10",
+        "am-node am-in flex h-full w-full min-w-0 items-center rounded-2xl border bg-white transition-colors duration-200",
+        selected
+          ? "border-slate-900 dark:border-white"
+          : "border-slate-200 hover:border-slate-300 dark:border-white/10 dark:hover:border-white/25",
         dim ? "opacity-40" : "",
       ].join(" ")}
     >
-      <Avatar el={el} size={40} />
-      <span className="min-w-0 flex-1">
-        <span className="block break-words text-sm font-semibold leading-snug text-slate-900">{el.name}</span>
-        <span className="mt-1 flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-slate-500">
-          {el.nodeId}
-          {el.isLead && (
-            <span className="inline-flex items-center gap-0.5 rounded px-1 font-semibold text-slate-950" style={{ background: "var(--c)" }}>
-              <Crown size={9} aria-hidden="true" />
-              LEAD
-            </span>
-          )}
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-pressed={selected}
+        aria-label={`${el.name}, ${el.gname}${el.isLead ? ", domain lead" : ""}`}
+        className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-600/40"
+      >
+        <Avatar el={el} size={40} />
+        <span className="min-w-0 flex-1">
+          <span className="block break-words text-sm font-semibold leading-snug text-slate-900">{el.name}</span>
+          <span className="mt-1 flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-slate-500">
+            {el.nodeId}
+            {el.isLead && (
+              <span className="inline-flex items-center gap-0.5 rounded bg-slate-900 px-1 font-semibold text-white dark:bg-white dark:text-slate-950">
+                <Crown size={9} aria-hidden="true" />
+                LEAD
+              </span>
+            )}
+          </span>
         </span>
-      </span>
-    </button>
+      </button>
+      {linkedin && (
+        <a
+          href={linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${el.name} on LinkedIn`}
+          className="mr-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:text-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
+        >
+          <LinkedInMark />
+        </a>
+      )}
+    </div>
   );
 }
 
 function Inspector({ el, onClose, compact }) {
+  const linkedin = linkedinHref(el.linkedin);
   const rows = [
     ["name", el.name],
     ["role", el.isLead ? "Domain Lead" : el.role || "Member"],
@@ -306,8 +334,7 @@ function Inspector({ el, onClose, compact }) {
     ...(el.year ? [["year", `${el.year}`]] : []),
   ];
   return (
-    <div style={vars(el.gid)} className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10">
-      <div aria-hidden="true" className="h-1" style={{ background: "var(--c)" }} />
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10">
       <div className="flex items-center gap-2 border-b border-slate-200 px-3 py-2 dark:border-white/10">
         <span aria-hidden="true" className="flex shrink-0 gap-1.5">
           <i className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/15" />
@@ -326,16 +353,27 @@ function Inspector({ el, onClose, compact }) {
         </div>
         <div className="min-w-0 flex-1">
           <p className="font-mono text-xs">
-            <span style={{ color: "var(--c)" }}>$</span> <span className="text-slate-500">inspect {el.nodeId}</span>
+            <span className="text-sky-700">$</span> <span className="text-slate-500">inspect {el.nodeId}</span>
           </p>
           <dl className="mt-3 space-y-1.5 text-sm">
             {rows.map(([k, v]) => (
               <div key={k} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-2">
-                <dt className="font-mono text-xs" style={{ color: "var(--c)" }}>{k}</dt>
+                <dt className="font-mono text-xs text-slate-500">{k}</dt>
                 <dd className="break-words text-slate-800">{v}</dd>
               </div>
             ))}
           </dl>
+          {linkedin && (
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${el.name} on LinkedIn`}
+              className="mt-4 inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:text-sky-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
+            >
+              <LinkedInMark className="h-5 w-5" />
+            </a>
+          )}
         </div>
       </div>
     </div>

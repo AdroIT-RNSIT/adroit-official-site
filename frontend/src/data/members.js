@@ -1,5 +1,5 @@
-const lead = (name) => ({ name, role: "Domain Lead" });
-const member = (name) => ({ name, role: "Member" });
+const lead = (name, linkedin) => ({ name, role: "Domain Lead", ...(linkedin ? { linkedin } : {}) });
+const member = (name, linkedin) => ({ name, role: "Member", ...(linkedin ? { linkedin } : {}) });
 
 export const memberGroups = [
   {
@@ -22,7 +22,7 @@ export const memberGroups = [
     id: "cc",
     name: "Cloud Computing",
     members: [
-      lead("Praveen Kumar M"),
+      lead("Praveen Kumar M", "https://www.linkedin.com/in/praveen-kumar-m-880952246/"),
       member("Ifrah"),
       member("Sudhanva"),
       member("Shitanshu"),
