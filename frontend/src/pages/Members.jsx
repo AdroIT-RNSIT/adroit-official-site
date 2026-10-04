@@ -50,7 +50,13 @@ const GROUPS = memberGroups.map((g) => ({
     })),
 }));
 const ALL = GROUPS.flatMap((g) => g.items);
-const LEADS = ALL.filter((e) => e.isLead).length;
+const MOBILE_DOMAIN_LABELS = {
+  ml: "ML",
+  cc: "Cloud",
+  cy: "Cyber",
+  da: "Data",
+  nt: "Non-Tech",
+};
 
 const CSS = `
 @keyframes am-in { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:none; } }
@@ -82,15 +88,33 @@ export default function Members() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState("all");
   const [selKey, setSelKey] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const q = query.trim().toLowerCase();
   const matches = (el) => (active === "all" || el.gid === active) && (!q || el.name.toLowerCase().includes(q));
   const matchCount = useMemo(() => ALL.filter(matches).length, [q, active]); // eslint-disable-line
   const selected = ALL.find((el) => el.key === selKey) || null;
+  const visibleGroups = useMemo(() => {
+    if (!isMobile) return GROUPS;
+    if (active === "all") return GROUPS.slice(0, 1);
+    return GROUPS.filter((g) => g.id === active);
+  }, [isMobile, active]);
 
   useEffect(() => {
     if (selected && !matches(selected)) setSelKey(null);
   }, [q, active]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 1023px)");
+    const sync = () => setIsMobile(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile && active === "all") setActive(GROUPS[0]?.id ?? "all");
+  }, [isMobile, active]);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -117,33 +141,29 @@ export default function Members() {
 
       <header className="relative mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 pb-8 sm:px-6 lg:px-8">
         <div className="min-w-0">
-          <p className="am-in font-mono text-sm text-slate-500">
-            <span className="text-sky-700">$</span> adroit members --all
-            <span aria-hidden="true" className="am-blink ml-1 inline-block h-3.5 w-1.5 translate-y-0.5 bg-sky-700" />
-          </p>
           <h1 style={{ animationDelay: "90ms" }} className="fluid-h1 am-in mt-3 font-extrabold leading-[1.05]">
-            The AdroIT
-            <br />
-            <span className="text-sky-800">network.</span>
+            AdroIT Members
           </h1>
           <p style={{ animationDelay: "180ms" }} className="am-in mt-3 max-w-md text-base text-slate-600 dark:text-slate-400 sm:text-lg">
-            Pick a node to see who’s behind it.
-          </p>
-          <p style={{ animationDelay: "260ms" }} className="am-in mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-slate-500">
-            <span><b className="font-semibold text-slate-900">{ALL.length}</b> nodes</span>
-            <span><b className="font-semibold text-slate-900">{GROUPS.length}</b> domains</span>
-            <span><b className="font-semibold text-slate-900">{LEADS}</b> leads</span>
+            Explore members by domain.
           </p>
         </div>
-        <Topology />
       </header>
 
       <div className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div role="group" aria-label="Filter by domain" className="-mx-4 flex min-w-0 gap-2 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <KeyChip on={active === "all"} onClick={() => pickDomain("all")} label="All" count={ALL.length} />
+            {!isMobile && <KeyChip on={active === "all"} onClick={() => pickDomain("all")} label="All" />}
             {GROUPS.map((g) => (
-              <KeyChip key={g.id} on={active === g.id} onClick={() => pickDomain(g.id)} label={g.name} count={g.items.length} id={g.id} Icon={dom(g.id).icon} />
+              <KeyChip
+                key={g.id}
+                on={active === g.id}
+                onClick={() => pickDomain(g.id)}
+                label={g.name}
+                shortLabel={MOBILE_DOMAIN_LABELS[g.id] || g.name}
+                id={g.id}
+                Icon={dom(g.id).icon}
+              />
             ))}
           </div>
           <label className="relative block shrink-0 lg:w-72">
@@ -184,7 +204,7 @@ export default function Members() {
               <span className="font-mono text-sky-800">error:</span> no node matches “{query}”
             </p>
           )}
-          {GROUPS.map((g) => {
+          {visibleGroups.map((g) => {
             const { icon: Icon } = dom(g.id);
             return (
               <section key={g.id} id={`g-${g.id}`} style={vars(g.id)} aria-labelledby={`h-${g.id}`} className="scroll-mt-[calc(var(--nav-height)+9rem)]">
@@ -221,32 +241,23 @@ export default function Members() {
       </div>
 
       {selected && (
-        <div role="dialog" aria-label="Node inspector" className="am-up am-glass fixed inset-x-0 bottom-0 z-40 max-h-[min(70dvh,24rem)] overflow-y-auto rounded-t-3xl border border-white/80 p-3 pb-5 dark:border-white/10 lg:hidden">
-          <div aria-hidden="true" className="mx-auto mb-3 h-1 w-10 rounded-full bg-slate-300 dark:bg-white/20" />
-          <Inspector el={selected} onClose={() => setSelKey(null)} compact />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Node inspector"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black/45 p-4 backdrop-blur-sm lg:hidden"
+          onClick={() => setSelKey(null)}
+        >
+          <div className="am-up max-h-[min(88dvh,44rem)] w-full max-w-sm overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <Inspector el={selected} onClose={() => setSelKey(null)} />
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function Topology() {
-  const pts = [[60, 18], [112, 56], [92, 112], [28, 112], [8, 56]];
-  const ids = Object.keys(DOMAINS);
-  return (
-    <svg aria-hidden="true" viewBox="0 0 120 130" className="am-pulse hidden h-36 w-36 shrink-0 sm:block lg:h-48 lg:w-48">
-      {pts.map(([x, y], i) => (
-        <line key={i} x1="60" y1="66" x2={x} y2={y} stroke={DOMAINS[ids[i]].c} strokeOpacity="0.35" strokeWidth="0.8" />
-      ))}
-      {pts.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="5" fill={DOMAINS[ids[i]].c} />
-      ))}
-      <circle cx="60" cy="66" r="9" fill="#0284c7" />
-    </svg>
-  );
-}
-
-function KeyChip({ on, onClick, label, count, id, Icon }) {
+function KeyChip({ on, onClick, label, shortLabel, id, Icon }) {
   const colored = Boolean(id);
   return (
     <button
@@ -254,15 +265,21 @@ function KeyChip({ on, onClick, label, count, id, Icon }) {
       onClick={onClick}
       aria-pressed={on}
       style={colored ? vars(id) : undefined}
-      className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl border px-3 py-2 text-sm font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 ${
+      className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-2xl border px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm ${
         on
           ? "border-sky-600 bg-sky-600 text-white"
           : "am-glass border-white/80 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:text-slate-300 dark:hover:border-white/25 dark:hover:text-white"
       }`}
     >
       {Icon && <Icon size={16} aria-hidden="true" style={{ color: "var(--c)" }} />}
-      {label}
-      <span className="font-mono text-xs font-medium opacity-70">{count}</span>
+      {shortLabel ? (
+        <>
+          <span className="sm:hidden">{shortLabel}</span>
+          <span className="hidden sm:inline">{label}</span>
+        </>
+      ) : (
+        label
+      )}
     </button>
   );
 }
