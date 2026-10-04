@@ -1,461 +1,43 @@
-import { useState, useEffect } from "react";
-import { useSession } from "../lib/auth-client";
-import { Link } from "react-router-dom";
-import { Users, Brain, Cloud, Shield, BarChart3, Target, Calendar, User } from "lucide-react";
+import { Brain, Cloud, Shield, BarChart3, User, Megaphone } from "lucide-react";
 import { cloudinaryUrl } from "../lib/cloudinaryUrl";
+import { memberGroups } from "../data/members";
 
-// ============================================
-// DOMAIN CONFIGURATION - MATCHES OTHER PAGES
-// ============================================
-const DOMAINS = [
-  { id: 'all', name: 'All Members', icon: Users, color: 'from-gray-500 to-gray-600', textColor: 'text-slate-600' },
-  { id: 'ml', name: 'Machine Learning', icon: Brain, color: 'from-cyan-500 to-cyan-600', textColor: 'text-cyan-400', bgColor: 'bg-cyan-500/10', borderColor: 'border-cyan-500/30' },
-  { id: 'cc', name: 'Cloud Computing', icon: Cloud, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-400', bgColor: 'bg-purple-500/10', borderColor: 'border-purple-500/30' },
-  { id: 'cy', name: 'Cybersecurity', icon: Shield, color: 'from-pink-500 to-pink-600', textColor: 'text-pink-400', bgColor: 'bg-pink-500/10', borderColor: 'border-pink-500/30' },
-  { id: 'da', name: 'Data Analytics', icon: BarChart3, color: 'from-green-500 to-green-600', textColor: 'text-green-400', bgColor: 'bg-green-500/10', borderColor: 'border-green-500/30' }
-];
-
-// ============================================
-// YEAR OPTIONS FOR FILTER
-// ============================================
-const YEARS = [
-  { id: 'all', name: 'All Years' },
-  { id: '1st', name: '1st Year' },
-  { id: '2nd', name: '2nd Year' },
-  { id: '3rd', name: '3rd Year' },
-  { id: '4th', name: '4th Year' },
-  { id: 'PhD', name: 'PhD' },
-  { id: 'Alumni', name: 'Alumni' }
-];
-
-// ============================================
-// ROLE OPTIONS FOR FILTER
-// ============================================
-const ROLES = [
-  { id: 'all', name: 'All Roles' },
-  { id: 'President', name: 'President' },
-  { id: 'Vice President', name: 'Vice President' },
-  { id: 'General Secretary', name: 'General Secretary' },
-  { id: 'Domain Lead', name: 'Domain Lead' },
-  { id: 'Core Member', name: 'Core Member' },
-  { id: 'Member', name: 'Member' }
-];
-
-// ============================================
-// MAIN MEMBERS COMPONENT - COMPLETE DIRECTORY
-// ============================================
 export default function Members() {
-  const { data: session } = useSession();
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  
-  // ===== FILTERS =====
-  const [activeDomain, setActiveDomain] = useState("all");
-  const [activeYear, setActiveYear] = useState("all");
-  const [activeRole, setActiveRole] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("name"); // name, year, domain
-  
-  const isAdmin = session?.user?.role === "admin";
-
-  // ===== FETCH REAL DATA FROM BACKEND =====
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchMembers(controller.signal);
-    return () => controller.abort();
-  }, []);
-
-  const fetchMembers = async (signal) => {
-    const API = import.meta.env.VITE_API_URL;
-    const abortSignal = signal instanceof AbortSignal ? signal : undefined;
-    if (!API) {
-      setLoading(false);
-      setMembers([]);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const res = await fetch(`${API}/api/members`, {
-        credentials: "include",
-        signal: abortSignal,
-      });
-      if (!res.ok) throw new Error("Failed to fetch members");
-      const data = await res.json();
-      setMembers(data);
-      setError("");
-    } catch (err) {
-      if (err.name === "AbortError") return;
-      setError(err.message);
-      console.error("Error fetching members:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ===== FILTER MEMBERS BASED ON ALL CRITERIA =====
-  const getFilteredMembers = () => {
-    let filtered = [...members];
-
-    // Filter by domain
-    if (activeDomain !== 'all') {
-      filtered = filtered.filter(m => m.domain === activeDomain);
-    }
-
-    // Filter by year
-    if (activeYear !== 'all') {
-      filtered = filtered.filter(m => m.year === activeYear);
-    }
-
-    // Filter by role
-    if (activeRole !== 'all') {
-      filtered = filtered.filter(m => m.role === activeRole);
-    }
-
-    // Filter by search query
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(m => 
-        m.name?.toLowerCase().includes(query) ||
-        m.email?.toLowerCase().includes(query) ||
-        m.role?.toLowerCase().includes(query) ||
-        m.domain?.toLowerCase().includes(query)
-      );
-    }
-
-    // Sort members
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'name':
-          return a.name?.localeCompare(b.name);
-        case 'year':
-          const yearOrder = { '1st': 1, '2nd': 2, '3rd': 3, '4th': 4, 'PhD': 5, 'Alumni': 6 };
-          return (yearOrder[a.year] || 99) - (yearOrder[b.year] || 99);
-        case 'domain':
-          return a.domain?.localeCompare(b.domain);
-        default:
-          return 0;
-      }
-    });
-
-    return filtered;
-  };
-
-  const filteredMembers = getFilteredMembers();
-
-  // ===== GET STATS FOR FILTER BADGES =====
-  const getDomainCount = (domainId) => {
-    if (domainId === 'all') return members.length;
-    return members.filter(m => m.domain === domainId).length;
-  };
-
-  const getYearCount = (yearId) => {
-    if (yearId === 'all') return members.length;
-    return members.filter(m => m.year === yearId).length;
-  };
-
-  const getRoleCount = (roleId) => {
-    if (roleId === 'all') return members.length;
-    return members.filter(m => m.role === roleId).length;
-  };
-
-  // ===== HANDLE DELETE (Admin only) =====
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to remove this member?")) return;
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/members/${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (res.ok) {
-        setMembers(prev => prev.filter(m => m._id !== id));
-      }
-    } catch (err) {
-      console.error('Failed to delete member');
-      alert('Failed to delete member');
-    }
-  };
-
   const getCloudinaryUrl = (publicId, width = 100, height = 100) =>
     cloudinaryUrl(publicId, { width, height }) ||
     "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
-  if (loading) {
-    return (
-      <div className="min-h-dvh bg-[#ffffff] flex items-center justify-center dark:bg-[#000000]">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-sky-600/30 border-t-sky-600 rounded-full animate-spin mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Users size={20} className="text-sky-700" strokeWidth={2} />
-            </div>
-          </div>
-          <p className="text-slate-600 text-sm">Loading member directory...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-dvh bg-[#ffffff] text-slate-900 font-sans overflow-x-clip pt-8 pb-16 dark:bg-[#000000] dark:text-slate-100">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-slate-900/5 border border-slate-900/10 rounded-full">
-            <span className="w-2 h-2 bg-sky-600 rounded-full animate-pulse"></span>
-            <span className="text-sm text-slate-600">AdroIT Member Directory</span>
-          </div>
-
           <h1 className="fluid-h1 font-extrabold mb-4">
-            <span className="text-sky-800">
-              All Members
-            </span>
+            <span className="text-sky-800">All Members</span>
           </h1>
-          
           <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
             Connect with everyone in the AdroIT community
           </p>
-
-          {/* ===== QUICK STATS ===== */}
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <Users size={18} className="text-sky-700" strokeWidth={2} />
-              <div>
-                <span className="text-slate-900 font-bold">{members.length}</span>
-                <span className="text-slate-600 text-xs ml-1">Total Members</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <Target size={18} className="text-sky-700" strokeWidth={2} />
-              <div>
-                <span className="text-slate-900 font-bold">4</span>
-                <span className="text-slate-600 text-xs ml-1">Domains</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/5 rounded-xl border border-slate-900/10">
-              <Calendar size={18} className="text-sky-700" strokeWidth={2} />
-              <div>
-                <span className="text-slate-900 font-bold">
-                  {members.filter(m => m.year?.includes('1st') || m.year?.includes('2nd')).length}
-                </span>
-                <span className="text-slate-600 text-xs ml-1">Juniors</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* ===== SEARCH & FILTERS BAR ===== */}
-        <div className="bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-8">
-          
-          {/* Search Row */}
-          <div className="relative mb-4">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              placeholder="Search by name, email, role, or domain..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all text-sm"
-            />
-          </div>
-
-          {/* Filter Chips Row */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-            
-            {/* Domain Filter */}
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Domain</label>
-              <div className="flex flex-wrap gap-1.5">
-                {DOMAINS.map((domain) => {
-                  const DomainIcon = domain.icon;
-                  return (
-                  <button
-                    key={domain.id}
-                    onClick={() => setActiveDomain(domain.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 inline-flex items-center ${
-                      activeDomain === domain.id
-                        ? `bg-gradient-to-r ${domain.color} text-slate-900`
-                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
-                    }`}
-                  >
-                    <span className="mr-1 inline-flex">
-                      <DomainIcon size={12} strokeWidth={2} />
-                    </span>
-                    {domain.id === 'all' ? domain.name : ''}
-                    <span className="ml-1 text-xs opacity-80">
-                      ({getDomainCount(domain.id)})
-                    </span>
-                  </button>
-                  );
-                })}
+        <div className="space-y-12">
+          {memberGroups.map((group) => (
+            <section key={group.id}>
+              <div className="mb-4 flex items-end justify-between gap-3">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 sm:text-2xl">{group.name}</h2>
+                <p className="text-sm text-slate-500">{group.members.length} members</p>
               </div>
-            </div>
-
-            {/* Year Filter */}
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Year</label>
-              <div className="flex flex-wrap gap-1.5">
-                {YEARS.map((year) => (
-                  <button
-                    key={year.id}
-                    onClick={() => setActiveYear(year.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-                      activeYear === year.id
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-slate-900'
-                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
-                    }`}
-                  >
-                    {year.name}
-                    {year.id !== 'all' && (
-                      <span className="ml-1 text-xs opacity-80">
-                        ({getYearCount(year.id)})
-                      </span>
-                    )}
-                  </button>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                {group.members.map((member) => (
+                  <MemberCard
+                    key={`${group.id}-${member.name}`}
+                    member={{ ...member, domain: group.id }}
+                    getCloudinaryUrl={getCloudinaryUrl}
+                  />
                 ))}
               </div>
-            </div>
-
-            {/* Role Filter */}
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Role</label>
-              <div className="flex flex-wrap gap-1.5">
-                {ROLES.map((role) => (
-                  <button
-                    key={role.id}
-                    onClick={() => setActiveRole(role.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-                      activeRole === role.id
-                        ? 'bg-sky-600 text-white'
-                        : 'bg-slate-900/5 text-slate-600 hover:bg-slate-900/10 hover:text-slate-900'
-                    }`}
-                  >
-                    {role.name}
-                    {role.id !== 'all' && (
-                      <span className="ml-1 text-xs opacity-80">
-                        ({getRoleCount(role.id)})
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Sort & Clear */}
-            <div>
-              <label className="block text-xs text-slate-500 mb-1">Sort By</label>
-              <div className="flex gap-2">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="flex-1 px-3 py-1.5 bg-slate-900/5 border border-slate-900/10 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-sky-500/50 transition-all"
-                >
-                  <option value="name">Name</option>
-                  <option value="year">Year</option>
-                  <option value="domain">Domain</option>
-                </select>
-                
-                <button
-                  onClick={() => {
-                    setActiveDomain('all');
-                    setActiveYear('all');
-                    setActiveRole('all');
-                    setSearchQuery('');
-                    setSortBy('name');
-                  }}
-                  className="px-3 py-1.5 bg-slate-900/5 hover:bg-slate-900/10 border border-slate-900/10 rounded-lg text-slate-600 hover:text-slate-900 text-xs transition-all"
-                >
-                  Clear
-                </button>
-              </div>
-            </div>
-          </div>
+            </section>
+          ))}
         </div>
-
-        {/* ===== RESULTS SUMMARY ===== */}
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-slate-500">
-            Showing <span className="text-slate-900 font-medium">{filteredMembers.length}</span> of{' '}
-            <span className="text-slate-900 font-medium">{members.length}</span> members
-          </p>
-          <p className="text-xs text-gray-600">
-            {activeDomain !== 'all' && ` • ${DOMAINS.find(d => d.id === activeDomain)?.name}`}
-            {activeYear !== 'all' && ` • ${activeYear}`}
-            {activeRole !== 'all' && ` • ${activeRole}`}
-          </p>
-        </div>
-
-        {/* ===== ERROR MESSAGE ===== */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {error}
-            </div>
-            <button
-              onClick={() => fetchMembers()}
-              className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 text-xs"
-            >
-              Retry
-            </button>
-          </div>
-        )}
-
-        {/* ===== MEMBERS GRID ===== */}
-        {filteredMembers.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-900/5 border border-slate-900/10 rounded-full mb-4">
-              <Users size={28} className="text-slate-500" strokeWidth={1.75} />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">No members found</h3>
-            <p className="text-slate-500 text-sm max-w-md mx-auto">
-              {searchQuery || activeDomain !== 'all' || activeYear !== 'all' || activeRole !== 'all'
-                ? "Try adjusting your search or filter criteria."
-                : "Members will appear here once they join the club."}
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            {filteredMembers.map((member) => (
-              <MemberCard
-                key={member._id}
-                member={member}
-                isAdmin={isAdmin}
-                onDelete={handleDelete}
-                getCloudinaryUrl={getCloudinaryUrl}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* ===== JOIN CTA - Only for non-logged in users ===== */}
-        <div className="mt-16 text-center">
-            <div className="relative group inline-block">
-              <div className="relative bg-white/90 md:bg-white/40 md:backdrop-blur-xl border border-slate-900/10 rounded-2xl p-6 md:p-8">
-                <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
-                  Want to be part of this community?
-                </h3>
-                <p className="text-slate-600 text-sm mb-4 max-w-lg mx-auto">
-                  Reach out and we&apos;ll point you to the next recruitment cycle.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-semibold rounded-xl text-sm shadow-lg shadow-sky-600/20 hover:bg-sky-700 hover:scale-105 transition-all duration-300"
-                >
-                  Contact AdroIT
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </div>
       </div>
 
       {/* ===== STYLES ===== */}
@@ -478,21 +60,21 @@ export default function Members() {
 // ============================================
 // MEMBER CARD COMPONENT - COMPACT DIRECTORY STYLE
 // ============================================
-function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
-  
-  // Domain color mapping
+function MemberCard({ member, getCloudinaryUrl }) {
   const domainColors = {
     ml: 'from-cyan-500 to-cyan-600',
     cc: 'from-purple-500 to-purple-600',
     cy: 'from-pink-500 to-pink-600',
-    da: 'from-green-500 to-green-600'
+    da: 'from-green-500 to-green-600',
+    nt: 'from-amber-500 to-amber-600',
   };
 
   const domainIcons = {
     ml: Brain,
     cc: Cloud,
     cy: Shield,
-    da: BarChart3
+    da: BarChart3,
+    nt: Megaphone,
   };
 
   const domain = member.domain || 'ml';
@@ -533,24 +115,11 @@ function MemberCard({ member, isAdmin, onDelete, getCloudinaryUrl }) {
           <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white border-2 border-black`}>
             <DomainIcon size={10} strokeWidth={2.5} />
           </div>
-
-          {/* Admin Delete Button */}
-          {isAdmin && (
-            <button
-              onClick={() => onDelete(member._id)}
-              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              title="Remove member"
-            >
-              <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
         </div>
 
         {/* Member Info */}
         <div className="text-center">
-          <h3 className="text-slate-900 font-medium text-xs truncate group-hover:text-sky-600 transition-colors">
+          <h3 className="text-sm font-medium leading-tight text-slate-900 group-hover:text-sky-600">
             {member.name}
           </h3>
           

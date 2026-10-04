@@ -181,7 +181,7 @@ export default function Domains() {
         { title: 'Fast.ai', type: 'Course', provider: 'Jeremy Howard' }
       ],
       stats: {
-        members: 17,
+        members: 10,
         projects: 4,
         events: 6,
         resources: 3
@@ -268,7 +268,7 @@ export default function Domains() {
         { title: 'OWASP Top 10', type: 'Guide', provider: 'OWASP' }
       ],
       stats: {
-        members: 12,
+        members: 9,
         projects: 4,
         events: 3,
         resources: 3
@@ -310,7 +310,7 @@ export default function Domains() {
         { title: 'Tableau Public', type: 'Tool', provider: 'Salesforce' }
       ],
       stats: {
-        members: 15,
+        members: 12,
         projects: 4,
         events: 5,
         resources: 3

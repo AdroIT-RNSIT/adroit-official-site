@@ -1,0 +1,83 @@
+const lead = (name) => ({ name, role: "Domain Lead" });
+const member = (name) => ({ name, role: "Member" });
+
+export const memberGroups = [
+  {
+    id: "ml",
+    name: "Machine Learning",
+    members: [
+      lead("Prajwal Jagadeesh"),
+      member("Aneesh"),
+      member("Druthi"),
+      member("Adithya"),
+      member("Anaga"),
+      member("Anshuman"),
+      member("Deekshith S"),
+      member("Lavanya"),
+      member("Ganesh"),
+      member("Rebecca"),
+    ],
+  },
+  {
+    id: "cc",
+    name: "Cloud Computing",
+    members: [
+      lead("Praveen Kumar M"),
+      member("Ifrah"),
+      member("Sudhanva"),
+      member("Shitanshu"),
+      member("Karthik Dhavala"),
+      member("Divya"),
+      member("Anoushka Kanchi"),
+      member("Raashi"),
+      member("Shahzaib Ali Khan"),
+    ],
+  },
+  {
+    id: "cy",
+    name: "Cybersecurity",
+    members: [
+      lead("Sanjay"),
+      member("Krishna"),
+      member("Jaysakthi"),
+      member("Likhit"),
+      member("Chandranshu"),
+      member("Krish Jaiswal"),
+      member("Dhanush"),
+      member("Amrutha"),
+      member("Sinchana"),
+    ],
+  },
+  {
+    id: "da",
+    name: "Data Analytics",
+    members: [
+      lead("Jaishnav"),
+      member("Pruthvi"),
+      member("Tarun"),
+      member("Akanksh"),
+      member("Poorvika"),
+      member("RJ Varsha"),
+      member("Sanjana Devi"),
+      member("Prajna Shetty"),
+      member("Swarnashree"),
+      member("Thrisha P"),
+      member("Yatin"),
+      member("Varsha"),
+    ],
+  },
+  {
+    id: "nt",
+    name: "Non-Tech",
+    members: [
+      lead("Poorvika"),
+      member("Keerthana B"),
+      member("Ananya R"),
+      member("Aneesha"),
+      member("Ranjitha"),
+      member("Utkarsh Naman"),
+      member("Thanmaye"),
+      member("Nischal"),
+    ],
+  },
+];
