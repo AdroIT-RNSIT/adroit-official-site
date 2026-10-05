@@ -376,9 +376,9 @@ const Terminal = () => {
   return (
     <div
       ref={ref}
-      className="rounded-2xl bg-slate-900 text-slate-100 shadow-xl overflow-hidden border border-slate-700"
+      className="overflow-hidden rounded-2xl border border-slate-200 bg-[#ffffff] text-slate-800 shadow-xl dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
     >
-      <div className="flex items-center gap-2 px-4 py-3 bg-slate-800/80 border-b border-slate-700">
+      <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
         <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
@@ -404,14 +404,14 @@ const Terminal = () => {
           return (
             <div key={s.cmd}>
               <p className="break-words">
-                <span className="text-sky-400">
+                <span className="text-sky-700 dark:text-sky-400">
                   ${" "}
                 </span>
                 {s.cmd.slice(0, shown)}
               </p>
 
               {done && (
-                <p className="text-slate-400 mt-1 pl-4 font-sans text-sm sm:text-base">
+                <p className="mt-1 pl-4 font-sans text-sm text-slate-500 sm:text-base dark:text-slate-400">
                   {s.out}
                 </p>
               )}
@@ -420,8 +420,8 @@ const Terminal = () => {
         })}
 
         <p aria-hidden="true">
-          <span className="text-sky-400">$ </span>
-          <span className="inline-block w-2 h-4 bg-sky-400 align-middle animate-pulse" />
+          <span className="text-sky-700 dark:text-sky-400">$ </span>
+          <span className="inline-block h-4 w-2 animate-pulse align-middle bg-sky-700 dark:bg-sky-400" />
         </p>
       </div>
     </div>
