@@ -666,12 +666,17 @@ function Inspector({ el, onClose, compact }) {
 
 function Idle() {
   return (
-    <div className="am-glass min-h-[9rem] rounded-2xl border border-dotted border-slate-400 p-6 dark:border-white/40">
-      <span aria-hidden="true" className="flex gap-1.5">
+    <div className="am-glass rounded-2xl border border-dotted border-slate-400 p-6 text-sm text-slate-500 dark:border-white/40">
+      <span aria-hidden="true" className="mb-4 flex gap-1.5">
         <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
       </span>
+      <p className="font-mono text-xs">
+        <span className="text-sky-700">$</span> select a node
+        <span aria-hidden="true" className="am-blink ml-1 inline-block h-3 w-1.5 translate-y-0.5 bg-sky-700" />
+      </p>
+      <p className="mt-3">Click any card, or press Enter in the search box to open the first match.</p>
     </div>
   );
 }
