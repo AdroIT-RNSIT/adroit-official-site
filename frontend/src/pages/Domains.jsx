@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { memberGroups } from '../data/members';
 import { Link } from 'react-router-dom';
 import {
   Brain,
@@ -376,6 +377,19 @@ export default function Domains() {
       ],
     }
   ];
+
+  const techNames = new Set(
+    memberGroups
+      .filter((group) => group.id !== "nt")
+      .flatMap((group) => group.members.map((person) => person.name.trim().toLowerCase())),
+  );
+  for (const domain of domains) {
+    const group = memberGroups.find((item) => item.id === domain.id);
+    if (!group || domain.stats.members == null) continue;
+    domain.stats.members = group.id === "nt"
+      ? group.members.filter((person) => !techNames.has(person.name.trim().toLowerCase())).length
+      : group.members.length;
+  }
 
   // ===== INTERSECTION OBSERVER =====
   useEffect(() => {

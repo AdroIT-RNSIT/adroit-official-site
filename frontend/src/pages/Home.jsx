@@ -1,90 +1,463 @@
-import React, { useEffect, useRef } from 'react';
-import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, BarChart3, Brain, Cloud, Megaphone, ShieldCheck } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import EventCarousel from '../components/EventCarousel';
+import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { registrationDomains } from '../data/domainRegistration';
 import { useTheme } from '../lib/theme';
 
-// ============================================
-// DOMAIN CARD COMPONENT - NEW!
-// ============================================
-const DomainCard = ({ icon, title, description }) => (
-  <div className="group relative bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 hover:border-sky-600/25 hover:-translate-y-2 transition-all duration-300">
-    <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-sky-600 text-white shadow-lg shadow-sky-900/10 mb-4 group-hover:scale-110 transition-all duration-300">
-      {icon}
-    </div>
-    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-sky-800 dark:group-hover:text-sky-300 transition-colors">
-      {title}
-    </h3>
-    <p className="text-slate-600 text-sm leading-relaxed">
-      {description}
-    </p>
-  </div>
-);
+const liveEvent = {
+  name: "Skill Up Boot Camp",
+  when: "October 6–9, 2026",
+  href: "/events/skill-up-bootcamp",
+};
 
-// ============================================
-// MAIN HOME COMPONENT
-// ============================================
+const showcase = [
+  {
+    name: "Data Analytics",
+    Icon: BarChart3,
+    text: "Work with real datasets, clean and analyse data, build dashboards, and turn numbers into useful insights.",
+    tools: "Python, SQL, Power BI",
+  },
+  {
+    name: "Cloud Computing",
+    Icon: Cloud,
+    text: "Learn how modern applications are deployed, scaled and secured using cloud infrastructure and services.",
+    tools: "AWS, Docker, Linux, Networking",
+  },
+  {
+    name: "Machine Learning",
+    Icon: Brain,
+    text: "Understand the ML workflow from data preparation and model training to evaluation and deploying a working model.",
+    tools: "Python, NumPy, Pandas, scikit-learn",
+  },
+  {
+    name: "Cybersecurity",
+    Icon: ShieldCheck,
+    text: "Understand how web applications and networks can be attacked, then learn the fundamentals of securing them.",
+    tools: "Web Security, Networking, Ethical Hacking",
+  },
+  {
+    name: "Non-Tech",
+    Icon: Megaphone,
+    text: "Plan and run events, manage social media, design posters, and handle the outreach that keeps the club visible and moving.",
+    tools: "Events, Design, Social Media, Outreach",
+  },
+];
+
+const DomainShowcase = () => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0);
+  const activeRef = useRef(0);
+  const rotateRef = useRef({ x: 0, y: 0 });
+  const dragRef = useRef({ down: false, x: 0, y: 0 });
+
+  activeRef.current = active;
+
+  const [reduce] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
+  useEffect(() => {
+    if (paused || reduce) return undefined;
+
+    const id = setTimeout(
+      () => setActive((a) => (a + 1) % showcase.length),
+      AUTO_MS
+    );
+
+    return () => clearTimeout(id);
+  }, [active, paused, tick, reduce]);
+
+  const d = showcase[active];
+  const accent = ACCENTS[active];
+
+  const onStart = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+
+    dragRef.current = {
+      down: true,
+      x: e.clientX,
+      y: e.clientY,
+    };
+
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+
+  const onMove = (e) => {
+    if (!dragRef.current.down) return;
+
+    rotateRef.current.y +=
+      (e.clientX - dragRef.current.x) * 0.006;
+
+    rotateRef.current.x = Math.max(
+      -0.7,
+      Math.min(
+        0.7,
+        rotateRef.current.x +
+          (e.clientY - dragRef.current.y) * 0.004
+      )
+    );
+
+    dragRef.current.x = e.clientX;
+    dragRef.current.y = e.clientY;
+  };
+
+  const onEnd = () => {
+    dragRef.current.down = false;
+  };
+
+  return (
+    <section className="px-3 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <div
+        className="relative max-w-6xl mx-auto overflow-hidden rounded-3xl sm:rounded-[2rem] bg-white text-slate-900 ring-1 ring-slate-200 dark:bg-black dark:text-white dark:ring-white/10"
+        onPointerEnter={(e) => {
+          if (e.pointerType !== "touch") setPaused(true);
+        }}
+        onPointerLeave={(e) => {
+          if (e.pointerType !== "touch") {
+            setPaused(false);
+            setTick((t) => t + 1);
+          }
+        }}
+      >
+        {ACCENTS.map((c, i) => (
+          <div
+            key={c}
+            aria-hidden="true"
+            className="absolute inset-0 transition-opacity duration-700"
+            style={{
+              opacity: i === active ? 1 : 0,
+              background: `radial-gradient(60% 70% at 72% 42%, ${c}33, transparent 70%)`,
+            }}
+          />
+        ))}
+
+        <div className="relative z-10 flex flex-col lg:min-h-[36rem]">
+          <div className="px-5 pt-6 sm:px-10 sm:pt-10">
+            <h2 className="text-2xl sm:text-5xl font-black leading-tight">
+              What you could build
+            </h2>
+
+            <p className="mt-2 max-w-xl text-slate-600 dark:text-white/70">
+              Explore the technical and non-technical domains at AdroIT, and
+              build real projects and events while learning the fundamentals.
+            </p>
+          </div>
+
+          <div className="relative mt-2 h-[clamp(13rem,56vw,20rem)] lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:mt-0 lg:h-auto">
+            <ParticleStage
+              activeRef={activeRef}
+              rotateRef={rotateRef}
+            />
+
+            <div
+              aria-label="Drag sideways to rotate the shape"
+              className="pointer-events-auto absolute inset-0 z-20 cursor-grab touch-pan-y select-none active:cursor-grabbing lg:inset-auto lg:bottom-32 lg:left-[48%] lg:right-0 lg:top-[10%] lg:touch-none"
+              onPointerDown={onStart}
+              onPointerMove={onMove}
+              onPointerUp={onEnd}
+              onPointerCancel={onEnd}
+            />
+          </div>
+
+          <div className="flex flex-1 flex-col justify-end px-5 pb-6 pt-2 sm:px-10 sm:pb-8 lg:max-w-[48%]">
+            <div
+              key={active}
+              style={{
+                animation: reduce
+                  ? "none"
+                  : "domRise 600ms ease-out both",
+              }}
+            >
+              <p
+                className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base font-semibold"
+                style={{ color: accent }}
+              >
+                <d.Icon size={18} className="shrink-0" />
+                <span className="min-w-0 break-words">{d.tools}</span>
+              </p>
+
+              <h3 className="mt-1 text-2xl sm:text-5xl font-extrabold leading-tight">
+                {d.name}
+              </h3>
+
+              <p className="mt-3 max-w-md text-base sm:text-lg text-slate-600 dark:text-white/70">
+                {d.text}
+              </p>
+            </div>
+          </div>
+
+          <div
+            role="tablist"
+            className="grid grid-cols-2 lg:grid-cols-5 gap-px border-t border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-white/10"
+          >
+            {showcase.map((s, i) => {
+              const on = i === active;
+
+              return (
+                <button
+                  key={s.name}
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => {
+                    setActive(i);
+                    setTick((t) => t + 1);
+                  }}
+                  className={`relative flex min-h-[3.25rem] items-center justify-between gap-2 px-3 py-3 sm:min-h-[3.5rem] sm:px-7 sm:py-5 lg:px-5 text-left transition-colors last:col-span-2 lg:last:col-span-1 ${
+                    on
+                      ? "bg-white dark:bg-[#111111]"
+                      : "bg-slate-50 hover:bg-slate-100 dark:bg-black dark:hover:bg-[#1a1a1a]"
+                  }`}
+                >
+                  {on && (
+                    <span
+                      key={`${active}-${tick}`}
+                      className="absolute left-0 top-0 h-[3px] w-full origin-left"
+                      style={{
+                        backgroundColor: ACCENTS[i],
+                        animation: reduce
+                          ? "none"
+                          : `domFill ${AUTO_MS}ms linear forwards`,
+                        animationPlayState: paused
+                          ? "paused"
+                          : "running",
+                      }}
+                    />
+                  )}
+
+                  <span
+                    className={`text-[13px] leading-snug sm:text-lg font-bold ${
+                      on
+                        ? "text-slate-900 dark:text-white"
+                        : "text-slate-600 dark:text-white/70"
+                    }`}
+                  >
+                    {s.name}
+                  </span>
+
+                  <s.Icon
+                    className="hidden sm:block shrink-0"
+                    size={22}
+                    style={{
+                      color: on
+                        ? ACCENTS[i]
+                        : "rgba(71,85,105,.5)",
+                    }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes domFill {
+          from {
+            transform: scaleX(0);
+          }
+
+          to {
+            transform: scaleX(1);
+          }
+        }
+
+        @keyframes domRise {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      `}</style>
+    </section>
+  );
+};
+
+const session = [
+  {
+    cmd: "adroit learn",
+    out: "Learn technical concepts through sessions conducted by AdroIT members and industry-oriented workshops.",
+  },
+  {
+    cmd: "adroit build --team",
+    out: "Work with your team on practical projects and turn ideas into working applications.",
+  },
+  {
+    cmd: "adroit demo",
+    out: "Present what you built, explain your decisions, and learn from feedback.",
+  },
+];
+
+const events = [
+  {
+    name: "Paradox",
+    text: "Our inter-collegiate fest — CTF, Tech Auction, and AI Film Making.",
+    href: "/events/paradox-2026",
+  },
+  {
+    name: "Skill Up Boot Camp",
+    text: "Four days covering Data Analytics, Cloud, Machine Learning, and Cybersecurity.",
+    href: "/events/skill-up-bootcamp",
+  },
+  {
+    name: "Peptalks",
+    text: "Talks with alumni and people from industry.",
+  },
+  {
+    name: "Tech Escape",
+    text: "A technical event run by the club.",
+  },
+  {
+    name: "Internship Program",
+    text: "A month of sessions for CSE students, taught by AdroIT members.",
+    href: "/events/internship-2026",
+  },
+  {
+    name: "Online sessions",
+    text: "Open to everyone in CSE, not just club members.",
+  },
+];
+
+const Terminal = () => {
+  const ref = useRef(null);
+  const total = session.reduce(
+    (n, s) => n + s.cmd.length,
+    0
+  );
+
+  const [typed, setTyped] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduce) {
+      setTyped(total);
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    if (ref.current) io.observe(ref.current);
+
+    return () => io.disconnect();
+  }, [total]);
+
+  useEffect(() => {
+    if (!started) return;
+
+    const id = setInterval(
+      () =>
+        setTyped((t) =>
+          t >= total ? t : t + 1
+        ),
+      45
+    );
+
+    return () => clearInterval(id);
+  }, [started, total]);
+
+  let left = typed;
+
+  return (
+    <div
+      ref={ref}
+      className="overflow-hidden rounded-2xl border border-slate-200 bg-[#ffffff] text-slate-800 shadow-xl dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+    >
+      <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800/80">
+        <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+        <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+        <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+
+        <span className="ml-3 font-mono text-xs text-slate-400">
+          adroit.sh
+        </span>
+      </div>
+
+      <div className="p-4 sm:p-7 font-mono text-[13px] sm:text-base space-y-5 min-h-[16rem] sm:min-h-[20rem] overflow-x-auto">
+        {session.map((s) => {
+          const shown = Math.max(
+            0,
+            Math.min(left, s.cmd.length)
+          );
+
+          const done = left >= s.cmd.length;
+
+          left -= s.cmd.length;
+
+          if (shown === 0 && !done) return null;
+
+          return (
+            <div key={s.cmd}>
+              <p className="break-words">
+                <span className="text-sky-700 dark:text-sky-400">
+                  ${" "}
+                </span>
+                {s.cmd.slice(0, shown)}
+              </p>
+
+              {done && (
+                <p className="mt-1 pl-4 font-sans text-sm text-slate-500 sm:text-base dark:text-slate-400">
+                  {s.out}
+                </p>
+              )}
+            </div>
+          );
+        })}
+
+        <p aria-hidden="true">
+          <span className="text-sky-700 dark:text-sky-400">$ </span>
+          <span className="inline-block h-4 w-2 animate-pulse align-middle bg-sky-700 dark:bg-sky-400" />
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
   const heroRef = useRef(null);
-  const missionRef = useRef(null);
-  const domainsRef = useRef(null);
-  const approachRef = useRef(null);
-  const benefitsRef = useRef(null);
-  const activitiesRef = useRef(null);
 
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0,
-      rootMargin: '80px 0px 0px 0px'
-    };
+    const el = heroRef.current;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('opacity-100', 'translate-y-0');
-          entry.target.classList.remove('opacity-0', 'translate-y-4', 'translate-y-12');
-        }
-      });
-    }, observerOptions);
+    if (!el) return;
 
-    const refs = [heroRef, missionRef, domainsRef, approachRef, benefitsRef, activitiesRef];
-    refs.forEach(ref => {
-      if (ref.current) observer.observe(ref.current);
+    const frame = requestAnimationFrame(() => {
+      el.classList.add(
+        "opacity-100",
+        "translate-y-0"
+      );
+
+      el.classList.remove(
+        "opacity-0",
+        "translate-y-4"
+      );
     });
 
-    return () => observer.disconnect();
+    return () => cancelAnimationFrame(frame);
   }, []);
-
-  // Domain data for your 4 core domains
-  const domains = [
-    {
-      icon: <Brain size={28} strokeWidth={2} />,
-      title: 'Machine Learning',
-      description: 'Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.',
-      link: '/resources/ml'
-    },
-    {
-      icon: <Cloud size={28} strokeWidth={2} />,
-      title: 'Cloud Computing',
-      description: 'Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.',
-      link: '/resources/cc'
-    },
-    {
-      icon: <ShieldCheck size={28} strokeWidth={2} />,
-      title: 'Cybersecurity',
-      description: 'Protect systems from threats. Learn ethical hacking, network security, and cryptography.',
-      link: '/resources/cy'
-    },
-    {
-      icon: <BarChart3 size={28} strokeWidth={2} />,
-      title: 'Data Analytics',
-      description: 'Extract insights from data. Master visualization, SQL, Python, and business intelligence.',
-      link: '/resources/da'
-    }
-  ];
 
   const domainCards = registrationDomains
     .filter((domain) => domain.slug !== "non-tech")
@@ -98,26 +471,39 @@ const Home = () => {
 
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip">
-      
-      {/* Mobile: original corner sizes in flow so the hero sits below. Laptop: larger aligned pair. */}
-      <div className="lg:hidden relative z-[1001] flex items-center justify-between px-3">
+      <div className="lg:hidden relative z-[1001] flex items-center justify-between gap-3 px-3 pt-1">
         <img
-          src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
+          src={
+            isDark
+              ? "/rnsit_logo_white_text.png"
+              : "/rnsit_logo.png"
+          }
           alt="RNSIT Logo"
-          className={`w-[7.35rem] sm:w-[11.55rem] h-auto max-w-[72%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
+          className={`h-auto w-[min(7.35rem,52%)] sm:w-[11.55rem] object-contain object-left ${
+            isDark ? "" : "mix-blend-multiply"
+          }`}
         />
+
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
-          className="w-[3.15rem] sm:w-[4.2rem] h-auto max-w-[36%] object-contain object-right mix-blend-multiply"
+          className="h-auto w-[min(3.15rem,26%)] sm:w-[4.2rem] object-contain object-right mix-blend-multiply"
         />
       </div>
+
       <div className="hidden lg:flex absolute top-0 inset-x-0 z-[1001] items-center justify-between pointer-events-none">
         <img
-          src={isDark ? "/rnsit_logo_white_text.png" : "/rnsit_logo.png"}
+          src={
+            isDark
+              ? "/rnsit_logo_white_text.png"
+              : "/rnsit_logo.png"
+          }
           alt="RNSIT Logo"
-          className={`h-[9rem] w-auto max-w-[37.5%] object-contain object-left ${isDark ? "" : "mix-blend-multiply"}`}
+          className={`h-[9rem] w-auto max-w-[37.5%] object-contain object-left ${
+            isDark ? "" : "mix-blend-multiply"
+          }`}
         />
+
         <img
           src="/25_years_new.png"
           alt="25 Years Excellence"
@@ -125,29 +511,30 @@ const Home = () => {
         />
       </div>
 
-      {/* ===== HERO SECTION ===== */}
-      <section 
+      <section
         ref={heroRef}
-        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-500 ease-out"
+        className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-6 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-700 ease-out motion-reduce:transition-none"
       >
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <span className="inline-flex items-center mb-4 rounded-full border border-slate-300/80 px-3.5 py-1 font-mono text-[10px] sm:text-xs tracking-[0.22em] uppercase text-sky-800">
+          <span className="inline-flex max-w-full items-center mb-4 rounded-full border border-slate-300/80 px-3 py-1 font-mono text-[10px] tracking-[0.18em] uppercase text-sky-800 whitespace-nowrap sm:px-3.5 sm:text-xs sm:tracking-[0.22em]">
             Recruiting soon
           </span>
           <img
             alt="AdroIT"
-            className="block object-contain h-[5.25rem] sm:h-24 md:h-[7.5rem] w-auto mx-auto mb-5"
+            className="block object-contain h-16 sm:h-24 md:h-[7.5rem] w-auto max-w-[min(100%,18rem)] mx-auto mb-4 sm:mb-5"
             src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
           />
-          <h1 className="mx-auto mb-8 max-w-xl px-4 text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
+          <h1 className="mx-auto mb-5 max-w-xl px-1 text-base sm:mb-8 sm:px-4 sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
             <span className="sr-only">AdroIT — </span>
             Department of
             <span className="mt-0.5 block font-bold">
               Computer Science &amp; Engineering
             </span>
           </h1>
-          <p className="fluid-lead text-slate-600 leading-relaxed max-w-4xl mx-auto mb-8">
-            The Premier Technical Club <span className="text-sky-800">Empowering Tomorrow's Innovators</span> through cutting-edge technology, collaborative projects, and industry-ready skills
+          <p className="text-[0.95rem] leading-relaxed text-slate-600 max-w-4xl mx-auto mb-4 sm:mb-8 sm:text-lg md:text-xl">
+            The Premier Technical Club{" "}
+            <span className="text-sky-800">Empowering Tomorrow's Innovators</span>{" "}
+            through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
           <EventCarousel
             events={domainCards}
@@ -158,265 +545,111 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===== WHY JOIN SECTION ===== */}
-      <section id="why-join" ref={missionRef} className="pt-10 sm:pt-14 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">01 // Our Mission</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Why Join AdroIT?</h2>
-            <p className="text-slate-600 fluid-lead max-w-4xl mx-auto">
-              We bridge the gap between academic theory and industry demands, creating 
-              <span className="text-sky-800"> future-ready professionals</span> through practical learning and innovation
+      <section className="px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-14">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div>
+            <h2 className="fluid-h2 font-bold text-slate-900 dark:text-white leading-[1.1] mb-5">
+              Learn it. Build it. Show it.
+            </h2>
+
+            <p className="text-slate-600 dark:text-white/70 text-lg leading-relaxed max-w-md">
+              At AdroIT, learning goes beyond following tutorials.
+              You learn a concept, apply it to a project, work with
+              other students and present what you built.
             </p>
           </div>
 
-          {/* YOUR ORIGINAL 3-COLUMN LAYOUT */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            
-            {/* Left Column - 3 Cards */}
-            <div className="space-y-8">
-              
-              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
-                    <span className="text-xl font-bold">01</span>
-                  </div>
-                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Practical Skill Development</h3>
-                </div>
-                <p className="text-slate-600">
-                  Move beyond theory with <b>AdroIT</b> — build real-world projects, master industry tools, and gain in-demand skills across Machine Learning, Data Analytics, Cloud Computing, and Cybersecurity.
-                </p>
-              </div>
-
-              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
-                    <span className="text-xl font-bold">02</span>
-                  </div>
-                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Industry Exposure</h3>
-                </div>
-                <p className="text-slate-600">
-                  Connect with alumni at top tech companies, learn from industry expert workshops, and join sponsored hackathons. We give you the network, exposure, and opportunities to kickstart your career.
-                </p>
-              </div>
-
-              <div className="p-5 sm:p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 shrink-0 rounded-xl bg-sky-600 text-white flex items-center justify-center">
-                    <span className="text-xl font-bold">03</span>
-                  </div>
-                  <h3 className="min-w-0 text-xl sm:text-2xl font-bold text-slate-900">Collaborative Environment</h3>
-                </div>
-                <p className="text-slate-600">
-                  Join a community of passionate learners and innovators. Collaborate on projects, 
-                  share knowledge, and grow together. Our senior-junior mentorship model ensures 
-                  everyone gets the guidance they need to succeed.
-                </p>
-              </div>
-            </div>
-
-            {/* Right Column - Advantage Card */}
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-sky-600/15 rounded-3xl blur opacity-50 group-hover:opacity-80 transition duration-1000"></div>
-              <div className="relative bg-white/50 backdrop-blur-3xl border border-slate-200/80 p-6 sm:p-10 rounded-3xl">
-                <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-slate-900">The AdroIT Advantage</h3>
-                <div className="space-y-6">
-                  {[
-                    "Build an impressive portfolio with real projects",
-                    "Master in-demand technologies before they're in your syllabus",
-                    "Network with industry professionals and alumni",
-                    "Develop leadership and teamwork skills",
-                    "Gain confidence through regular presentations and demos",
-                    "Access exclusive learning resources and workshops"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-sky-600/10 text-sky-800 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                          <path d="M20 6L9 17L4 12"/>
-                        </svg>
-                      </div>
-                      <span className="text-slate-700">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <Terminal />
         </div>
       </section>
 
-      {/* ===== DOMAINS SHOWCASE - NEW SECTION ===== */}
-      <section ref={domainsRef} className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500">
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">02 // Our Expertise</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Technical Domains</h2>
-            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
-              Four pillars of technical excellence driving innovation at AdroIT
-            </p>
-          </div>
+      <DomainShowcase />
 
-          {/* 4-Column Grid for Domains */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {domains.map((domain, index) => (
-              <DomainCard key={index} {...domain} />
-            ))}
-          </div>
-
-          {/* Domain CTA */}
-          <div className="text-center mt-12">
-            <Link
-              to="/domains"
-              onClick={()=>window.scrollTo(0,0)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-xl text-sky-800 hover:text-slate-900 hover:border-sky-600/30 transition-all duration-300 group"
-            >
-              <span>Explore All Domains</span>
-              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section
-        ref={approachRef}
-        className="relative z-0 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 opacity-0 translate-y-4 transition-all duration-500"
-      >
-        <div className="relative z-10 text-center">
-          <h2 className="fluid-h2 font-bold text-slate-900 mb-4 py-2">
-            Our Learning Philosophy
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-            Like dynamic particles, we believe in adaptive, hands-on learning — not just teaching technology, but building how you <span className="text-sky-800">think</span>, 
-            <span className="text-sky-800"> innovate</span>, and <span className="text-sky-800">create</span>.
+      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="max-w-5xl mx-auto">
+          <p className="fluid-h2 font-bold text-slate-900 dark:text-white leading-[1.15] max-w-4xl">
+            Learn from seniors. Build with your peers. Then become
+            the senior who helps someone else get started.
           </p>
         </div>
       </section>
 
-      {/* ===== BENEFITS SECTION ===== */}
-      <section 
-        ref={benefitsRef}
-        className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
-      >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">03 // Your Growth</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">How AdroIT Will Transform You</h2>
-          </div>
+      <section className="px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-8">
+            Events through the year
+          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-slate-900">Technical Excellence</h3>
-              <p className="text-slate-600">
-                Develop strong technical thinking by understanding core concepts, problem-solving approaches,
-                and real-world applications across all four domains.
-              </p>
-            </div>
+          <ul className="divide-y divide-slate-200/80 border-y border-slate-200/80 dark:divide-white/10 dark:border-white/10">
+            {events.map((e, i) => {
+              const n = String(i + 1).padStart(2, "0");
+              const inner = (
+                <>
+                  <span className="font-mono text-xs text-sky-800 dark:text-sky-300 pt-1.5 w-8 shrink-0">
+                    {n}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
+                      {e.name}
+                    </span>
+                    <span className="mt-1 block text-sm text-slate-600 dark:text-white/60 leading-relaxed">
+                      {e.text}
+                    </span>
+                  </span>
+                  {e.href ? (
+                    <ArrowUpRight
+                      size={18}
+                      className="mt-1.5 shrink-0 text-slate-400 transition-colors group-hover:text-sky-700 dark:group-hover:text-sky-300"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <span className="mt-1.5 w-[18px] shrink-0" aria-hidden="true" />
+                  )}
+                </>
+              );
 
-            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="8" r="4"/><path d="M6 18v-2a6 6 0 0112 0v2"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-slate-900">Professional Network</h3>
-              <p className="text-slate-600">
-                Connect with peers, mentors, and industry professionals through collaborations, events, and community-driven learning.
-              </p>
-            </div>
-
-            <div className="group p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:translate-y-[-8px] transition-all duration-500">
-              <div className="w-16 h-16 rounded-xl bg-sky-600 text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-slate-900">Leadership Skills</h3>
-              <p className="text-slate-600">
-                Take ownership of projects, lead teams in hackathons, and organize events. 
-                Develop the soft skills that complement your technical expertise.
-              </p>
-            </div>
-          </div>
+              return (
+                <li key={e.name}>
+                  {e.href ? (
+                    <Link
+                      to={e.href}
+                      className="group flex items-start gap-3 sm:gap-4 py-5 sm:py-6 transition-colors hover:bg-slate-50/80 dark:hover:bg-white/[0.03] -mx-2 px-2 sm:mx-0 sm:px-0"
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div className="flex items-start gap-3 sm:gap-4 py-5 sm:py-6">
+                      {inner}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </section>
 
-      {/* ===== CLUB ACTIVITIES ===== */}
-      <section 
-        ref={activitiesRef}
-        className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 opacity-0 translate-y-4 transition-all duration-500"
-      >
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <span className="text-sky-800 font-mono tracking-widest uppercase text-sm">04 // What We Do</span>
-            <h2 className="fluid-h2 font-bold mt-4 mb-8 text-slate-900 pb-2">Join the AdroIT Community</h2>
-            <p className="text-slate-600 text-xl max-w-3xl mx-auto">
-              Learn by building through hands-on sessions, collaborative projects, and real-world exposure 
-              in Machine Learning, Cloud Computing, Cybersecurity, and Data Analytics.
+      <section className="px-4 sm:px-6 lg:px-8 pt-10 pb-24">
+        <div className="max-w-6xl mx-auto rounded-2xl sm:rounded-3xl bg-sky-700 text-white p-6 sm:p-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div>
+            <h2 className="text-2xl sm:text-4xl font-bold">
+              Skill Up Boot Camp
+            </h2>
+
+            <p className="text-sky-100 mt-2">
+              Four days. Four domains. Hands-on technical
+              exposure from October 6 to October 9, 2026.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900">Weekly Tech Sessions</h3>
-              <p className="text-slate-600 mb-4">
-                Structured, hands-on learning focused on core domains through guided workshops and practical demonstrations.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• Machine Learning Fundamentals & Projects</li>
-                <li>• Cloud Computing Concepts & Deployment</li>
-                <li>• Cybersecurity Basics & Practices</li>
-                <li>• Data Analytics Tools & Workflows</li>
-              </ul>
-            </div>
-
-            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900">Project Sprints</h3>
-              <p className="text-slate-600 mb-4">
-                Team-based project cycles designed to apply skills through real-world problem solving.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• ML Model Development</li>
-                <li>• Cloud-based Application Deployment</li>
-                <li>• Security Analysis & Testing</li>
-                <li>• Data-driven Insights Projects</li>
-              </ul>
-            </div>
-
-            <div className="p-8 border border-slate-200/80 rounded-2xl bg-white/40 hover:border-sky-600/25 hover:bg-sky-50/40 transition-colors">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900">Community & Events</h3>
-              <p className="text-slate-600 mb-4">
-                Events that encourage collaboration, innovation, and exposure to industry practices.
-              </p>
-              <ul className="space-y-2 text-slate-700">
-                <li>• HackAdroIT Hackathon</li>
-                <li>• Industry Talks & Expert Sessions</li>
-                <li>• Project Demo Days</li>
-                <li>• Peer Learning & Networking Events</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* REMOVED: Duplicate "Join AdroIT and Start Building" button */}
-          <div className="text-center mt-16">
-            <p className="text-slate-500 text-sm">
-              Recruiting soon.
-            </p>
-          </div>
+          <Link
+            to={liveEvent.href}
+            className="shrink-0 inline-flex w-full sm:w-auto justify-center rounded-lg bg-white px-6 py-3 font-semibold text-sky-800 hover:bg-sky-50 transition-colors"
+          >
+            Explore the boot camp
+          </Link>
         </div>
       </section>
-
     </div>
   );
 };

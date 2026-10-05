@@ -82,6 +82,7 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
         didDragRef.current = true;
         viewport.setPointerCapture(e.pointerId);
       }
+      e.preventDefault();
       progressRef.current -= dx / metrics().pitch;
       lastXRef.current = e.clientX;
     };
@@ -122,11 +123,11 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
   }, [n]);
 
   return (
-    <div className="my-8 sm:my-10 w-[100vw] relative left-1/2 -translate-x-1/2 z-20">
+    <div className="relative z-20 my-6 w-[calc(100%+2rem)] -mx-4 overflow-x-clip sm:my-10 sm:w-[calc(100%+3rem)] sm:-mx-6 lg:mx-0 lg:w-screen lg:max-w-none lg:left-1/2 lg:-translate-x-1/2">
       <div
         ref={viewportRef}
-        className="event-strip relative overflow-hidden h-[15.5rem] sm:h-[17rem] cursor-grab active:cursor-grabbing"
-        style={{ touchAction: "none" }}
+        className="event-strip relative overflow-hidden h-[14.25rem] sm:h-[17rem] cursor-grab active:cursor-grabbing"
+        style={{ touchAction: "pan-y" }}
       >
         {copies.map(({ event, copy }, k) => (
           <button
@@ -136,20 +137,21 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
             }}
             type="button"
             draggable={false}
-            className="event-strip-card absolute top-6 left-0 w-[72vw] max-w-[22rem] sm:w-[24rem] h-[13.5rem] sm:h-[15rem] rounded-3xl border border-slate-200/90 bg-white/75 p-5 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer"
+            className="event-strip-card absolute top-5 left-0 w-[min(19rem,calc(100vw-3.5rem))] overflow-hidden sm:top-6 sm:w-[24rem] sm:max-w-[22rem] h-[12.25rem] sm:h-[15rem] rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-white/75 p-4 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer dark:border-white/10 dark:bg-white/5"
           >
             <div className="flex justify-between items-start gap-2 mb-3">
-              <span className="font-semibold text-sky-800 text-xs sm:text-sm tracking-wide uppercase">
+              <span className="font-semibold text-sky-800 text-[11px] sm:text-sm tracking-wide uppercase">
                 {event.label || "Paradox 2026"}
               </span>
-              <span className="shrink-0 rounded-full bg-sky-600 px-2.5 py-1 text-[10px] sm:text-[11px] font-semibold leading-none text-white">
-                Click to register
+              <span className="shrink-0 rounded-full bg-sky-600 px-2 py-1 text-[10px] sm:text-[11px] font-semibold leading-none text-white sm:px-2.5">
+                <span className="sm:hidden">Register</span>
+                <span className="hidden sm:inline">Click to register</span>
               </span>
             </div>
-            <h3 className="font-bold text-xl sm:text-2xl mb-2 truncate text-slate-900">
+            <h3 className="font-bold text-lg sm:text-2xl mb-2 truncate text-slate-900 dark:text-slate-100">
               {event.title}
             </h3>
-            <p className="text-slate-600 text-sm line-clamp-3">{event.description}</p>
+            <p className="text-slate-600 text-sm leading-snug line-clamp-3 break-words whitespace-normal dark:text-slate-400">{event.description}</p>
           </button>
         ))}
       </div>

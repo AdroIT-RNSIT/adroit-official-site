@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { Mail, MapPin, Send, Clock, ExternalLink } from "lucide-react";
 
-const FORMSUBMIT_ENDPOINT = "96257faded86b481d152d29ffd442524";
 const RATE_LIMIT_KEY = "adroit_contact_submissions";
 const RATE_LIMIT_MAX = 2;
 const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -86,19 +85,13 @@ export default function Contact() {
       email: formData.email.trim(),
       subject: formData.subject.trim(),
       message: formData.message.trim(),
-      _replyto: formData.email.trim(),
-      _subject: `AdroIT contact: ${formData.subject.trim()}`,
-      _template: "table",
-      _captcha: "true",
+      website: formData.website,
     };
 
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${FORMSUBMIT_ENDPOINT}`, {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
       });
 
