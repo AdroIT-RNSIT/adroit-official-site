@@ -184,7 +184,9 @@ export default function Members() {
   const [active, setActive] = useState("all");
   const [selKey, setSelKey] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const filterBarRef = useRef(null);
   const membersStartRef = useRef(null);
+  const pendingStartScroll = useRef(false);
 
   const q = query.trim().toLowerCase();
   const matches = (el) => (active === "all" || el.gid === active) && (!q || el.name.toLowerCase().includes(q));
@@ -223,12 +225,51 @@ export default function Members() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const pickDomain = (id) => {
-    setActive(id);
-    requestAnimationFrame(() => {
-      membersStartRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
-    });
+  const scrollToMembersStart = () => {
+    const startId = active === "all" ? `g-${visibleGroups[0]?.id}` : `g-${active}`;
+    const start = document.getElementById(startId) || membersStartRef.current;
+    const bar = filterBarRef.current;
+    if (!start) return;
+    const offset = (bar?.getBoundingClientRect().bottom ?? 0) + 12;
+    const top = start.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
   };
+
+  const pickDomain = (id) => {
+    pendingStartScroll.current = true;
+    if (id === active) {
+      pendingStartScroll.current = false;
+      scrollToMembersStart();
+      return;
+    }
+    setActive(id);
+  };
+
+  useLayoutEffect(() => {
+    if (!pendingStartScroll.current) return;
+    const align = () => {
+      const startId = active === "all" ? `g-${visibleGroups[0]?.id}` : `g-${active}`;
+      const start = document.getElementById(startId);
+      const bar = filterBarRef.current;
+      if (!start) return false;
+      const offset = (bar?.getBoundingClientRect().bottom ?? 0) + 12;
+      const top = Math.max(0, start.getBoundingClientRect().top + window.scrollY - offset);
+      window.scrollTo(0, top);
+      return true;
+    };
+
+    if (align()) {
+      pendingStartScroll.current = false;
+      requestAnimationFrame(align);
+      return undefined;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      align();
+      pendingStartScroll.current = false;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [active, visibleGroups]);
 
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pt-6 font-sans text-slate-900 antialiased dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
@@ -244,10 +285,13 @@ export default function Members() {
           <p style={{ animationDelay: "180ms" }} className="am-in mt-3 max-w-md text-base text-slate-600 dark:text-slate-400 sm:text-lg">
             Explore members by domain.
           </p>
+          <p className="mt-1.5 text-sm text-slate-400 dark:text-slate-500">
+            Click a name to see their details.
+          </p>
         </div>
       </header>
 
-      <div className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
+      <div ref={filterBarRef} className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <DomainFilters active={active} isMobile={isMobile} onPick={pickDomain} />
           <label className="relative block shrink-0 lg:w-72">
@@ -281,8 +325,9 @@ export default function Members() {
         )}
       </div>
 
-      <div ref={membersStartRef} className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-12 lg:px-8">
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-12 lg:px-8">
         <main className={`min-w-0 space-y-12 ${selected ? "pb-[min(70dvh,22rem)] lg:pb-0" : "pb-10"}`}>
+          <div ref={membersStartRef} aria-hidden="true" className="h-0 w-0 overflow-hidden" />
           {matchCount === 0 && (
             <p className="am-glass rounded-2xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-500 dark:border-white/15">
               <span className="font-mono text-sky-800">error:</span> no node matches “{query}”
@@ -291,7 +336,13 @@ export default function Members() {
           {visibleGroups.map((g) => {
             const { icon: Icon } = dom(g.id);
             return (
-              <section key={g.id} id={`g-${g.id}`} style={vars(g.id)} aria-labelledby={`h-${g.id}`} className="scroll-mt-[calc(var(--nav-height)+9rem)]">
+              <section
+                key={g.id}
+                id={`g-${g.id}`}
+                style={vars(g.id)}
+                aria-labelledby={`h-${g.id}`}
+                className="scroll-mt-[calc(var(--nav-height)+7rem)]"
+              >
                 <div className="mb-4 flex flex-wrap items-center gap-3">
                   <span
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
@@ -615,17 +666,12 @@ function Inspector({ el, onClose, compact }) {
 
 function Idle() {
   return (
-    <div className="am-glass rounded-2xl border border-dotted border-slate-400 p-6 text-sm text-slate-500 dark:border-white/40">
-      <span aria-hidden="true" className="mb-4 flex gap-1.5">
+    <div className="am-glass min-h-[9rem] rounded-2xl border border-dotted border-slate-400 p-6 dark:border-white/40">
+      <span aria-hidden="true" className="flex gap-1.5">
         <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
       </span>
-      <p className="font-mono text-xs">
-        <span className="text-sky-700">$</span> select a node
-        <span aria-hidden="true" className="am-blink ml-1 inline-block h-3 w-1.5 translate-y-0.5 bg-sky-700" />
-      </p>
-      <p className="mt-3">Click any card, or press Enter in the search box to open the first match.</p>
     </div>
   );
 }
