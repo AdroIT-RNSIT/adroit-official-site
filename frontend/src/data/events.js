@@ -76,10 +76,10 @@ export const sharedEvents = [
   {
     _id: "skill-up-bootcamp-2026",
     title: "Skill Up Boot Camp",
-    tagline: "A 4-day hands-on tech bootcamp.",
+    tagline: "A 4-day hands-on tech bootcamp for 3rd sem CSE students.",
     eyebrow: "Bootcamp",
     description:
-      "Skill Up Boot Camp is a 4-day, hands-on technical bootcamp organized by AdroIT at RNS Institute of Technology to help students move beyond theory and gain practical exposure to industry-relevant technologies.",
+      "Skill Up Boot Camp is a 4-day, hands-on technical bootcamp for 3rd sem CSE students organized by AdroIT at RNS Institute of Technology to help students move beyond theory and gain practical exposure to industry-relevant technologies.",
     about: [
       "From October 6 to October 9, 2026, each day focuses on a different technology domain.",
       "Day 1 - Data Analytics: Explore how raw data is processed, analyzed, and transformed into meaningful insights using practical tools and real-world datasets.",

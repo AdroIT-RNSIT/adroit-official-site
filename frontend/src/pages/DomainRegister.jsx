@@ -8,7 +8,6 @@ import { supabase } from "../lib/supabaseClient";
 const fieldClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20";
 
-const SEMESTERS = ["1", "3"];
 
 export default function DomainRegister() {
   const { domain: slug } = useParams();
@@ -21,7 +20,7 @@ export default function DomainRegister() {
     name: "",
     usn: "",
     mobile: "",
-    semester: "",
+    semester: "3",
     section: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -171,21 +170,14 @@ export default function DomainRegister() {
               <label htmlFor="semester" className="mb-1.5 block text-sm font-medium text-slate-700">
                 Semester
               </label>
-              <select
+              <input
                 id="semester"
                 name="semester"
-                required
+                type="text"
+                readOnly
                 value={form.semester}
-                onChange={update}
-                className={fieldClass}
-              >
-                <option value="">Select</option>
-                {SEMESTERS.map((semester) => (
-                  <option key={semester} value={semester}>
-                    {semester}
-                  </option>
-                ))}
-              </select>
+                className={`${fieldClass} bg-slate-50 text-slate-500 cursor-not-allowed`}
+              />
             </div>
             <div>
               <label htmlFor="section" className="mb-1.5 block text-sm font-medium text-slate-700">
