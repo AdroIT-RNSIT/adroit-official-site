@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, BarChart3, Brain, Cloud, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BarChart3, Brain, Cloud, Megaphone, ShieldCheck } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import EventCarousel from '../components/EventCarousel';
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
@@ -36,6 +36,12 @@ const showcase = [
     Icon: ShieldCheck,
     text: "Understand how web applications and networks can be attacked, then learn the fundamentals of securing them.",
     tools: "Web Security, Networking, Ethical Hacking",
+  },
+  {
+    name: "Non-Tech",
+    Icon: Megaphone,
+    text: "Plan and run events, manage social media, design posters, and handle the outreach that keeps the club visible and moving.",
+    tools: "Events, Design, Social Media, Outreach",
   },
 ];
 
@@ -137,8 +143,8 @@ const DomainShowcase = () => {
             </h2>
 
             <p className="mt-2 max-w-xl text-slate-600 dark:text-white/70">
-              Explore the technical domains covered by AdroIT and build practical
-              projects while learning the fundamentals behind them.
+              Explore the technical and non-technical domains at AdroIT, and
+              build real projects and events while learning the fundamentals.
             </p>
           </div>
 
@@ -187,7 +193,7 @@ const DomainShowcase = () => {
 
           <div
             role="tablist"
-            className="grid grid-cols-2 lg:grid-cols-4 gap-px border-t border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-white/10"
+            className="grid grid-cols-2 lg:grid-cols-5 gap-px border-t border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-white/10"
           >
             {showcase.map((s, i) => {
               const on = i === active;
@@ -202,7 +208,7 @@ const DomainShowcase = () => {
                     setActive(i);
                     setTick((t) => t + 1);
                   }}
-                  className={`relative flex min-h-[3.25rem] items-center justify-between gap-2 px-3 py-3 sm:min-h-[3.5rem] sm:px-7 sm:py-5 text-left transition-colors ${
+                  className={`relative flex min-h-[3.25rem] items-center justify-between gap-2 px-3 py-3 sm:min-h-[3.5rem] sm:px-7 sm:py-5 lg:px-5 text-left transition-colors last:col-span-2 lg:last:col-span-1 ${
                     on
                       ? "bg-white dark:bg-[#111111]"
                       : "bg-slate-50 hover:bg-slate-100 dark:bg-black dark:hover:bg-[#1a1a1a]"

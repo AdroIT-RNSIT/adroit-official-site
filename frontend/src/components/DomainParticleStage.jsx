@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export const ACCENTS = ["#34d399", "#818cf8", "#38bdf8", "#fb7185"];
+export const ACCENTS = ["#34d399", "#818cf8", "#38bdf8", "#fb7185", "#fbbf24"];
 export const AUTO_MS = 6000;
 const N_DESKTOP = 4200;
 const N_PHONE = 5200;
@@ -102,7 +102,37 @@ function buildFormations(N) {
     return [(rnd() - 0.5) * 0.24, -0.9 + rnd() * 0.95, jz(0.3)];
   });
 
-  return [bars, cloud, net, shield];
+  const ox = -0.5;
+  const coneH = (x) => 0.6 + ((x + 1.6) / 3.0) * 1.2;
+  const megaphone = make(() => {
+    const r = rnd();
+    if (r < 0.12) {
+      return [ox - 2.6 + rnd() * 1.0, (rnd() - 0.5) * 1.2, jz(0.5)];
+    }
+    if (r < 0.32) {
+      const x = -1.6 + rnd() * 3.0;
+      return [ox + x, (rnd() < 0.5 ? -1 : 1) * coneH(x), jz(0.4)];
+    }
+    if (r < 0.55) {
+      const x = -1.6 + rnd() * 3.0;
+      return [ox + x, (rnd() - 0.5) * 2 * coneH(x), jz(0.6)];
+    }
+    if (r < 0.65) {
+      return [ox + 1.4 + (rnd() - 0.5) * 0.18, (rnd() - 0.5) * 3.6, jz(0.4)];
+    }
+    if (r < 0.73) {
+      return [ox - 1.4 + rnd() * 0.5, -0.6 - rnd() * 1.2, jz(0.3)];
+    }
+    const radius = [0.8, 1.5, 2.2][Math.floor(rnd() * 3)];
+    const a = (rnd() - 0.5) * 1.4;
+    return [
+      ox + 1.4 + Math.cos(a) * radius + (rnd() - 0.5) * 0.08,
+      Math.sin(a) * radius + (rnd() - 0.5) * 0.08,
+      jz(0.3),
+    ];
+  });
+
+  return [bars, cloud, net, shield, megaphone];
 }
 
 export function ParticleStage({ activeRef, rotateRef }) {
