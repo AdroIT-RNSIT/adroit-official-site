@@ -120,6 +120,16 @@ export default function DomainRegister() {
           <p className="mt-2 text-sm text-emerald-800">
             {form.name}, your {domain.title} registration is saved.
           </p>
+          {domain.whatsapp && (
+            <a
+              href={domain.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex w-fit items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+            >
+              Join WhatsApp Group
+            </a>
+          )}
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="mt-8 space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
