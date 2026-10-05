@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <>
-      {location.pathname === "/" && <IntroSplash />}
+      <IntroSplash />
       <Routes>
 
 

@@ -325,7 +325,7 @@ function shouldShow() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return false;
     }
-    return !sessionStorage.getItem(SEEN_KEY);
+    return !localStorage.getItem(SEEN_KEY);
   } catch {
     return true;
   }
@@ -371,7 +371,7 @@ export default function IntroSplash({
     if (doneRef.current) return;
     doneRef.current = true;
     try {
-      sessionStorage.setItem(SEEN_KEY, "1");
+      localStorage.setItem(SEEN_KEY, "1");
     } catch {
       /* ignore */
     }
