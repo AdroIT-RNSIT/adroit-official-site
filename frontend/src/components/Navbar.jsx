@@ -119,14 +119,14 @@ const Navbar = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] md:transition-[background-color,border-color,box-shadow] md:duration-300 ${
           glassy
-            ? "border-b border-slate-200/80 bg-white dark:border-white/10"
+            ? "border-b border-slate-200/80 bg-white/82 backdrop-blur-2xl dark:border-white/10 dark:bg-black/72"
             : isDarkNav
             ? scrolled
-              ? "bg-[#000000] border-b border-white/15 md:backdrop-blur-xl md:bg-[#000000]/95 md:shadow-sm"
-              : "bg-[#000000] border-b border-white/15 md:bg-[#000000]/92 md:backdrop-blur-md"
+              ? "border-b border-white/15 bg-black/78 backdrop-blur-2xl"
+              : "border-b border-white/15 bg-black/70 backdrop-blur-xl"
             : scrolled
-              ? "bg-white border-b border-slate-200/80 md:shadow-sm"
-              : "bg-white border-b border-slate-200/80"
+              ? "border-b border-slate-200/80 bg-white/82 backdrop-blur-2xl"
+              : "border-b border-slate-200/80 bg-white/74 backdrop-blur-xl"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
@@ -145,10 +145,10 @@ const Navbar = () => {
             >
               <span
                 aria-hidden
-                className={`pointer-events-none absolute left-0 top-1/2 h-8 rounded-lg transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                className={`pointer-events-none absolute left-0 top-1/2 h-8 rounded-full transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
                   isDarkNav
-                    ? "bg-sky-400/15 ring-1 ring-sky-400/30"
-                    : "bg-sky-500/15 ring-1 ring-sky-500/25"
+                    ? "border border-white/30 bg-white/12 backdrop-blur-xl [box-shadow:inset_0_1px_0_rgba(255,255,255,0.32),inset_0_-6px_14px_rgba(125,211,252,0.14)]"
+                    : "border border-sky-200/70 bg-sky-100/55 backdrop-blur-xl [box-shadow:inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-6px_14px_rgba(56,189,248,0.14)]"
                 }`}
                 style={{
                   width: pill.w,
@@ -215,10 +215,10 @@ const Navbar = () => {
             className={`md:hidden flex h-10 w-10 items-center justify-center rounded-xl border transition-colors ${
               isDarkNav
                 ? mobileMenuOpen
-                  ? "border-sky-400/40 bg-white/10 text-sky-300 shadow-sm"
+                  ? "border-sky-400/40 bg-white/10 text-sky-300"
                   : "border-white/15 bg-white/10 text-white hover:bg-white/15"
                 : mobileMenuOpen
-                  ? "border-sky-500/40 bg-white text-sky-700 shadow-sm"
+                  ? "border-sky-500/40 bg-white text-sky-700"
                   : "border-slate-900/10 bg-white/50 text-slate-800 hover:bg-white/80"
             }`}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -238,9 +238,9 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(false)}
           />
           <div
-            className={`fixed right-3 top-[calc(var(--nav-height)+0.5rem)] z-[1001] w-44 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-2xl border shadow-[0_18px_50px_rgba(15,23,42,0.18)] md:hidden ${
+            className={`fixed right-3 top-[calc(var(--nav-height)+0.5rem)] z-[1001] w-44 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-2xl border backdrop-blur-2xl md:hidden ${
               isDarkNav
-                ? "border-white/10 bg-[#000000]"
+                ? "border-white/10 bg-black/88"
                 : "border-slate-200 bg-white"
             }`}
             aria-hidden={!mobileMenuOpen}

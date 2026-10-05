@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Brain, Cloud, Shield, BarChart3, Megaphone, User, Search, X, Crown } from "lucide-react";
 import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import { memberGroups } from "../data/members";
@@ -115,7 +115,64 @@ html.dark .am-inspector {
     inset 0 1px 0 rgba(255,255,255,0.12),
     0 20px 42px rgba(0,0,0,0.5);
 }
-@media (prefers-reduced-motion: reduce) { .am-in, .am-up, .am-blink, .am-pulse { animation: none; } }
+:root {
+  --am-liquid-bg: rgba(233,245,255,0.78);
+  --am-liquid-border: rgba(147,197,253,0.62);
+  --am-liquid-glow: rgba(56,189,248,0.26);
+  --am-liquid-shadow: rgba(15,23,42,0.08);
+  --am-liquid-highlight: rgba(255,255,255,0.99);
+}
+html.dark {
+  --am-liquid-bg: rgba(22,29,42,0.5);
+  --am-liquid-border: rgba(226,232,240,0.32);
+  --am-liquid-glow: rgba(125,211,252,0.2);
+  --am-liquid-shadow: rgba(2,6,23,0.24);
+  --am-liquid-highlight: rgba(255,255,255,0.72);
+}
+.am-liquid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  border-radius: 999px;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--am-liquid-highlight) 56%, transparent), transparent 66%),
+    var(--am-liquid-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--am-liquid-border);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--am-liquid-highlight) 92%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--am-liquid-border) 34%, transparent),
+    inset 0 -5px 14px color-mix(in srgb, var(--am-liquid-glow) 44%, transparent);
+  overflow: hidden;
+  transform-origin: center center;
+  transition:
+    transform 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+    width 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+    height 360ms cubic-bezier(0.22, 1.18, 0.36, 1);
+}
+.am-liquid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(110% 85% at var(--hx, 24%) 0%, rgba(255,255,255,0.92), transparent 46%),
+    radial-gradient(70% 60% at 78% 88%, color-mix(in srgb, var(--am-liquid-glow) 65%, transparent), transparent 62%);
+  mix-blend-mode: screen;
+}
+.am-liquid::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 0.8px color-mix(in srgb, var(--am-liquid-border) 62%, transparent),
+    inset 0 -1px 4px rgba(255,255,255,0.16);
+}
+@media (prefers-reduced-motion: reduce) { .am-in, .am-up, .am-blink, .am-pulse { animation: none; } .am-liquid { transition: none; } }
 @media (prefers-reduced-transparency: reduce) {
   .am-glass { background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none; }
   html.dark .am-glass { background: #111111; }
@@ -133,9 +190,8 @@ export default function Members() {
   const matchCount = useMemo(() => ALL.filter(matches).length, [q, active]); // eslint-disable-line
   const selected = ALL.find((el) => el.key === selKey) || null;
   const visibleGroups = useMemo(() => {
-    if (!isMobile) return GROUPS;
-    if (active === "all") return GROUPS.slice(0, 1);
-    return GROUPS.filter((g) => g.id === active);
+    if (active !== "all") return GROUPS.filter((g) => g.id === active);
+    return isMobile ? GROUPS.slice(0, 1) : GROUPS;
   }, [isMobile, active]);
 
   useEffect(() => {
@@ -175,7 +231,7 @@ export default function Members() {
     <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pt-6 font-sans text-slate-900 antialiased dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
       <style>{CSS}</style>
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[44rem] text-slate-900/[0.08] dark:text-white/[0.08] bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[44rem] text-slate-900/[0.08] dark:text-white/[0.2] bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
       <header className="relative mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 pb-8 sm:px-6 lg:px-8">
         <div className="min-w-0">
@@ -190,20 +246,7 @@ export default function Members() {
 
       <div className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div role="group" aria-label="Filter by domain" className="-mx-4 flex min-w-0 gap-2 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {!isMobile && <KeyChip on={active === "all"} onClick={() => pickDomain("all")} label="All" />}
-            {GROUPS.map((g) => (
-              <KeyChip
-                key={g.id}
-                on={active === g.id}
-                onClick={() => pickDomain(g.id)}
-                label={g.name}
-                shortLabel={MOBILE_DOMAIN_LABELS[g.id] || g.name}
-                id={g.id}
-                Icon={dom(g.id).icon}
-              />
-            ))}
-          </div>
+          <DomainFilters active={active} isMobile={isMobile} onPick={pickDomain} />
           <label className="relative block shrink-0 lg:w-72">
             <span className="sr-only">Search members</span>
             <Search size={16} aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -295,18 +338,128 @@ export default function Members() {
   );
 }
 
-function KeyChip({ on, onClick, label, shortLabel, id, Icon }) {
-  const colored = Boolean(id);
+function DomainFilters({ active, isMobile, onPick }) {
+  const trackRef = useRef(null);
+  const [hoveredId, setHoveredId] = useState(null);
+  const [pose, setPose] = useState(null);
+  const previousX = useRef(null);
+  const stretchReset = useRef(null);
+  const targetId = hoveredId || active;
+
+  const measure = (id = targetId) => {
+    const track = trackRef.current;
+    const button = track?.querySelector(`[data-domain="${id}"]`);
+    if (!track || !button) return;
+    const trackRect = track.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const x = buttonRect.left - trackRect.left + track.scrollLeft;
+    const y = buttonRect.top - trackRect.top + track.scrollTop;
+    const dx = previousX.current == null ? 0 : x - previousX.current;
+    previousX.current = x;
+    const stretch = 1 + Math.min(0.08, Math.abs(dx) / 180);
+    setPose({
+      x,
+      y,
+      w: buttonRect.width,
+      h: buttonRect.height,
+      sx: stretch,
+      hx: dx >= 0 ? 70 : 22,
+    });
+    if (stretchReset.current) window.clearTimeout(stretchReset.current);
+    stretchReset.current = window.setTimeout(() => {
+      setPose((current) => (current ? { ...current, sx: 1 } : current));
+    }, 150);
+  };
+
+  useLayoutEffect(() => {
+    measure(targetId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetId, isMobile]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+    const onRelayout = () => measure();
+    const observer = new ResizeObserver(onRelayout);
+    observer.observe(track);
+    window.addEventListener("resize", onRelayout);
+    track.addEventListener("scroll", onRelayout, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", onRelayout);
+      track.removeEventListener("scroll", onRelayout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetId]);
+
+  useEffect(() => () => {
+    if (stretchReset.current) window.clearTimeout(stretchReset.current);
+  }, []);
+
+  const choose = (id) => {
+    onPick(id);
+    setHoveredId(id);
+  };
+
+  return (
+    <div
+      ref={trackRef}
+      role="group"
+      aria-label="Filter by domain"
+      onPointerLeave={() => setHoveredId(null)}
+      className="relative -mx-4 flex min-w-0 gap-1 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {pose && (
+        <span
+          aria-hidden="true"
+          className="am-liquid"
+          style={{
+            width: pose.w,
+            height: pose.h,
+            "--hx": `${pose.hx}%`,
+            transform: `translate(${pose.x}px, ${pose.y}px) scaleX(${pose.sx}) scaleY(${1 / Math.sqrt(pose.sx)})`,
+          }}
+        />
+      )}
+      {!isMobile && (
+        <KeyChip
+          on={active === "all"}
+          onClick={() => choose("all")}
+          onHover={() => setHoveredId("all")}
+          label="All"
+          id="all"
+        />
+      )}
+      {GROUPS.map((g) => (
+        <KeyChip
+          key={g.id}
+          on={active === g.id}
+          onClick={() => choose(g.id)}
+          onHover={() => setHoveredId(g.id)}
+          label={g.name}
+          shortLabel={MOBILE_DOMAIN_LABELS[g.id] || g.name}
+          id={g.id}
+          Icon={dom(g.id).icon}
+        />
+      ))}
+    </div>
+  );
+}
+
+function KeyChip({ on, onClick, onHover, label, shortLabel, id, Icon }) {
   return (
     <button
       type="button"
+      data-domain={id}
       onClick={onClick}
+      onPointerEnter={onHover}
+      onFocus={onHover}
       aria-pressed={on}
-      style={colored ? vars(id) : undefined}
-      className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-2xl border px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm ${
+      style={id && id !== "all" ? vars(id) : undefined}
+      className={`relative z-[1] inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-transparent px-2.5 py-1.5 text-xs font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/30 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm ${
         on
-          ? "border-sky-600 bg-sky-600 text-white"
-          : "am-glass border-white/80 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:text-slate-300 dark:hover:border-white/25 dark:hover:text-white"
+          ? "text-slate-900 dark:text-white"
+          : "text-slate-500 hover:bg-white/35 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
       }`}
     >
       {Icon && <Icon size={16} aria-hidden="true" style={{ color: "var(--c)" }} />}
