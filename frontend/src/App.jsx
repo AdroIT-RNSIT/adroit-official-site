@@ -21,6 +21,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 // ===== PROTECTED ROUTE WRAPPER =====
 import ProtectedRoute from "./components/ProtectedRoute";
+import IntroSplash from "./components/IntroSplash";
 
 // ===== AI CHATBOT =====
 // import ChatBot from "./components/ChatBot";
@@ -39,6 +40,7 @@ export default function App() {
 
   return (
     <>
+      {location.pathname === "/" && <IntroSplash />}
       <Routes>
 
 
