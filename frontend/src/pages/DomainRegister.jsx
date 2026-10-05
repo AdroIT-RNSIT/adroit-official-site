@@ -149,10 +149,6 @@ export default function DomainRegister() {
               name="usn"
               type="text"
               required
-              minLength={10}
-              maxLength={12}
-              pattern="[0-9A-Za-z]{10,12}"
-              title="Enter your USN, for example 1RN23CS001"
               value={form.usn}
               onChange={update}
               className={fieldClass}
