@@ -19,17 +19,66 @@ export const memberGroups = [
       lead("Prajwal Jagadeesh"),
       member("Aneesh"),
       member("Druthi"),
-      member("Adithya"),
-      member("Anaga"),
-      member("Anshuman"),
-      member("Deekshith S"),
+      member(
+        "Adithya BA",
+        "https://in.linkedin.com/in/adithya-b-a-8a450b369",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218787/IMG-20260907-WA0020_-_Adithya_BA.webp",
+      ),
+      member(
+        "N N Adithya Kashyap",
+        "https://www.linkedin.com/in/adithya-kashyap-55aa78335",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218928/IMG-20250926-WA0011_2_-_Adithya_Kashyap.webp",
+      ),
+      member(
+        "Anagha PV",
+        "https://www.linkedin.com/in/anagha-p-vasishta",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791219545/WhatsApp_Image_2026-10-05_at_11.20.32.webp",
+      ),
+      member(
+        "Anshuman TB",
+        "https://www.linkedin.com/in/anshuman-tb-868a053b9",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791219374/WhatsApp_Image_2026-10-05_at_22.24.53.webp",
+      ),
+      member(
+        "Deekshith S",
+        "https://www.linkedin.com/in/deekshith-s-61048b332",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791219086/IMG_20260925_080946_-_Deekshith_S.webp",
+      ),
       member(
         "Lavannya V Desai",
         "https://www.linkedin.com/in/lavannya-vinod-desai-4493bb292",
         "https://res.cloudinary.com/vkdnztnm/image/upload/v1791117212/IMG_20261004_163838_-_lavannya.webp",
       ),
-      member("Ganesh"),
-      member("Rebecca"),
+      member(
+        "N Ganesh Pai",
+        "https://www.linkedin.com/in/ganesh-pai-540873382",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218493/Ganesh_-_Ganesh_Pai.webp",
+      ),
+      member(
+        "Maria Rebecca Fernando",
+        "https://www.linkedin.com/in/rebecca-fernando-a01261331",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218858/IMG-20250925-WA0032-1_-_rebecca_fernando.webp",
+      ),
+      member(
+        "Prabhudev Chinivalar",
+        "https://www.linkedin.com/in/prabhudev-chinivalar-08a28a35a/",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218623/IMG_20260605_203816_-_Prabhudev_Chinivalar.webp",
+      ),
+      member(
+        "Pavan R Gowda",
+        "https://www.linkedin.com/in/pavan-r-gowda-06050135a/",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218703/file_00000000bb948208b48fde0fb7d00bb4_-_Pavan_Gowda.webp",
+      ),
+      member(
+        "Nihar Prasad Koundinya",
+        "http://www.linkedin.com/in/nihar-prasad-koundinya-a6856636b",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218999/photo_1_-_NIHAR_PRASAD_KOUNDINYA_24CS.webp",
+      ),
+      member(
+        "Rekhitha R",
+        "https://www.linkedin.com/in/rekhitha-rajesh-5b9380379",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791219178/3_1_-_REKHITHA_R_24CS.webp",
+      ),
     ],
   },
   {
@@ -83,7 +132,7 @@ export const memberGroups = [
       member(
         "कृष्ण",
         "https://www.linuxfoundation.org/projects#idontuselinkedinLOL",
-        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791117286/Linux_mascot_tux_-_Hello.webp",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791216131/ChatGPT_Image_Oct_5_2026_09_31_33_PM.webp",
       ),
       member(
         "Jayasakthi PV",
@@ -112,7 +161,11 @@ export const memberGroups = [
         "https://res.cloudinary.com/vkdnztnm/image/upload/v1791117033/IMG-20260129-WA0195_2_-_ANSHIKA_GUPTA_24CS.webp",
       ),
       member("Amrutha"),
-      member("Sinchana"),
+      member(
+        "Sinchana Suresh",
+        "https://www.linkedin.com/in/sinchanasuresh/",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791212808/ss_-_SINCHANA_SURESH_24CS.webp",
+      ),
     ],
   },
   {
@@ -122,15 +175,57 @@ export const memberGroups = [
       lead("Jaishnav"),
       member("Pruthvi"),
       member("Tarun"),
-      member("Akanksh"),
-      member("Poorvika"),
-      member("RJ Varsha"),
-      member("Sanjana Devi"),
-      member("Prajna Shetty"),
+      member(
+        "Akanksh Singh",
+        "https://www.linkedin.com/in/akanksh-singh-1b04a6371",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791212911/WhatsApp_Image_2026-10-04_at_14.57.06.webp",
+      ),
+      member(
+        "Harshith SR",
+        "https://www.linkedin.com/in/harshith-sr-038b8637b",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791212981/IMG_20250603_092357_-_Harshith_SR.webp",
+      ),
+      member(
+        "Poorvika Nagaraj",
+        "https://www.linkedin.com/in/poorvika-nagaraj-10347a327",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791116146/IMG_20260515_095038_-_Poorvika_Nagaraj.webp",
+      ),
+      member(
+        "R J Varsha",
+        "https://www.linkedin.com/in/r-j-varsha-7a0b16332",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791217909/IMG20260904203806_-_R_J_VARSHA.webp",
+      ),
+      member(
+        "Sanjana Devi Jothiraman",
+        "https://www.linkedin.com/in/sanjana-jothiraman-379916382",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218236/Screenshot_2026-10-04-19-28-35-49_99c04817c0de5652397fc8b56c3b3817_-_Sanjana_Devi.webp",
+      ),
+      member(
+        "Prajna Shetty",
+        "https://www.linkedin.com/in/prajna-shetty-744527316",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791217674/IMG20260330012651_-_Prajna_Shetty.webp",
+      ),
       member("Swarnashree"),
-      member("Thrisha P"),
-      member("Yatin"),
-      member("Varsha"),
+      member(
+        "Thrisha P",
+        "https://www.linkedin.com/in/thrisha-p-7385ab399",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218148/20260523_213311_-_THRISHA_P_24CS.webp",
+      ),
+      member(
+        "A.K Yatin",
+        "https://www.linkedin.com/in/a-k-yatin-5a46a6318",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791217782/IMG_20261004_154352_-_YATIN.webp",
+      ),
+      member(
+        "Varsha S",
+        "https://www.linkedin.com/in/varsha-s-88274839b/",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218047/20251012_145309_-_Varsha_s.webp",
+      ),
+      member(
+        "Ashmitha S",
+        "https://www.linkedin.com/in/ashmitha-s-6052b1244",
+        "https://res.cloudinary.com/vkdnztnm/image/upload/v1791218351/IMG-20241229-WA0345_-_ASHMITHA_S_24CS.webp",
+      ),
     ],
   },
   {
