@@ -184,6 +184,7 @@ export default function Members() {
   const [active, setActive] = useState("all");
   const [selKey, setSelKey] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const membersStartRef = useRef(null);
 
   const q = query.trim().toLowerCase();
   const matches = (el) => (active === "all" || el.gid === active) && (!q || el.name.toLowerCase().includes(q));
@@ -224,7 +225,9 @@ export default function Members() {
 
   const pickDomain = (id) => {
     setActive(id);
-    if (id !== "all") document.getElementById(`g-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    requestAnimationFrame(() => {
+      membersStartRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+    });
   };
 
   return (
@@ -233,18 +236,18 @@ export default function Members() {
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[44rem] text-slate-900/[0.08] dark:text-white/[0.2] bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
-      <header className="relative mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 pb-8 sm:px-6 lg:px-8">
-        <div className="min-w-0">
-          <h1 style={{ animationDelay: "90ms" }} className="fluid-h1 am-in mt-3 font-extrabold leading-[1.05]">
-            AdroIT Members
-          </h1>
-          <p style={{ animationDelay: "180ms" }} className="am-in mt-3 max-w-md text-base text-slate-600 dark:text-slate-400 sm:text-lg">
-            Explore members by domain.
-          </p>
-        </div>
-      </header>
-
       <div className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
+        <header className="relative mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 pb-2 pt-4 sm:px-6 lg:px-8">
+          <div className="min-w-0">
+            <h1 style={{ animationDelay: "90ms" }} className="fluid-h1 am-in mt-3 font-extrabold leading-[1.05]">
+              AdroIT Members
+            </h1>
+            <p style={{ animationDelay: "180ms" }} className="am-in mt-3 max-w-md text-base text-slate-600 dark:text-slate-400 sm:text-lg">
+              Explore members by domain.
+            </p>
+          </div>
+        </header>
+
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <DomainFilters active={active} isMobile={isMobile} onPick={pickDomain} />
           <label className="relative block shrink-0 lg:w-72">
@@ -278,7 +281,7 @@ export default function Members() {
         )}
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-12 lg:px-8">
+      <div ref={membersStartRef} className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-stretch lg:gap-12 lg:px-8">
         <main className={`min-w-0 space-y-12 ${selected ? "pb-[min(70dvh,22rem)] lg:pb-0" : "pb-10"}`}>
           {matchCount === 0 && (
             <p className="am-glass rounded-2xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-500 dark:border-white/15">
