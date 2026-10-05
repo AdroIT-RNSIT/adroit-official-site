@@ -31,7 +31,7 @@ const FOV = 36;
 const CAM_START = 11.6;
 const CAM_REST = 9.8; // camera distance used for responsive fitting
 const CAM_END = 4.2; // exit push (stays in front of the near dust fade)
-const BG_HEX = 0x02040a;
+const BG_HEX = 0x000000;
 const MAX_PIXELS = 8.5e6; // cap on drawing-buffer size (retina / 4K guard)
 
 const SWEEP_DIR = new THREE.Vector2(1, 0.32).normalize();
@@ -69,32 +69,7 @@ const BG_FRAG = /* glsl */ `
   varying vec2 vUv;
 
   void main() {
-    // ellipse centred at 50% / 44% from top, radii 88% x 66%
-    vec2 q = (vUv - vec2(0.5, 0.56)) / vec2(0.88, 0.66);
-    float r = clamp(length(q), 0.0, 1.0);
-
-    vec3 c0 = vec3(56.0, 189.0, 248.0) / 255.0;
-    vec3 c1 = vec3(9.0, 14.0, 32.0) / 255.0;
-    vec3 c2 = vec3(1.0, 2.0, 6.0) / 255.0;
-
-    vec3 c;
-    float a;
-    if (r < 0.56) {
-      float k = r / 0.56;
-      c = mix(c0, c1, k);
-      a = mix(0.10, 0.60, k);
-    } else {
-      float k = (r - 0.56) / 0.44;
-      c = mix(c1, c2, k);
-      a = mix(0.60, 0.95, k);
-    }
-
-    vec3 base = vec3(2.0, 4.0, 10.0) / 255.0;
-    vec3 col = mix(base, c, a);
-
-    // faint top / bottom light wash
-    col += vec3(0.03) * (1.0 - clamp((1.0 - vUv.y) / 0.32, 0.0, 1.0));
-    col += vec3(0.02) * clamp((0.28 - vUv.y) / 0.28, 0.0, 1.0);
+    vec3 col = vec3(0.0);
 
     // lock-in ring: expands from the logo centre, aspect-corrected
     vec2 p = (vUv - vec2(0.5, 0.53)) * vec2(uAspect, 1.0);
@@ -633,23 +608,6 @@ export default function IntroSplash({
         group.add(particles);
       }
 
-      /* ---------- ambient glow (screen-sized, scene level) ---------- */
-      const glowMat = track(
-        new THREE.SpriteMaterial({
-          map: track(
-            radialTexture("rgba(117,214,255,0.95)", "rgba(59,130,246,0.45)")
-          ),
-          transparent: true,
-          opacity: 0,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        })
-      );
-      const glow = new THREE.Sprite(glowMat);
-      glow.position.z = -2.1;
-      glow.renderOrder = -3;
-      scene.add(glow);
-
       /* ---------- halo behind the logo (follows the stage) ---------- */
       const haloMat = track(
         new THREE.SpriteMaterial({
@@ -714,13 +672,6 @@ export default function IntroSplash({
 
         // nudge up a touch so the loader at the bottom never collides
         stage.position.y = visH * (h < 520 ? 0 : 0.03);
-
-        // glow always covers the screen, whatever the aspect
-        const gDist = CAM_REST + 2.1;
-        const gH = 2 * gDist * tanHalf;
-        const gW = gH * camera.aspect;
-        glow.scale.set(Math.max(gW * 1.5, gH * 1.1), gH * 1.5, 1);
-        glow.position.y = stage.position.y;
 
         // keep dust density sensible on phones and ultra-wides
         const dx = Math.max(0.35, camera.aspect / 1.78);
@@ -845,10 +796,9 @@ export default function IntroSplash({
           near.baseOpacity * smooth(0, 0.8, t) * (1 - smooth(0, 0.3, push));
         far.mat.opacity = far.baseOpacity * smooth(0, 0.8, t);
 
-        // ---- glow + halo ----
+        // ---- halo ----
         const out = 1 - smooth(FADE_START - 0.6, TOTAL, t);
         const lock = Math.exp(-Math.pow((t - 2.7) / 0.25, 2));
-        glowMat.opacity = 0.7 * smooth(0.1, 1.4, t) * out;
         haloMat.opacity =
           (0.3 * smooth(0.9, 2.8, t) + 0.1 * sweepEnergy + 0.12 * lock) * out;
 
@@ -906,7 +856,7 @@ export default function IntroSplash({
       role="dialog"
       aria-modal="true"
       aria-label="AdroIT intro"
-      className="fixed inset-x-0 top-0 z-[9999] h-dvh overflow-hidden bg-[#02040a]"
+      className="fixed inset-x-0 top-0 z-[9999] h-dvh overflow-hidden bg-black"
     >
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 px-6 pb-9">
         <p
