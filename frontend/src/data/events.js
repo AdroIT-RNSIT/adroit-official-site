@@ -126,8 +126,30 @@ export const sharedEvents = [
           "Mini Game",
         ],
       },
-      { day: "October 8", title: "Machine Learning", slug: "machine-learning" },
-      { day: "October 9", title: "Cybersecurity", slug: "cybersecurity" },
+      {
+        day: "October 8",
+        title: "Machine Learning",
+        slug: "machine-learning",
+        topics: [
+          "Introduction to Machine Learning",
+          "Data Preprocessing",
+          "Supervised, Unsupervised & Reinforcement Learning",
+          "AI, Generative AI & Deep Learning",
+          "Hands-on Machine Learning with Basic Coding",
+        ],
+      },
+      {
+        day: "October 9",
+        title: "Cybersecurity",
+        slug: "cybersecurity",
+        topics: [
+          "Introduction to Cybersecurity",
+          "How Web Applications Work",
+          "Common Web Attacks",
+          "Securing Web Applications",
+          "Quiz",
+        ],
+      },
     ],
   },
   {
