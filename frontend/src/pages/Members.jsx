@@ -228,14 +228,19 @@ export default function Members() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Only scroll back up when the list start is hidden behind the sticky bar; never push the header away.
+  const revealMembersStart = (start) => {
+    const bar = filterBarRef.current;
+    // Measure where the bar sits once stuck; near the page end it can be scrolled off-screen.
+    const offset = (bar ? (parseFloat(getComputedStyle(bar).top) || 0) + bar.offsetHeight : 0) + 12;
+    const top = Math.max(0, start.getBoundingClientRect().top + window.scrollY - offset);
+    if (top < window.scrollY) window.scrollTo(0, top);
+  };
+
   const scrollToMembersStart = () => {
     const startId = active === "all" ? `g-${visibleGroups[0]?.id}` : `g-${active}`;
     const start = document.getElementById(startId) || membersStartRef.current;
-    const bar = filterBarRef.current;
-    if (!start) return;
-    const offset = (bar?.getBoundingClientRect().bottom ?? 0) + 12;
-    const top = start.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+    if (start) revealMembersStart(start);
   };
 
   const pickDomain = (id) => {
@@ -253,11 +258,8 @@ export default function Members() {
     const align = () => {
       const startId = active === "all" ? `g-${visibleGroups[0]?.id}` : `g-${active}`;
       const start = document.getElementById(startId);
-      const bar = filterBarRef.current;
       if (!start) return false;
-      const offset = (bar?.getBoundingClientRect().bottom ?? 0) + 12;
-      const top = Math.max(0, start.getBoundingClientRect().top + window.scrollY - offset);
-      window.scrollTo(0, top);
+      revealMembersStart(start);
       return true;
     };
 
@@ -519,7 +521,14 @@ function KeyChip({ on, onClick, onHover, label, shortLabel, id, Icon }) {
           : "text-slate-500 hover:bg-white/35 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
       }`}
     >
-      {Icon && <Icon size={16} aria-hidden="true" style={{ color: "var(--c)" }} />}
+      {Icon && (
+        <Icon
+          size={16}
+          aria-hidden="true"
+          style={{ color: "var(--c)" }}
+          className={`shrink-0 transition-[filter,opacity] duration-300 ${on ? "" : "opacity-60 grayscale"}`}
+        />
+      )}
       {shortLabel ? (
         <>
           <span className="sm:hidden">{shortLabel}</span>

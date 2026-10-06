@@ -25,11 +25,11 @@ const formatRange = (start, end) => {
 export default function Events() {
   const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
-    <div className="relative overflow-x-clip pt-8 pb-10 text-slate-900 dark:text-slate-100">
+    <div className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-slate-900 dark:text-slate-100">
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
           <h1 className="fluid-h1 mb-4 font-extrabold">
-            <span className="text-sky-800">Events</span>
+            <span className="text-slate-900 dark:text-white">Events</span>
           </h1>
           <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
             Upcoming sessions and recaps from AdroIT.
@@ -58,7 +58,7 @@ export default function Events() {
             </h2>
           </div>
           {completedEvents.length === 0 ? (
-            <div className="rounded-2xl border border-slate-200/80 bg-white/80 px-6 py-16 text-center shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-white/5">
+            <div className="lg-card rounded-[2rem] px-6 py-16 text-center">
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">No past events yet</h3>
             </div>
           ) : (
@@ -87,7 +87,7 @@ function FeaturedEvent({ event }) {
 
   return (
     <article
-      className={`group relative grid overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5 transition-all duration-500 hover:-translate-y-1 hover:border-sky-600/30 hover:shadow-xl hover:shadow-sky-900/10 dark:border-white/10 dark:bg-white/5 dark:hover:border-sky-400/30 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
+      className={`lg-card group grid overflow-hidden rounded-[2rem] transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
       style={posterContained ? { "--poster-col": posterColumn } : undefined}
     >
       {poster && (
@@ -118,7 +118,7 @@ function FeaturedEvent({ event }) {
               {event.eyebrow || "Fest recap"}
             </p>
             {(!poster || posterContained) && (
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 dark:border-white/10 dark:bg-white/5 dark:text-sky-300">
+              <span className="lg-well rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 dark:text-sky-300">
                 {statusLabel}
               </span>
             )}
@@ -132,13 +132,13 @@ function FeaturedEvent({ event }) {
           {(when || event.location) && (
             <div className="mt-3 flex flex-wrap gap-2">
               {when && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                <span className="lg-well inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
                   <Calendar size={13} className="text-sky-600" />
                   {when}
                 </span>
               )}
               {event.location && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                <span className="lg-well inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
                   <MapPin size={13} className="text-sky-600" />
                   {event.location}
                 </span>
