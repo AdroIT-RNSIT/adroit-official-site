@@ -1,9 +1,9 @@
-import { registrationDomains } from "../../frontend/src/data/domainRegistration.js";
+import { BOOTCAMP_SESSIONS } from "./bootcamp-sessions.js";
 
 const KEY = "adroit:registration-closed";
 
 export const defaultClosed = () =>
-  Object.fromEntries(registrationDomains.map((d) => [d.slug, Boolean(d.closed)]));
+  Object.fromEntries(BOOTCAMP_SESSIONS.map((s) => [s.slug, s.closed]));
 
 // Vercel's Upstash integration injects KV_*; a direct Upstash setup uses UPSTASH_*.
 function redisConfig() {
