@@ -1,5 +1,6 @@
 import { mongoConfigured } from "./_lib/mongo.js";
 import { countRecent, markEmailed, saveMessage } from "./_lib/contact-store.js";
+import { checkEmail } from "./_lib/email-check.js";
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
 const MAX_PER_WINDOW = 2;
@@ -55,6 +56,8 @@ export async function sendContact(body, ip = "unknown") {
   if (name.length > 120 || subject.length > 160 || message.length > 4000) {
     return { status: 400, body: { message: "That message is too long." } };
   }
+  const emailProblem = await checkEmail(email);
+  if (emailProblem) return { status: 400, body: { message: emailProblem, field: "email" } };
 
   const endpoint = process.env.FORMSUBMIT_ENDPOINT;
   if (!endpoint && !mongoConfigured()) {

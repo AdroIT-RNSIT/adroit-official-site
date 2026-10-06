@@ -5,9 +5,42 @@
   --nav-height: calc(4rem + env(safe-area-inset-top, 0px));
 }
 
+/* Semantic colours built from the palette the site already uses (sky primary, indigo secondary).
+   `static` keeps them emitted so component <style> blocks can use var(--color-*) too. */
+@theme static {
+  --color-primary: var(--color-sky-700);
+  --color-primary-ink: var(--color-sky-800);
+  --color-on-primary: var(--color-white);
+  --color-secondary: var(--color-indigo-500);
+  --color-page: var(--color-white);
+  --color-surface: var(--color-white);
+  --color-ink: var(--color-slate-900);
+  --color-ink-muted: var(--color-slate-600);
+  --color-ink-subtle: var(--color-slate-500);
+  --color-line: var(--color-slate-200);
+  --color-line-strong: var(--color-slate-300);
+  --color-success: var(--color-emerald-700);
+  --color-warning: var(--color-amber-700);
+  --color-danger: var(--color-red-700);
+}
+
 html.dark {
   color-scheme: dark;
   background-color: #000000;
+  --color-primary: var(--color-sky-400);
+  --color-primary-ink: var(--color-sky-300);
+  --color-on-primary: var(--color-slate-950);
+  --color-secondary: var(--color-indigo-400);
+  --color-page: #000000;
+  --color-surface: #111111;
+  --color-ink: var(--color-slate-100);
+  --color-ink-muted: var(--color-slate-400);
+  --color-ink-subtle: var(--color-slate-400);
+  --color-line: rgb(255 255 255 / 0.12);
+  --color-line-strong: rgb(255 255 255 / 0.24);
+  --color-success: var(--color-emerald-400);
+  --color-warning: var(--color-amber-400);
+  --color-danger: var(--color-red-400);
 }
 
 html.dark body,
