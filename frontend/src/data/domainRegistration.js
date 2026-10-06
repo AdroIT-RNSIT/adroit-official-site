@@ -25,7 +25,7 @@ export const registrationDomains = [
     title: "Data Analytics",
     label: "Technical",
     description: "Extract insights from data. Master visualization, SQL, Python, and business intelligence.",
-    whatsapp: "https://chat.whatsapp.com/E7etN4r25lZ7FUipcqvL5U",
+    closed: true,
   },
   {
     slug: "non-tech",
@@ -37,4 +37,8 @@ export const registrationDomains = [
 
 export function findRegistrationDomain(slug) {
   return registrationDomains.find((domain) => domain.slug === slug) || null;
+}
+
+export function registrationClosed(slug) {
+  return Boolean(findRegistrationDomain(slug)?.closed);
 }

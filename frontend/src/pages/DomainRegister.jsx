@@ -53,6 +53,7 @@ export default function DomainRegister() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (domain.closed) return;
     setError("");
     setSubmitting(true);
 
@@ -113,7 +114,14 @@ export default function DomainRegister() {
         </section>
       )}
 
-      {done ? (
+      {domain.closed ? (
+        <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-8 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900">Registration closed</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            {domain.title} registrations are closed for now. Follow AdroIT for updates on the next round.
+          </p>
+        </div>
+      ) : done ? (
         <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-8">
           <h2 className="text-lg font-semibold text-emerald-900">You're registered</h2>
           <p className="mt-2 text-sm text-emerald-800">
