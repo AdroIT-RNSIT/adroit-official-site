@@ -22,6 +22,7 @@ export const registrationDomains = [
     title: "Data Analytics",
     label: "Technical",
     description: "Extract insights from data. Master visualization, SQL, Python, and business intelligence.",
+    closed: true,
   },
   {
     slug: "non-tech",
@@ -33,4 +34,8 @@ export const registrationDomains = [
 
 export function findRegistrationDomain(slug) {
   return registrationDomains.find((domain) => domain.slug === slug) || null;
+}
+
+export function registrationClosed(slug) {
+  return Boolean(findRegistrationDomain(slug)?.closed);
 }

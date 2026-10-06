@@ -7,6 +7,7 @@ import GlimpseGallery from "../components/GlimpseGallery";
 import ShareEventButton from "../components/ShareEventButton";
 import { ACCENTS, AUTO_MS, ParticleStage } from "../components/DomainParticleStage";
 import { eventPhase, eventStatusLabel, findEditionForCompetitionSlug, getEventBySlug, sessionCompleted } from "../data/events";
+import { registrationClosed } from "../data/domainRegistration";
 
 const SESSION_ICONS = {
   "data-analytics": BarChart3,
@@ -233,13 +234,19 @@ export default function EventDetail() {
                       {session.detail}
                     </p>
                   )}
-                  <Link
-                    to={session.slug ? `/register/${session.slug}` : "/events"}
-                    state={{ back: `/events/${event.slug}` }}
-                    className="mt-4 inline-flex w-full justify-center rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 sm:w-fit sm:py-2"
-                  >
-                    Register
-                  </Link>
+                  {registrationClosed(session.slug) ? (
+                    <span className="mt-4 inline-flex w-full cursor-not-allowed justify-center rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-500 sm:w-fit sm:py-2 dark:bg-white/10 dark:text-white/50">
+                      Registration closed
+                    </span>
+                  ) : (
+                    <Link
+                      to={session.slug ? `/register/${session.slug}` : "/events"}
+                      state={{ back: `/events/${event.slug}` }}
+                      className="mt-4 inline-flex w-full justify-center rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 sm:w-fit sm:py-2"
+                    >
+                      Register
+                    </Link>
+                  )}
                 </article>
               ))}
             </div>
@@ -744,16 +751,25 @@ function BootcampPage({ event }) {
                     </div>
                   </div>
                   {session.detail && <p className="mt-3 max-w-md text-base text-slate-600 sm:text-lg dark:text-white/70">{session.detail}</p>}
-                  <Link
-                    id="bootcamp-register"
-                    to={session.slug ? `/register/${session.slug}` : "/events"}
-                    state={{ back: `/events/${event.slug}` }}
-                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-black transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"
-                    style={{ backgroundColor: accent }}
-                  >
-                    Register for {session.title}
-                    <ArrowUpRight size={20} className="shrink-0" />
-                  </Link>
+                  {registrationClosed(session.slug) ? (
+                    <span
+                      id="bootcamp-register"
+                      className="mt-5 inline-flex w-full cursor-not-allowed items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-base font-bold text-slate-500 sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg dark:border-white/20 dark:text-white/50"
+                    >
+                      {session.title} registration closed
+                    </span>
+                  ) : (
+                    <Link
+                      id="bootcamp-register"
+                      to={session.slug ? `/register/${session.slug}` : "/events"}
+                      state={{ back: `/events/${event.slug}` }}
+                      className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-black transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"
+                      style={{ backgroundColor: accent }}
+                    >
+                      Register for {session.title}
+                      <ArrowUpRight size={20} className="shrink-0" />
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
