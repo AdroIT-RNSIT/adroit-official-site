@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Brain, Cloud, Shield, BarChart3, Megaphone, User, Search, X, Crown } from "lucide-react";
 import { cloudinaryUrl } from "../lib/cloudinaryUrl";
-import { memberGroups } from "../data/members";
+import { useMemberGroups } from "../lib/memberGroups";
 
 const DOMAINS = {
   ml: { icon: Brain, c: "#22d3ee" },
@@ -37,19 +37,19 @@ function LinkedInMark({ className = "h-4 w-4" }) {
   );
 }
 
-const GROUPS = memberGroups.map((g) => ({
-  ...g,
-  items: [...g.members]
-    .sort((a, b) => (b.role === "Domain Lead") - (a.role === "Domain Lead"))
-    .map((m, i) => ({
-      ...m,
-      key: `${g.id}-${pad(i + 1)}`,
-      gid: g.id,
-      gname: g.name,
-      isLead: m.role === "Domain Lead",
-    })),
-}));
-const ALL = GROUPS.flatMap((g) => g.items);
+const buildGroups = (memberGroups) =>
+  memberGroups.map((g) => ({
+    ...g,
+    items: [...g.members]
+      .sort((a, b) => (b.role === "Domain Lead") - (a.role === "Domain Lead"))
+      .map((m, i) => ({
+        ...m,
+        key: `${g.id}-${pad(i + 1)}`,
+        gid: g.id,
+        gname: g.name,
+        isLead: m.role === "Domain Lead",
+      })),
+  }));
 const MOBILE_DOMAIN_LABELS = {
   ml: "ML",
   cc: "Cloud",
@@ -180,6 +180,9 @@ html.dark {
 `;
 
 export default function Members() {
+  const memberGroups = useMemberGroups();
+  const GROUPS = useMemo(() => buildGroups(memberGroups), [memberGroups]);
+  const ALL = useMemo(() => GROUPS.flatMap((g) => g.items), [GROUPS]);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState("all");
   const [selKey, setSelKey] = useState(null);
@@ -190,12 +193,12 @@ export default function Members() {
 
   const q = query.trim().toLowerCase();
   const matches = (el) => (active === "all" || el.gid === active) && (!q || el.name.toLowerCase().includes(q));
-  const matchCount = useMemo(() => ALL.filter(matches).length, [q, active]); // eslint-disable-line
+  const matchCount = useMemo(() => ALL.filter(matches).length, [ALL, q, active]); // eslint-disable-line
   const selected = ALL.find((el) => el.key === selKey) || null;
   const visibleGroups = useMemo(() => {
     if (active !== "all") return GROUPS.filter((g) => g.id === active);
     return isMobile ? GROUPS.slice(0, 1) : GROUPS;
-  }, [isMobile, active]);
+  }, [GROUPS, isMobile, active]);
 
   useEffect(() => {
     if (selected && !matches(selected)) setSelKey(null);
@@ -211,7 +214,7 @@ export default function Members() {
 
   useEffect(() => {
     if (isMobile && active === "all") setActive(GROUPS[0]?.id ?? "all");
-  }, [isMobile, active]);
+  }, [GROUPS, isMobile, active]);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -293,7 +296,7 @@ export default function Members() {
 
       <div ref={filterBarRef} className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <DomainFilters active={active} isMobile={isMobile} onPick={pickDomain} />
+          <DomainFilters groups={GROUPS} active={active} isMobile={isMobile} onPick={pickDomain} />
           <label className="relative block shrink-0 lg:w-72">
             <span className="sr-only">Search members</span>
             <Search size={16} aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -392,7 +395,7 @@ export default function Members() {
   );
 }
 
-function DomainFilters({ active, isMobile, onPick }) {
+function DomainFilters({ groups, active, isMobile, onPick }) {
   const trackRef = useRef(null);
   const [hoveredId, setHoveredId] = useState(null);
   const [pose, setPose] = useState(null);
@@ -484,7 +487,7 @@ function DomainFilters({ active, isMobile, onPick }) {
           id="all"
         />
       )}
-      {GROUPS.map((g) => (
+      {groups.map((g) => (
         <KeyChip
           key={g.id}
           on={active === g.id}

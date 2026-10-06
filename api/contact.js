@@ -1,5 +1,14 @@
+import { mongoConfigured } from "./_lib/mongo.js";
+import { countRecent, markEmailed, saveMessage } from "./_lib/contact-store.js";
+
 const WINDOW_MS = 24 * 60 * 60 * 1000;
 const MAX_PER_WINDOW = 2;
+const RATE_LIMITED = {
+  status: 429,
+  body: { message: "Rate limit reached. You can send up to 2 messages every 24 hours." },
+};
+
+// Only used when MongoDB is unavailable; per-instance, so it resets on cold starts.
 const hits = new Map();
 
 function recentHits(ip) {
@@ -7,6 +16,30 @@ function recentHits(ip) {
   const recent = (hits.get(ip) || []).filter((ts) => now - ts < WINDOW_MS);
   hits.set(ip, recent);
   return recent;
+}
+
+async function sendEmail(endpoint, { name, email, subject, message }) {
+  try {
+    const upstream = await fetch(`https://formsubmit.co/ajax/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        subject,
+        message,
+        _replyto: email,
+        _subject: `AdroIT contact: ${subject}`,
+        _template: "table",
+        _captcha: "true",
+      }),
+    });
+    const data = await upstream.json().catch(() => ({}));
+    const ok = upstream.ok && data.success !== "false" && data.success !== false;
+    return { ok, message: data.message };
+  } catch {
+    return { ok: false };
+  }
 }
 
 export async function sendContact(body, ip = "unknown") {
@@ -23,40 +56,36 @@ export async function sendContact(body, ip = "unknown") {
     return { status: 400, body: { message: "That message is too long." } };
   }
 
-  const recent = recentHits(ip);
-  if (recent.length >= MAX_PER_WINDOW) {
-    return {
-      status: 429,
-      body: { message: "Rate limit reached. You can send up to 2 messages every 24 hours." },
-    };
-  }
-
   const endpoint = process.env.FORMSUBMIT_ENDPOINT;
-  if (!endpoint) {
+  if (!endpoint && !mongoConfigured()) {
     return { status: 500, body: { message: "Contact form is not configured." } };
   }
 
-  const upstream = await fetch(`https://formsubmit.co/ajax/${endpoint}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({
-      name,
-      email,
-      subject,
-      message,
-      _replyto: email,
-      _subject: `AdroIT contact: ${subject}`,
-      _template: "table",
-      _captcha: "true",
-    }),
-  });
-  const data = await upstream.json().catch(() => ({}));
-  if (!upstream.ok || data.success === "false" || data.success === false) {
-    return { status: 502, body: { message: data.message || "Failed to send message" } };
+  let savedId = null;
+  if (mongoConfigured()) {
+    try {
+      if ((await countRecent(ip, WINDOW_MS)) >= MAX_PER_WINDOW) return RATE_LIMITED;
+      savedId = await saveMessage({ name, email, subject, message }, ip);
+    } catch {
+      /* fall back to email-only below */
+    }
   }
 
-  recent.push(Date.now());
-  hits.set(ip, recent);
+  if (!savedId) {
+    const recent = recentHits(ip);
+    if (recent.length >= MAX_PER_WINDOW) return RATE_LIMITED;
+    if (!endpoint) return { status: 502, body: { message: "Failed to send message" } };
+  }
+
+  if (endpoint) {
+    const emailed = await sendEmail(endpoint, { name, email, subject, message });
+    if (emailed.ok && savedId) await markEmailed(savedId).catch(() => {});
+    if (!emailed.ok && !savedId) {
+      return { status: 502, body: { message: emailed.message || "Failed to send message" } };
+    }
+  }
+
+  if (!savedId) recentHits(ip).push(Date.now());
   return { status: 200, body: { success: true } };
 }
 
@@ -65,7 +94,9 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ message: "Method not allowed" });
   }
-  const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown").split(",")[0].trim();
+  const ip = String(req.headers["x-real-ip"] || req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown")
+    .split(",")[0]
+    .trim();
   const result = await sendContact(req.body, ip);
   return res.status(result.status).json(result.body);
 }

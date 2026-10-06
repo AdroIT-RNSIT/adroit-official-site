@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { memberGroups } from '../data/members';
+import { useMemberGroups } from '../lib/memberGroups';
 import { Link } from 'react-router-dom';
 import {
   Brain,
@@ -32,6 +32,7 @@ const DOMAIN_PANELS = [
 ];
 
 export default function Domains() {
+  const memberGroups = useMemberGroups();
   const [activeDomain, setActiveDomain] = useState('ml');
   const [activePanel, setActivePanel] = useState('overview');
   const [hoveredDomain, setHoveredDomain] = useState(null);

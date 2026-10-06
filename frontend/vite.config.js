@@ -4,6 +4,12 @@ import react from "@vitejs/plugin-react";
 import { sendContact } from "../api/contact.js";
 import { adminRoutes } from "../api/_lib/admin-routes.js";
 import { handleRegistrationStatus } from "../api/_lib/registration-status.js";
+import { handleMembers } from "../api/_lib/members-public.js";
+
+const fail = (res) => () => {
+  res.statusCode = 500;
+  res.end();
+};
 
 function adminApi() {
   return {
@@ -14,10 +20,10 @@ function adminApi() {
         next();
       });
       server.middlewares.use("/api/registration-status", (req, res) => {
-        handleRegistrationStatus(req, res).catch(() => {
-          res.statusCode = 500;
-          res.end();
-        });
+        handleRegistrationStatus(req, res).catch(fail(res));
+      });
+      server.middlewares.use("/api/members", (req, res) => {
+        handleMembers(req, res).catch(fail(res));
       });
       server.middlewares.use("/api/admin69", (req, res) => {
         const route = adminRoutes[req.url.split("?")[0]];
@@ -26,10 +32,7 @@ function adminApi() {
           res.end();
           return;
         }
-        Promise.resolve(route(req, res)).catch(() => {
-          res.statusCode = 500;
-          res.end();
-        });
+        Promise.resolve(route(req, res)).catch(fail(res));
       });
     },
   };
@@ -73,6 +76,9 @@ export default defineConfig(({ mode }) => {
   process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";
   process.env.MONGODB_URI ||= env.MONGODB_URI || "";
   process.env.MONGODB_DB ||= env.MONGODB_DB || "";
+  for (const key of ["CLOUDINARY_URL", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"]) {
+    process.env[key] ||= env[key] || "";
+  }
   return {
     plugins: [react(), contactApi(), adminApi()],
     build: {
