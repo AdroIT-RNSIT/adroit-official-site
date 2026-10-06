@@ -113,7 +113,7 @@ const DomainShowcase = () => {
   return (
     <section className="px-3 sm:px-6 lg:px-8 py-14 sm:py-20">
       <div
-        className="relative max-w-6xl mx-auto overflow-hidden rounded-3xl sm:rounded-[2rem] bg-white text-slate-900 ring-1 ring-slate-200 dark:bg-black dark:text-white dark:ring-white/10"
+        className="lg-card max-w-6xl mx-auto overflow-hidden rounded-3xl sm:rounded-[2rem] text-slate-900 dark:text-white"
         onPointerEnter={(e) => {
           if (e.pointerType !== "touch") setPaused(true);
         }}
@@ -193,7 +193,7 @@ const DomainShowcase = () => {
 
           <div
             role="tablist"
-            className="grid grid-cols-2 lg:grid-cols-5 gap-px border-t border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-white/10"
+            className="grid grid-cols-2 lg:grid-cols-5 gap-px border-t border-slate-900/10 bg-slate-900/[0.06] dark:border-white/10 dark:bg-white/10"
           >
             {showcase.map((s, i) => {
               const on = i === active;
@@ -210,8 +210,8 @@ const DomainShowcase = () => {
                   }}
                   className={`relative flex min-h-[3.25rem] items-center justify-between gap-2 px-3 py-3 sm:min-h-[3.5rem] sm:px-7 sm:py-5 lg:px-5 text-left transition-colors last:col-span-2 lg:last:col-span-1 ${
                     on
-                      ? "bg-white dark:bg-[#111111]"
-                      : "bg-slate-50 hover:bg-slate-100 dark:bg-black dark:hover:bg-[#1a1a1a]"
+                      ? "bg-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] dark:bg-[#141414]/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+                      : "bg-white/55 hover:bg-white/75 dark:bg-black/70 dark:hover:bg-[#111111]/80"
                   }`}
                 >
                   {on && (
@@ -470,7 +470,7 @@ const Home = () => {
     }));
 
   return (
-    <div className="home-root relative min-h-dvh overflow-x-clip">
+    <div className="home-root relative min-h-dvh overflow-x-clip bg-page">
       <div className="lg:hidden relative z-[1001] flex items-center justify-between gap-3 px-3 pt-1">
         <img
           src={
@@ -516,7 +516,7 @@ const Home = () => {
         className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-6 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-700 ease-out motion-reduce:transition-none"
       >
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <span className="inline-flex max-w-full items-center mb-4 rounded-full border border-slate-300/80 px-3 py-1 font-mono text-[10px] tracking-[0.18em] uppercase text-sky-800 whitespace-nowrap sm:px-3.5 sm:text-xs sm:tracking-[0.22em]">
+          <span className="lg-well inline-flex max-w-full items-center mb-4 rounded-full px-3 py-1 font-mono text-[10px] tracking-[0.18em] uppercase text-sky-800 whitespace-nowrap sm:px-3.5 sm:text-xs sm:tracking-[0.22em]">
             Recruiting soon
           </span>
           <img
@@ -524,7 +524,7 @@ const Home = () => {
             className="block object-contain h-16 sm:h-24 md:h-[7.5rem] w-auto max-w-[min(100%,18rem)] mx-auto mb-4 sm:mb-5"
             src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
           />
-          <h1 className="mx-auto mb-5 max-w-xl px-1 text-base sm:mb-8 sm:px-4 sm:text-xl md:text-2xl font-medium tracking-tight text-sky-800 leading-snug">
+          <h1 className="mx-auto mb-5 max-w-xl px-1 text-base sm:mb-8 sm:px-4 sm:text-xl md:text-2xl font-medium tracking-tight text-slate-900 leading-snug dark:text-white">
             <span className="sr-only">AdroIT — </span>
             Department of
             <span className="mt-0.5 block font-bold">
@@ -580,7 +580,7 @@ const Home = () => {
             Events through the year
           </h2>
 
-          <ul className="divide-y divide-slate-200/80 border-y border-slate-200/80 dark:divide-white/10 dark:border-white/10">
+          <ul className="lg-card divide-y divide-slate-900/10 rounded-3xl px-4 sm:rounded-[2rem] sm:px-8 dark:divide-white/10">
             {events.map((e, i) => {
               const n = String(i + 1).padStart(2, "0");
               const inner = (
@@ -613,7 +613,7 @@ const Home = () => {
                   {e.href ? (
                     <Link
                       to={e.href}
-                      className="group flex items-start gap-3 sm:gap-4 py-5 sm:py-6 transition-colors hover:bg-slate-50/80 dark:hover:bg-white/[0.03] -mx-2 px-2 sm:mx-0 sm:px-0"
+                      className="group -mx-2 flex items-start gap-3 rounded-2xl px-2 py-5 transition-colors hover:bg-slate-900/[0.03] sm:-mx-4 sm:gap-4 sm:px-4 sm:py-6 dark:hover:bg-white/[0.04]"
                     >
                       {inner}
                     </Link>
@@ -630,13 +630,13 @@ const Home = () => {
       </section>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-10 pb-24">
-        <div className="max-w-6xl mx-auto rounded-2xl sm:rounded-3xl bg-sky-700 text-white p-6 sm:p-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="lg-card max-w-6xl mx-auto rounded-3xl sm:rounded-[2rem] text-slate-900 dark:text-white p-6 sm:p-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
             <h2 className="text-2xl sm:text-4xl font-bold">
               Skill Up Boot Camp
             </h2>
 
-            <p className="text-sky-100 mt-2">
+            <p className="mt-2 text-slate-600 dark:text-white/70">
               Four days. Four domains. Hands-on technical
               exposure from October 6 to October 9, 2026.
             </p>
@@ -644,7 +644,7 @@ const Home = () => {
 
           <Link
             to={liveEvent.href}
-            className="shrink-0 inline-flex w-full sm:w-auto justify-center rounded-lg bg-white px-6 py-3 font-semibold text-sky-800 hover:bg-sky-50 transition-colors"
+            className="lg-solid shrink-0 inline-flex w-full sm:w-auto justify-center rounded-full bg-ink px-6 py-3 font-semibold text-page transition-transform duration-200 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none"
           >
             Explore the boot camp
           </Link>
