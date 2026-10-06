@@ -130,42 +130,28 @@ export default function RegistrationModal({ isOpen, onClose, event, eventTitle }
     }
 
     try {
-      if (supabase) {
-        const { data, error } = await supabase
-          .from("event_registrations")
-          .insert({
-            event_name: title,
-            team_name: teamName,
-            college_name: collegeName,
-            leader_email: leaderEmail,
-            ieee_membership_id: ieeeMembershipId,
-            team_size: participants.length,
-            participants,
-            submitted_at: new Date().toISOString(),
-          })
-          .select();
-
-        if (error) {
-          throw new Error(error.message || "Failed to save registration to database");
-        }
-        setSuccessData({ registrationId: data[0]?.id || "ADR-SUCCESS" });
-      } else {
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-        const response = await fetch(`${API_URL}/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            eventName: title,
-            teamName,
-            collegeName,
-            leaderEmail,
-            participants,
-          }),
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.detail || "Registration failed");
-        setSuccessData(data);
+      if (!supabase) {
+        throw new Error("Registration service is not configured. Please contact the organizers.");
       }
+
+      const { data, error } = await supabase
+        .from("event_registrations")
+        .insert({
+          event_name: title,
+          team_name: teamName,
+          college_name: collegeName,
+          leader_email: leaderEmail,
+          ieee_membership_id: ieeeMembershipId,
+          team_size: participants.length,
+          participants,
+          submitted_at: new Date().toISOString(),
+        })
+        .select();
+
+      if (error) {
+        throw new Error(error.message || "Failed to save registration to database");
+      }
+      setSuccessData({ registrationId: data[0]?.id || "ADR-SUCCESS" });
 
       setTimeout(() => {
         window.open("https://payments.billdesk.com/bdcollect/bd/rnsiotec/7312", "_blank");
