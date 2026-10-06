@@ -71,8 +71,8 @@ export default defineConfig(({ mode }) => {
   process.env.FORMSUBMIT_ENDPOINT = env.FORMSUBMIT_ENDPOINT;
   process.env.ADMIN_PASSWORD_HASH ||= env.ADMIN_PASSWORD_HASH || "";
   process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";
-  process.env.KV_REST_API_URL ||= env.KV_REST_API_URL || "";
-  process.env.KV_REST_API_TOKEN ||= env.KV_REST_API_TOKEN || "";
+  process.env.MONGODB_URI ||= env.MONGODB_URI || "";
+  process.env.MONGODB_DB ||= env.MONGODB_DB || "";
   return {
     plugins: [react(), contactApi(), adminApi()],
     build: {
