@@ -1,18 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Eye, EyeOff, LockKeyhole, LogOut, Users, CalendarDays, BookOpen, ClipboardList } from "lucide-react";
-
-const API = "/api/admin69";
-
-async function call(path, options = {}) {
-  const res = await fetch(`${API}${path}`, {
-    credentials: "same-origin",
-    cache: "no-store",
-    ...options,
-    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
-  });
-  const data = await res.json().catch(() => ({}));
-  return { status: res.status, data };
-}
+import { Eye, EyeOff, LockKeyhole, LogOut, CalendarDays, BookOpen, ClipboardList } from "lucide-react";
+import { call } from "./api";
+import MembersEditor from "./MembersEditor";
+import Inbox from "./Inbox";
 
 const formatTime = (ms) =>
   new Date(ms).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -141,10 +131,15 @@ function Login({ onSuccess }) {
   );
 }
 
-const sections = [
-  { name: "Members", Icon: Users },
+const comingSoon = [
   { name: "Events", Icon: CalendarDays },
   { name: "Resources", Icon: BookOpen },
+];
+
+const TABS = [
+  { id: "registrations", label: "Registrations" },
+  { id: "members", label: "Members" },
+  { id: "inbox", label: "Inbox" },
 ];
 
 function BootcampRegistrations({ onExpired }) {
@@ -189,7 +184,7 @@ function BootcampRegistrations({ onExpired }) {
   const openCount = sessions?.filter((s) => !s.closed).length || 0;
 
   return (
-    <section className="mt-8 rounded-2xl border border-white/10 bg-[#0b0b0b]">
+    <section className="rounded-2xl border border-white/10 bg-[#0b0b0b]">
       <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 p-5 sm:p-6">
         <div className="flex items-start gap-3">
           <ClipboardList size={22} className="mt-0.5 shrink-0 text-sky-400" aria-hidden="true" />
@@ -270,6 +265,9 @@ function BootcampRegistrations({ onExpired }) {
 }
 
 function Dashboard({ expiresAt, onSignOut, onExpired }) {
+  const [tab, setTab] = useState("registrations");
+  const [unread, setUnread] = useState(0);
+
   return (
     <div className="min-h-dvh">
       <header className="border-b border-white/10 bg-[#0b0b0b]">
@@ -297,13 +295,46 @@ function Dashboard({ expiresAt, onSignOut, onExpired }) {
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <h1 className="text-2xl font-bold text-white sm:text-3xl">Dashboard</h1>
 
-        <BootcampRegistrations onExpired={onExpired} />
+        <div role="tablist" aria-label="Dashboard sections" className="mt-6 flex gap-1 overflow-x-auto border-b border-white/10">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              id={`tab-${t.id}`}
+              aria-selected={tab === t.id}
+              aria-controls={`panel-${t.id}`}
+              onClick={() => setTab(t.id)}
+              className={`-mb-px inline-flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
+                tab === t.id ? "border-sky-400 text-white" : "border-transparent text-slate-400 hover:text-white"
+              }`}
+            >
+              {t.label}
+              {t.id === "inbox" && unread > 0 && (
+                <span className="rounded-full bg-sky-500 px-1.5 text-xs font-semibold text-black">{unread}</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Panels stay mounted so unsaved member edits survive switching tabs. */}
+        <div className="mt-6">
+          <div role="tabpanel" id="panel-registrations" aria-labelledby="tab-registrations" hidden={tab !== "registrations"}>
+            <BootcampRegistrations onExpired={onExpired} />
+          </div>
+          <div role="tabpanel" id="panel-members" aria-labelledby="tab-members" hidden={tab !== "members"}>
+            <MembersEditor onExpired={onExpired} />
+          </div>
+          <div role="tabpanel" id="panel-inbox" aria-labelledby="tab-inbox" hidden={tab !== "inbox"}>
+            <Inbox onExpired={onExpired} onUnreadChange={setUnread} />
+          </div>
+        </div>
 
         <h2 className="mt-12 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
-          Coming once the backend is connected
+          Coming later
         </h2>
-        <ul className="mt-4 grid gap-4 sm:grid-cols-3">
-          {sections.map(({ name, Icon }) => (
+        <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+          {comingSoon.map(({ name, Icon }) => (
             <li key={name} className="rounded-2xl border border-white/10 bg-[#0b0b0b] p-5">
               <Icon size={22} className="text-sky-400" aria-hidden="true" />
               <p className="mt-4 font-semibold text-white">{name}</p>

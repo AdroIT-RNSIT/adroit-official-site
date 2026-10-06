@@ -140,7 +140,7 @@ export function sameOrigin(req) {
   }
 }
 
-export async function readJson(req) {
+export async function readJson(req, maxBytes = 4096) {
   try {
     if (req.body !== undefined) {
       return typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
@@ -152,7 +152,7 @@ export async function readJson(req) {
   let size = 0;
   for await (const chunk of req) {
     size += chunk.length;
-    if (size > 4096) return {};
+    if (size > maxBytes) return {};
     chunks.push(chunk);
   }
   try {
