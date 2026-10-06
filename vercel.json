@@ -2,8 +2,35 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
+      "source": "/dashboard/admin69",
+      "destination": "/dashboard/admin69/index.html"
+    },
+    {
+      "source": "/dashboard/admin69/",
+      "destination": "/dashboard/admin69/index.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/dashboard/admin69(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    },
+    {
+      "source": "/api/admin69/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
     }
   ]
 }

@@ -1,6 +1,32 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { sendContact } from "../api/contact.js";
+import { adminRoutes } from "../api/_lib/admin-routes.js";
+
+function adminApi() {
+  return {
+    name: "admin-api",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url === "/dashboard/admin69") req.url = "/dashboard/admin69/";
+        next();
+      });
+      server.middlewares.use("/api/admin69", (req, res) => {
+        const route = adminRoutes[req.url.split("?")[0]];
+        if (!route) {
+          res.statusCode = 404;
+          res.end();
+          return;
+        }
+        Promise.resolve(route(req, res)).catch(() => {
+          res.statusCode = 500;
+          res.end();
+        });
+      });
+    },
+  };
+}
 
 function contactApi() {
   return {
@@ -36,8 +62,17 @@ function contactApi() {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   process.env.FORMSUBMIT_ENDPOINT = env.FORMSUBMIT_ENDPOINT;
-  return {
-    plugins: [react(), contactApi()],
+  process.env.ADMIN_PASSWORD_HASH ||= env.ADMIN_PASSWORD_HASH || "";
+  process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";  return {
+    plugins: [react(), contactApi(), adminApi()],
+    build: {
+      rollupOptions: {
+        input: {
+          main: fileURLToPath(new URL("./index.html", import.meta.url)),
+          dashboard: fileURLToPath(new URL("./dashboard/admin69/index.html", import.meta.url)),
+        },
+      },
+    },
     server: {
       proxy: {
         "/api": {
