@@ -63,7 +63,10 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   process.env.FORMSUBMIT_ENDPOINT = env.FORMSUBMIT_ENDPOINT;
   process.env.ADMIN_PASSWORD_HASH ||= env.ADMIN_PASSWORD_HASH || "";
-  process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";  return {
+  process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";
+  process.env.SUPABASE_URL ||= env.SUPABASE_URL || env.VITE_SUPABASE_URL || "";
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||= env.SUPABASE_SERVICE_ROLE_KEY || "";
+  return {
     plugins: [react(), contactApi(), adminApi()],
     build: {
       rollupOptions: {

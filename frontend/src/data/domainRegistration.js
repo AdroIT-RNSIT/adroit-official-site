@@ -38,7 +38,3 @@ export const registrationDomains = [
 export function findRegistrationDomain(slug) {
   return registrationDomains.find((domain) => domain.slug === slug) || null;
 }
-
-export function registrationClosed(slug) {
-  return Boolean(findRegistrationDomain(slug)?.closed);
-}
