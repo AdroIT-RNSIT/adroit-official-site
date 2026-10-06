@@ -11,7 +11,7 @@ export async function handleRegistrations(req, res) {
   if (!adminSession(req)) return send(res, 401, { message: "Sign in again." });
   if (!storeConfigured()) {
     return send(res, 503, {
-      message: "Upstash Redis isn't connected yet. In Vercel, open Storage, add Upstash Redis, connect it to this project, and redeploy.",
+      message: "MongoDB isn't connected yet. Add MONGODB_URI in Vercel > Settings > Environment Variables and redeploy.",
     });
   }
 
