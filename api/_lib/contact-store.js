@@ -4,17 +4,28 @@ import { collection } from "./mongo.js";
 
 const COLLECTION = "contact_messages";
 const LIST_LIMIT = 200;
+export const RETENTION_DAYS = 7;
+const RETENTION_SECONDS = RETENTION_DAYS * 24 * 60 * 60;
 
 let indexesReady = null;
 
+// MongoDB's TTL monitor deletes messages once createdAt is older than the retention window.
 async function messages() {
   const col = await collection(COLLECTION);
-  indexesReady ||= col.createIndexes([{ key: { ipHash: 1, createdAt: -1 } }, { key: { createdAt: -1 } }]).catch(() => {
-    indexesReady = null;
-  });
+  indexesReady ||= col
+    .createIndexes([
+      { key: { ipHash: 1, createdAt: -1 } },
+      { key: { createdAt: 1 }, name: "expire_after_retention", expireAfterSeconds: RETENTION_SECONDS },
+    ])
+    .catch(() => {
+      indexesReady = null;
+    });
   await indexesReady;
   return col;
 }
+
+// The TTL monitor runs about once a minute, so hide anything already past the window.
+const live = () => ({ createdAt: { $gte: new Date(Date.now() - RETENTION_SECONDS * 1000) } });
 
 // Raw IPs aren't stored; a keyed hash is enough to rate-limit repeat senders.
 const hashIp = (ip) =>
@@ -46,17 +57,23 @@ export async function listMessages() {
   const col = await messages();
   const [docs, unread, total] = await Promise.all([
     col
-      .find({}, { projection: { ipHash: 0 } })
+      .find(live(), { projection: { ipHash: 0 } })
       .sort({ createdAt: -1 })
       .limit(LIST_LIMIT)
       .toArray(),
-    col.countDocuments({ read: false }),
-    col.estimatedDocumentCount(),
+    col.countDocuments({ ...live(), read: false }),
+    col.countDocuments(live()),
   ]);
   return {
     unread,
     total,
-    messages: docs.map(({ _id, createdAt, ...rest }) => ({ id: _id.toString(), createdAt: createdAt.toISOString(), ...rest })),
+    retentionDays: RETENTION_DAYS,
+    messages: docs.map(({ _id, createdAt, ...rest }) => ({
+      id: _id.toString(),
+      createdAt: createdAt.toISOString(),
+      expiresAt: new Date(createdAt.getTime() + RETENTION_SECONDS * 1000).toISOString(),
+      ...rest,
+    })),
   };
 }
 

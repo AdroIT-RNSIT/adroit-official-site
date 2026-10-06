@@ -137,7 +137,7 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
             }}
             type="button"
             draggable={false}
-            className="event-strip-card absolute top-5 left-0 w-[min(19rem,calc(100vw-3.5rem))] overflow-hidden sm:top-6 sm:w-[24rem] sm:max-w-[22rem] h-[12.25rem] sm:h-[15rem] rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-white/75 p-4 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer dark:border-white/10 dark:bg-white/5"
+            className="event-strip-card absolute top-5 left-0 w-[min(19rem,calc(100vw-3.5rem))] overflow-hidden sm:top-6 sm:w-[24rem] sm:max-w-[22rem] h-[12.25rem] sm:h-[15rem] lg-card [-webkit-backdrop-filter:none] [backdrop-filter:none] rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer"
           >
             <div className="flex justify-between items-start gap-2 mb-3">
               <span className="font-semibold text-sky-800 text-[11px] sm:text-sm tracking-wide uppercase">

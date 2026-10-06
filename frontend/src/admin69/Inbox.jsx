@@ -4,6 +4,14 @@ import { call } from "./api";
 
 const formatDate = (iso) => new Date(iso).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
 
+function expiresIn(iso) {
+  const hours = Math.max(0, (new Date(iso) - Date.now()) / 3_600_000);
+  if (hours < 1) return "in under an hour";
+  if (hours < 24) return `in ${Math.round(hours)} hour${Math.round(hours) === 1 ? "" : "s"}`;
+  const days = Math.round(hours / 24);
+  return `in ${days} day${days === 1 ? "" : "s"}`;
+}
+
 export default function Inbox({ onExpired, onUnreadChange }) {
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("all");
@@ -71,7 +79,9 @@ export default function Inbox({ onExpired, onUnreadChange }) {
           <div>
             <h2 className="font-semibold text-white">Contact inbox</h2>
             <p className="mt-1 text-sm text-slate-400">
-              {data ? `${data.unread} unread of ${data.total}. Messages from the Contact page land here.` : "Loading…"}
+              {data
+                ? `${data.unread} unread of ${data.total}. Messages are deleted automatically ${data.retentionDays} days after they arrive.`
+                : "Loading…"}
             </p>
           </div>
         </div>
@@ -152,6 +162,7 @@ export default function Inbox({ onExpired, onUnreadChange }) {
                     From <span className="text-slate-200">{m.name}</span> &lt;{m.email}&gt;
                     {!m.emailed && <span className="ml-2 rounded bg-amber-500/10 px-1.5 py-0.5 text-xs text-amber-300">Email copy not delivered</span>}
                   </p>
+                  <p className="mt-1 text-xs text-slate-500">Auto-deletes {expiresIn(m.expiresAt)}.</p>
                   <p className="mt-3 whitespace-pre-wrap break-words rounded-xl border border-white/10 bg-black p-4 text-sm leading-relaxed text-slate-200">
                     {m.message}
                   </p>

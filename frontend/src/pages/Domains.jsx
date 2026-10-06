@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { useMemberGroups } from '../lib/memberGroups';
 import { Link } from 'react-router-dom';
 import {
@@ -21,8 +21,10 @@ import {
   CalendarCheck,
 } from 'lucide-react';
 
-const CARD =
-  "rounded-2xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03] md:p-6";
+const CARD = "lg-card rounded-3xl p-4 md:p-6";
+
+/* Same accents as the Members page domain filters. */
+const DOMAIN_ACCENTS = { ml: '#22d3ee', cc: '#c084fc', cy: '#f472b6', da: '#34d399', nt: '#fbbf24' };
 
 const DOMAIN_PANELS = [
   { id: 'overview', label: 'Overview' },
@@ -30,6 +32,133 @@ const DOMAIN_PANELS = [
   { id: 'projects', label: 'Projects' },
   { id: 'path', label: 'Path' },
 ];
+
+/* Sliding pill from the Members domain toggles; panels use the shared .lg-card / .lg-well. */
+const GLASS_CSS = `
+.dm-liquid {
+  --liquid-bg: rgba(233,245,255,0.78);
+  --liquid-border: rgba(147,197,253,0.62);
+  --liquid-glow: rgba(56,189,248,0.26);
+  --liquid-highlight: rgba(255,255,255,0.99);
+  position: absolute; left: 0; top: 0; z-index: 0;
+  border-radius: 999px;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--liquid-highlight) 56%, transparent), transparent 66%),
+    var(--liquid-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid var(--liquid-border);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--liquid-highlight) 92%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--liquid-border) 34%, transparent),
+    inset 0 -5px 14px color-mix(in srgb, var(--liquid-glow) 44%, transparent);
+  transform-origin: center center;
+  transition:
+    transform 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+    width 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+    height 360ms cubic-bezier(0.22, 1.18, 0.36, 1);
+}
+html.dark .dm-liquid {
+  --liquid-bg: rgba(22,29,42,0.5);
+  --liquid-border: rgba(226,232,240,0.32);
+  --liquid-glow: rgba(125,211,252,0.2);
+  --liquid-highlight: rgba(255,255,255,0.72);
+}
+.dm-liquid::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background:
+    radial-gradient(110% 85% at var(--hx, 24%) 0%, rgba(255,255,255,0.92), transparent 46%),
+    radial-gradient(70% 60% at 78% 88%, color-mix(in srgb, var(--liquid-glow) 65%, transparent), transparent 62%);
+  mix-blend-mode: screen;
+}
+.dm-liquid::after {
+  content: ""; position: absolute; inset: 1px; border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 0.8px color-mix(in srgb, var(--liquid-border) 62%, transparent),
+    inset 0 -1px 4px rgba(255,255,255,0.16);
+}
+
+@media (prefers-reduced-motion: reduce) { .dm-liquid { transition: none; } }
+@media (prefers-reduced-transparency: reduce) {
+  .dm-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+`;
+
+/* Buttons inside need data-key; the pill follows the hovered button, else the active one. */
+function LiquidTrack({ activeKey, layoutKey, label, className, children }) {
+  const trackRef = useRef(null);
+  const [hoveredKey, setHoveredKey] = useState(null);
+  const [pose, setPose] = useState(null);
+  const previousX = useRef(null);
+  const stretchReset = useRef(null);
+  const targetKey = hoveredKey ?? activeKey;
+  const targetRef = useRef(targetKey);
+
+  const measure = useCallback(() => {
+    const track = trackRef.current;
+    const button = track?.querySelector(`[data-key="${targetRef.current}"]`);
+    if (!track || !button) return;
+    const trackRect = track.getBoundingClientRect();
+    const rect = button.getBoundingClientRect();
+    const x = rect.left - trackRect.left + track.scrollLeft;
+    const y = rect.top - trackRect.top + track.scrollTop;
+    const dx = previousX.current == null ? 0 : x - previousX.current;
+    previousX.current = x;
+    setPose({ x, y, w: rect.width, h: rect.height, sx: 1 + Math.min(0.08, Math.abs(dx) / 180), hx: dx >= 0 ? 70 : 22 });
+    window.clearTimeout(stretchReset.current);
+    stretchReset.current = window.setTimeout(() => setPose((p) => (p ? { ...p, sx: 1 } : p)), 150);
+  }, []);
+
+  useLayoutEffect(() => {
+    targetRef.current = targetKey;
+    measure();
+  }, [targetKey, layoutKey, measure]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    window.addEventListener('resize', measure);
+    document.fonts?.ready.then(measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+      window.clearTimeout(stretchReset.current);
+    };
+  }, [measure]);
+
+  return (
+    <div
+      ref={trackRef}
+      role="group"
+      aria-label={label}
+      onPointerOver={(e) => {
+        if (e.pointerType !== 'mouse') return;
+        const key = e.target.closest('[data-key]')?.dataset.key;
+        if (key) setHoveredKey(key);
+      }}
+      onPointerLeave={() => setHoveredKey(null)}
+      className={`relative ${className}`}
+    >
+      {pose && (
+        <span
+          aria-hidden="true"
+          className="dm-liquid"
+          style={{
+            width: pose.w,
+            height: pose.h,
+            '--hx': `${pose.hx}%`,
+            transform: `translate(${pose.x}px, ${pose.y}px) scaleX(${pose.sx}) scaleY(${1 / Math.sqrt(pose.sx)})`,
+          }}
+        />
+      )}
+      {children}
+    </div>
+  );
+}
 
 export default function Domains() {
   const memberGroups = useMemberGroups();
@@ -437,7 +566,7 @@ export default function Domains() {
           className="mb-8 text-center lg:mb-16"
         >
           <h1 className="fluid-h1 mb-3 pb-2 font-extrabold lg:mb-6">
-            <span className="text-sky-800">Domains</span>
+            <span className="text-slate-900 dark:text-white">Domains</span>
           </h1>
 
           <p className="mx-auto max-w-4xl text-base leading-relaxed text-slate-600 lg:fluid-lead">
@@ -448,7 +577,7 @@ export default function Domains() {
 
           {/* Quick Stats */}
           <div className="mt-8 hidden flex-wrap justify-center gap-6 lg:flex">
-            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 lg-card px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="60" cy="60" r="10" fill="#ffffff"/>
@@ -467,7 +596,7 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 lg-card px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
 
@@ -485,7 +614,7 @@ export default function Domains() {
                 <span className="text-slate-600 text-sm ml-2">Projects</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-slate-900/5 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-slate-900/10">
+            <div className="flex items-center gap-3 lg-card px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
@@ -504,23 +633,37 @@ export default function Domains() {
         </section>
 
         {/* ===== DOMAIN SELECTOR ===== */}
-        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#000000]/95 lg:static lg:mx-0 lg:mb-12 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
-          <div className="flex gap-2 overflow-x-auto lg:flex-wrap lg:justify-center lg:gap-4 lg:overflow-visible">
+        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#000000]/95 lg:static lg:mx-0 lg:mb-12 lg:flex lg:justify-center lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+          <div className="lg-card overflow-hidden rounded-full p-1 lg:z-20 lg:overflow-visible lg:p-1.5">
+          <LiquidTrack
+            activeKey={activeDomain}
+            label="Choose a domain"
+            className="flex gap-1 overflow-x-auto [scrollbar-width:none] lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+          >
             {domains.map((domain) => (
               <button
                 key={domain.id}
+                type="button"
+                data-key={domain.id}
+                aria-pressed={activeDomain === domain.id}
                 onClick={() => selectDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative flex shrink-0 items-center gap-2 rounded-2xl border px-3 py-2 transition-colors duration-200 lg:gap-3 lg:px-6 lg:py-4 ${
+                className={`group relative z-[1] flex shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 lg:gap-2.5 lg:px-5 lg:py-2.5 ${
                   activeDomain === domain.id
-                    ? 'border-sky-600 bg-sky-600 text-white'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-transparent'
+                    ? 'text-slate-900 dark:text-white'
+                    : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
                 }`}
               >
-                <span className="relative hidden h-6 w-6 lg:block">{domain.icon}</span>
+                <span
+                  aria-hidden="true"
+                  style={{ color: DOMAIN_ACCENTS[domain.id] }}
+                  className={`relative block h-4 w-4 shrink-0 transition-[filter,opacity] duration-300 lg:h-5 lg:w-5 [&_svg]:h-full [&_svg]:w-full ${activeDomain === domain.id ? '' : 'opacity-60 grayscale'}`}
+                >
+                  {domain.icon}
+                </span>
                 <span className="relative text-sm font-semibold lg:hidden">{domain.shortName}</span>
-                <span className="relative hidden font-semibold lg:inline">{domain.name}</span>
+                <span className="relative hidden text-sm font-semibold lg:inline">{domain.name}</span>
                 
                 {hoveredDomain === domain.id && activeDomain !== domain.id && domain.stats.members != null && (
                   <div className="absolute -bottom-16 left-1/2 z-50 hidden -translate-x-1/2 animate-fade-in whitespace-nowrap rounded-xl border border-slate-900/10 bg-black/90 p-3 backdrop-blur-xl lg:block">
@@ -534,6 +677,7 @@ export default function Domains() {
                 )}
               </button>
             ))}
+          </LiquidTrack>
           </div>
         </section>
 
@@ -542,7 +686,7 @@ export default function Domains() {
           key={activeDomain}
         >
           {/* Domain Hero Banner */}
-          <div className="relative mb-8 overflow-hidden rounded-3xl border border-slate-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
+          <div className="lg-card mb-8 overflow-hidden rounded-[2rem]">
             <div className="relative z-10 p-4 sm:p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
@@ -565,7 +709,7 @@ export default function Domains() {
                 {/* Stats Cards */}
                 {showStats && (
                 <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
-                  <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
+                  <div className="lg-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
                     <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.members}
                     </div>
@@ -574,7 +718,7 @@ export default function Domains() {
                     </div>
                   </div>
                   {currentDomain.stats.projects != null && (
-                  <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
+                  <div className="lg-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
                     <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.projects}
                     </div>
@@ -584,7 +728,7 @@ export default function Domains() {
                   </div>
                   )}
                   {currentDomain.stats.resources != null && (
-                  <div className="min-w-[5.5rem] flex-1 rounded-xl border border-slate-200 px-3 py-2 sm:px-4 sm:py-3 md:flex-none dark:border-white/10">
+                  <div className="lg-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
                     <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {currentDomain.stats.resources}
                     </div>
@@ -599,21 +743,30 @@ export default function Domains() {
             </div>
           </div>
 
-          <div className={`mb-5 grid gap-1 rounded-2xl border border-slate-200 bg-slate-50 p-1 lg:hidden dark:border-white/10 dark:bg-white/5 ${visiblePanels.length > 2 ? "grid-cols-4" : "grid-cols-2"}`}>
-            {visiblePanels.map((panel) => (
-              <button
-                key={panel.id}
-                type="button"
-                onClick={() => setActivePanel(panel.id)}
-                className={`rounded-xl px-1 py-2 text-xs font-semibold ${
-                  activePanel === panel.id
-                    ? 'bg-white text-sky-800 shadow-sm dark:bg-[#000000] dark:text-sky-300'
-                    : 'text-slate-500'
-                }`}
-              >
-                {panel.label}
-              </button>
-            ))}
+          <div className="lg-card mb-5 rounded-full p-1 lg:hidden">
+            <LiquidTrack
+              activeKey={activePanel}
+              layoutKey={visiblePanels.length}
+              label="Domain sections"
+              className={`grid gap-1 ${visiblePanels.length > 2 ? "grid-cols-4" : "grid-cols-2"}`}
+            >
+              {visiblePanels.map((panel) => (
+                <button
+                  key={panel.id}
+                  type="button"
+                  data-key={panel.id}
+                  aria-pressed={activePanel === panel.id}
+                  onClick={() => setActivePanel(panel.id)}
+                  className={`relative z-[1] rounded-full px-1 py-2 text-xs font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 ${
+                    activePanel === panel.id
+                      ? 'text-slate-900 dark:text-white'
+                      : 'text-slate-500 dark:text-slate-400'
+                  }`}
+                >
+                  {panel.label}
+                </button>
+              ))}
+            </LiquidTrack>
           </div>
 
           {/* 3-Column Grid */}
@@ -681,7 +834,7 @@ export default function Domains() {
                   {currentDomain.skills.map((skill, idx) => (
                     <span
                       key={idx}
-                      className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-300"
+                      className="lg-well rounded-full px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300"
                     >
                       {skill}
                     </span>
@@ -697,7 +850,7 @@ export default function Domains() {
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
                   {currentDomain.tools.map((tool, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-slate-900/5 rounded-lg">
+                    <div key={idx} className="lg-well flex items-center gap-2 rounded-xl p-2">
                       <span className="text-slate-600 text-xs">{icons.tools}</span>
                       <span className="text-slate-700 text-xs">{tool}</span>
                     </div>
@@ -715,7 +868,7 @@ export default function Domains() {
                   {currentDomain.projects.map((project, idx) => {
                     const ProjectIcon = project.icon;
                     return (
-                    <div key={idx} className="flex items-center justify-between p-3 bg-slate-900/5 rounded-xl">
+                    <div key={idx} className="lg-well flex items-center justify-between rounded-2xl p-3">
                       <div className="flex items-center gap-3">
                         <span className="inline-flex text-slate-700">
                           <ProjectIcon size={18} strokeWidth={2} />
@@ -775,7 +928,7 @@ export default function Domains() {
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.resources.map((resource, idx) => (
-                    <div key={idx} className="block p-3 bg-slate-900/5 rounded-xl hover:bg-slate-900/10 transition-colors cursor-pointer">
+                    <div key={idx} className="lg-well block rounded-2xl p-3">
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="text-slate-900 text-sm font-medium">{resource.title}</div>
@@ -790,7 +943,7 @@ export default function Domains() {
                   ))}
                 </div>
                 <div
-                  className="mt-4 inline-flex items-center justify-center w-full px-4 py-3 bg-slate-900/5 text-slate-600 text-sm font-medium rounded-xl border border-slate-900/10"
+                  className="lg-well mt-4 inline-flex w-full items-center justify-center rounded-full px-4 py-3 text-center text-sm font-medium text-slate-600"
                 >
                   Become a member to get access to more resources
                 </div>
@@ -800,7 +953,7 @@ export default function Domains() {
           </div>
 
           {/* Domain Comparison Table — laptop only */}
-          <div className="mt-12 hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white p-6 md:block dark:border-white/10 dark:bg-white/[0.03]">
+          <div className="lg-card mt-12 hidden overflow-x-auto rounded-[2rem] p-6 md:block">
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>
@@ -845,6 +998,7 @@ export default function Domains() {
       </div>
 
       {/* ===== STYLES ===== */}
+      <style>{GLASS_CSS}</style>
       <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(20px); }
