@@ -23,6 +23,6 @@ export function signUpload(folder) {
     .sort()
     .map((k) => `${k}=${params[k]}`)
     .join("&");
-  const signature = createHash("sha1").update(toSign + cfg.apiSecret).digest("hex");
+  const signature = createHash("sha256").update(toSign + cfg.apiSecret).digest("hex");
   return { cloudName: cfg.cloudName, apiKey: cfg.apiKey, signature, ...params };
 }
