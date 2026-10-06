@@ -6,6 +6,7 @@
     "start-frontend": "cd frontend && npm run dev -- --host 0.0.0.0",
     "start-backend": "cd ai-service && python -m uvicorn main:app --host 0.0.0.0 --port 5000",
     "build": "cd frontend && npm install && npm run build",
+    "admin:password": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin-password.mjs",
     "prod": "concurrently \"npm run serve-frontend\" \"npm run start-backend\"",
     "serve-frontend": "cd frontend && npm run preview -- --host 0.0.0.0"
   },
