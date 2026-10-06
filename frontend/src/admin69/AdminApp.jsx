@@ -145,10 +145,131 @@ const sections = [
   { name: "Members", Icon: Users },
   { name: "Events", Icon: CalendarDays },
   { name: "Resources", Icon: BookOpen },
-  { name: "Registrations", Icon: ClipboardList },
 ];
 
-function Dashboard({ expiresAt, onSignOut }) {
+function BootcampRegistrations({ onExpired }) {
+  const [sessions, setSessions] = useState(null);
+  const [busy, setBusy] = useState("");
+  const [error, setError] = useState("");
+
+  const handle = useCallback(
+    ({ status, data }) => {
+      if (status === 401) {
+        onExpired();
+        return;
+      }
+      if (status === 200) {
+        setSessions(data.sessions);
+        setError("");
+      } else {
+        setError(data.message || "Something went wrong. Try again.");
+      }
+    },
+    [onExpired]
+  );
+
+  useEffect(() => {
+    call("/registrations")
+      .then(handle)
+      .catch(() => setError("Couldn't reach the server."));
+  }, [handle]);
+
+  const update = async (slugs, closed, key) => {
+    setBusy(key);
+    try {
+      handle(await call("/registrations", { method: "POST", body: JSON.stringify({ slugs, closed }) }));
+    } catch {
+      setError("Couldn't reach the server.");
+    } finally {
+      setBusy("");
+    }
+  };
+
+  const all = sessions?.map((s) => s.slug) || [];
+  const openCount = sessions?.filter((s) => !s.closed).length || 0;
+
+  return (
+    <section className="mt-8 rounded-2xl border border-white/10 bg-[#0b0b0b]">
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 p-5 sm:p-6">
+        <div className="flex items-start gap-3">
+          <ClipboardList size={22} className="mt-0.5 shrink-0 text-sky-400" aria-hidden="true" />
+          <div>
+            <h2 className="font-semibold text-white">Skill Up Boot Camp registration</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              {sessions
+                ? `${openCount} of ${sessions.length} sessions open. Changes apply on the website immediately.`
+                : "Loading…"}
+            </p>
+          </div>
+        </div>
+        {sessions && (
+          <div className="flex gap-2">
+            <button
+              type="button"
+              disabled={Boolean(busy) || openCount === sessions.length}
+              onClick={() => update(all, false, "all")}
+              className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-200 hover:bg-white/5 disabled:opacity-40"
+            >
+              Open all
+            </button>
+            <button
+              type="button"
+              disabled={Boolean(busy) || openCount === 0}
+              onClick={() => update(all, true, "all")}
+              className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-200 hover:bg-white/5 disabled:opacity-40"
+            >
+              Close all
+            </button>
+          </div>
+        )}
+      </div>
+
+      {error && (
+        <p role="alert" className="border-b border-white/10 px-5 py-3 text-sm text-rose-400 sm:px-6">
+          {error}
+        </p>
+      )}
+
+      <ul className="divide-y divide-white/10">
+        {sessions?.map((s) => {
+          const open = !s.closed;
+          return (
+            <li key={s.slug} className="flex items-center justify-between gap-4 px-5 py-4 sm:px-6">
+              <div className="min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{s.day}</p>
+                <p className="mt-0.5 font-medium text-white">{s.title}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className={`text-sm font-medium ${open ? "text-emerald-400" : "text-slate-500"}`}>
+                  {busy === s.slug || busy === "all" ? "Saving…" : open ? "Open" : "Closed"}
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={open}
+                  aria-label={`${s.title} registration`}
+                  disabled={Boolean(busy)}
+                  onClick={() => update([s.slug], open, s.slug)}
+                  className={`relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-50 ${
+                    open ? "bg-emerald-500" : "bg-white/15"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-1 left-1 h-5 w-5 rounded-full bg-[#fff] shadow transition-transform ${
+                      open ? "translate-x-5" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+function Dashboard({ expiresAt, onSignOut, onExpired }) {
   return (
     <div className="min-h-dvh">
       <header className="border-b border-white/10 bg-[#0b0b0b]">
@@ -175,11 +296,13 @@ function Dashboard({ expiresAt, onSignOut }) {
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <h1 className="text-2xl font-bold text-white sm:text-3xl">Dashboard</h1>
-        <p className="mt-2 text-slate-400">
-          These sections will go live once the backend is connected.
-        </p>
 
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <BootcampRegistrations onExpired={onExpired} />
+
+        <h2 className="mt-12 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+          Coming once the backend is connected
+        </h2>
+        <ul className="mt-4 grid gap-4 sm:grid-cols-3">
           {sections.map(({ name, Icon }) => (
             <li key={name} className="rounded-2xl border border-white/10 bg-[#0b0b0b] p-5">
               <Icon size={22} className="text-sky-400" aria-hidden="true" />
@@ -229,5 +352,5 @@ export default function AdminApp() {
   if (state.phase === "locked") {
     return <Login onSuccess={(expiresAt) => setState({ phase: "in", expiresAt })} />;
   }
-  return <Dashboard expiresAt={state.expiresAt} onSignOut={signOut} />;
+  return <Dashboard expiresAt={state.expiresAt} onSignOut={signOut} onExpired={lock} />;
 }

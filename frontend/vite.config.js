@@ -3,6 +3,7 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { sendContact } from "../api/contact.js";
 import { adminRoutes } from "../api/_lib/admin-routes.js";
+import { handleRegistrationStatus } from "../api/_lib/registration-status.js";
 
 function adminApi() {
   return {
@@ -11,6 +12,12 @@ function adminApi() {
       server.middlewares.use((req, res, next) => {
         if (req.url === "/dashboard/admin69") req.url = "/dashboard/admin69/";
         next();
+      });
+      server.middlewares.use("/api/registration-status", (req, res) => {
+        handleRegistrationStatus(req, res).catch(() => {
+          res.statusCode = 500;
+          res.end();
+        });
       });
       server.middlewares.use("/api/admin69", (req, res) => {
         const route = adminRoutes[req.url.split("?")[0]];
@@ -63,7 +70,10 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   process.env.FORMSUBMIT_ENDPOINT = env.FORMSUBMIT_ENDPOINT;
   process.env.ADMIN_PASSWORD_HASH ||= env.ADMIN_PASSWORD_HASH || "";
-  process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";  return {
+  process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";
+  process.env.KV_REST_API_URL ||= env.KV_REST_API_URL || "";
+  process.env.KV_REST_API_TOKEN ||= env.KV_REST_API_TOKEN || "";
+  return {
     plugins: [react(), contactApi(), adminApi()],
     build: {
       rollupOptions: {
