@@ -7,7 +7,7 @@ import GlimpseGallery from "../components/GlimpseGallery";
 import ShareEventButton from "../components/ShareEventButton";
 import { ACCENTS, AUTO_MS, ParticleStage } from "../components/DomainParticleStage";
 import { eventPhase, eventStatusLabel, findEditionForCompetitionSlug, getEventBySlug, sessionCompleted } from "../data/events";
-import { useRegistrationClosed } from "../lib/registrationStatus";
+import { registrationClosed } from "../data/domainRegistration";
 
 const SESSION_ICONS = {
   "data-analytics": BarChart3,
@@ -56,7 +56,6 @@ export default function EventDetail() {
   const legacyEdition = findEditionForCompetitionSlug(slug);
   const [isRegOpen, setIsRegOpen] = useState(false);
   const [glimpseIndex, setGlimpseIndex] = useState(null);
-  const registrationClosed = useRegistrationClosed();
 
   useEffect(() => {
     setIsRegOpen(false);
@@ -553,7 +552,6 @@ function BootcampPage({ event }) {
   const chosenDomain = searchParams.get("domain");
   const chosenIndex = sessions.findIndex((session) => session.slug === chosenDomain);
   const [now, setNow] = useState(() => new Date());
-  const registrationClosed = useRegistrationClosed();
 
   const [active, setActive] = useState(chosenIndex >= 0 ? chosenIndex : 0);
   const [paused, setPaused] = useState(chosenIndex >= 0);

@@ -4,7 +4,6 @@ import { ArrowLeft } from "lucide-react";
 import { findRegistrationDomain } from "../data/domainRegistration";
 import { sharedEvents } from "../data/events";
 import { supabase } from "../lib/supabaseClient";
-import { useRegistrationClosed } from "../lib/registrationStatus";
 
 const fieldClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20";
@@ -27,7 +26,6 @@ export default function DomainRegister() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
-  const isClosed = useRegistrationClosed()(slug);
 
   if (!domain) {
     return (
@@ -55,7 +53,7 @@ export default function DomainRegister() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (isClosed) return;
+    if (domain.closed) return;
     setError("");
     setSubmitting(true);
 
@@ -76,9 +74,6 @@ export default function DomainRegister() {
       }
 
       const { error: insertError } = await supabase.from("domain_registrations").insert(payload);
-      if (insertError?.code === "42501") {
-        throw new Error(`${domain.title} registration has just closed.`);
-      }
       if (insertError) throw new Error(insertError.message);
       setDone(true);
     } catch (err) {
@@ -119,7 +114,7 @@ export default function DomainRegister() {
         </section>
       )}
 
-      {isClosed ? (
+      {domain.closed ? (
         <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-8 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900">Registration closed</h2>
           <p className="mt-2 text-sm text-slate-600">
