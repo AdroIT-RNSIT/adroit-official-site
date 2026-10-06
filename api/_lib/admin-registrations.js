@@ -1,19 +1,10 @@
 import { adminSession, readJson, sameOrigin, send } from "./admin-auth.js";
 import { readClosed, storeConfigured, writeClosed } from "./registration-store.js";
-import { sharedEvents } from "../../frontend/src/data/events.js";
-
-function bootcampSessions() {
-  return sharedEvents.find((event) => event.slug === "skill-up-bootcamp")?.sessions || [];
-}
+import { BOOTCAMP_SESSIONS } from "./bootcamp-sessions.js";
 
 async function listSessions() {
   const closed = await readClosed();
-  return bootcampSessions().map((session) => ({
-    slug: session.slug,
-    title: session.title,
-    day: session.day || "",
-    closed: Boolean(closed[session.slug]),
-  }));
+  return BOOTCAMP_SESSIONS.map(({ slug, title, day }) => ({ slug, title, day, closed: Boolean(closed[slug]) }));
 }
 
 export async function handleRegistrations(req, res) {
@@ -32,7 +23,7 @@ export async function handleRegistrations(req, res) {
     if (req.method === "POST") {
       if (!sameOrigin(req)) return send(res, 403, { message: "Forbidden" });
       const { slugs, closed } = await readJson(req);
-      const allowed = new Set(bootcampSessions().map((s) => s.slug));
+      const allowed = new Set(BOOTCAMP_SESSIONS.map((s) => s.slug));
       const targets = Array.isArray(slugs) ? [...new Set(slugs)] : [];
       if (!targets.length || !targets.every((slug) => allowed.has(slug)) || typeof closed !== "boolean") {
         return send(res, 400, { message: "Invalid request." });
