@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import * as THREE from "three";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, BarChart3, Brain, Calendar, ChevronLeft, ChevronRight, Cloud, MapPin, ShieldCheck, X } from "lucide-react";
@@ -108,7 +109,7 @@ export default function EventDetail() {
     glimpseIndex == null ? null : ((glimpseIndex % glimpses.length) + glimpses.length) % glimpses.length;
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip pb-12 text-slate-900 sm:pb-16 dark:text-slate-100">
+    <div data-page="event" className="relative min-h-dvh overflow-x-clip pb-12 text-ink sm:pb-16">
       <section className={`relative overflow-hidden ${poster && !posterContained ? "min-h-[34vh] sm:min-h-[48vh]" : "pt-4 sm:pt-6"}`}>
         {poster && !posterContained && (
           <>
@@ -117,7 +118,7 @@ export default function EventDetail() {
               alt=""
               className="absolute inset-0 h-full w-full scale-105 object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-black/25 dark:from-[#000000] dark:via-[#000000]/70 dark:to-black/40" />
+            <div data-part="hero-fade" className="absolute inset-0" />
           </>
         )}
 
@@ -126,13 +127,15 @@ export default function EventDetail() {
             <img
               src={poster}
               alt={`${event.title} poster`}
-              className="mx-auto mb-6 w-full max-w-xl rounded-2xl border border-slate-200 bg-slate-50 object-contain sm:mb-8 dark:border-white/10 dark:bg-white/5"
+              data-part="poster-frame"
+              className="ui-well mx-auto mb-6 w-full max-w-xl rounded-2xl object-contain sm:mb-8"
             />
           )}
           <div>
             <Link
               to="/events"
-              className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800 sm:mb-6"
+              data-part="back"
+              className="ui-pill mb-4 inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-sm text-ink transition-colors sm:mb-6"
             >
               <ArrowLeft size={16} />
               Events
@@ -140,11 +143,11 @@ export default function EventDetail() {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-10">
               <div className="min-w-0 flex-1">
                 {event.eyebrow && (
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-primary">
                     {event.eyebrow}
                   </p>
                 )}
-                <h1 className="break-words text-3xl font-extrabold leading-tight text-sky-800 sm:text-5xl">
+                <h1 className="ui-heading break-words text-3xl font-extrabold leading-tight text-ink sm:text-5xl">
                   {event.title}
                 </h1>
               </div>
@@ -154,11 +157,19 @@ export default function EventDetail() {
                   text={isCompleted ? `${event.title} — AdroIT.` : `Attend ${event.title}${dateLabel ? ` on ${dateLabel}` : ""} with AdroIT.`}
                   path={`/events/${event.slug}`}
                 />
-                {!isCompleted && !individualRegistration && (
+                {!isCompleted && event.registerHref && (
+                  <Link
+                    to={event.registerHref}
+                    className="ui-solid inline-flex min-h-11 w-full shrink-0 items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold sm:w-auto sm:px-7"
+                  >
+                    Register now
+                  </Link>
+                )}
+                {!isCompleted && !individualRegistration && !event.registerHref && (
                   <button
                     type="button"
                     onClick={() => setIsRegOpen(true)}
-                    className="w-full shrink-0 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-sky-900/15 hover:bg-sky-700 sm:w-auto sm:px-7"
+                    className="ui-solid w-full shrink-0 rounded-xl px-5 py-3 text-sm font-semibold sm:w-auto sm:px-7"
                   >
                     Register now
                   </button>
@@ -166,7 +177,7 @@ export default function EventDetail() {
               </div>
             </div>
             {event.tagline && (
-              <p className="mt-3 max-w-2xl text-base text-slate-700 sm:text-lg">
+              <p className="mt-3 max-w-2xl text-base text-ink-muted sm:text-lg">
                 {event.tagline}
               </p>
             )}
@@ -181,7 +192,7 @@ export default function EventDetail() {
             <MetaCard icon={<MapPin size={16} />} label="Venue" value={event.location} />
           )}
           <MetaCard
-            icon={<span className="text-sky-600">●</span>}
+            icon={<span className="text-primary">●</span>}
             label="Status"
             value={eventStatusLabel(event)}
           />
@@ -189,12 +200,12 @@ export default function EventDetail() {
 
         {(event.about?.length || event.description) && (
           <section className="mt-8 sm:mt-10">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               About
             </h2>
             <div className="mt-3 max-w-3xl space-y-4 sm:mt-4 sm:space-y-5">
               {(event.about?.length ? event.about : [event.description]).map((paragraph) => (
-                <p key={paragraph} className="text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
+                <p key={paragraph} className="text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">
                   {paragraph}
                 </p>
               ))}
@@ -204,46 +215,46 @@ export default function EventDetail() {
 
         {sessions.length > 0 && (
           <section className="mt-10 sm:mt-12">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               Domains
             </h2>
             <div className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4">
               {sessions.map((session) => (
                 <article
                   key={session.title}
-                  className="flex flex-col rounded-2xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.03] sm:p-5"
+                  className="ui-card flex flex-col rounded-2xl p-4 sm:p-5"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
                     {poster && (
                       <img
                         src={session.image || poster}
                         alt=""
-                        className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-cover sm:w-20 dark:border-white/10 dark:bg-white/5"
+                        className="h-12 w-16 shrink-0 rounded-lg border border-line object-cover sm:w-20"
                       />
                     )}
                     <div className="min-w-0">
                       {session.day && (
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                           {session.day}
                         </p>
                       )}
-                      <h3 className="mt-1 break-words text-base font-bold text-slate-900 sm:text-lg dark:text-slate-100">{session.title}</h3>
+                      <h3 className="ui-heading mt-1 break-words text-base font-bold text-ink sm:text-lg">{session.title}</h3>
                     </div>
                   </div>
                   {session.detail && (
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    <p className="mt-3 text-sm leading-relaxed text-ink-muted">
                       {session.detail}
                     </p>
                   )}
                   {registrationClosed(session.slug) ? (
-                    <span className="mt-4 inline-flex w-full cursor-not-allowed justify-center rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-500 sm:w-fit sm:py-2 dark:bg-white/10 dark:text-white/50">
+                    <span className="ui-well mt-4 inline-flex w-full cursor-not-allowed justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-ink-muted sm:w-fit sm:py-2">
                       Registration closed
                     </span>
                   ) : (
                     <Link
                       to={session.slug ? `/register/${session.slug}` : "/events"}
                       state={{ back: `/events/${event.slug}` }}
-                      className="mt-4 inline-flex w-full justify-center rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 sm:w-fit sm:py-2"
+                      className="ui-solid mt-4 inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold sm:w-fit sm:py-2"
                     >
                       Register
                     </Link>
@@ -256,14 +267,14 @@ export default function EventDetail() {
 
         {competitions.length > 0 && (
           <section className="mt-10 sm:mt-12">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               Competitions
             </h2>
             <div className="mt-4 grid gap-4 sm:mt-5 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
               {competitions.map((competition) => (
                 <article
                   key={competition.slug}
-                  className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/80 shadow-sm shadow-slate-900/5"
+                  className="ui-card overflow-hidden rounded-2xl"
                 >
                   <div className="aspect-[16/10] overflow-hidden">
                     <img
@@ -273,12 +284,12 @@ export default function EventDetail() {
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-lg font-bold text-slate-900">{competition.title}</h3>
+                    <h3 className="ui-heading text-lg font-bold text-ink">{competition.title}</h3>
                     {competition.tagline && (
-                      <p className="mt-1 text-sm text-sky-700">{competition.tagline}</p>
+                      <p className="mt-1 text-sm text-primary">{competition.tagline}</p>
                     )}
                     {competition.description && (
-                      <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-slate-600">
+                      <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink-muted">
                         {competition.description}
                       </p>
                     )}
@@ -297,51 +308,12 @@ export default function EventDetail() {
       </div>
 
       {activeGlimpse != null && (
-        <div
-          className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/80 p-3 sm:p-4"
-          onClick={() => setGlimpseIndex(null)}
-        >
-          <button
-            type="button"
-            className="absolute right-3 top-3 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:right-4 sm:top-4"
-            aria-label="Close"
-            onClick={() => setGlimpseIndex(null)}
-          >
-            <X size={18} />
-          </button>
-          {glimpses.length > 1 && (
-            <>
-              <button
-                type="button"
-                className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:left-6"
-                aria-label="Previous image"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setGlimpseIndex((i) => i - 1);
-                }}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white sm:right-6"
-                aria-label="Next image"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setGlimpseIndex((i) => i + 1);
-                }}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </>
-          )}
-          <img
-            src={glimpses[activeGlimpse]}
-            alt=""
-            className="max-h-[85dvh] max-w-full rounded-xl object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
+        <Lightbox
+          src={glimpses[activeGlimpse]}
+          multiple={glimpses.length > 1}
+          onClose={() => setGlimpseIndex(null)}
+          onStep={(d) => setGlimpseIndex((i) => i + d)}
+        />
       )}
 
       {!isCompleted && !individualRegistration && (
@@ -435,8 +407,8 @@ function ParadoxPage({ event, glimpseIndex, setGlimpseIndex }) {
     glimpseIndex == null ? null : ((glimpseIndex % glimpses.length) + glimpses.length) % glimpses.length;
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip pb-14 text-slate-900 dark:text-slate-100">
-      <section className="relative overflow-hidden bg-[#05070d] text-white">
+    <div data-page="paradox" className="relative min-h-dvh overflow-x-clip pb-14 text-ink">
+      <section data-part="paradox-hero" data-scheme="dark" className="relative overflow-hidden bg-page text-ink">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-70"
@@ -449,32 +421,34 @@ function ParadoxPage({ event, glimpseIndex, setGlimpseIndex }) {
           <div>
             <Link
               to="/events"
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm text-white/90 hover:bg-white/10"
+              data-part="back"
+              className="ui-pill mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm text-ink"
             >
               <ArrowLeft size={16} />
               Events
             </Link>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300">Intercollegiate fest</p>
-            <h1 className="mt-2 text-4xl font-black leading-none tracking-tight sm:text-6xl">{event.title}</h1>
-            {event.tagline && <p className="mt-4 max-w-xl text-lg text-white/75">{event.tagline}</p>}
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary-ink">Intercollegiate fest</p>
+            <h1 className="ui-heading mt-2 text-4xl font-black leading-none tracking-tight text-ink sm:text-6xl">{event.title}</h1>
+            {event.tagline && <p className="mt-4 max-w-xl text-lg text-ink-muted">{event.tagline}</p>}
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm">{dateLabel}</span>
-              {event.location && <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm">{event.location}</span>}
+              <span className="ui-well rounded-full px-3 py-1.5 text-sm">{dateLabel}</span>
+              {event.location && <span className="ui-well rounded-full px-3 py-1.5 text-sm">{event.location}</span>}
               {prizePool > 0 && (
-                <span className="rounded-full border border-sky-300/40 bg-sky-400/15 px-3 py-1.5 text-sm font-semibold text-sky-100">
+                <span data-part="prize" className="ui-well rounded-full px-3 py-1.5 text-sm font-semibold text-primary-ink">
                   Prize pool ₹{prizePool.toLocaleString("en-IN")}+
                 </span>
               )}
             </div>
             <div className="mt-6">
-              <ShareEventButton title={event.title} text={`${event.title} — AdroIT.`} path={`/events/${event.slug}`} tone="dark" />
+              <ShareEventButton title={event.title} text={`${event.title} — AdroIT.`} path={`/events/${event.slug}`} />
             </div>
           </div>
           {poster && (
             <img
               src={poster}
               alt={`${event.title} poster`}
-              className="mx-auto w-full max-w-sm rounded-2xl border border-white/15 object-contain shadow-[0_20px_60px_rgba(56,189,248,0.18)] lg:max-w-none"
+              data-part="hero-poster"
+              className="mx-auto w-full max-w-sm rounded-2xl border border-line object-contain lg:max-w-none"
             />
           )}
         </div>
@@ -482,40 +456,40 @@ function ParadoxPage({ event, glimpseIndex, setGlimpseIndex }) {
 
       <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 lg:px-8">
         {event.description && (
-          <p className="max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">{event.description}</p>
+          <p className="max-w-3xl text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">{event.description}</p>
         )}
 
         {competitions.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Three competitions</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Three competitions</h2>
             <div className="mt-5 grid gap-5 lg:grid-cols-3">
               {competitions.map((competition) => (
-                <article key={competition.slug} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.03]">
-                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
+                <article key={competition.slug} className="ui-card overflow-hidden rounded-3xl">
+                  <div data-part="media" data-scheme="dark" className="relative aspect-[16/10] overflow-hidden bg-page">
                     <img src={competition.poster || competition.imageUrl} alt="" className="h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                    <div data-part="media-scrim" className="absolute inset-0" />
                     <div className="absolute inset-x-0 bottom-0 p-4">
-                      <h3 className="text-xl font-bold text-white">{competition.title}</h3>
-                      {competition.tagline && <p className="mt-1 text-sm text-sky-200">{competition.tagline}</p>}
+                      <h3 className="ui-heading text-xl font-bold text-ink">{competition.title}</h3>
+                      {competition.tagline && <p className="mt-1 text-sm text-primary-ink">{competition.tagline}</p>}
                     </div>
                   </div>
                   <div className="space-y-3 p-4">
                     {competition.description && (
-                      <p className="line-clamp-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{competition.description}</p>
+                      <p className="line-clamp-4 text-sm leading-relaxed text-ink-muted">{competition.description}</p>
                     )}
-                    <div className="flex flex-wrap gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+                    <div className="flex flex-wrap gap-2 text-xs font-medium text-ink-muted">
                       {competition.date && (
-                        <span className="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-white/10">
+                        <span className="ui-well rounded-full px-2.5 py-1">
                           {new Date(competition.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </span>
                       )}
                       {competition.prize && (
-                        <span className="rounded-full bg-sky-50 px-2.5 py-1 text-sky-800 dark:bg-sky-400/15 dark:text-sky-200">
+                        <span className="ui-well rounded-full px-2.5 py-1 text-primary-ink">
                           ₹{Number(competition.prize).toLocaleString("en-IN")}
                         </span>
                       )}
                       {competition.teamSize && (
-                        <span className="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-white/10">{competition.teamSize}</span>
+                        <span className="ui-well rounded-full px-2.5 py-1">{competition.teamSize}</span>
                       )}
                     </div>
                   </div>
@@ -533,14 +507,67 @@ function ParadoxPage({ event, glimpseIndex, setGlimpseIndex }) {
       </div>
 
       {activeGlimpse != null && (
-        <div className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/80 p-4" onClick={() => setGlimpseIndex(null)}>
-          <button type="button" className="absolute right-4 top-4 rounded-full border border-white/20 bg-black/40 p-2 text-white" aria-label="Close" onClick={() => setGlimpseIndex(null)}>
-            <X size={18} />
-          </button>
-          <img src={glimpses[activeGlimpse]} alt="" className="max-h-[85dvh] max-w-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
-        </div>
+        <Lightbox
+          src={glimpses[activeGlimpse]}
+          multiple={glimpses.length > 1}
+          onClose={() => setGlimpseIndex(null)}
+          onStep={(d) => setGlimpseIndex((i) => i + d)}
+        />
       )}
     </div>
+  );
+}
+
+function Lightbox({ src, multiple, onClose, onStep }) {
+  const closeRef = useRef(null);
+  useEffect(() => {
+    closeRef.current?.focus();
+  }, []);
+  const control = "ui-pill absolute inline-flex h-10 w-10 items-center justify-center rounded-full text-ink";
+  return createPortal(
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image viewer"
+      data-scheme="dark"
+      data-part="lightbox"
+      className="fixed inset-0 z-[1100] flex items-center justify-center bg-page/80 p-3 sm:p-4"
+      onClick={onClose}
+    >
+      <button ref={closeRef} type="button" className={`${control} right-3 top-3 sm:right-4 sm:top-4`} aria-label="Close" onClick={onClose}>
+        <X size={18} />
+      </button>
+      {multiple && (
+        <>
+          <button
+            type="button"
+            className={`${control} left-2 top-1/2 -translate-y-1/2 sm:left-6`}
+            aria-label="Previous image"
+            onClick={(e) => {
+              e.stopPropagation();
+              onStep(-1);
+            }}
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            type="button"
+            className={`${control} right-2 top-1/2 -translate-y-1/2 sm:right-6`}
+            aria-label="Next image"
+            onClick={(e) => {
+              e.stopPropagation();
+              onStep(1);
+            }}
+          >
+            <ChevronRight size={20} />
+          </button>
+        </>
+      )}
+      <div className="ui-dialog max-w-full rounded-2xl p-1.5" onClick={(e) => e.stopPropagation()}>
+        <img src={src} alt="" className="max-h-[85dvh] max-w-full rounded-xl object-contain" />
+      </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -593,6 +620,22 @@ function BootcampPage({ event }) {
     return () => clearTimeout(id);
   }, [active, paused, tick, reduce, sessions.length]);
 
+  const tabsRef = useRef(null);
+  const [thumb, setThumb] = useState(null);
+  useLayoutEffect(() => {
+    const track = tabsRef.current;
+    if (!track) return undefined;
+    const place = () => {
+      const tab = track.querySelector("[aria-selected='true']");
+      if (!tab) return;
+      setThumb({ x: tab.offsetLeft, y: tab.offsetTop, w: tab.offsetWidth, h: tab.offsetHeight });
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(track);
+    return () => ro.disconnect();
+  }, [active]);
+
   const session = sessions[active];
   const accent = ACCENTS[active % ACCENTS.length];
   const Icon = SESSION_ICONS[session?.slug] || Calendar;
@@ -627,7 +670,7 @@ function BootcampPage({ event }) {
   const maskPos = isDesktop ? "70% 40%" : "50% 45%";
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip pb-10 text-slate-900 sm:pb-16 dark:text-slate-100">
+    <div data-page="bootcamp" className="relative min-h-dvh overflow-x-clip pb-10 text-ink sm:pb-16">
       <style>{`
         @keyframes bcFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
         @keyframes bcRise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
@@ -635,7 +678,8 @@ function BootcampPage({ event }) {
 
       <div className="mx-auto max-w-6xl px-3 pt-4 sm:px-6 sm:pt-6 lg:px-8">
         <div
-          className="relative overflow-hidden rounded-3xl bg-white text-slate-900 ring-1 ring-slate-200 sm:rounded-[2rem] dark:bg-black dark:text-white dark:ring-white/10"
+          data-part="bootcamp-hero"
+          className="ui-card relative overflow-hidden rounded-3xl text-ink sm:rounded-[2rem]"
           onPointerEnter={(e) => {
             if (e.pointerType !== "touch") setPaused(true);
           }}
@@ -658,21 +702,10 @@ function BootcampPage({ event }) {
           ))}
           <div
             aria-hidden="true"
-            className="absolute inset-0 dark:hidden"
+            className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(15,23,42,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.08) 1px, transparent 1px)",
-              backgroundSize: isDesktop ? "56px 56px" : "36px 36px",
-              maskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
-              WebkitMaskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 hidden dark:block"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px)",
+                "linear-gradient(color-mix(in srgb, var(--color-ink) 8%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 8%, transparent) 1px, transparent 1px)",
               backgroundSize: isDesktop ? "56px 56px" : "36px 36px",
               maskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
               WebkitMaskImage: `radial-gradient(ellipse at ${maskPos}, black 15%, transparent 75%)`,
@@ -684,7 +717,8 @@ function BootcampPage({ event }) {
               <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
                 <Link
                   to="/events"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/70 px-3 py-1.5 text-sm text-slate-800 transition-colors hover:bg-white sm:gap-2 sm:px-4 sm:py-2 sm:text-base dark:border-white/20 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10"
+                  data-part="back"
+                  className="ui-pill inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-ink transition-colors sm:gap-2 sm:px-4 sm:py-2 sm:text-base"
                 >
                   <ArrowLeft size={16} />
                   Events
@@ -694,11 +728,10 @@ function BootcampPage({ event }) {
                     title={event.title}
                     text={`Attend ${event.title}${session ? `, ${session.title} on ${session.day}` : ""} with AdroIT.`}
                     path={`/events/${event.slug}${session?.slug ? `?domain=${session.slug}` : ""}`}
-                    tone="dark"
                   />
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/70 px-3 py-1.5 text-xs text-slate-700 sm:gap-2 sm:px-4 sm:py-2 sm:text-base dark:border-white/20 dark:bg-white/5 dark:text-white/90">
+                  <span className="ui-chip inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-ink-muted sm:gap-2 sm:px-4 sm:py-2 sm:text-base">
                     <span
-                      className={`h-2 w-2 rounded-full ${phase === "live" ? "animate-pulse bg-emerald-400" : ""}`}
+                      className={`h-2 w-2 rounded-full ${phase === "live" ? "animate-pulse bg-success motion-reduce:animate-none" : ""}`}
                       style={phase === "live" ? undefined : { backgroundColor: accent }}
                     />
                     {eventStatusLabel(event)}
@@ -707,17 +740,17 @@ function BootcampPage({ event }) {
               </div>
               <div className="mt-5 sm:mt-8">
                 {event.eyebrow && (
-                  <p className="text-base font-semibold sm:text-lg" style={{ color: accent }}>
+                  <p className="accent-ink text-base font-semibold sm:text-lg" style={{ "--accent": accent }}>
                     {event.eyebrow}
                   </p>
                 )}
-                <h1 className="mt-1 break-words text-4xl font-black leading-[1.05] sm:text-6xl">{event.title}</h1>
-                {event.tagline && <p className="mt-2 max-w-xl text-base text-slate-600 sm:mt-3 sm:text-lg dark:text-white/70">{event.tagline}</p>}
+                <h1 className="ui-heading mt-1 break-words text-4xl font-black leading-[1.05] text-ink sm:text-6xl">{event.title}</h1>
+                {event.tagline && <p className="mt-2 max-w-xl text-base text-ink-muted sm:mt-3 sm:text-lg">{event.tagline}</p>}
               </div>
             </div>
 
             <div className="relative mt-2 h-[clamp(13rem,56vw,22rem)] lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20 lg:mt-0 lg:h-auto">
-              <ParticleStage activeRef={activeRef} rotateRef={rotateRef} />
+              <ParticleStage activeRef={activeRef} rotateRef={rotateRef} accent={accent} />
               <div
                 aria-label="Drag sideways to rotate the shape"
                 className="pointer-events-auto absolute inset-0 z-20 cursor-grab touch-pan-y select-none active:cursor-grabbing lg:inset-auto lg:bottom-36 lg:left-[48%] lg:right-0 lg:top-[22%] lg:touch-none"
@@ -739,24 +772,24 @@ function BootcampPage({ event }) {
                   )}
                   <div className="flex items-end gap-4 sm:gap-6 lg:block">
                     <p
-                      className="text-[4.25rem] font-black leading-[0.85] tabular-nums sm:text-[7rem] lg:text-[11rem]"
-                      style={{ color: accent }}
+                      className="accent-ink text-[4.25rem] font-black leading-[0.85] tabular-nums sm:text-[7rem] lg:text-[11rem]"
+                      style={{ "--accent": accent }}
                     >
                       {num}
                     </p>
                     <div className="min-w-0 pb-0.5 lg:pb-0">
-                      <p className="flex items-center gap-2 text-sm font-semibold text-slate-700 sm:text-xl lg:mt-4 dark:text-white/80">
-                        <Icon size={18} className="shrink-0" style={{ color: accent }} />
+                      <p className="flex items-center gap-2 text-sm font-semibold text-ink-muted sm:text-xl lg:mt-4">
+                        <Icon size={18} className="accent-ink shrink-0" style={{ "--accent": accent }} />
                         {session.day}
                       </p>
-                      <h2 className="mt-1 break-words text-2xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">{session.title}</h2>
+                      <h2 className="ui-heading mt-1 break-words text-2xl font-extrabold leading-tight text-ink sm:text-4xl lg:text-5xl">{session.title}</h2>
                     </div>
                   </div>
-                  {session.detail && <p className="mt-3 max-w-md text-base text-slate-600 sm:text-lg dark:text-white/70">{session.detail}</p>}
+                  {session.detail && <p className="mt-3 max-w-md text-base text-ink-muted sm:text-lg">{session.detail}</p>}
                   {registrationClosed(session.slug) ? (
                     <span
                       id="bootcamp-register"
-                      className="mt-5 inline-flex w-full cursor-not-allowed items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-base font-bold text-slate-500 sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg dark:border-white/20 dark:text-white/50"
+                      className="ui-well mt-5 inline-flex w-full cursor-not-allowed items-center justify-center rounded-full px-6 py-3 text-base font-bold text-ink-muted sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg"
                     >
                       {session.title} registration closed
                     </span>
@@ -765,7 +798,8 @@ function BootcampPage({ event }) {
                       id="bootcamp-register"
                       to={session.slug ? `/register/${session.slug}` : "/events"}
                       state={{ back: `/events/${event.slug}` }}
-                      className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-black transition-transform active:scale-[0.98] sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg sm:hover:scale-105"
+                      data-part="accent-cta"
+                      className="ui-solid mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-on-accent transition-transform motion-safe:active:scale-[0.98] motion-reduce:transition-none sm:mt-6 sm:w-auto sm:px-7 sm:py-3.5 sm:text-lg motion-safe:sm:hover:scale-105"
                       style={{ backgroundColor: accent }}
                     >
                       Register for {session.title}
@@ -776,7 +810,13 @@ function BootcampPage({ event }) {
               )}
             </div>
 
-            <div role="tablist" className="grid grid-cols-2 gap-px border-t border-slate-200 bg-slate-100 lg:grid-cols-4 dark:border-white/10 dark:bg-white/10">
+            <div ref={tabsRef} role="tablist" data-part="day-tabs" className="ui-track grid grid-cols-2 gap-px lg:grid-cols-4">
+              <span
+                aria-hidden="true"
+                className="ui-thumb"
+                data-state={thumb ? undefined : "hidden"}
+                style={thumb ? { width: thumb.w, height: thumb.h, transform: `translate(${thumb.x}px, ${thumb.y}px)` } : undefined}
+              />
               {sessions.map((s, i) => {
                 const on = i === active;
                 const done = sessionCompleted(event, i, now);
@@ -792,30 +832,38 @@ function BootcampPage({ event }) {
                       setActive(i);
                       setTick((t) => t + 1);
                     }}
-                    className={`relative flex min-h-[3.75rem] items-center justify-between gap-2 px-4 py-3 text-left transition-colors sm:gap-3 sm:px-7 sm:py-5 ${
-                      on ? "bg-white dark:bg-[#111111]" : "bg-slate-50 hover:bg-slate-100 dark:bg-black dark:hover:bg-[#1a1a1a]"
-                    }`}
+                    className="relative flex min-h-[3.75rem] items-center justify-between gap-2 px-4 py-3 text-left transition-colors sm:gap-3 sm:px-7 sm:py-5"
                   >
                     {on && (
-                      <span
-                        key={`${active}-${tick}`}
-                        className="absolute left-0 top-0 h-[3px] w-full origin-left"
-                        style={{
-                          backgroundColor: c,
-                          animation: reduce ? "none" : `bcFill ${AUTO_MS}ms linear forwards`,
-                          animationPlayState: paused ? "paused" : "running",
-                        }}
-                      />
+                      <span data-part="gauge" aria-hidden="true" className="ui-well absolute left-0 top-0 h-[3px] w-full overflow-hidden">
+                        <span
+                          key={`${active}-${tick}`}
+                          className="block h-full w-full origin-left"
+                          style={{
+                            backgroundColor: c,
+                            color: c,
+                            animation: reduce ? "none" : `bcFill ${AUTO_MS}ms linear forwards`,
+                            animationPlayState: paused ? "paused" : "running",
+                          }}
+                        />
+                      </span>
                     )}
                     <span className="min-w-0 pr-5 sm:pr-0">
-                      <span className="block text-xs font-semibold sm:text-lg" style={{ color: on ? c : "rgba(51,65,85,.7)" }}>
+                      <span
+                        className={`block text-xs font-semibold sm:text-lg ${on ? "accent-ink" : "text-ink-muted"}`}
+                        style={on ? { "--accent": c } : undefined}
+                      >
                         {s.day?.replace("October", "Oct")}
                       </span>
-                      <span className={`block text-sm font-bold leading-tight sm:text-xl ${on ? "text-slate-900 dark:text-white" : "text-slate-600 dark:text-white/70"}`}>
+                      <span className={`block text-sm font-bold leading-tight sm:text-xl ${on ? "text-ink" : "text-ink-muted"}`}>
                         {s.title}
                       </span>
                     </span>
-                    <TabIcon className="hidden shrink-0 sm:block" size={24} style={{ color: on ? c : "rgba(71,85,105,.5)" }} />
+                    <TabIcon
+                      className={`hidden shrink-0 sm:block ${on ? "accent-ink" : "text-ink-muted opacity-50"}`}
+                      size={24}
+                      style={on ? { "--accent": c } : undefined}
+                    />
                     {done && <CompletedSeal color={c} compact />}
                   </button>
                 );
@@ -825,15 +873,13 @@ function BootcampPage({ event }) {
         </div>
 
         {paragraphs.length > 0 && (
-          <section className="mt-4 rounded-2xl border border-slate-200 bg-[#ffffff] px-5 py-5 text-slate-900 sm:mt-6 sm:rounded-3xl sm:px-8 sm:py-6 dark:border-white/10 dark:bg-[#000000] dark:text-slate-100">
-            <h2 className="text-2xl font-bold text-sky-800 sm:text-3xl">About</h2>
+          <section className="ui-card mt-4 rounded-2xl px-5 py-5 text-ink sm:mt-6 sm:rounded-3xl sm:px-8 sm:py-6">
+            <h2 className="ui-heading text-2xl font-bold text-ink sm:text-3xl">About</h2>
             <div className="mt-3 max-w-4xl space-y-3 sm:mt-4 sm:space-y-4">
               {paragraphs.map((p, i) => (
                 <p
                   key={p}
-                  className={`text-base leading-7 sm:text-lg sm:leading-8 ${
-                    i === 0 ? "text-slate-900" : "text-slate-600 dark:text-slate-400"
-                  }`}
+                  className={`text-base leading-7 sm:text-lg sm:leading-8 ${i === 0 ? "text-ink" : "text-ink-muted"}`}
                 >
                   {p}
                 </p>
@@ -848,12 +894,12 @@ function BootcampPage({ event }) {
 
 function MetaCard({ icon, label, value }) {
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-sm shadow-slate-900/5 sm:py-4 dark:border-white/10 dark:bg-white/5">
-      <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-        <span className="text-sky-600">{icon}</span>
+    <div className="ui-card rounded-2xl px-4 py-3 sm:py-4">
+      <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
+        <span className="text-primary">{icon}</span>
         {label}
       </p>
-      <p className="mt-1 text-sm font-medium leading-snug text-slate-900 sm:mt-1.5 dark:text-slate-100">{value}</p>
+      <p className="mt-1 text-sm font-medium leading-snug text-ink sm:mt-1.5">{value}</p>
     </div>
   );
 }

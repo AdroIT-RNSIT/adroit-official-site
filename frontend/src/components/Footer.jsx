@@ -1,22 +1,16 @@
-import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
+import { ArrowRight, Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
-import { useTheme } from "../lib/theme";
 
 const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
-  const { isDark } = useTheme();
   const { pathname } = useLocation();
   const onGrid = pathname === "/events/skill-up-bootcamp";
 
   return (
     <footer
-      className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${
-        onGrid
-          ? "relative z-10 border-t border-slate-200/80 bg-white dark:border-white/10"
-          : isDark
-          ? "bg-[#000000] border-t border-white/10"
-          : "bg-white border-t border-slate-200/80"
-      }`}
+      data-shell="footer"
+      data-surface={onGrid ? "grid" : undefined}
+      className={`relative overflow-hidden pb-[env(safe-area-inset-bottom,0px)] ${onGrid ? "z-10" : ""}`}
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
@@ -24,28 +18,28 @@ const Footer = ({ showMap = false }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
           
           {/* ===== COLUMN 1: BRAND & CONTACT (5 cols) ===== */}
-          <div className="lg:col-span-5">
+          <div className="ui-card lg:col-span-5">
             
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky-600 mt-1 flex-shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" data-part="icon" className="text-primary mt-1 flex-shrink-0">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
                 <a 
                   href="mailto:adroit.rnsit@gmail.com" 
-                  className="text-slate-500 hover:text-sky-600 transition-colors duration-300 text-sm"
+                  data-part="muted" className="text-ink-muted hover:text-primary transition-colors duration-300 text-sm"
                 >
                   adroit.rnsit@gmail.com
                 </a>
               </div>
 
               <div className="flex items-start gap-3">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky-600 mt-1 flex-shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" data-part="icon" className="text-primary mt-1 flex-shrink-0">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                <p className="text-slate-500 text-sm">
+                <p data-part="muted" className="text-ink-muted text-sm">
                   RNSIT, Bangalore
                 </p>
               </div>
@@ -53,72 +47,79 @@ const Footer = ({ showMap = false }) => {
           </div>
 
           {/* ===== COLUMN 2: THE CLUB (2 cols) ===== */}
-          <div className="lg:col-span-2">
-            <h3 className="text-slate-900 font-semibold mb-4 text-sm uppercase tracking-wider">
+          <div className="ui-card lg:col-span-2">
+            <h3 className="ui-heading text-ink font-semibold mb-4 text-sm uppercase tracking-wider">
               The Club
             </h3>
             <ul className="space-y-2">
-              <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
+              <li data-part="muted" className="text-ink-muted text-sm flex items-center gap-2">
+                <span data-part="dot" className="w-1 h-1 bg-primary rounded-full"></span>
                 Founded 2020
               </li>
-              <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
+              <li data-part="muted" className="text-ink-muted text-sm flex items-center gap-2">
+                <span data-part="dot" className="w-1 h-1 bg-primary rounded-full"></span>
                 50+ Members
               </li>
-              <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
+              <li data-part="muted" className="text-ink-muted text-sm flex items-center gap-2">
+                <span data-part="dot" className="w-1 h-1 bg-primary rounded-full"></span>
                 30+ Projects
               </li>
-              <li className="text-slate-500 text-sm flex items-center gap-2">
-                <span className="w-1 h-1 bg-sky-600 rounded-full"></span>
+              <li data-part="muted" className="text-ink-muted text-sm flex items-center gap-2">
+                <span data-part="dot" className="w-1 h-1 bg-primary rounded-full"></span>
                 20+ Events
               </li>
             </ul>
           </div>
 
           {/* ===== COLUMN 3: DOMAINS (2 cols) ===== */}
-          <div className="lg:col-span-2">
-            <h3 className="text-slate-900 font-semibold mb-4 text-sm uppercase tracking-wider">
+          <div className="ui-card lg:col-span-2">
+            <h3 className="ui-heading text-ink font-semibold mb-4 text-sm uppercase tracking-wider">
               Our Domains
             </h3>
             <ul className="space-y-3">
 
-              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800"> 
+              <li data-part="domain" className="group flex items-center gap-3 text-ink-muted hover:text-ink hover:translate-x-1 motion-reduce:hover:translate-x-0 transition-all duration-300">
+              <span data-part="domain-icon" data-domain="ml" className="ui-well flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 motion-reduce:group-hover:scale-100 transition"> 
               <Brain size={16}/>
               </span>
               Machine Learning
               </li>
 
-              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800">
+              <li data-part="domain" className="group flex items-center gap-3 text-ink-muted hover:text-ink hover:translate-x-1 motion-reduce:hover:translate-x-0 transition-all duration-300">
+              <span data-part="domain-icon" data-domain="cloud" className="ui-well flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 motion-reduce:group-hover:scale-100 transition">
               <Cloud size={16}/>
               </span>
               Cloud Computing
               </li>
 
-              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800">
+              <li data-part="domain" className="group flex items-center gap-3 text-ink-muted hover:text-ink hover:translate-x-1 motion-reduce:hover:translate-x-0 transition-all duration-300">
+              <span data-part="domain-icon" data-domain="cyber" className="ui-well flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 motion-reduce:group-hover:scale-100 transition">
               <ShieldCheck size={16}/>
               </span>
               Cybersecurity
               </li>
 
-              <li className="group flex items-center gap-3 text-slate-600 hover:text-slate-900 hover:translate-x-1 transition-all duration-300">
-              <span className="flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 transition bg-sky-600/10 text-sky-800">
+              <li data-part="domain" className="group flex items-center gap-3 text-ink-muted hover:text-ink hover:translate-x-1 motion-reduce:hover:translate-x-0 transition-all duration-300">
+              <span data-part="domain-icon" data-domain="data" className="ui-well flex items-center justify-center w-7 h-7 rounded-md group-hover:scale-110 motion-reduce:group-hover:scale-100 transition">
               <BarChart3 size={16}/>
               </span>
               Data Analytics
               </li>
 
               </ul>
+            <Link
+              to="/recruitment"
+              className="ui-pill mt-5 inline-flex min-h-10 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Join AdroIT: recruitment
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
           </div>
 
           {/* ===== COLUMN 4: CONNECT (3 cols) - CONDITIONAL ===== */}
           {!showMap && (
-            <div className="lg:col-span-3">
-              <h3 className="text-slate-900 font-semibold mb-4 text-sm uppercase tracking-wider">
+            <div className="ui-card lg:col-span-3">
+              <h3 className="ui-heading text-ink font-semibold mb-4 text-sm uppercase tracking-wider">
                 Connect
               </h3>
               <div className="flex items-center gap-4">
@@ -126,7 +127,8 @@ const Footer = ({ showMap = false }) => {
                   href="https://github.com/AdroIT-RNSIT"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-github w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 transition-colors duration-300"
+                  data-brand="github"
+                  className="social-github ui-pill w-10 h-10 flex items-center justify-center rounded-lg text-ink-muted transition-colors duration-300"
                   aria-label="GitHub"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -137,7 +139,8 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.linkedin.com/company/adroit-rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-linkedin w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 transition-colors duration-300"
+                  data-brand="linkedin"
+                  className="social-linkedin ui-pill w-10 h-10 flex items-center justify-center rounded-lg text-ink-muted transition-colors duration-300"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -148,7 +151,8 @@ const Footer = ({ showMap = false }) => {
                   href="https://www.instagram.com/adroit_rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-instagram w-10 h-10 flex items-center justify-center bg-slate-900/5 hover:bg-slate-900/10 rounded-lg text-slate-500 transition-colors duration-300"
+                  data-brand="instagram"
+                  className="social-instagram ui-pill w-10 h-10 flex items-center justify-center rounded-lg text-ink-muted transition-colors duration-300"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -156,7 +160,7 @@ const Footer = ({ showMap = false }) => {
                   </svg>
                 </a>
               </div>
-              <p className="text-gray-600 text-xs mt-4">
+              <p data-part="faint" className="text-ink-muted text-xs mt-4">
                 Follow us for updates and events
               </p>
             </div>
@@ -165,17 +169,17 @@ const Footer = ({ showMap = false }) => {
 
         {/* ===== MAP SECTION - ONLY ON HOMEPAGE (ORIGINAL SIZE) ===== */}
         {showMap && (
-          <div className="lg:col-span-12 mb-8">
+          <div className="ui-card lg:col-span-12 mb-8">
             <div className="flex items-center gap-2 mb-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky-600">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" data-part="icon" className="text-primary">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
-              <h4 className="text-slate-900 font-semibold text-sm">Find Our Campus</h4>
+              <h4 className="ui-heading text-ink font-semibold text-sm">Find Our Campus</h4>
             </div>
             
             {/* ===== MAP - RESTORED TO ORIGINAL SIZE ===== */}
-            <div className="relative h-56 sm:h-64 rounded-lg overflow-hidden border border-slate-900/10 shadow-lg">
+            <div data-part="map" className="ui-well relative h-56 sm:h-64 rounded-lg overflow-hidden">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3519.4201134668556!2d77.51600707454556!3d12.902195416397204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3fa747acf84b%3A0x97a5cf1952c2fe3a!2sRNSIT%20CSE%20Department!5e1!3m2!1sen!2sin!4v1770548920832!5m2!1sen!2sin"
                 width="100%"
@@ -192,7 +196,7 @@ const Footer = ({ showMap = false }) => {
                 href="https://maps.google.com/?q=RNSIT+Bangalore"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-slate-900 text-xs px-3 py-2 rounded-lg hover:bg-black/90 transition-colors duration-300 flex items-center gap-1"
+                className="ui-chip absolute bottom-3 right-3 text-xs px-3 py-2 rounded-lg transition-colors duration-300 flex items-center gap-1"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
@@ -203,21 +207,22 @@ const Footer = ({ showMap = false }) => {
               </a>
             </div>
             
-            <p className="text-gray-600 text-xs mt-2">
+            <p data-part="faint" className="text-ink-muted text-xs mt-2">
               Visit us in the Computer Science Department building
             </p>
           </div>
         )}
 
         {/* ===== BOTTOM BAR ===== */}
-        <div className="mt-8 pt-6 border-t border-slate-900/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-600">
+        <div data-part="bar" className="mt-8 pt-6 border-t border-line flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p data-part="faint" className="text-xs text-ink-muted">
             © {currentYear} AdroIT Club. All rights reserved.
           </p>
           
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-1 text-xs text-gray-600 hover:text-sky-600 transition-colors duration-300"
+            data-part="faint"
+            className="flex min-h-10 items-center gap-1 text-xs text-ink-muted hover:text-primary transition-colors duration-300"
             aria-label="Back to top"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -7,7 +7,9 @@ import { supabase } from "../lib/supabaseClient";
 import { useRegistrationClosed } from "../lib/registrationStatus";
 
 const fieldClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20";
+  "ui-input w-full rounded-xl px-4 py-3 text-ink placeholder:text-ink-subtle transition-colors";
+const labelClass = "mb-1.5 block text-sm font-medium text-ink-muted";
+const BACK = "ui-pill inline-flex w-fit min-h-10 items-center gap-2 rounded-full px-3.5 py-1.5 text-sm text-ink transition-colors";
 
 
 export default function DomainRegister() {
@@ -31,12 +33,9 @@ export default function DomainRegister() {
 
   if (!domain) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-slate-900">Domain not found</h1>
-        <Link
-          to="/"
-          className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
-        >
+      <div className="mx-auto max-w-lg px-4 py-20 text-center text-ink">
+        <h1 className="ui-heading text-2xl font-bold text-ink">Domain not found</h1>
+        <Link to="/" data-part="back" className={`${BACK} mt-6`}>
           <ArrowLeft size={16} />
           Back
         </Link>
@@ -86,29 +85,26 @@ export default function DomainRegister() {
   };
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
-      <Link
-        to={backTo}
-        className="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-sky-600/40 hover:text-sky-800"
-      >
+    <div className="mx-auto max-w-xl px-4 py-12 text-ink sm:px-6 sm:py-16">
+      <Link to={backTo} data-part="back" className={BACK}>
         <ArrowLeft size={16} />
         Back
       </Link>
-      <p className="mt-6 font-mono text-xs tracking-[0.22em] uppercase text-sky-800">
+      <p className="mt-6 font-mono text-xs tracking-[0.22em] uppercase text-primary-ink">
         {domain.label}
       </p>
-      <h1 className="mt-3 text-3xl font-bold text-slate-900">{domain.title}</h1>
+      <h1 className="ui-heading mt-3 text-3xl font-bold text-ink">{domain.title}</h1>
       {session?.day && (
-        <p className="mt-2 text-sm font-medium text-slate-500">{session.day}</p>
+        <p className="mt-2 text-sm font-medium text-ink-subtle">{session.day}</p>
       )}
 
       {session?.topics?.length > 0 && (
-        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-900">What We'll Cover</h2>
+        <section className="ui-card mt-8 rounded-2xl p-6">
+          <h2 className="ui-heading text-lg font-bold text-ink">What We'll Cover</h2>
           <ul className="mt-4 space-y-2.5">
             {session.topics.map((topic) => (
-              <li key={topic} className="flex gap-2.5 text-sm leading-relaxed text-slate-700">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-600" aria-hidden="true" />
+              <li key={topic} className="flex gap-2.5 text-sm leading-relaxed text-ink-muted">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
                 <span>{topic}</span>
               </li>
             ))}
@@ -117,16 +113,16 @@ export default function DomainRegister() {
       )}
 
       {isClosed ? (
-        <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-8 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Registration closed</h2>
-          <p className="mt-2 text-sm text-slate-600">
+        <div className="ui-card mt-8 rounded-2xl px-6 py-8">
+          <h2 className="ui-heading text-lg font-semibold text-ink">Registration closed</h2>
+          <p className="mt-2 text-sm text-ink-muted">
             {domain.title} registrations are closed for now. Follow AdroIT for updates on the next round.
           </p>
         </div>
       ) : done ? (
-        <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-8">
-          <h2 className="text-lg font-semibold text-emerald-900">You're registered</h2>
-          <p className="mt-2 text-sm text-emerald-800">
+        <div role="status" className="mt-8 rounded-2xl border border-success/30 bg-success/10 px-6 py-8">
+          <h2 className="text-lg font-semibold text-success">You're registered</h2>
+          <p className="mt-2 text-sm text-ink-muted">
             {form.name}, your {domain.title} registration is saved.
           </p>
           {domain.whatsapp && (
@@ -134,16 +130,16 @@ export default function DomainRegister() {
               href={domain.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex w-fit items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+              className="ui-solid mt-6 inline-flex w-fit items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold"
             >
               Join WhatsApp Group
             </a>
           )}
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <form onSubmit={handleSubmit} className="ui-card mt-8 space-y-5 rounded-2xl p-6 sm:p-8">
           <div>
-            <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-slate-700">
+            <label htmlFor="name" className={labelClass}>
               Name
             </label>
             <input
@@ -160,7 +156,7 @@ export default function DomainRegister() {
           </div>
 
           <div>
-            <label htmlFor="usn" className="mb-1.5 block text-sm font-medium text-slate-700">
+            <label htmlFor="usn" className={labelClass}>
               USN
             </label>
             <input
@@ -177,7 +173,7 @@ export default function DomainRegister() {
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <label htmlFor="semester" className="mb-1.5 block text-sm font-medium text-slate-700">
+              <label htmlFor="semester" className={labelClass}>
                 Semester
               </label>
               <input
@@ -186,11 +182,11 @@ export default function DomainRegister() {
                 type="text"
                 readOnly
                 value={form.semester}
-                className={`${fieldClass} bg-slate-50 text-slate-500 cursor-not-allowed`}
+                className={`${fieldClass} cursor-not-allowed opacity-70`}
               />
             </div>
             <div>
-              <label htmlFor="section" className="mb-1.5 block text-sm font-medium text-slate-700">
+              <label htmlFor="section" className={labelClass}>
                 Section
               </label>
               <input
@@ -211,7 +207,7 @@ export default function DomainRegister() {
           </div>
 
           <div>
-            <label htmlFor="mobile" className="mb-1.5 block text-sm font-medium text-slate-700">
+            <label htmlFor="mobile" className={labelClass}>
               Mobile number
             </label>
             <input
@@ -233,7 +229,7 @@ export default function DomainRegister() {
           </div>
 
           {error && (
-            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            <p role="alert" className="rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
               {error}
             </p>
           )}
@@ -241,7 +237,7 @@ export default function DomainRegister() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex w-full items-center justify-center rounded-xl bg-sky-600 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-sky-900/15 transition-colors hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="ui-solid inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Saving…" : "Register"}
           </button>
@@ -249,22 +245,22 @@ export default function DomainRegister() {
       )}
 
       {!session?.topics?.length && (
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="ui-card mt-8 rounded-2xl p-5">
         <div className="flex items-start gap-4">
           {bootcamp?.poster && session && (
             <img
               src={bootcamp.poster}
               alt=""
-              className="h-14 w-24 shrink-0 rounded-lg border border-slate-200 bg-slate-50 object-cover"
+              className="h-14 w-24 shrink-0 rounded-lg border border-line bg-ink/5 object-cover"
             />
           )}
           <div>
             {session?.day && (
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">{session.day}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{session.day}</p>
             )}
-            <h2 className="text-lg font-bold text-slate-900">{session?.title || domain.title}</h2>
+            <h2 className="ui-heading text-lg font-bold text-ink">{session?.title || domain.title}</h2>
             {(session?.detail || domain.description) && (
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{session?.detail || domain.description}</p>
+              <p className="mt-2 text-sm leading-relaxed text-ink-muted">{session?.detail || domain.description}</p>
             )}
           </div>
         </div>

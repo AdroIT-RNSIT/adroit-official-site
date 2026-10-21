@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./ui-designs/base.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -11,12 +12,13 @@
   --color-primary: var(--color-sky-700);
   --color-primary-ink: var(--color-sky-800);
   --color-on-primary: var(--color-white);
+  --color-on-accent: var(--color-black);
   --color-secondary: var(--color-indigo-500);
   --color-page: var(--color-white);
   --color-surface: var(--color-white);
   --color-ink: var(--color-slate-900);
   --color-ink-muted: var(--color-slate-600);
-  --color-ink-subtle: var(--color-slate-500);
+  --color-ink-subtle: var(--color-slate-600);
   --color-line: var(--color-slate-200);
   --color-line-strong: var(--color-slate-300);
   --color-success: var(--color-emerald-700);
@@ -48,146 +50,6 @@ html.dark #root {
   background-color: #000000;
   color: #e2e8f0;
 }
-
-.grid-lines {
-  background-color: #eef3f8;
-  background-image:
-    radial-gradient(900px 460px at 0% 0%, rgba(186, 230, 253, 0.72), transparent 62%),
-    radial-gradient(720px 420px at 100% 6%, rgba(199, 210, 254, 0.5), transparent 58%);
-}
-
-html.dark .grid-lines {
-  background-color: #000000;
-  background-image: none;
-}
-
-.glass {
-  background-color: rgba(255, 255, 255, 0.58);
-  -webkit-backdrop-filter: blur(22px) saturate(1.7);
-  backdrop-filter: blur(22px) saturate(1.7);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-html.dark .glass {
-  background-color: rgba(17, 17, 17, 0.72);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-/* Single-colour liquid glass, matching the Contact page. In the components layer so utilities
-   (e.g. `absolute` on carousel cards) still override position and friends. */
-@layer components {
-.lg-card {
-  --lg-tint: color-mix(in srgb, var(--color-surface) 28%, transparent);
-  --lg-hi: var(--color-surface);
-  --lg-rim: color-mix(in srgb, var(--color-surface) 92%, transparent);
-  --lg-edge: color-mix(in srgb, var(--color-ink) 16%, transparent);
-  --lg-glow: color-mix(in srgb, var(--color-ink) 5%, transparent);
-  --lg-shadow: color-mix(in srgb, var(--color-ink) 22%, transparent);
-  --lg-sheen: 45%;
-  --lg-spec: 75%;
-  position: relative;
-  isolation: isolate;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--lg-hi) var(--lg-sheen), transparent), transparent 45%),
-    var(--lg-tint);
-  -webkit-backdrop-filter: blur(16px) saturate(1.8);
-  backdrop-filter: blur(16px) saturate(1.8);
-  border: 1px solid var(--lg-rim);
-  box-shadow:
-    0 0 0 0.5px var(--lg-edge),
-    inset 0 1px 0 var(--lg-hi),
-    inset 0 -8px 22px -6px var(--lg-glow),
-    0 18px 40px -18px var(--lg-shadow);
-}
-html.dark .lg-card {
-  --lg-tint: color-mix(in srgb, var(--color-ink) 5%, transparent);
-  --lg-hi: color-mix(in srgb, var(--color-ink) 72%, transparent);
-  --lg-rim: color-mix(in srgb, var(--color-ink) 24%, transparent);
-  --lg-edge: color-mix(in srgb, var(--color-page) 70%, transparent);
-  --lg-glow: color-mix(in srgb, var(--color-ink) 9%, transparent);
-  --lg-shadow: color-mix(in srgb, var(--color-page) 80%, transparent);
-  --lg-sheen: 12%;
-  --lg-spec: 24%;
-}
-.lg-card::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(60% 45% at 22% 0%, color-mix(in srgb, var(--lg-hi) var(--lg-spec), transparent), transparent 70%);
-  mix-blend-mode: screen;
-}
-.lg-card::after {
-  content: ""; position: absolute; inset: 1px; z-index: -1; border-radius: inherit; pointer-events: none;
-  box-shadow: inset 0 0 0 0.8px color-mix(in srgb, var(--lg-rim) 60%, transparent), inset 0 -1px 4px color-mix(in srgb, var(--lg-hi) 16%, transparent);
-}
-.lg-well {
-  background: color-mix(in srgb, var(--color-ink) 4%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-surface) 85%, transparent);
-  box-shadow:
-    0 0 0 0.5px color-mix(in srgb, var(--color-ink) 8%, transparent),
-    inset 0 1px 2px color-mix(in srgb, var(--color-ink) 5%, transparent);
-}
-html.dark .lg-well {
-  background: color-mix(in srgb, var(--color-ink) 5%, transparent);
-  border-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-ink) 8%, transparent);
-}
-/* Glossy solid button (bg-ink text-page), same as the Contact page Send button. */
-.lg-solid {
-  border: 1px solid color-mix(in srgb, var(--color-page) 18%, transparent);
-  background-image: linear-gradient(180deg, color-mix(in srgb, var(--color-page) 24%, transparent), transparent 60%);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--color-page) 40%, transparent),
-    0 10px 24px -12px color-mix(in srgb, var(--color-ink) 45%, transparent);
-}
-html.dark .lg-solid {
-  background-image: none;
-  box-shadow: inset 0 -2px 6px color-mix(in srgb, var(--color-page) 18%, transparent);
-}
-@media (prefers-reduced-transparency: reduce) {
-  .lg-card { background: var(--color-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
-}
-}
-
-html.dark .text-slate-900 { color: #f1f5f9; }
-html.dark .text-slate-800 { color: #e2e8f0; }
-html.dark .text-slate-700 { color: #cbd5e1; }
-html.dark .text-slate-600 { color: #94a3b8; }
-html.dark .text-sky-800 { color: #7dd3fc; }
-html.dark .text-sky-700 { color: #38bdf8; }
-
-html.dark .bg-white { background-color: #111111; }
-html.dark .bg-white\/90 { background-color: rgb(17 17 17 / 0.94); }
-html.dark .bg-white\/80 { background-color: rgb(17 17 17 / 0.88); }
-html.dark .bg-white\/75 { background-color: rgb(17 17 17 / 0.82); }
-html.dark .bg-white\/70 { background-color: rgb(17 17 17 / 0.78); }
-html.dark .bg-white\/60 { background-color: rgb(17 17 17 / 0.7); }
-html.dark .bg-white\/50 { background-color: rgb(255 255 255 / 0.06); }
-html.dark .bg-white\/40 { background-color: rgb(255 255 255 / 0.06); }
-html.dark .bg-\[\#f3e8ff\] { background-color: #000000; }
-html.dark .bg-\[\#f3e8ff\]\/95 { background-color: rgb(0 0 0 / 0.95); }
-html.dark .bg-slate-50 { background-color: rgb(255 255 255 / 0.06); }
-html.dark .bg-slate-100 { background-color: rgb(255 255 255 / 0.08); }
-html.dark .bg-slate-900\/5 { background-color: rgb(255 255 255 / 0.05); }
-html.dark .border-slate-200,
-html.dark .border-slate-200\/80,
-html.dark .border-slate-200\/90 { border-color: rgb(255 255 255 / 0.12); }
-html.dark .border-slate-900\/10,
-html.dark .border-slate-900\/5 { border-color: rgb(255 255 255 / 0.1); }
-html.dark .hover\:text-slate-900:hover { color: #f1f5f9; }
-html.dark .hover\:bg-slate-50:hover { background-color: rgb(255 255 255 / 0.08); }
-html.dark .hover\:bg-slate-900\/10:hover { background-color: rgb(255 255 255 / 0.08); }
-html.dark .hover\:bg-white\/80:hover { background-color: rgb(255 255 255 / 0.12); }
-
-@media (min-width: 768px) {
-  html.dark .md\:bg-white\/90 { background-color: rgb(17 17 17 / 0.94); }
-  html.dark .md\:bg-white\/85 { background-color: rgb(0 0 0 / 0.88); }
-  html.dark .md\:bg-white\/70 { background-color: rgb(0 0 0 / 0.78); }
-  html.dark .md\:bg-white\/40 { background-color: rgb(255 255 255 / 0.06); }
-  html.dark .md\:bg-\[\#f3e8ff\] { background-color: #000000; }
-  html.dark .md\:bg-\[\#f3e8ff\]\/95 { background-color: rgb(0 0 0 / 0.95); }
-}
-
-html.dark .placeholder-gray-500::placeholder,
-html.dark .placeholder\:text-slate-400::placeholder { color: #64748b; }
 
 /* Global Mobile Fixes */
 html {
@@ -250,6 +112,19 @@ input, textarea, select {
   animation-duration: 84s;
 }
 
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow { animation: none; }
+}
+
 .glimpse-gallery-track {
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
@@ -277,6 +152,16 @@ input, textarea, select {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none;
+  }
+  .glimpse-gallery {
+    overflow-x: auto;
+  }
+}
+
 @layer utilities {
   .fluid-hero {
     font-size: clamp(2.25rem, 11vw, 4.5rem);
@@ -292,6 +177,15 @@ input, textarea, select {
 
   .fluid-lead {
     font-size: clamp(1rem, 3.2vw, 1.5rem);
+  }
+
+  /* Domain accents are too light for text on light surfaces (under 3:1), so light mode darkens them. */
+  .accent-ink {
+    color: color-mix(in oklab, var(--accent) 60%, black);
+  }
+  html.dark .accent-ink,
+  [data-scheme='dark'] .accent-ink {
+    color: var(--accent);
   }
 }
 

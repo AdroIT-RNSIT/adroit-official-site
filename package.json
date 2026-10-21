@@ -7,6 +7,9 @@
     "start-backend": "cd ai-service && python -m uvicorn main:app --host 0.0.0.0 --port 5000",
     "build": "cd frontend && npm install && npm run build",
     "admin:password": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/admin-password.mjs",
+    "new:ui": "node scripts/new-ui-design.mjs",
+    "check:ui": "node scripts/check-ui-designs.mjs",
+    "test:recruitment": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"tests/*.test.mjs\"",
     "prod": "concurrently \"npm run serve-frontend\" \"npm run start-backend\"",
     "serve-frontend": "cd frontend && npm run preview -- --host 0.0.0.0"
   },
@@ -15,6 +18,7 @@
     "cross-env": "^10.1.0"
   },
   "dependencies": {
+    "docx": "^9.13.0",
     "mongodb": "^7.7.0",
     "three": "^0.186.1"
   }

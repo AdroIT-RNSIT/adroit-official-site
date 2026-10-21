@@ -21,7 +21,8 @@ import {
   CalendarCheck,
 } from 'lucide-react';
 
-const CARD = "lg-card rounded-3xl p-4 md:p-6";
+const CARD = "ui-card rounded-3xl p-4 md:p-6";
+const CARD_TITLE = "ui-heading flex items-center gap-2 text-lg text-ink";
 
 /* Same accents as the Members page domain filters. */
 const DOMAIN_ACCENTS = { ml: '#22d3ee', cc: '#c084fc', cy: '#f472b6', da: '#34d399', nt: '#fbbf24' };
@@ -32,59 +33,6 @@ const DOMAIN_PANELS = [
   { id: 'projects', label: 'Projects' },
   { id: 'path', label: 'Path' },
 ];
-
-/* Sliding pill from the Members domain toggles; panels use the shared .lg-card / .lg-well. */
-const GLASS_CSS = `
-.dm-liquid {
-  --liquid-bg: rgba(233,245,255,0.78);
-  --liquid-border: rgba(147,197,253,0.62);
-  --liquid-glow: rgba(56,189,248,0.26);
-  --liquid-highlight: rgba(255,255,255,0.99);
-  position: absolute; left: 0; top: 0; z-index: 0;
-  border-radius: 999px;
-  pointer-events: none;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--liquid-highlight) 56%, transparent), transparent 66%),
-    var(--liquid-bg);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid var(--liquid-border);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--liquid-highlight) 92%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--liquid-border) 34%, transparent),
-    inset 0 -5px 14px color-mix(in srgb, var(--liquid-glow) 44%, transparent);
-  transform-origin: center center;
-  transition:
-    transform 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
-    width 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
-    height 360ms cubic-bezier(0.22, 1.18, 0.36, 1);
-}
-html.dark .dm-liquid {
-  --liquid-bg: rgba(22,29,42,0.5);
-  --liquid-border: rgba(226,232,240,0.32);
-  --liquid-glow: rgba(125,211,252,0.2);
-  --liquid-highlight: rgba(255,255,255,0.72);
-}
-.dm-liquid::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit;
-  background:
-    radial-gradient(110% 85% at var(--hx, 24%) 0%, rgba(255,255,255,0.92), transparent 46%),
-    radial-gradient(70% 60% at 78% 88%, color-mix(in srgb, var(--liquid-glow) 65%, transparent), transparent 62%);
-  mix-blend-mode: screen;
-}
-.dm-liquid::after {
-  content: ""; position: absolute; inset: 1px; border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 0.8px color-mix(in srgb, var(--liquid-border) 62%, transparent),
-    inset 0 -1px 4px rgba(255,255,255,0.16);
-}
-
-@media (prefers-reduced-motion: reduce) { .dm-liquid { transition: none; } }
-@media (prefers-reduced-transparency: reduce) {
-  .dm-liquid { -webkit-backdrop-filter: none; backdrop-filter: none; }
-}
-`;
 
 /* Buttons inside need data-key; the pill follows the hovered button, else the active one. */
 function LiquidTrack({ activeKey, layoutKey, label, className, children }) {
@@ -146,7 +94,7 @@ function LiquidTrack({ activeKey, layoutKey, label, className, children }) {
       {pose && (
         <span
           aria-hidden="true"
-          className="dm-liquid"
+          className="ui-thumb"
           style={{
             width: pose.w,
             height: pose.h,
@@ -267,12 +215,6 @@ export default function Domains() {
       name: 'Machine Learning',
       shortName: 'ML',
       icon: icons.ml,
-      color: 'from-cyan-500 to-cyan-600',
-      lightColor: 'from-cyan-400/20 to-cyan-600/20',
-      borderColor: 'border-cyan-500/30',
-      textColor: 'text-cyan-400',
-      bgColor: 'bg-cyan-500/10',
-      gradient: 'bg-gradient-to-br from-cyan-500/20 via-purple-500/10 to-transparent',
       description: 'Build intelligent systems that learn, adapt, and make decisions from data.',
       longDescription: 'This domain focuses on learning the fundamentals of Machine Learning, including data preprocessing, feature engineering, and building predictive models. Members gain hands-on experience working with algorithms, training models, and evaluating their performance.',
       careerPaths: ['AI Engineer', 'ML Engineer', 'Data Scientist', 'Research Scientist', 'Computer Vision Engineer'],
@@ -334,12 +276,6 @@ export default function Domains() {
       name: 'Cloud Computing',
       shortName: 'Cloud',
       icon: icons.cc,
-      color: 'from-purple-500 to-purple-600',
-      lightColor: 'from-purple-400/20 to-purple-600/20',
-      borderColor: 'border-purple-500/30',
-      textColor: 'text-purple-400',
-      bgColor: 'bg-purple-500/10',
-      gradient: 'bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-transparent',
       description: 'Design, deploy, and scale applications on world-class cloud infrastructure.',
       longDescription: 'This domain focuses on understanding how networking works and the fundamentals of cloud computing. Members then progress to deploying applications in production environments and working with virtual machines (VMs) to gain practical, real-world experience',
       careerPaths: ['Cloud Architect', 'DevOps Engineer', 'Site Reliability Engineer', 'Cloud Developer', 'Platform Engineer'],
@@ -376,12 +312,6 @@ export default function Domains() {
       name: 'Cybersecurity',
       shortName: 'Cyber',
       icon: icons.cy,
-      color: 'from-pink-500 to-pink-600',
-      lightColor: 'from-pink-400/20 to-pink-600/20',
-      borderColor: 'border-pink-500/30',
-      textColor: 'text-pink-400',
-      bgColor: 'bg-pink-500/10',
-      gradient: 'bg-gradient-to-br from-pink-500/20 via-rose-500/10 to-transparent',
       description: 'Protect systems, networks, and data from evolving cyber threats.',
       longDescription: 'This domain focuses on understanding how systems, networks, and applications can be secured against cyber threats. Members learn the fundamentals of cybersecurity, including ethical hacking concepts, cryptography basics, and security practices used to protect digital systems and data.',
       careerPaths: ['Security Analyst', 'Penetration Tester', 'Security Engineer', 'SOC Analyst', 'Cryptographer'],
@@ -418,12 +348,6 @@ export default function Domains() {
       name: 'Data Analytics',
       shortName: 'DA',
       icon: icons.da,
-      color: 'from-green-500 to-green-600',
-      lightColor: 'from-green-400/20 to-green-600/20',
-      borderColor: 'border-green-500/30',
-      textColor: 'text-green-400',
-      bgColor: 'bg-green-500/10',
-      gradient: 'bg-gradient-to-br from-green-500/20 via-emerald-500/10 to-transparent',
       description: 'Extract actionable insights from complex datasets to drive decisions.',
       longDescription: 'Data Analytics transforms raw data into meaningful insights. Master data visualization, statistical analysis, and business intelligence to become a data-driven decision maker.',
       careerPaths: ['Data Analyst', 'Business Intelligence Analyst', 'Data Engineer', 'Analytics Manager', 'BI Developer'],
@@ -460,12 +384,6 @@ export default function Domains() {
       name: 'Non-Tech',
       shortName: 'Non-Tech',
       icon: icons.nt,
-      color: 'from-amber-500 to-amber-600',
-      lightColor: 'from-amber-400/20 to-amber-600/20',
-      borderColor: 'border-amber-500/30',
-      textColor: 'text-amber-400',
-      bgColor: 'bg-amber-500/10',
-      gradient: 'bg-gradient-to-br from-amber-500/20 via-orange-500/10 to-transparent',
       description: 'The club work outside the technical tracks, from creative production to how events get run.',
       longDescription: 'Non-Tech is how AdroIT shows up beyond the technical tracks. Members edit videos, shoot event photos, draft letters, design posters, run marketing, and handle the logistics that take a session or fest from a plan to a finished day.',
       careerPaths: ['Video Editor', 'Photographer', 'Content Writer', 'Graphic Designer', 'Marketing Coordinator', 'Event Coordinator'],
@@ -557,7 +475,7 @@ export default function Domains() {
   const showStats = currentDomain.stats.members != null;
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pb-16 pt-6 font-sans text-slate-900 dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
+    <div data-page="domains" className="relative min-h-dvh overflow-x-clip bg-page pb-16 pt-6 font-sans text-ink lg:pt-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}
@@ -565,80 +483,77 @@ export default function Domains() {
           ref={sectionRefs.hero}
           className="mb-8 text-center lg:mb-16"
         >
-          <h1 className="fluid-h1 mb-3 pb-2 font-extrabold lg:mb-6">
-            <span className="text-slate-900 dark:text-white">Domains</span>
+          <h1 className="ui-heading fluid-h1 mb-3 pb-2 font-extrabold text-ink lg:mb-6">
+            Domains
           </h1>
 
-          <p className="mx-auto max-w-4xl text-base leading-relaxed text-slate-600 lg:fluid-lead">
+          <p className="mx-auto max-w-4xl text-base leading-relaxed text-ink-muted lg:fluid-lead">
             Explore AdroIT's technical tracks and the non-tech work behind events and outreach, with
-            <span className="text-sky-700"> hands-on projects</span> and
-            <span className="text-sky-700"> expert mentorship</span>
+            <span className="text-primary"> hands-on projects</span> and
+            <span className="text-primary"> expert mentorship</span>
           </p>
 
           {/* Quick Stats */}
           <div className="mt-8 hidden flex-wrap justify-center gap-6 lg:flex">
-            <div className="flex items-center gap-3 lg-card px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
-              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
+            <div className="ui-card flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
+              <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center text-ink-muted">
                 <svg className="w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="60" cy="60" r="10" fill="#ffffff"/>
-                  <line x1="60" y1="60" x2="60" y2="20" stroke="#06B6D4" stroke-width="4"/>
-                  <line x1="60" y1="60" x2="100" y2="60" stroke="#8B5CF6" stroke-width="4"/>
-                  <line x1="60" y1="60" x2="60" y2="100" stroke="#EC4899" stroke-width="4"/>
-                  <line x1="60" y1="60" x2="20" y2="60" stroke="#22C55E" stroke-width="4"/>
-                  <circle cx="60" cy="20" r="10" fill="#06B6D4"/>
-                  <circle cx="100" cy="60" r="10" fill="#8B5CF6"/>
-                  <circle cx="60" cy="100" r="10" fill="#EC4899"/>
-                  <circle cx="20" cy="60" r="10" fill="#22C55E"/>
+                  <circle cx="60" cy="60" r="10" fill="currentColor"/>
+                  <line x1="60" y1="60" x2="60" y2="20" stroke={DOMAIN_ACCENTS.ml} strokeWidth="4"/>
+                  <line x1="60" y1="60" x2="100" y2="60" stroke={DOMAIN_ACCENTS.cc} strokeWidth="4"/>
+                  <line x1="60" y1="60" x2="60" y2="100" stroke={DOMAIN_ACCENTS.cy} strokeWidth="4"/>
+                  <line x1="60" y1="60" x2="20" y2="60" stroke={DOMAIN_ACCENTS.da} strokeWidth="4"/>
+                  <circle cx="60" cy="20" r="10" fill={DOMAIN_ACCENTS.ml}/>
+                  <circle cx="100" cy="60" r="10" fill={DOMAIN_ACCENTS.cc}/>
+                  <circle cx="60" cy="100" r="10" fill={DOMAIN_ACCENTS.cy}/>
+                  <circle cx="20" cy="60" r="10" fill={DOMAIN_ACCENTS.da}/>
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-slate-900">{domains.length}</span>
-                <span className="text-slate-600 text-sm ml-2">Domains</span>
+                <span className="text-2xl font-bold text-ink">{domains.length}</span>
+                <span className="text-ink-muted text-sm ml-2">Domains</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 lg-card px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
+            <div className="ui-card flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
-                <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-
-                  <rect x="30" y="25" width="60" height="50" rx="8" fill="#111"/>
-                  <path d="M42 45 L52 50 L42 55" stroke="#06B6D4" stroke-width="5" fill="none"/>
-                  <line x1="58" y1="50" x2="75" y2="50" stroke="#06B6D4" stroke-width="5"/>
-                  <circle cx="45" cy="35" r="4" fill="#EC4899"/>
-                  <circle cx="60" cy="35" r="4" fill="#8B5CF6"/>
-                  <circle cx="75" cy="35" r="4" fill="#22C55E"/>
-
+                <svg data-scheme="dark" className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="30" y="25" width="60" height="50" rx="8" className="fill-surface"/>
+                  <path d="M42 45 L52 50 L42 55" className="stroke-primary" strokeWidth="5" fill="none"/>
+                  <line x1="58" y1="50" x2="75" y2="50" className="stroke-primary" strokeWidth="5"/>
+                  <circle cx="45" cy="35" r="4" fill={DOMAIN_ACCENTS.cy}/>
+                  <circle cx="60" cy="35" r="4" fill={DOMAIN_ACCENTS.cc}/>
+                  <circle cx="75" cy="35" r="4" fill={DOMAIN_ACCENTS.da}/>
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-slate-900">10+</span>
-                <span className="text-slate-600 text-sm ml-2">Projects</span>
+                <span className="text-2xl font-bold text-ink">10+</span>
+                <span className="text-ink-muted text-sm ml-2">Projects</span>
               </div>
             </div>
-            <div className="flex items-center gap-3 lg-card px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
+            <div className="ui-card flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl">
               <span className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 inline-flex items-center justify-center">
                 <svg className="w-full h-full" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="48" cy="38" r="15" fill="#06B6D4"/>
-                  <circle cx="74" cy="42" r="15" fill="#8B5CF6"/>
-
-                  <rect x="32" y="55" width="32" height="15" rx="8" fill="#06B6D4"/>
-                  <rect x="58" y="58" width="32" height="15" rx="8" fill="#8B5CF6"/>
+                  <circle cx="48" cy="38" r="15" fill={DOMAIN_ACCENTS.ml}/>
+                  <circle cx="74" cy="42" r="15" fill={DOMAIN_ACCENTS.cc}/>
+                  <rect x="32" y="55" width="32" height="15" rx="8" fill={DOMAIN_ACCENTS.ml}/>
+                  <rect x="58" y="58" width="32" height="15" rx="8" fill={DOMAIN_ACCENTS.cc}/>
                 </svg>
               </span>
               <div>
-                <span className="text-2xl font-bold text-slate-900">100+</span>
-                <span className="text-slate-600 text-sm ml-2">Members in community</span>
+                <span className="text-2xl font-bold text-ink">100+</span>
+                <span className="text-ink-muted text-sm ml-2">Members in community</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* ===== DOMAIN SELECTOR ===== */}
-        <section className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-white/95 px-4 py-3 backdrop-blur dark:bg-[#000000]/95 lg:static lg:mx-0 lg:mb-12 lg:flex lg:justify-center lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
-          <div className="lg-card overflow-hidden rounded-full p-1 lg:z-20 lg:overflow-visible lg:p-1.5">
+        <section data-part="domain-bar" className="sticky top-[var(--nav-height)] z-30 -mx-4 mb-5 bg-page/95 px-4 py-3 lg:static lg:mx-0 lg:mb-12 lg:flex lg:justify-center lg:bg-transparent lg:px-0 lg:py-0">
+          <div className="ui-track overflow-hidden rounded-full p-1 lg:z-20 lg:overflow-visible lg:p-1.5">
           <LiquidTrack
             activeKey={activeDomain}
             label="Choose a domain"
-            className="flex gap-1 overflow-x-auto [scrollbar-width:none] lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+            className="flex w-full min-w-0 gap-1 overflow-x-auto [scrollbar-width:none] lg:overflow-visible [&::-webkit-scrollbar]:hidden"
           >
             {domains.map((domain) => (
               <button
@@ -649,10 +564,10 @@ export default function Domains() {
                 onClick={() => selectDomain(domain.id)}
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
-                className={`group relative z-[1] flex shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 lg:gap-2.5 lg:px-5 lg:py-2.5 ${
+                className={`group relative z-[1] flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 lg:gap-2.5 lg:px-5 lg:py-2.5 ${
                   activeDomain === domain.id
-                    ? 'text-slate-900 dark:text-white'
-                    : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+                    ? 'text-ink'
+                    : 'text-ink-subtle hover:text-ink'
                 }`}
               >
                 <span
@@ -666,11 +581,11 @@ export default function Domains() {
                 <span className="relative hidden text-sm font-semibold lg:inline">{domain.name}</span>
                 
                 {hoveredDomain === domain.id && activeDomain !== domain.id && domain.stats.members != null && (
-                  <div className="absolute -bottom-16 left-1/2 z-50 hidden -translate-x-1/2 animate-fade-in whitespace-nowrap rounded-xl border border-slate-900/10 bg-black/90 p-3 backdrop-blur-xl lg:block">
+                  <div role="tooltip" className="ui-tooltip absolute -bottom-16 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded-xl p-3 lg:block">
                     <div className="flex gap-4 text-xs">
-                      <div><span className="text-sky-400">{domain.stats.members}</span> members</div>
+                      <div><span data-part="tip-stat">{domain.stats.members}</span> members</div>
                       {domain.stats.projects != null && (
-                        <div><span className="text-sky-400">{domain.stats.projects}</span> projects</div>
+                        <div><span data-part="tip-stat">{domain.stats.projects}</span> projects</div>
                       )}
                     </div>
                   </div>
@@ -686,53 +601,53 @@ export default function Domains() {
           key={activeDomain}
         >
           {/* Domain Hero Banner */}
-          <div className="lg-card mb-8 overflow-hidden rounded-[2rem]">
+          <div data-part="banner" className="ui-card mb-8 overflow-hidden rounded-[2rem]">
             <div className="relative z-10 p-4 sm:p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-sky-600 text-white sm:h-16 sm:w-16">
+                  <div data-part="badge" className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary text-on-primary sm:h-16 sm:w-16">
                     <div className="h-7 w-7 sm:h-8 sm:w-8">
                       {currentDomain.icon}
                     </div>
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900">{currentDomain.name}</h2>
-                      <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 dark:border-white/10 dark:text-slate-300">
+                      <h2 className="ui-heading text-2xl sm:text-3xl md:text-4xl text-ink">{currentDomain.name}</h2>
+                      <span className="ui-chip min-h-0 rounded-full px-3 py-1 text-xs font-medium text-ink-muted">
                         {currentDomain.shortName}
                       </span>
                     </div>
-                    <p className="max-w-2xl text-sm text-slate-700 sm:text-lg">{currentDomain.description}</p>
+                    <p className="max-w-2xl text-sm text-ink-muted sm:text-lg">{currentDomain.description}</p>
                   </div>
                 </div>
                 
                 {/* Stats Cards */}
                 {showStats && (
                 <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
-                  <div className="lg-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  <div className="ui-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
+                    <div className="text-2xl font-bold text-ink">
                       {currentDomain.stats.members}
                     </div>
-                    <div className="text-xs text-slate-600 flex items-center gap-1">
+                    <div className="text-xs text-ink-muted flex items-center gap-1">
                       {icons.members} Members
                     </div>
                   </div>
                   {currentDomain.stats.projects != null && (
-                  <div className="lg-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  <div className="ui-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
+                    <div className="text-2xl font-bold text-ink">
                       {currentDomain.stats.projects}
                     </div>
-                    <div className="text-xs text-slate-600 flex items-center gap-1">
+                    <div className="text-xs text-ink-muted flex items-center gap-1">
                       {icons.projects} Projects
                     </div>
                   </div>
                   )}
                   {currentDomain.stats.resources != null && (
-                  <div className="lg-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  <div className="ui-well min-w-[5.5rem] flex-1 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 md:flex-none">
+                    <div className="text-2xl font-bold text-ink">
                       {currentDomain.stats.resources}
                     </div>
-                    <div className="text-xs text-slate-600 flex items-center gap-1">
+                    <div className="text-xs text-ink-muted flex items-center gap-1">
                       {icons.resources} Resources
                     </div>
                   </div>
@@ -743,12 +658,12 @@ export default function Domains() {
             </div>
           </div>
 
-          <div className="lg-card mb-5 rounded-full p-1 lg:hidden">
+          <div className="ui-track mb-5 rounded-full p-1 lg:hidden">
             <LiquidTrack
               activeKey={activePanel}
               layoutKey={visiblePanels.length}
               label="Domain sections"
-              className={`grid gap-1 ${visiblePanels.length > 2 ? "grid-cols-4" : "grid-cols-2"}`}
+              className={`grid w-full min-w-0 gap-1 ${visiblePanels.length > 2 ? "grid-cols-4" : "grid-cols-2"}`}
             >
               {visiblePanels.map((panel) => (
                 <button
@@ -757,10 +672,10 @@ export default function Domains() {
                   data-key={panel.id}
                   aria-pressed={activePanel === panel.id}
                   onClick={() => setActivePanel(panel.id)}
-                  className={`relative z-[1] rounded-full px-1 py-2 text-xs font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40 ${
+                  className={`relative z-[1] min-h-10 rounded-full px-1 py-2 text-xs font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
                     activePanel === panel.id
-                      ? 'text-slate-900 dark:text-white'
-                      : 'text-slate-500 dark:text-slate-400'
+                      ? 'text-ink'
+                      : 'text-ink-subtle'
                   }`}
                 >
                   {panel.label}
@@ -777,10 +692,10 @@ export default function Domains() {
               
               {/* About Card */}
               <div className={`${panelClass('overview')} ${CARD}`}>
-                <h3 className={`mb-3 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-3 ${CARD_TITLE}`}>
                   {icons.domain} About This Domain
                 </h3>
-                <p className="text-slate-700 text-sm leading-relaxed">
+                <p className="text-ink-muted text-sm leading-relaxed">
                   {currentDomain.longDescription}
                 </p>
               </div>
@@ -788,14 +703,14 @@ export default function Domains() {
               {/* Career Paths Card */}
               {currentDomain.careerPaths.length > 0 && (
               <div className={`${panelClass('overview')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.career} Career Paths
                 </h3>
                 <div className="space-y-2">
                   {currentDomain.careerPaths.map((career, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm">
-                      <span className="text-sky-600">{icons.check}</span>
-                      <span className="text-slate-700">{career}</span>
+                      <span className="text-primary">{icons.check}</span>
+                      <span className="text-ink-muted">{career}</span>
                     </div>
                   ))}
                 </div>
@@ -805,16 +720,16 @@ export default function Domains() {
               {/* Domain Leads Card */}
               {currentDomain.leads.length > 0 && (
               <div className={`${panelClass('overview')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.members} Domain Lead
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.leads.map((lead, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-600 text-xs font-bold text-white">
+                      <div data-part="badge" className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-on-primary">
                         {lead.charAt(0)}
                       </div>
-                      <span className="text-slate-900 text-sm font-medium">{lead}</span>
+                      <span className="text-ink text-sm font-medium">{lead}</span>
                     </div>
                   ))}
                 </div>
@@ -827,14 +742,14 @@ export default function Domains() {
               
               {/* Skills Card */}
               <div className={`${panelClass('skills')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.skills} Skills to Master
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {currentDomain.skills.map((skill, idx) => (
                     <span
                       key={idx}
-                      className="lg-well rounded-full px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300"
+                      className="ui-well rounded-full px-3 py-1.5 text-xs font-medium text-ink-muted"
                     >
                       {skill}
                     </span>
@@ -845,14 +760,14 @@ export default function Domains() {
               {/* Tools Card */}
               {currentDomain.tools.length > 0 && (
               <div className={`${panelClass('skills')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.tools} Popular Tools
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
                   {currentDomain.tools.map((tool, idx) => (
-                    <div key={idx} className="lg-well flex items-center gap-2 rounded-xl p-2">
-                      <span className="text-slate-600 text-xs">{icons.tools}</span>
-                      <span className="text-slate-700 text-xs">{tool}</span>
+                    <div key={idx} className="ui-well flex items-center gap-2 rounded-xl p-2">
+                      <span className="text-ink-muted text-xs">{icons.tools}</span>
+                      <span className="text-ink-muted text-xs">{tool}</span>
                     </div>
                   ))}
                 </div>
@@ -861,24 +776,24 @@ export default function Domains() {
 
               {currentDomain.projects.length > 0 && (
               <div className={`${panelClass('projects')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.projects} Sample Projects
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.projects.map((project, idx) => {
                     const ProjectIcon = project.icon;
                     return (
-                    <div key={idx} className="lg-well flex items-center justify-between rounded-2xl p-3">
+                    <div key={idx} className="ui-well flex items-center justify-between rounded-2xl p-3">
                       <div className="flex items-center gap-3">
-                        <span className="inline-flex text-slate-700">
+                        <span className="inline-flex text-ink-muted">
                           <ProjectIcon size={18} strokeWidth={2} />
                         </span>
                         <div>
-                          <div className="text-slate-900 text-sm font-medium">{project.name}</div>
+                          <div className="text-ink text-sm font-medium">{project.name}</div>
                           <span className={`text-xs ${
-                            project.difficulty === 'Beginner' ? 'text-emerald-700' :
-                            project.difficulty === 'Intermediate' ? 'text-amber-700' :
-                            'text-rose-700'
+                            project.difficulty === 'Beginner' ? 'text-success' :
+                            project.difficulty === 'Intermediate' ? 'text-warning' :
+                            'text-danger'
                           }`}>
                             {project.difficulty}
                           </span>
@@ -898,22 +813,22 @@ export default function Domains() {
               {/* Learning Roadmap Card */}
               {currentDomain.roadmap.length > 0 && (
               <div className={`${panelClass('path')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.roadmap} Learning Roadmap
                 </h3>
                 <div className="relative">
                   {currentDomain.roadmap.map((step, idx) => (
                     <div key={idx} className="flex items-start gap-3 mb-4 last:mb-0">
                       <div className="relative">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-600 text-xs font-bold text-white">
+                        <div data-part="badge" className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-on-primary">
                           {idx + 1}
                         </div>
                         {idx < currentDomain.roadmap.length - 1 && (
-                          <div className="absolute left-3 top-6 h-8 w-0.5 bg-slate-200 dark:bg-white/15"></div>
+                          <div className="absolute left-3 top-6 h-8 w-0.5 bg-line"></div>
                         )}
                       </div>
                       <div>
-                        <span className="text-slate-900 text-sm font-medium">{step}</span>
+                        <span className="text-ink text-sm font-medium">{step}</span>
                       </div>
                     </div>
                   ))}
@@ -923,19 +838,19 @@ export default function Domains() {
 
               {currentDomain.resources.length > 0 && (
               <div className={`${panelClass('path')} ${CARD}`}>
-                <h3 className={`mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100`}>
+                <h3 className={`mb-4 ${CARD_TITLE}`}>
                   {icons.book} Recommended Resources
                 </h3>
                 <div className="space-y-3">
                   {currentDomain.resources.map((resource, idx) => (
-                    <div key={idx} className="lg-well block rounded-2xl p-3">
+                    <div key={idx} className="ui-well block rounded-2xl p-3">
                       <div className="flex items-start justify-between">
                         <div>
-                          <div className="text-slate-900 text-sm font-medium">{resource.title}</div>
+                          <div className="text-ink text-sm font-medium">{resource.title}</div>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className="text-xs text-slate-500">{resource.type}</span>
-                            <span className="text-xs text-gray-600">•</span>
-                            <span className="text-xs text-slate-500">{resource.provider}</span>
+                            <span className="text-xs text-ink-subtle">{resource.type}</span>
+                            <span className="text-xs text-ink-subtle">•</span>
+                            <span className="text-xs text-ink-subtle">{resource.provider}</span>
                           </div>
                         </div>
                       </div>
@@ -943,7 +858,7 @@ export default function Domains() {
                   ))}
                 </div>
                 <div
-                  className="lg-well mt-4 inline-flex w-full items-center justify-center rounded-full px-4 py-3 text-center text-sm font-medium text-slate-600"
+                  className="ui-well mt-4 inline-flex w-full items-center justify-center rounded-full px-4 py-3 text-center text-sm font-medium text-ink-muted"
                 >
                   Become a member to get access to more resources
                 </div>
@@ -953,41 +868,45 @@ export default function Domains() {
           </div>
 
           {/* Domain Comparison Table — laptop only */}
-          <div className="lg-card mt-12 hidden overflow-x-auto rounded-[2rem] p-6 md:block">
-            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <div className="ui-card mt-12 hidden overflow-x-auto rounded-[2rem] p-6 md:block">
+            <h3 className="ui-heading text-xl text-ink mb-6 flex items-center gap-2">
               {icons.da} Domain Comparison
             </h3>
             
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-900/10">
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Domain</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Members</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Projects</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Resources</th>
-                  <th className="text-left py-3 px-2 text-slate-600 font-medium">Lead</th>
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 px-2 text-ink-muted font-medium">Domain</th>
+                  <th className="text-left py-3 px-2 text-ink-muted font-medium">Members</th>
+                  <th className="text-left py-3 px-2 text-ink-muted font-medium">Projects</th>
+                  <th className="text-left py-3 px-2 text-ink-muted font-medium">Resources</th>
+                  <th className="text-left py-3 px-2 text-ink-muted font-medium">Lead</th>
                 </tr>
               </thead>
               <tbody>
                 {domains.map((domain) => (
                   <tr 
                     key={domain.id} 
-                    className={`border-b border-slate-900/5 hover:bg-slate-900/5 transition-colors cursor-pointer ${
-                      activeDomain === domain.id ? 'bg-slate-900/5' : ''
-                    }`}
+                    data-part="compare-row"
+                    data-active={activeDomain === domain.id || undefined}
+                    className="cursor-pointer transition-[background-color,box-shadow]"
                     onClick={() => selectDomain(domain.id)}
                   >
-                    <td className="py-4 px-2">
-                      <div className="flex items-center gap-2">
+                    <td className="py-2 px-2">
+                      <button
+                        type="button"
+                        aria-pressed={activeDomain === domain.id}
+                        className="flex min-h-10 items-center gap-2 rounded-lg text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                      >
                         <span className="w-5 h-5">{domain.icon}</span>
-                        <span className="text-slate-900 font-medium">{domain.name}</span>
-                      </div>
+                        <span className="text-ink font-medium">{domain.name}</span>
+                      </button>
                     </td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.members ?? "—"}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.projects ?? "—"}</td>
-                    <td className="py-4 px-2 text-slate-700">{domain.stats.resources ?? "—"}</td>
+                    <td className="py-4 px-2 text-ink-muted">{domain.stats.members ?? "—"}</td>
+                    <td className="py-4 px-2 text-ink-muted">{domain.stats.projects ?? "—"}</td>
+                    <td className="py-4 px-2 text-ink-muted">{domain.stats.resources ?? "—"}</td>
                     <td className="py-4 px-2">
-                      <span className="text-slate-700">{domain.leads[0] || "—"}</span>
+                      <span className="text-ink-muted">{domain.leads[0] || "—"}</span>
                     </td>
                   </tr>
                 ))}
@@ -996,33 +915,6 @@ export default function Domains() {
           </div>
         </section>
       </div>
-
-      {/* ===== STYLES ===== */}
-      <style>{GLASS_CSS}</style>
-      <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.05); }
-        }
-        @keyframes pulse-slower {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(1.1); }
-        }
-        @keyframes float-particle {
-          0% { transform: translateY(0) translateX(0); opacity: 0; }
-          10% { opacity: 0.5; }
-          90% { opacity: 0.5; }
-          100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
-        .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-        .animate-pulse-slower { animation: pulse-slower 8s ease-in-out infinite; }
-        .animate-float-particle { animation: float-particle 20s linear infinite; }
-      `}</style>
     </div>
   );
 }

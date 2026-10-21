@@ -7,15 +7,17 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={isDark}
+      aria-label="Dark theme"
       onClick={toggleTheme}
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
-        isDark
-          ? "border-white/15 bg-white/10 text-white hover:bg-white/15"
-          : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-      }`}
+      data-shell="theme"
+      className="ui-switch flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors"
     >
-      {isDark ? <Sun size={15} strokeWidth={2} /> : <Moon size={15} strokeWidth={2} />}
+      <span data-part="knob" className="pointer-events-none flex items-center justify-center">
+        <Sun data-glyph="sun" size={15} strokeWidth={2} aria-hidden="true" />
+        <Moon data-glyph="moon" size={15} strokeWidth={2} aria-hidden="true" />
+      </span>
     </button>
   );
 }

@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "check:ui": "node ../scripts/check-ui-designs.mjs",
+    "prebuild": "npm run check:ui",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

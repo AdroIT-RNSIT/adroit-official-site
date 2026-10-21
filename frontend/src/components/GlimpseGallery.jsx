@@ -27,13 +27,13 @@ export default function GlimpseGallery({ images, onSelect, hint = "Hover to paus
   return (
     <section>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
           Glimpses
         </h2>
-        {hint && <p className="text-xs text-slate-500">{hint}</p>}
+        {hint && <p className="text-xs text-ink-muted">{hint}</p>}
       </div>
 
-      <div className="glimpse-gallery relative mt-5 overflow-hidden rounded-3xl border border-slate-200/80 bg-slate-950/[0.03] py-4 shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-white/[0.03] sm:py-5">
+      <div className="glimpse-gallery ui-well relative mt-5 overflow-hidden rounded-3xl py-4 sm:py-5">
         <div className="glimpse-gallery-track space-y-3 sm:space-y-4">
           <MarqueeRow
             track={trackA}
@@ -64,14 +64,15 @@ function MarqueeRow({ track, originals, onSelect, className, sizeOffset = 0 }) {
           key={`${src}-${idx}`}
           type="button"
           onClick={() => onSelect?.(originals.indexOf(src))}
-          className={`group relative shrink-0 overflow-hidden rounded-2xl border border-white/40 bg-slate-200 shadow-[0_10px_24px_rgba(15,23,42,0.12)] dark:border-white/10 ${GALLERY_SIZES[(idx + sizeOffset) % GALLERY_SIZES.length]}`}
+          aria-label="Open image"
+          className={`ui-card group relative shrink-0 overflow-hidden rounded-2xl ${GALLERY_SIZES[(idx + sizeOffset) % GALLERY_SIZES.length]}`}
         >
           <img
             src={src}
             alt=""
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-110"
           />
-          <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-40" />
+          <span data-part="glimpse-scrim" className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-300 group-hover:opacity-40" />
         </button>
       ))}
     </div>

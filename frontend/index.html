@@ -37,13 +37,23 @@
           var stored = localStorage.getItem("adroit-theme") || localStorage.getItem("adroit-nav-color");
           var dark = stored === "dark" || stored === "black";
           if (dark) document.documentElement.classList.add("dark");
-          document.documentElement.style.backgroundColor = dark ? "#000000" : "#f3e8ff";
-        } catch (e) {}
+          var designs = ["glass", "neu"];
+          var ui = localStorage.getItem("adroit-ui-design");
+          if (designs.indexOf(ui) === -1) ui = "glass";
+          var params = new URLSearchParams(location.search);
+          var preview = params.has("previewUi") ? null : sessionStorage.getItem("adroit-ui-preview");
+          if (designs.indexOf(preview) !== -1) ui = preview;
+          document.documentElement.setAttribute("data-ui", ui);
+        } catch (e) {
+          document.documentElement.setAttribute("data-ui", "glass");
+        }
       })();
     </script>
     <style>
-      html, body { background-color: #f3e8ff; color: #0f172a; }
+      html, body { background-color: #ffffff; color: #0f172a; }
       html.dark, html.dark body { background-color: #000000; color: #e2e8f0; }
+      html[data-ui="neu"], html[data-ui="neu"] body { background-color: #e3e8ef; color: #141820; }
+      html[data-ui="neu"].dark, html[data-ui="neu"].dark body { background-color: #1b1e25; color: #f4f6f8; }
     </style>
   </head>
   <body>

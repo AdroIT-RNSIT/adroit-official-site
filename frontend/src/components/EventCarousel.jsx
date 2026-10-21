@@ -45,7 +45,7 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
         const x = mid - cardW / 2 + d * pitch;
         const t = Math.min(Math.abs(d), 1);
         el.style.transform = `translate3d(${x}px, 0, 0) scale(${1.06 - t * 0.28})`;
-        el.style.opacity = String(Math.abs(d) > 2.2 ? 0 : 1 - t * 0.28);
+        el.style.opacity = String(1 - Math.min(Math.max(Math.abs(d) - 1, 0) / 0.8, 1));
         el.style.zIndex = String(Math.round((2.2 - Math.abs(d)) * 10));
         el.style.pointerEvents = Math.abs(d) > 1.6 ? "none" : "auto";
       });
@@ -56,11 +56,12 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
     let raf = 0;
     let last = performance.now();
     const cardsPerSec = 0.28;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const tick = (now) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      if (!draggingRef.current && !pausedRef.current) {
+      if (!draggingRef.current && !pausedRef.current && !reduceMotion.matches) {
         progressRef.current += cardsPerSec * dt;
       }
       apply();
@@ -137,21 +138,21 @@ const EventCarousel = ({ events, onSelect, paused = false }) => {
             }}
             type="button"
             draggable={false}
-            className="event-strip-card absolute top-5 left-0 w-[min(19rem,calc(100vw-3.5rem))] overflow-hidden sm:top-6 sm:w-[24rem] sm:max-w-[22rem] h-[12.25rem] sm:h-[15rem] lg-card [-webkit-backdrop-filter:none] [backdrop-filter:none] rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer"
+            className="event-strip-card absolute top-5 left-0 w-[min(19rem,calc(100vw-3.5rem))] overflow-hidden sm:top-6 sm:w-[24rem] sm:max-w-[22rem] h-[12.25rem] sm:h-[15rem] ui-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-left whitespace-normal will-change-transform cursor-pointer"
           >
             <div className="flex justify-between items-start gap-2 mb-3">
-              <span className="font-semibold text-sky-800 text-[11px] sm:text-sm tracking-wide uppercase">
+              <span className="font-semibold text-primary-ink text-[11px] sm:text-sm tracking-wide uppercase">
                 {event.label || "Paradox 2026"}
               </span>
-              <span className="shrink-0 rounded-full bg-sky-600 px-2 py-1 text-[10px] sm:text-[11px] font-semibold leading-none text-white sm:px-2.5">
+              <span data-part="badge" className="shrink-0 rounded-full bg-primary px-2 py-1 text-[10px] sm:text-[11px] font-semibold leading-none text-on-primary sm:px-2.5">
                 <span className="sm:hidden">Register</span>
                 <span className="hidden sm:inline">Click to register</span>
               </span>
             </div>
-            <h3 className="font-bold text-lg sm:text-2xl mb-2 truncate text-slate-900 dark:text-slate-100">
+            <h3 className="ui-heading font-bold text-lg sm:text-2xl mb-2 truncate text-ink">
               {event.title}
             </h3>
-            <p className="text-slate-600 text-sm leading-snug line-clamp-3 break-words whitespace-normal dark:text-slate-400">{event.description}</p>
+            <p className="text-ink-muted text-sm leading-snug line-clamp-3 break-words whitespace-normal">{event.description}</p>
           </button>
         ))}
       </div>

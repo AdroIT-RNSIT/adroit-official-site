@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useTheme } from "../lib/theme";
 
 const CELL = 28;
 const WAVE = 220;
@@ -10,9 +9,18 @@ function sway(along, seed) {
   return Math.sin(along / WAVE + seed) * AMP;
 }
 
+function readColors() {
+  const css = getComputedStyle(document.documentElement);
+  const read = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
+  return {
+    line: read("--grid-line", "rgba(71, 85, 105, 0.28)"),
+    cell: read("--grid-cell", "rgba(2, 132, 199, 0.12)"),
+    edge: read("--grid-cell-edge", "rgba(2, 132, 199, 0.4)"),
+  };
+}
+
 export default function InteractiveGrid() {
   const canvasRef = useRef(null);
-  const { isDark } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,6 +28,7 @@ export default function InteractiveGrid() {
     const ctx = canvas.getContext("2d");
     const pointer = { x: -9999, y: -9999, active: false };
     let frame = 0;
+    let colors = readColors();
 
     const draw = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -34,8 +43,7 @@ export default function InteractiveGrid() {
 
       const scrollX = window.scrollX;
       const scrollY = window.scrollY;
-      const line = isDark ? "rgba(186, 214, 232, 0.22)" : "rgba(71, 85, 105, 0.28)";
-      ctx.strokeStyle = line;
+      ctx.strokeStyle = colors.line;
       ctx.lineWidth = 1;
       ctx.beginPath();
       const startX = -(scrollX % CELL);
@@ -62,23 +70,22 @@ export default function InteractiveGrid() {
       const col = Math.floor(pageX / CELL);
       const row = Math.floor(pageY / CELL);
 
+      ctx.fillStyle = colors.cell;
       for (let dy = -2; dy <= 2; dy += 1) {
         for (let dx = -2; dx <= 2; dx += 1) {
           const dist = Math.hypot(dx, dy);
           if (dist > 2.4) continue;
           const vx = (col + dx) * CELL - scrollX;
           const vy = (row + dy) * CELL - scrollY;
-          const strength = dx === 0 && dy === 0 ? 1 : 0.45 / dist;
-          ctx.fillStyle = isDark
-            ? `rgba(125, 211, 252, ${0.14 * strength})`
-            : `rgba(2, 132, 199, ${0.12 * strength})`;
+          ctx.globalAlpha = dx === 0 && dy === 0 ? 1 : 0.45 / dist;
           ctx.fillRect(vx, vy, CELL, CELL);
         }
       }
+      ctx.globalAlpha = 1;
 
       const vx = col * CELL - scrollX;
       const vy = row * CELL - scrollY;
-      ctx.strokeStyle = isDark ? "rgba(125, 211, 252, 0.55)" : "rgba(2, 132, 199, 0.4)";
+      ctx.strokeStyle = colors.edge;
       ctx.strokeRect(vx + 0.5, vy + 0.5, CELL - 1, CELL - 1);
     };
 
@@ -99,6 +106,12 @@ export default function InteractiveGrid() {
       schedule();
     };
 
+    const look = new MutationObserver(() => {
+      colors = readColors();
+      schedule();
+    });
+    look.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-ui"] });
+
     schedule();
     window.addEventListener("pointermove", onPointer, { passive: true });
     window.addEventListener("pointerdown", onPointer, { passive: true });
@@ -109,6 +122,7 @@ export default function InteractiveGrid() {
 
     return () => {
       cancelAnimationFrame(frame);
+      look.disconnect();
       window.removeEventListener("pointermove", onPointer);
       window.removeEventListener("pointerdown", onPointer);
       window.removeEventListener("pointerleave", onLeave);
@@ -116,7 +130,7 @@ export default function InteractiveGrid() {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [isDark]);
+  }, []);
 
   return (
     <canvas

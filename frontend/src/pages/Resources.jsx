@@ -26,60 +26,55 @@ const DOMAINS = [
     id: 'all', 
     name: 'All Resources', 
     icon: BookOpen, 
-    color: 'from-purple-500 to-purple-600',
-    textColor: 'text-purple-400',
-    bgColor: 'bg-purple-500/10',
-    borderColor: 'border-purple-500/30'
+    textColor: 'text-primary',
+    bgColor: 'bg-primary/10',
+    borderColor: 'border-primary/30'
   },
   { 
     id: 'ml', 
     name: 'Machine Learning', 
     icon: Brain, 
-    color: 'from-cyan-500 to-cyan-600',
-    textColor: 'text-cyan-400',
-    bgColor: 'bg-cyan-500/10',
-    borderColor: 'border-cyan-500/30'
+    textColor: 'text-[#22d3ee]',
+    bgColor: 'bg-[#22d3ee]/10',
+    borderColor: 'border-[#22d3ee]/30'
   },
   { 
     id: 'cc', 
     name: 'Cloud Computing', 
     icon: Cloud, 
-    color: 'from-purple-500 to-purple-600',
-    textColor: 'text-purple-400',
-    bgColor: 'bg-purple-500/10',
-    borderColor: 'border-purple-500/30'
+    textColor: 'text-[#c084fc]',
+    bgColor: 'bg-[#c084fc]/10',
+    borderColor: 'border-[#c084fc]/30'
   },
   { 
     id: 'cy', 
     name: 'Cybersecurity', 
     icon: Shield, 
-    color: 'from-pink-500 to-pink-600',
-    textColor: 'text-pink-400',
-    bgColor: 'bg-pink-500/10',
-    borderColor: 'border-pink-500/30'
+    textColor: 'text-[#f472b6]',
+    bgColor: 'bg-[#f472b6]/10',
+    borderColor: 'border-[#f472b6]/30'
   },
   { 
     id: 'da', 
     name: 'Data Analytics', 
     icon: BarChart3, 
-    color: 'from-green-500 to-green-600',
-    textColor: 'text-green-400',
-    bgColor: 'bg-green-500/10',
-    borderColor: 'border-green-500/30'
+    textColor: 'text-[#34d399]',
+    bgColor: 'bg-[#34d399]/10',
+    borderColor: 'border-[#34d399]/30'
   }
 ];
 
 // RESOURCE TYPE CONFIGURATION
 // ===========================
 const TYPE_CONFIG = {
-  article: { icon: FileText, label: 'Article', color: 'from-blue-500 to-blue-600' },
-  video: { icon: Clapperboard, label: 'Video', color: 'from-red-500 to-red-600' },
-  course: { icon: GraduationCap, label: 'Course', color: 'from-amber-500 to-amber-600' },
-  book: { icon: BookOpen, label: 'Book', color: 'from-emerald-500 to-emerald-600' },
-  documentation: { icon: File, label: 'Documentation', color: 'from-indigo-500 to-indigo-600' },
-  tool: { icon: Wrench, label: 'Tool', color: 'from-orange-500 to-orange-600' },
-  paper: { icon: FileStack, label: 'Research Paper', color: 'from-violet-500 to-violet-600' },
-  cheatSheet: { icon: ClipboardList, label: 'Cheat Sheet', color: 'from-teal-500 to-teal-600' }
+  article: { icon: FileText, label: 'Article' },
+  video: { icon: Clapperboard, label: 'Video' },
+  course: { icon: GraduationCap, label: 'Course' },
+  book: { icon: BookOpen, label: 'Book' },
+  documentation: { icon: File, label: 'Documentation' },
+  tool: { icon: Wrench, label: 'Tool' },
+  paper: { icon: FileStack, label: 'Research Paper' },
+  cheatSheet: { icon: ClipboardList, label: 'Cheat Sheet' }
 };
 
 // DIFFICULTY CONFIGURATION
@@ -87,24 +82,21 @@ const TYPE_CONFIG = {
 const DIFFICULTY_CONFIG = {
   beginner: { 
     label: 'Beginner', 
-    color: 'from-green-500 to-green-600',
-    textColor: 'text-green-400',
-    bgColor: 'bg-green-500/10',
-    borderColor: 'border-green-500/30'
+    textColor: 'text-success',
+    bgColor: 'bg-success/10',
+    borderColor: 'border-success/30'
   },
   intermediate: { 
     label: 'Intermediate', 
-    color: 'from-yellow-500 to-yellow-600',
-    textColor: 'text-yellow-400',
-    bgColor: 'bg-yellow-500/10',
-    borderColor: 'border-yellow-500/30'
+    textColor: 'text-warning',
+    bgColor: 'bg-warning/10',
+    borderColor: 'border-warning/30'
   },
   advanced: { 
     label: 'Advanced', 
-    color: 'from-red-500 to-red-600',
-    textColor: 'text-red-400',
-    bgColor: 'bg-red-500/10',
-    borderColor: 'border-red-500/30'
+    textColor: 'text-danger',
+    bgColor: 'bg-danger/10',
+    borderColor: 'border-danger/30'
   }
 };
 
@@ -203,16 +195,14 @@ function Resources(){
   }
 
   return (
-    <div className="min-h-dvh bg-white text-slate-900 font-sans overflow-x-clip dark:bg-[#000000] dark:text-slate-100">
+    <div data-page="resources" className="min-h-dvh bg-page text-ink font-sans overflow-x-clip">
       <div className="text-center mb-12 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <h1 className="fluid-h1 font-extrabold mb-6">
-          <span className="text-sky-800">
-            {currentDomain?.name || 'Resources'}
-          </span>
+        <h1 className="ui-heading fluid-h1 font-extrabold mb-6 text-ink">
+          {currentDomain?.name || 'Resources'}
         </h1>
 
-        <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl text-ink-muted max-w-3xl mx-auto">
           Curated learning materials to accelerate your technical journey
         </p>
 
@@ -220,25 +210,25 @@ function Resources(){
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 ml-3 mr-3 mt-2">
           {DOMAINS.map((d) => {
             const DomainIcon = d.icon;
+            const active = domain === d.id || (d.id === 'all' && !domain);
             return (
             <Link
               key={d.id}
               to={`/resources${d.id === 'all' ? '' : `/${d.id}`}`}
-              className={`group relative bg-white/40 backdrop-blur-xl border rounded-xl p-4 transition-all duration-300 hover:scale-105 ${
-                (domain === d.id || (d.id === 'all' && !domain))
-                  ? `${d.bgColor} ${d.borderColor} border-2`
-                  : 'border-slate-900/10 hover:border-sky-600/30'
+              aria-current={active ? 'page' : undefined}
+              className={`ui-card group relative rounded-xl p-4 transition-all duration-300 hover:scale-105 motion-reduce:hover:scale-100 ${
+                active ? `${d.bgColor} ${d.borderColor} border-2` : 'hover:border-primary/30'
               }`}
             >
               <div className="flex flex-col items-center text-center">
-                <span className="mb-1 inline-flex text-slate-800">
+                <span className="mb-1 inline-flex text-ink">
                   <DomainIcon size={22} strokeWidth={2} />
                 </span>
-                <span className="text-xs font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
+                <span className="text-xs font-medium text-ink-muted group-hover:text-ink transition-colors">
                   {d.name}
                 </span>
           
-                <span className="text-xs text-slate-500 mt-1">
+                <span className="text-xs text-ink-subtle mt-1">
                   {resourceStats[d.id] || 0} resources
                 </span>
                 
@@ -255,13 +245,13 @@ function Resources(){
     <div id="resources" className="m-6">
     {
       error !== "" ? <ErrorAlert error={error} onRetry={fetchResources} />
-      : resources.length === 0 ? <p className="text-center text-slate-500 mt-20">No resources found. Try adjusting your filters or check back later!</p>
+      : resources.length === 0 ? <p className="text-center text-ink-subtle mt-20">No resources found. Try adjusting your filters or check back later!</p>
       : 
       <>
       {/* Summary */}
       <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-slate-500">
-          Showing <span className="text-slate-900 font-medium">{resources.length}</span> resources
+        <p className="text-sm text-ink-subtle">
+          Showing <span className="text-ink font-medium">{resources.length}</span> resources
           {domain && domain !== 'all' && (
             <> in <span className={DOMAINS.find(d => d.id === domain)?.textColor}>
               {DOMAINS.find(d => d.id === domain)?.name}
@@ -274,28 +264,7 @@ function Resources(){
       </>
     }
 
-    {/* Styles */}
     </div>
-    <style>{`
-      @keyframes pulse-slow {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(1.05); }
-      }
-      @keyframes pulse-slower {
-        0%, 100% { opacity: 0.2; transform: scale(1); }
-        50% { opacity: 0.4; transform: scale(1.1); }
-      }
-      @keyframes float-particle {
-        0% { transform: translateY(0) translateX(0); opacity: 0; }
-        10% { opacity: 0.5; }
-        90% { opacity: 0.5; }
-        100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
-      }
-      .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-      .animate-pulse-slower { animation: pulse-slower 8s ease-in-out infinite; }
-      .animate-float-particle { animation: float-particle 20s linear infinite; }
-    `}</style>
-
     </div>
 
   );
@@ -315,25 +284,21 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
   };
 
   return (
-    <div className="group relative bg-white/40 backdrop-blur-sm border border-slate-900/10 rounded-xl p-5 hover:border-sky-600/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-600/5">
-      
-      {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
+    <div className="ui-card group relative rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
       <div className="relative z-10">
         
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${typeConfig.color} flex items-center justify-center text-white`}>
+            <div className="ui-well w-10 h-10 rounded-lg flex items-center justify-center text-primary">
               <TypeIcon size={20} strokeWidth={2} />
             </div>
             <div>
-              <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-linear-to-r ${typeConfig.color} bg-opacity-20 text-slate-900`}>
+              <span className="ui-chip inline-block min-h-0 px-2 py-0.5 text-xs font-medium rounded-full text-ink">
                 {typeConfig.label}
               </span>
               {difficultyConfig && (
-                <span className={`ml-1.5 inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-linear-to-r ${difficultyConfig.color} bg-opacity-20 ${difficultyConfig.textColor}`}>
+                <span className={`ml-1.5 inline-block px-2 py-0.5 text-xs font-medium rounded-full ${difficultyConfig.bgColor} ${difficultyConfig.textColor}`}>
                   {difficultyConfig.label}
                 </span>
               )}
@@ -344,7 +309,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
           {isAdmin && onDelete && (
             <button
               onClick={() => onDelete(resource._id)}
-              className="opacity-0 group-hover:opacity-100 text-red-400/60 hover:text-red-400 transition-all p-1.5 hover:bg-red-500/10 rounded-lg"
+              className="opacity-0 group-hover:opacity-100 text-danger/60 hover:text-danger transition-all p-1.5 hover:bg-danger/10 rounded-lg"
               title="Delete resource"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -355,23 +320,23 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         </div>
 
         {/* Title */}
-        <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-sky-600 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-ink mb-2 group-hover:text-primary transition-colors line-clamp-2">
           {resource.title}
         </h3>
 
         {/* Description */}
-        <p className="text-slate-600 text-xs leading-relaxed mb-3 line-clamp-2">
+        <p className="text-ink-muted text-xs leading-relaxed mb-3 line-clamp-2">
           {resource.description}
         </p>
 
         {/* Domain Badge & Author */}
         <div className="flex items-center justify-between mb-3">
-          <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-linear-to-r ${domain.color} bg-opacity-20 text-slate-900`}>
+          <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full ${domain.bgColor} text-ink`}>
             <span className="inline-flex"><DomainIcon size={12} strokeWidth={2} /></span>
             <span>{domain.name}</span>
           </span>
           {resource.author && (
-            <span className="text-xs text-slate-500 truncate max-w-30">
+            <span className="text-xs text-ink-subtle truncate max-w-30">
               by {resource.author}
             </span>
           )}
@@ -381,12 +346,12 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         {resource.tags && resource.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {resource.tags.slice(0, 2).map(tag => (
-              <span key={tag} className="px-1.5 py-0.5 text-[10px] bg-slate-900/5 rounded text-slate-600">
+              <span key={tag} className="px-1.5 py-0.5 text-[10px] bg-ink/5 rounded text-ink-muted">
                 #{tag}
               </span>
             ))}
             {resource.tags.length > 2 && (
-              <span className="px-1.5 py-0.5 text-[10px] bg-slate-900/5 rounded text-slate-500">
+              <span className="px-1.5 py-0.5 text-[10px] bg-ink/5 rounded text-ink-subtle">
                 +{resource.tags.length - 2}
               </span>
             )}
@@ -394,8 +359,8 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-slate-900/5">
-          <div className="flex items-center gap-2 text-[10px] text-slate-500">
+        <div className="flex items-center justify-between pt-3 border-t border-line">
+          <div className="flex items-center gap-2 text-[10px] text-ink-subtle">
             <span className="flex items-center gap-0.5">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10"/>
@@ -416,7 +381,7 @@ function ResourceCard({ resource, isAdmin, onDelete }) {
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 hover:scale-105"
+            className="ui-solid inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold"
           >
             Access
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -449,7 +414,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
   const [mFilters, setMFilters] = useState(filters);
 
   return ( 
-  <div className="bg-white/40 backdrop-blur-xl border border-slate-900/10 rounded-2xl p-5 mb-10"
+  <div className="ui-card rounded-2xl p-5 mb-10"
     onKeyDown={(e) => {
     if (e.key === 'Enter') {
       onUpdate(mFilters);
@@ -459,39 +424,41 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     
     {/* Search - Wider */}
     <div className="lg:col-span-5 relative">
-      <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
       <input
         type="text"
-        className="w-full pl-9 pr-4 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 placeholder-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all text-sm"
+        aria-label={`Search ${currentDomainName}`}
+        className="ui-input w-full pl-9 pr-4 py-2.5 rounded-xl text-ink placeholder:text-ink-subtle transition-all text-sm"
         value={mFilters.search}
         placeholder={`Search ${currentDomainName}...`}
         onChange={(e) => setMFilters({ ...mFilters, search: e.target.value })}
       />
       {mFilters.search && (
-          <div className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 flex items-center animate-in fade-in zoom-in duration-200" 
+          <button type="button" aria-label="Apply search" className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 flex items-center animate-in fade-in zoom-in duration-200" 
               onClick={() => {onUpdate(mFilters)}}
           >
-            <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-slate-900/20 bg-slate-900/10 px-1.5 font-mono text-[10px] font-medium text-slate-600 mr-2">
+            <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-line-strong bg-ink/10 px-1.5 font-mono text-[10px] font-medium text-ink-muted mr-2">
               ENTER
             </kbd>
             <svg 
-              className="w-4 h-4 text-sky-600 hover:text-sky-500" 
+              className="w-4 h-4 text-primary hover:text-primary" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
             </svg>
-          </div>
+          </button>
         )}
     </div>
 
     {/* Type Filter */}
     <div className="lg:col-span-3">
       <select 
-        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-sky-500/50 transition-all"
+        aria-label="Resource type"
+        className="ui-input w-full px-3 py-2.5 rounded-xl text-ink text-sm transition-all"
         value={mFilters.type}
         onChange={(e) => { onUpdate({ ...mFilters, type: e.target.value }); }}
       >
@@ -505,7 +472,8 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     {/* Difficulty Filter */}
     <div className="lg:col-span-2">
       <select 
-        className="w-full px-3 py-2.5 bg-slate-900/5 border border-slate-900/10 rounded-xl text-slate-900 text-sm focus:outline-none focus:border-sky-500/50 transition-all"
+        aria-label="Difficulty"
+        className="ui-input w-full px-3 py-2.5 rounded-xl text-ink text-sm transition-all"
         value={mFilters.difficulty}
         onChange={(e) => { onUpdate({ ...mFilters, difficulty: e.target.value }); }}
       >
@@ -520,7 +488,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
     <div className="lg:col-span-2">   
       <button
         onClick={() => onUpdate({ type: "", difficulty: "", search: "" })}
-        className="w-full px-4 py-2.5 bg-slate-900/5 hover:bg-slate-900/10 border border-slate-900/10 rounded-xl text-slate-600 hover:text-slate-900 text-sm transition-all"
+        className="ui-pill w-full min-h-10 px-4 py-2.5 rounded-xl text-ink-muted hover:text-ink text-sm transition-all"
       >
         Clear Filters
       </button>
@@ -532,7 +500,7 @@ function SearchBar({ filters, currentDomainName, onUpdate }) {
 
 function ErrorAlert({ error, onRetry }) {
   return (
-    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center justify-between">
+    <div className="mb-6 p-4 bg-danger/10 border border-danger/20 rounded-xl text-danger text-sm flex items-center justify-between">
       <div className="flex items-center gap-3">
         <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -541,7 +509,7 @@ function ErrorAlert({ error, onRetry }) {
       </div>
       <button
         onClick={onRetry}
-        className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 text-xs transition-colors"
+        className="px-3 py-1 bg-danger/20 hover:bg-danger/30 rounded-lg text-danger text-xs transition-colors"
       >
         Retry
       </button>

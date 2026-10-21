@@ -59,124 +59,13 @@ const MOBILE_DOMAIN_LABELS = {
 };
 
 const CSS = `
-@keyframes am-in { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:none; } }
-@keyframes am-up { from { transform: translateY(100%); } to { transform:none; } }
-@keyframes am-blink { 50% { opacity:0; } }
-@keyframes am-pulse { 0%,100% { opacity:.35; } 50% { opacity:1; } }
-.am-in { animation: am-in .5s cubic-bezier(.2,.8,.2,1) backwards; }
-.am-up { animation: am-up .3s cubic-bezier(.2,.8,.2,1); }
-.am-blink { animation: am-blink 1.05s steps(1) infinite; }
-.am-pulse { animation: am-pulse 2.6s ease-in-out infinite; }
-.am-glass {
-  background:
-    linear-gradient(160deg, rgba(255,255,255,0.68), rgba(255,255,255,0.32) 55%, rgba(255,255,255,0.22)),
-    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0));
-  -webkit-backdrop-filter: blur(24px) saturate(1.9);
-  backdrop-filter: blur(24px) saturate(1.9);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.9),
-    inset 0 -1px 0 rgba(255,255,255,0.35),
-    0 14px 34px rgba(15,23,42,0.10),
-    0 1px 0 rgba(255,255,255,0.6);
-}
-html.dark .am-glass {
-  background:
-    linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0.04)),
-    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.25),
-    inset 0 -1px 0 rgba(255,255,255,0.06),
-    0 14px 34px rgba(0,0,0,0.45),
-    0 1px 0 rgba(255,255,255,0.08);
-}
-.am-node--open {
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.95),
-    0 16px 36px rgba(15,23,42,0.16);
-}
-html.dark .am-node--open {
-  background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.14),
-    0 18px 38px rgba(0,0,0,0.5);
-}
-.am-inspector {
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  backdrop-filter: blur(20px) saturate(1.4);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.95),
-    0 18px 40px rgba(15,23,42,0.14);
-}
-html.dark .am-inspector {
-  background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    0 20px 42px rgba(0,0,0,0.5);
-}
-:root {
-  --am-liquid-bg: rgba(233,245,255,0.78);
-  --am-liquid-border: rgba(147,197,253,0.62);
-  --am-liquid-glow: rgba(56,189,248,0.26);
-  --am-liquid-shadow: rgba(15,23,42,0.08);
-  --am-liquid-highlight: rgba(255,255,255,0.99);
-}
-html.dark {
-  --am-liquid-bg: rgba(22,29,42,0.5);
-  --am-liquid-border: rgba(226,232,240,0.32);
-  --am-liquid-glow: rgba(125,211,252,0.2);
-  --am-liquid-shadow: rgba(2,6,23,0.24);
-  --am-liquid-highlight: rgba(255,255,255,0.72);
-}
-.am-liquid {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 0;
-  border-radius: 999px;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--am-liquid-highlight) 56%, transparent), transparent 66%),
-    var(--am-liquid-bg);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid var(--am-liquid-border);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--am-liquid-highlight) 92%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--am-liquid-border) 34%, transparent),
-    inset 0 -5px 14px color-mix(in srgb, var(--am-liquid-glow) 44%, transparent);
-  overflow: hidden;
-  transform-origin: center center;
-  transition:
-    transform 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
-    width 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
-    height 360ms cubic-bezier(0.22, 1.18, 0.36, 1);
-}
-.am-liquid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(110% 85% at var(--hx, 24%) 0%, rgba(255,255,255,0.92), transparent 46%),
-    radial-gradient(70% 60% at 78% 88%, color-mix(in srgb, var(--am-liquid-glow) 65%, transparent), transparent 62%);
-  mix-blend-mode: screen;
-}
-.am-liquid::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 0.8px color-mix(in srgb, var(--am-liquid-border) 62%, transparent),
-    inset 0 -1px 4px rgba(255,255,255,0.16);
-}
-@media (prefers-reduced-motion: reduce) { .am-in, .am-up, .am-blink, .am-pulse { animation: none; } .am-liquid { transition: none; } }
-@media (prefers-reduced-transparency: reduce) {
-  .am-glass { background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none; }
-  html.dark .am-glass { background: #111111; }
-}
+@keyframes members-rise { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes members-sheet { from { transform: translateY(100%); } to { transform:none; } }
+@keyframes members-caret { 50% { opacity:0; } }
+.members-rise { animation: members-rise .5s cubic-bezier(.2,.8,.2,1) backwards; }
+.members-sheet { animation: members-sheet .3s cubic-bezier(.2,.8,.2,1); }
+.members-caret { animation: members-caret 1.05s steps(1) infinite; }
+@media (prefers-reduced-motion: reduce) { .members-rise, .members-sheet, .members-caret { animation: none; } }
 `;
 
 export default function Members() {
@@ -221,7 +110,7 @@ export default function Members() {
       if (e.key === "Escape") setSelKey(null);
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        document.getElementById("am-search")?.focus();
+        document.getElementById("member-search")?.focus();
       }
     };
     window.addEventListener("keydown", onKey);
@@ -277,33 +166,34 @@ export default function Members() {
   }, [active, visibleGroups]);
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip bg-[#ffffff] pt-6 font-sans text-slate-900 antialiased dark:bg-[#000000] dark:text-slate-100 lg:pt-8">
+    <div data-page="members" className="relative min-h-dvh overflow-x-clip bg-page pt-6 font-sans text-ink antialiased lg:pt-8">
       <style>{CSS}</style>
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[44rem] text-slate-900/[0.08] dark:text-white/[0.2] bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[44rem] text-ink/[0.08] dark:text-ink/20 bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
       <header className="relative mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 pb-8 sm:px-6 lg:px-8">
         <div className="min-w-0">
-          <h1 style={{ animationDelay: "90ms" }} className="fluid-h1 am-in mt-3 font-extrabold leading-[1.05]">
+          <h1 style={{ animationDelay: "90ms" }} className="ui-heading fluid-h1 members-rise mt-3 font-extrabold leading-[1.05] text-ink">
             AdroIT Members
           </h1>
-          <p style={{ animationDelay: "180ms" }} className="am-in mt-3 max-w-md text-base text-slate-600 dark:text-slate-400 sm:text-lg">
+          <p style={{ animationDelay: "180ms" }} className="members-rise mt-3 max-w-md text-base text-ink-muted sm:text-lg">
             Explore members by domain.
           </p>
-          <p className="mt-1.5 text-sm text-slate-400 dark:text-slate-500">
+          <p className="mt-1.5 text-sm text-ink-subtle">
             Click a name to see their details.
           </p>
         </div>
       </header>
 
-      <div ref={filterBarRef} className="sticky top-[var(--nav-height)] z-30 border-y border-slate-200 bg-[#ffffff]/95 backdrop-blur dark:border-white/10 dark:bg-[#000000]/95">
+      <div ref={filterBarRef} data-part="filter-bar" className="ui-nav sticky top-[var(--nav-height)] z-30 block rounded-none border-x-0 p-0">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <DomainFilters groups={GROUPS} active={active} isMobile={isMobile} onPick={pickDomain} />
           <label className="relative block shrink-0 lg:w-72">
             <span className="sr-only">Search members</span>
-            <Search size={16} aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={16} aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 z-[1] -translate-y-1/2 text-ink-subtle" />
             <input
-              id="am-search"
+              id="member-search"
+              data-part="search"
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -314,17 +204,17 @@ export default function Members() {
                 }
               }}
               placeholder="grep name…"
-              className="am-glass w-full appearance-none rounded-2xl border border-white/80 py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus-visible:border-sky-600/40 focus-visible:ring-2 focus-visible:ring-sky-600/30 dark:border-white/10 dark:text-slate-100 dark:placeholder:text-slate-500 [&::-webkit-search-cancel-button]:hidden"
+              className="ui-input w-full appearance-none rounded-2xl py-2.5 pl-10 pr-10 text-sm text-ink placeholder:text-ink-subtle [&::-webkit-search-cancel-button]:hidden"
             />
             {query && (
-              <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-0 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-ink-subtle hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40">
                 <X size={16} />
               </button>
             )}
           </label>
         </div>
         {(q || active !== "all") && (
-          <p aria-live="polite" className="mx-auto max-w-7xl px-4 pb-2 font-mono text-xs text-slate-500 sm:px-6 lg:px-8">
+          <p aria-live="polite" className="mx-auto max-w-7xl px-4 pb-2 font-mono text-xs text-ink-subtle sm:px-6 lg:px-8">
             {matchCount} of {ALL.length} nodes matched
           </p>
         )}
@@ -334,8 +224,8 @@ export default function Members() {
         <main className={`min-w-0 space-y-12 ${selected ? "pb-[min(70dvh,22rem)] lg:pb-0" : "pb-10"}`}>
           <div ref={membersStartRef} aria-hidden="true" className="h-0 w-0 overflow-hidden" />
           {matchCount === 0 && (
-            <p className="am-glass rounded-2xl border border-dashed border-slate-200 p-8 text-center text-sm text-slate-500 dark:border-white/15">
-              <span className="font-mono text-sky-800">error:</span> no node matches “{query}”
+            <p data-part="no-match" className="ui-card rounded-2xl border-dashed border-line p-8 text-center text-sm text-ink-subtle">
+              <span className="font-mono text-primary-ink">error:</span> no node matches “{query}”
             </p>
           )}
           {visibleGroups.map((g) => {
@@ -356,10 +246,10 @@ export default function Members() {
                     <Icon size={22} aria-hidden="true" />
                   </span>
                   <div className="min-w-0">
-                    <h2 id={`h-${g.id}`} className="text-xl font-bold leading-tight text-slate-900 sm:text-2xl">{g.name}</h2>
+                    <h2 id={`h-${g.id}`} className="ui-heading text-xl leading-tight text-ink sm:text-2xl">{g.name}</h2>
                   </div>
-                  <div aria-hidden="true" className="ml-1 hidden h-px min-w-8 flex-1 bg-slate-200 dark:bg-white/10 sm:block" />
-                  <span className="font-mono text-xs text-slate-500 sm:ml-0">{g.items.length} nodes</span>
+                  <div aria-hidden="true" className="ml-1 hidden h-px min-w-8 flex-1 bg-line sm:block" />
+                  <span className="font-mono text-xs text-ink-subtle sm:ml-0">{g.items.length} nodes</span>
                 </div>
                 <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {g.items.map((el, i) => (
@@ -385,10 +275,11 @@ export default function Members() {
           role="dialog"
           aria-modal="true"
           aria-label="Node inspector"
-          className="fixed inset-0 z-40 flex items-center justify-center bg-white/35 p-4 backdrop-blur-md dark:bg-black/45 lg:hidden"
+          data-part="sheet-backdrop"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-page/40 p-4 lg:hidden"
           onClick={() => setSelKey(null)}
         >
-          <div className="am-up max-h-[min(88dvh,44rem)] w-full max-w-sm overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="members-sheet max-h-[min(88dvh,44rem)] w-full max-w-sm overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <Inspector el={selected} onClose={() => setSelKey(null)} />
           </div>
         </div>
@@ -466,12 +357,12 @@ function DomainFilters({ groups, active, isMobile, onPick }) {
       role="group"
       aria-label="Filter by domain"
       onPointerLeave={() => setHoveredId(null)}
-      className="relative -mx-4 flex min-w-0 gap-1 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="ui-track relative -mx-4 flex min-w-0 gap-1 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:flex-wrap lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {pose && (
         <span
           aria-hidden="true"
-          className="am-liquid"
+          className="ui-thumb"
           style={{
             width: pose.w,
             height: pose.h,
@@ -515,10 +406,8 @@ function KeyChip({ on, onClick, onHover, label, shortLabel, id, Icon }) {
       onFocus={onHover}
       aria-pressed={on}
       style={id && id !== "all" ? vars(id) : undefined}
-      className={`relative z-[1] inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-transparent px-2.5 py-1.5 text-xs font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/30 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm ${
-        on
-          ? "text-slate-900 dark:text-white"
-          : "text-slate-500 hover:bg-white/35 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
+      className={`relative z-[1] inline-flex min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-transparent px-2.5 py-1.5 text-xs font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm ${
+        on ? "text-ink" : "text-ink-subtle hover:text-ink"
       }`}
     >
       {Icon && (
@@ -552,7 +441,8 @@ function Avatar({ el, size = 44 }) {
     <span
       aria-hidden="true"
       style={{ width: size, height: size }}
-      className={`flex shrink-0 items-center justify-center rounded-xl bg-slate-100 font-bold text-slate-700 dark:bg-white/10 dark:text-slate-200 ${size >= 64 ? "text-xl" : "text-sm"}`}
+      data-part="initials"
+      className={`ui-well flex shrink-0 items-center justify-center rounded-xl font-bold text-ink-muted ${size >= 64 ? "text-xl" : "text-sm"}`}
     >
       {initialsOf(el.name)}
     </span>
@@ -564,27 +454,22 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
   return (
     <div
       style={{ animationDelay: `${delay}ms` }}
-      className={[
-        "am-node am-in am-glass flex h-full w-full min-w-0 items-center rounded-2xl border transition-all duration-200",
-        selected ? "am-node--open" : "",
-        selected
-          ? "border-slate-900/55 shadow-[0_14px_35px_rgba(15,23,42,0.16)] dark:border-white/65 dark:shadow-[0_16px_36px_rgba(0,0,0,0.5)]"
-          : "border-white/80 hover:border-white/95 hover:shadow-[0_12px_30px_rgba(15,23,42,0.14)] dark:border-white/15 dark:hover:border-white/35 dark:hover:shadow-[0_14px_34px_rgba(0,0,0,0.46)]",
-        dim ? "opacity-40" : "",
-      ].join(" ")}
+      data-part="member"
+      data-selected={selected || undefined}
+      className={`ui-card members-rise flex h-full w-full min-w-0 items-center rounded-2xl transition-all duration-200 ${dim ? "opacity-40" : ""}`}
     >
       <button
         type="button"
         onClick={onSelect}
         aria-pressed={selected}
         aria-label={`${el.name}, ${el.gname}${el.isLead ? ", domain lead" : ""}`}
-        className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-600/40"
+        className="flex min-w-0 flex-1 items-center gap-3 rounded-2xl p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40"
       >
         <Avatar el={el} size={40} />
         <span className="min-w-0 flex-1">
-          <span className="block break-words text-sm font-semibold leading-snug text-slate-900">{el.name}</span>
+          <span className="block break-words text-sm font-semibold leading-snug text-ink">{el.name}</span>
           {el.isLead && (
-            <span className="mt-1 inline-flex items-center gap-0.5 rounded bg-slate-900 px-1 font-mono text-[11px] font-semibold text-white dark:bg-white dark:text-slate-950">
+            <span className="mt-1 inline-flex items-center gap-0.5 rounded bg-ink px-1 font-mono text-[11px] font-semibold text-page">
               <Crown size={9} aria-hidden="true" />
               LEAD
             </span>
@@ -597,7 +482,7 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${el.name} on LinkedIn`}
-          className="social-linkedin mr-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
+          className="social-linkedin mr-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-ink-subtle transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
         >
           <LinkedInMark />
         </a>
@@ -630,63 +515,67 @@ function Inspector({ el, onClose, compact }) {
     ...(el.year ? [["year", `${el.year}`]] : []),
   ];
   return (
-    <div className="am-inspector overflow-hidden rounded-2xl border border-dotted border-slate-300 text-slate-900 dark:border-white/30 dark:text-slate-100">
-      <div className="flex items-center gap-2 border-b border-dotted border-slate-300 px-3 py-2">
-        <span aria-hidden="true" className="flex shrink-0 gap-1.5">
-          <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
-          <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
-          <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
-        </span>
-        <span className="ml-2 min-w-0 truncate font-mono text-xs text-slate-500">{el.name}</span>
-        <button type="button" onClick={onClose} aria-label="Close inspector" className="ml-auto shrink-0 rounded-lg p-1 text-slate-500 hover:text-slate-900 dark:hover:text-white">
-          <X size={16} />
-        </button>
-      </div>
-
-      <div className={`flex gap-4 p-4 ${compact ? "items-start" : "flex-col"}`}>
-        <div className={compact ? "shrink-0" : "flex justify-center py-2"}>
-          {el.photo ? <MemberPhoto el={el} compact={compact} /> : <Avatar el={el} size={compact ? 64 : 112} />}
+    <div data-part="inspector" className="ui-dialog overflow-hidden rounded-2xl text-ink">
+      <div data-part="inspector-screen" className="overflow-hidden rounded-2xl border border-dotted border-line-strong">
+        <div className="flex items-center gap-2 border-b border-dotted border-line-strong px-3 py-2">
+          <TrafficLights />
+          <span className="ml-2 min-w-0 truncate font-mono text-xs text-ink-subtle">{el.name}</span>
+          <button type="button" onClick={onClose} aria-label="Close inspector" className="-my-2 -mr-2 ml-auto inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-ink-subtle hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40">
+            <X size={16} />
+          </button>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-mono text-xs">
-            <span className="text-sky-700">$</span> <span className="text-slate-500">{el.name}</span>
-          </p>
-          <dl className="mt-3 space-y-1.5 text-sm">
-            {rows.map(([k, v]) => (
-              <div key={k} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-2">
-                <dt className="font-mono text-xs text-slate-500">{k}</dt>
-                <dd className="break-words text-slate-800">{v}</dd>
-              </div>
-            ))}
-          </dl>
-          {linkedin && (
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${el.name} on LinkedIn`}
-              className="social-linkedin mt-4 inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600/40"
-            >
-              <LinkedInMark className="h-5 w-5" />
-            </a>
-          )}
+
+        <div className={`flex gap-4 p-4 ${compact ? "items-start" : "flex-col"}`}>
+          <div className={compact ? "shrink-0" : "flex justify-center py-2"}>
+            {el.photo ? <MemberPhoto el={el} compact={compact} /> : <Avatar el={el} size={compact ? 64 : 112} />}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-mono text-xs">
+              <span className="text-primary">$</span> <span className="text-ink-subtle">{el.name}</span>
+            </p>
+            <dl className="mt-3 space-y-1.5 text-sm">
+              {rows.map(([k, v]) => (
+                <div key={k} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-2">
+                  <dt className="font-mono text-xs text-ink-subtle">{k}</dt>
+                  <dd className="break-words text-ink">{v}</dd>
+                </div>
+              ))}
+            </dl>
+            {linkedin && (
+              <a
+                href={linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${el.name} on LinkedIn`}
+                className="social-linkedin mt-4 inline-flex h-10 w-10 items-center justify-center rounded-lg text-ink-subtle transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              >
+                <LinkedInMark className="h-5 w-5" />
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+function TrafficLights({ className = "" }) {
+  return (
+    <span aria-hidden="true" className={`flex shrink-0 gap-1.5 ${className}`}>
+      <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+      <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+      <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
+    </span>
+  );
+}
+
 function Idle() {
   return (
-    <div className="am-glass rounded-2xl border border-dotted border-slate-400 p-6 text-sm text-slate-500 dark:border-white/40">
-      <span aria-hidden="true" className="mb-4 flex gap-1.5">
-        <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
-        <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
-        <i className="h-2.5 w-2.5 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
-      </span>
+    <div data-part="idle" className="ui-card rounded-2xl border-dotted p-6 text-sm text-ink-subtle">
+      <TrafficLights className="mb-4" />
       <p className="font-mono text-xs">
-        <span className="text-sky-700">$</span> select a node
-        <span aria-hidden="true" className="am-blink ml-1 inline-block h-3 w-1.5 translate-y-0.5 bg-sky-700" />
+        <span className="text-primary">$</span> select a node
+        <span aria-hidden="true" className="members-caret ml-1 inline-block h-3 w-1.5 translate-y-0.5 bg-primary" />
       </p>
       <p className="mt-3">Click any card, or press Enter in the search box to open the first match.</p>
     </div>

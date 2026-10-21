@@ -1,0 +1,1186 @@
+/* Liquid Glass. Every rule is scoped to html[data-ui='glass'].
+   Old class names stay as aliases so pages keep their current look. */
+
+@layer components {
+  html[data-ui='glass'] .lg-card,
+  html[data-ui='glass'] .ui-card,
+  html[data-ui='glass'] .ui-track {
+    --lg-tint: color-mix(in srgb, var(--color-surface) 28%, transparent);
+    --lg-hi: var(--color-surface);
+    --lg-rim: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    --lg-edge: color-mix(in srgb, var(--color-ink) 16%, transparent);
+    --lg-glow: color-mix(in srgb, var(--color-ink) 5%, transparent);
+    --lg-shadow: color-mix(in srgb, var(--color-ink) 22%, transparent);
+    --lg-sheen: 45%;
+    --lg-spec: 75%;
+    position: relative;
+    isolation: isolate;
+    background:
+      linear-gradient(var(--lg-hi), var(--lg-hi)) top / 100% 1px no-repeat,
+      linear-gradient(0deg, var(--lg-glow), transparent 24px),
+      linear-gradient(180deg, color-mix(in srgb, var(--lg-hi) var(--lg-sheen), transparent), transparent 45%),
+      var(--lg-tint);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
+    backdrop-filter: blur(16px) saturate(1.8);
+    border: 1px solid var(--lg-rim);
+    box-shadow:
+      0 0 0 0.5px var(--lg-edge),
+      0 18px 40px -18px var(--lg-shadow);
+  }
+  html[data-ui='glass'].dark .lg-card,
+  html[data-ui='glass'].dark .ui-card,
+  html[data-ui='glass'].dark .ui-track,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-card,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-track {
+    --lg-tint: color-mix(in srgb, var(--color-ink) 5%, transparent);
+    --lg-hi: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    --lg-rim: color-mix(in srgb, var(--color-ink) 24%, transparent);
+    --lg-edge: color-mix(in srgb, var(--color-page) 70%, transparent);
+    --lg-glow: color-mix(in srgb, var(--color-ink) 9%, transparent);
+    --lg-shadow: color-mix(in srgb, var(--color-page) 80%, transparent);
+    --lg-sheen: 12%;
+    --lg-spec: 24%;
+  }
+  html[data-ui='glass'] .lg-card::before,
+  html[data-ui='glass'] .ui-card::before,
+  html[data-ui='glass'] .ui-track::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(60% 45% at 22% 0%, color-mix(in srgb, var(--lg-hi) var(--lg-spec), transparent), transparent 70%);
+    mix-blend-mode: screen;
+  }
+  html[data-ui='glass'] .lg-card::after,
+  html[data-ui='glass'] .ui-card::after,
+  html[data-ui='glass'] .ui-track::after {
+    content: ""; position: absolute; inset: 1px; z-index: -1; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 0.8px color-mix(in srgb, var(--lg-rim) 60%, transparent), inset 0 -1px 4px color-mix(in srgb, var(--lg-hi) 16%, transparent);
+  }
+  html[data-ui='glass'] .lg-well,
+  html[data-ui='glass'] .ui-well,
+  html[data-ui='glass'] .ui-chip {
+    background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-surface) 85%, transparent);
+    box-shadow:
+      0 0 0 0.5px color-mix(in srgb, var(--color-ink) 8%, transparent),
+      inset 0 1px 2px color-mix(in srgb, var(--color-ink) 5%, transparent);
+  }
+  html[data-ui='glass'].dark .lg-well,
+  html[data-ui='glass'].dark .ui-well,
+  html[data-ui='glass'].dark .ui-chip,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-well,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-chip {
+    background: color-mix(in srgb, var(--color-ink) 5%, transparent);
+    border-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-ink) 8%, transparent);
+  }
+  html[data-ui='glass'] .lg-solid,
+  html[data-ui='glass'] .ui-solid {
+    border: 1px solid color-mix(in srgb, var(--color-page) 18%, transparent);
+    background-image: linear-gradient(180deg, color-mix(in srgb, var(--color-page) 24%, transparent), transparent 60%);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--color-page) 40%, transparent),
+      0 10px 24px -12px color-mix(in srgb, var(--color-ink) 45%, transparent);
+  }
+  html[data-ui='glass'].dark .lg-solid,
+  html[data-ui='glass'].dark .ui-solid,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-solid {
+    background-image: none;
+    box-shadow: inset 0 -2px 6px color-mix(in srgb, var(--color-page) 18%, transparent);
+  }
+  html[data-ui='glass'] .ui-heading {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  html[data-ui='glass'] .ui-nav {
+    background-color: color-mix(in srgb, var(--color-white) 82%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-slate-200) 80%, transparent);
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+  }
+  html[data-ui='glass'].dark .ui-nav {
+    background-color: color-mix(in srgb, var(--color-black) 72%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--color-white) 10%, transparent);
+  }
+  html[data-ui='glass'] .ui-tooltip {
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-slate-900) 10%, transparent);
+    background: color-mix(in srgb, var(--color-black) 90%, transparent);
+    color: var(--color-white);
+    padding: 0.75rem;
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+  }
+  html[data-ui='glass'] .ui-dialog {
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.95),
+      0 18px 40px rgba(15,23,42,0.14);
+  }
+  html[data-ui='glass'].dark .ui-dialog,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-dialog {
+    background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.12),
+      0 20px 42px rgba(0,0,0,0.5);
+  }
+  html[data-ui='glass'] .ui-switch {
+    --liquid-bg: rgba(233,245,255,0.78);
+    --liquid-border: rgba(147,197,253,0.62);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--liquid-border);
+    background: var(--liquid-bg);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    backdrop-filter: blur(24px) saturate(1.8);
+  }
+  html[data-ui='glass'].dark .ui-switch {
+    --liquid-bg: rgba(22,29,42,0.5);
+    --liquid-border: rgba(226,232,240,0.32);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    html[data-ui='glass'] .lg-card,
+    html[data-ui='glass'] .ui-card,
+    html[data-ui='glass'] .ui-track,
+    html[data-ui='glass'] .ui-nav,
+    html[data-ui='glass'] .ui-tooltip,
+    html[data-ui='glass'] .ui-switch {
+      background: var(--color-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    html[data-ui='glass'] .ui-dialog {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html[data-ui='glass'] .ui-switch { transition: none; }
+  }
+}
+
+/* Semantic twins of the page classes above. Layered (unlike the page aliases)
+   so Tailwind layout utilities on the same element still win. */
+@layer components {
+  html[data-ui='glass'] .ui-pill {
+    --lg-tint: color-mix(in srgb, var(--color-ink) 7%, transparent);
+    --lg-hi: var(--color-surface);
+    --lg-rim: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    --lg-edge: color-mix(in srgb, var(--color-ink) 16%, transparent);
+    --lg-glow: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    --lg-shadow: color-mix(in srgb, var(--color-ink) 22%, transparent);
+    --lg-sheen: 56%;
+    --lg-spec: 92%;
+    --lg-spec-size: 110% 85%;
+    position: relative;
+    isolation: isolate;
+    background:
+      linear-gradient(var(--lg-hi), var(--lg-hi)) top / 100% 1px no-repeat,
+      linear-gradient(0deg, var(--lg-glow), transparent 10px),
+      linear-gradient(180deg, color-mix(in srgb, var(--lg-hi) var(--lg-sheen), transparent), transparent 45%),
+      var(--lg-tint);
+    -webkit-backdrop-filter: blur(2px) saturate(1.8);
+    backdrop-filter: blur(2px) saturate(1.8);
+    border: 1px solid var(--lg-rim);
+    box-shadow:
+      0 0 0 0.5px var(--lg-edge),
+      0 4px 12px -4px var(--lg-shadow);
+  }
+  html[data-ui='glass'].dark .ui-pill,
+  html[data-ui='glass'] [data-scheme='dark'] .ui-pill {
+    --lg-tint: color-mix(in srgb, var(--color-ink) 10%, transparent);
+    --lg-hi: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    --lg-rim: color-mix(in srgb, var(--color-ink) 24%, transparent);
+    --lg-edge: color-mix(in srgb, var(--color-page) 70%, transparent);
+    --lg-glow: color-mix(in srgb, var(--color-ink) 9%, transparent);
+    --lg-shadow: color-mix(in srgb, var(--color-page) 80%, transparent);
+    --lg-sheen: 38%;
+    --lg-spec: 60%;
+  }
+  html[data-ui='glass'] .ui-pill::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(var(--lg-spec-size) at 22% 0%,
+      color-mix(in srgb, var(--lg-hi) var(--lg-spec), transparent), transparent 70%);
+    mix-blend-mode: screen;
+  }
+  html[data-ui='glass'] .ui-pill::after {
+    content: ""; position: absolute; inset: 1px; z-index: -1; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 0.8px color-mix(in srgb, var(--lg-rim) 60%, transparent), inset 0 -1px 4px color-mix(in srgb, var(--lg-hi) 16%, transparent);
+  }
+  html[data-ui='glass'] .ui-pill:is([aria-pressed='true'], [aria-selected='true']) {
+    --lg-tint: color-mix(in srgb, var(--gs-sky-500) 16%, transparent);
+    border-color: var(--gs-sky-600);
+    box-shadow:
+      0 0 0 1px var(--gs-sky-600),
+      0 6px 16px -6px color-mix(in srgb, var(--gs-sky-600) 45%, transparent);
+  }
+  html[data-ui='glass'].dark .ui-pill:is([aria-pressed='true'], [aria-selected='true']),
+  html[data-ui='glass'] [data-scheme='dark'] .ui-pill:is([aria-pressed='true'], [aria-selected='true']) {
+    --lg-tint: color-mix(in srgb, var(--gs-sky-400) 18%, transparent);
+    border-color: var(--gs-sky-400);
+    box-shadow:
+      0 0 0 1px var(--gs-sky-400),
+      0 6px 16px -6px color-mix(in srgb, var(--gs-sky-400) 35%, transparent);
+  }
+  html[data-ui='glass'] .ui-chip:is([aria-pressed='true'], [aria-selected='true']) {
+    background: color-mix(in srgb, var(--gs-sky-500) 16%, transparent);
+    border-color: var(--gs-sky-600);
+  }
+  html[data-ui='glass'].dark .ui-chip:is([aria-pressed='true'], [aria-selected='true']) {
+    background: color-mix(in srgb, var(--gs-sky-400) 18%, transparent);
+    border-color: var(--gs-sky-400);
+  }
+
+  html[data-ui='glass'] .ui-input {
+    background:
+      linear-gradient(160deg, rgba(255,255,255,0.68), rgba(255,255,255,0.32) 55%, rgba(255,255,255,0.22)),
+      linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0));
+    -webkit-backdrop-filter: blur(24px) saturate(1.9);
+    backdrop-filter: blur(24px) saturate(1.9);
+    border: 1px solid color-mix(in srgb, var(--color-ink) 24%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      0 14px 34px rgba(15,23,42,0.10);
+    transition: border-color 150ms ease;
+  }
+  html[data-ui='glass'] .ui-input:hover { border-color: color-mix(in srgb, var(--color-ink) 38%, transparent); }
+  html[data-ui='glass'] .ui-input:focus { border-color: var(--gs-sky-600); }
+  html[data-ui='glass'] .ui-input[aria-invalid='true'] { border-color: var(--color-danger); }
+  html[data-ui='glass'].dark .ui-input {
+    background:
+      linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0.04)),
+      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border-color: color-mix(in srgb, #fff 18%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.25),
+      0 14px 34px rgba(0,0,0,0.45);
+  }
+  html[data-ui='glass'].dark .ui-input:hover { border-color: color-mix(in srgb, #fff 30%, transparent); }
+  html[data-ui='glass'].dark .ui-input:focus { border-color: var(--gs-sky-400); }
+  html[data-ui='glass'].dark .ui-input[aria-invalid='true'] { border-color: var(--color-danger); }
+  @media (prefers-reduced-motion: reduce) {
+    html[data-ui='glass'] .ui-input { transition: none; }
+  }
+
+  html[data-ui='glass'] .ui-thumb {
+    --liquid-bg: rgba(233,245,255,0.78);
+    --liquid-border: rgba(147,197,253,0.62);
+    --liquid-glow: rgba(56,189,248,0.26);
+    --liquid-highlight: rgba(255,255,255,0.99);
+    position: absolute; left: 0; top: 0; z-index: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--liquid-highlight) 56%, transparent), transparent 66%),
+      var(--liquid-bg);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    backdrop-filter: blur(24px) saturate(1.8);
+    border: 1px solid var(--liquid-border);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--liquid-highlight) 92%, transparent),
+      inset 0 -5px 14px color-mix(in srgb, var(--liquid-glow) 44%, transparent);
+    transform-origin: center center;
+    transition:
+      transform 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+      width 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+      height 360ms cubic-bezier(0.22, 1.18, 0.36, 1);
+  }
+  html[data-ui='glass'].dark .ui-thumb {
+    --liquid-bg: rgba(22,29,42,0.5);
+    --liquid-border: rgba(226,232,240,0.32);
+    --liquid-glow: rgba(125,211,252,0.2);
+    --liquid-highlight: rgba(255,255,255,0.72);
+  }
+  html[data-ui='glass'] .ui-thumb::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background:
+      radial-gradient(110% 85% at var(--hx, 24%) 0%, rgba(255,255,255,0.92), transparent 46%),
+      radial-gradient(70% 60% at 78% 88%, color-mix(in srgb, var(--liquid-glow) 65%, transparent), transparent 62%);
+    mix-blend-mode: screen;
+  }
+  html[data-ui='glass'] .ui-thumb::after {
+    content: ""; position: absolute; inset: 1px; border-radius: inherit;
+    box-shadow:
+      inset 0 0 0 0.8px color-mix(in srgb, var(--liquid-border) 62%, transparent),
+      inset 0 -1px 4px rgba(255,255,255,0.16);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html[data-ui='glass'] .ui-thumb { transition: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    html[data-ui='glass'] .ui-pill { background: var(--color-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    html[data-ui='glass'] .ui-input { background: #ffffff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    html[data-ui='glass'].dark .ui-input { background: #111111; }
+    html[data-ui='glass'] .ui-thumb { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+  @media (prefers-contrast: more) {
+    html[data-ui='glass'] .ui-pill { --lg-edge: var(--color-ink-muted); }
+  }
+}
+
+/* ===== Global shell: navbar, mobile menu, footer, social rail and dock, splash =====
+   These restate the exact values the shell had as Tailwind classes, so the
+   palette below mirrors Tailwind's. Unlayered so they beat token utilities
+   in the markup; the html.dark hex values reproduce index.css overrides. */
+html[data-ui='glass'] {
+  --gs-slate-50: oklch(98.4% 0.003 247.858);
+  --gs-slate-100: oklch(96.8% 0.007 247.896);
+  --gs-slate-200: oklch(92.9% 0.013 255.508);
+  --gs-slate-300: oklch(86.9% 0.022 252.894);
+  --gs-slate-400: oklch(70.4% 0.04 256.788);
+  --gs-slate-500: oklch(55.4% 0.046 257.417);
+  --gs-slate-600: oklch(44.6% 0.043 257.281);
+  --gs-slate-700: oklch(37.2% 0.044 257.287);
+  --gs-slate-800: oklch(27.9% 0.041 260.031);
+  --gs-slate-900: oklch(20.8% 0.042 265.755);
+  --gs-gray-600: oklch(44.6% 0.03 256.802);
+  --gs-gray-700: oklch(37.3% 0.034 259.733);
+  --gs-sky-50: oklch(97.7% 0.013 236.62);
+  --gs-sky-100: oklch(95.1% 0.026 236.824);
+  --gs-sky-200: oklch(90.1% 0.058 230.902);
+  --gs-sky-300: oklch(82.8% 0.111 230.318);
+  --gs-sky-400: oklch(74.6% 0.16 232.661);
+  --gs-sky-500: oklch(68.5% 0.169 237.323);
+  --gs-sky-600: oklch(58.8% 0.158 241.966);
+  --gs-sky-700: oklch(50% 0.134 242.749);
+  --gs-sky-800: oklch(44.3% 0.11 240.79);
+  --gs-cyan-300: oklch(86.5% 0.127 207.078);
+  --gs-indigo-400: oklch(67.3% 0.182 276.935);
+}
+
+/* Navbar bar */
+html[data-ui='glass'] [data-shell='nav'] {
+  border: 0 solid color-mix(in oklab, var(--gs-slate-200) 80%, transparent);
+  border-bottom-width: 1px;
+  border-radius: 0;
+  box-shadow: none;
+  background: color-mix(in oklab, #fff 74%, transparent);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+html[data-ui='glass'] [data-shell='nav'][data-scrolled],
+html[data-ui='glass'] [data-shell='nav'][data-surface='grid'] {
+  background: color-mix(in oklab, #fff 82%, transparent);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+}
+html[data-ui='glass'].dark [data-shell='nav'] {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, #000 70%, transparent);
+}
+html[data-ui='glass'].dark [data-shell='nav'][data-scrolled] {
+  background: color-mix(in oklab, #000 78%, transparent);
+}
+html[data-ui='glass'].dark [data-shell='nav'][data-surface='grid'] {
+  border-color: rgb(255 255 255 / 0.12);
+  background: color-mix(in oklab, #000 72%, transparent);
+}
+
+/* Navbar links: the list is a plain row, the thumb is the hover pill */
+html[data-ui='glass'] [data-shell='nav'] .ui-track {
+  isolation: auto;
+  border: 0 solid;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-shell='nav'] .ui-track::before,
+html[data-ui='glass'] [data-shell='nav'] .ui-track::after,
+html[data-ui='glass'] [data-shell='nav'] .ui-thumb::before,
+html[data-ui='glass'] [data-shell='nav'] .ui-thumb::after {
+  content: none;
+}
+html[data-ui='glass'] [data-shell='nav'] .ui-track a { color: var(--gs-slate-700); }
+html[data-ui='glass'] [data-shell='nav'] .ui-track a:hover,
+html[data-ui='glass'] [data-shell='nav'] .ui-track a[aria-current='page'] { color: var(--gs-slate-900); }
+html[data-ui='glass'].dark [data-shell='nav'] .ui-track a { color: var(--gs-slate-300); }
+html[data-ui='glass'].dark [data-shell='nav'] .ui-track a:hover,
+html[data-ui='glass'].dark [data-shell='nav'] .ui-track a[aria-current='page'] { color: #fff; }
+html[data-ui='glass'] [data-shell='nav'] .ui-thumb {
+  z-index: auto;
+  overflow: visible;
+  border: 1px solid color-mix(in oklab, var(--gs-sky-200) 70%, transparent);
+  background: color-mix(in oklab, var(--gs-sky-100) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -6px 14px rgba(56,189,248,0.14);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+html[data-ui='glass'].dark [data-shell='nav'] .ui-thumb {
+  border-color: color-mix(in oklab, #fff 30%, transparent);
+  background: color-mix(in oklab, #fff 12%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -6px 14px rgba(125,211,252,0.14);
+}
+html[data-ui='glass'] [data-shell='nav'] [data-part='divider'] { background: color-mix(in oklab, var(--gs-slate-900) 10%, transparent); }
+html[data-ui='glass'].dark [data-shell='nav'] [data-part='divider'] { background: color-mix(in oklab, #fff 15%, transparent); }
+
+/* Theme toggle: a round icon button in this design */
+html[data-ui='glass'] .ui-switch[data-shell='theme'] {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--gs-slate-200);
+  background: #fff;
+  color: var(--gs-slate-700);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] .ui-switch[data-shell='theme']:hover { background: var(--gs-slate-50); }
+html[data-ui='glass'].dark .ui-switch[data-shell='theme'] {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+  color: #fff;
+}
+html[data-ui='glass'].dark .ui-switch[data-shell='theme']:hover { background: color-mix(in oklab, #fff 15%, transparent); }
+
+/* Mobile menu button */
+html[data-ui='glass'] [data-shell='nav'] .ui-pill {
+  position: static;
+  isolation: auto;
+  border: 1px solid color-mix(in oklab, var(--gs-slate-900) 10%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, #fff 50%, transparent);
+  color: var(--gs-slate-800);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-shell='nav'] .ui-pill::before,
+html[data-ui='glass'] [data-shell='nav'] .ui-pill::after { content: none; }
+html[data-ui='glass'] [data-shell='nav'] .ui-pill:hover { background: color-mix(in oklab, #fff 80%, transparent); }
+html[data-ui='glass'] [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  border-color: color-mix(in oklab, var(--gs-sky-500) 40%, transparent);
+  background: #fff;
+  color: var(--gs-sky-700);
+}
+html[data-ui='glass'].dark [data-shell='nav'] .ui-pill {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+  color: #fff;
+}
+html[data-ui='glass'].dark [data-shell='nav'] .ui-pill:hover { background: color-mix(in oklab, #fff 15%, transparent); }
+html[data-ui='glass'].dark [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  border-color: color-mix(in oklab, var(--gs-sky-400) 40%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+  color: var(--gs-sky-300);
+}
+
+/* Mobile menu */
+html[data-ui='glass'] [data-shell='scrim'] { background: color-mix(in oklab, var(--gs-slate-900) 40%, transparent); }
+html[data-ui='glass'] [data-shell='menu'] {
+  border: 1px solid var(--gs-slate-200);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+}
+html[data-ui='glass'].dark [data-shell='menu'] {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+  background: color-mix(in oklab, #000 88%, transparent);
+}
+html[data-ui='glass'] [data-shell='menu'] [data-part='caret'] { border-color: var(--gs-slate-200); background: #fff; }
+html[data-ui='glass'].dark [data-shell='menu'] [data-part='caret'] { border-color: color-mix(in oklab, #fff 10%, transparent); background: #000; }
+html[data-ui='glass'] [data-shell='menu'] .ui-well {
+  border: 0 solid;
+  background: var(--gs-slate-50);
+  box-shadow: none;
+}
+html[data-ui='glass'].dark [data-shell='menu'] .ui-well { background: color-mix(in oklab, #fff 5%, transparent); }
+html[data-ui='glass'] [data-shell='menu'] [data-part='avatar'] {
+  background: linear-gradient(to bottom right in oklab, var(--gs-sky-500) 0%, var(--gs-sky-700) 100%);
+  color: #fff;
+}
+html[data-ui='glass'] [data-shell='menu'] [data-part='name'] { color: var(--gs-slate-900); }
+html[data-ui='glass'] [data-shell='menu'] [data-part='email'] { color: var(--gs-slate-500); }
+html[data-ui='glass'].dark [data-shell='menu'] [data-part='name'] { color: #fff; }
+html[data-ui='glass'].dark [data-shell='menu'] [data-part='email'] { color: var(--gs-slate-400); }
+html[data-ui='glass'] [data-shell='menu'] .ui-chip {
+  border: 0 solid;
+  background: transparent;
+  box-shadow: none;
+  color: var(--gs-slate-600);
+}
+html[data-ui='glass'] [data-shell='menu'] .ui-chip:hover { background: var(--gs-slate-50); color: var(--gs-slate-900); }
+html[data-ui='glass'] [data-shell='menu'] .ui-chip[aria-current='page'] { background: var(--gs-sky-50); color: var(--gs-slate-900); }
+html[data-ui='glass'].dark [data-shell='menu'] .ui-chip { color: var(--gs-slate-300); }
+html[data-ui='glass'].dark [data-shell='menu'] .ui-chip:hover { background: color-mix(in oklab, #fff 5%, transparent); color: #fff; }
+html[data-ui='glass'].dark [data-shell='menu'] .ui-chip[aria-current='page'] { background: color-mix(in oklab, var(--gs-sky-500) 15%, transparent); color: #fff; }
+html[data-ui='glass'] [data-shell='menu'] [data-part='icon'] { background: var(--gs-slate-100); color: var(--gs-slate-500); }
+html[data-ui='glass'].dark [data-shell='menu'] [data-part='icon'] { background: color-mix(in oklab, #fff 10%, transparent); color: var(--gs-slate-300); }
+html[data-ui='glass'] [data-shell='menu'] [aria-current='page'] [data-part='icon'] {
+  background: color-mix(in oklab, var(--gs-sky-500) 15%, transparent);
+  color: var(--gs-sky-500);
+}
+html[data-ui='glass'] [data-shell='menu'] [data-part='chev'] { color: var(--gs-slate-300); }
+html[data-ui='glass'].dark [data-shell='menu'] [data-part='chev'] { color: #94a3b8; }
+html[data-ui='glass'] [data-shell='menu'] [aria-current='page'] [data-part='chev'] { color: var(--gs-sky-500); }
+html[data-ui='glass'] [data-shell='menu'] [data-part='divider'] { background: var(--gs-slate-200); }
+html[data-ui='glass'].dark [data-shell='menu'] [data-part='divider'] { background: color-mix(in oklab, #fff 10%, transparent); }
+
+/* Footer */
+html[data-ui='glass'] [data-shell='footer'] {
+  border: 0 solid color-mix(in oklab, var(--gs-slate-200) 80%, transparent);
+  border-top-width: 1px;
+  background: #fff;
+}
+html[data-ui='glass'].dark [data-shell='footer'] {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+  background: #000;
+}
+html[data-ui='glass'].dark [data-shell='footer'][data-surface='grid'] {
+  border-color: rgb(255 255 255 / 0.12);
+  background: #111111;
+}
+html[data-ui='glass'] [data-shell='footer'] .ui-card {
+  position: static;
+  isolation: auto;
+  border: 0 solid;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-shell='footer'] .ui-card::before,
+html[data-ui='glass'] [data-shell='footer'] .ui-card::after,
+html[data-ui='glass'] [data-shell='footer'] .ui-pill::before,
+html[data-ui='glass'] [data-shell='footer'] .ui-pill::after { content: none; }
+html[data-ui='glass'].dark [data-shell='footer'] .ui-heading { color: #f1f5f9; }
+html[data-ui='glass'] [data-shell='footer'] [data-part='icon'] { color: var(--gs-sky-600); }
+html[data-ui='glass'] [data-shell='footer'] [data-part='dot'] { background: var(--gs-sky-600); }
+html[data-ui='glass'] [data-shell='footer'] [data-part='muted'] { color: var(--gs-slate-500); }
+html[data-ui='glass'] [data-shell='footer'] [data-part='faint'] { color: var(--gs-gray-600); }
+html[data-ui='glass'] [data-shell='footer'] a[data-part='muted']:hover,
+html[data-ui='glass'] [data-shell='footer'] button[data-part='faint']:hover { color: var(--gs-sky-700); }
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='muted'],
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='faint'] { color: #94a3b8; }
+html[data-ui='glass'].dark [data-shell='footer'] a[data-part='muted']:hover,
+html[data-ui='glass'].dark [data-shell='footer'] button[data-part='faint']:hover { color: var(--gs-sky-400); }
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='domain'] { color: #94a3b8; }
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='domain']:hover { color: #f1f5f9; }
+html[data-ui='glass'] [data-shell='footer'] [data-part='domain-icon'] {
+  border: 0 solid;
+  background: color-mix(in oklab, var(--gs-sky-600) 10%, transparent);
+  box-shadow: none;
+  color: var(--gs-sky-800);
+}
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='domain-icon'] { color: #7dd3fc; }
+html[data-ui='glass'] [data-shell='footer'] .ui-pill {
+  position: static;
+  isolation: auto;
+  border: 0 solid;
+  background: color-mix(in oklab, var(--gs-slate-900) 5%, transparent);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+:where(html[data-ui='glass'] [data-shell='footer']) .ui-pill { color: var(--gs-slate-500); }
+html[data-ui='glass'] [data-shell='footer'] .ui-pill:hover { background: color-mix(in oklab, var(--gs-slate-900) 10%, transparent); }
+html[data-ui='glass'].dark [data-shell='footer'] .ui-pill { background: rgb(255 255 255 / 0.05); }
+html[data-ui='glass'].dark [data-shell='footer'] .ui-pill:hover { background: rgb(255 255 255 / 0.08); }
+html[data-ui='glass'] [data-shell='footer'] [data-part='map'] {
+  border: 1px solid color-mix(in oklab, var(--gs-slate-900) 10%, transparent);
+  background: none;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='map'] { border-color: rgb(255 255 255 / 0.1); }
+html[data-ui='glass'] [data-shell='footer'] .ui-chip {
+  border: 0 solid;
+  background: color-mix(in oklab, #000 70%, transparent);
+  box-shadow: none;
+  color: #f1f5f9;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+html[data-ui='glass'] [data-shell='footer'] .ui-chip:hover { background: color-mix(in oklab, #000 90%, transparent); }
+html[data-ui='glass'] [data-shell='footer'] [data-part='bar'] { border-color: color-mix(in oklab, var(--gs-slate-900) 10%, transparent); }
+html[data-ui='glass'].dark [data-shell='footer'] [data-part='bar'] { border-color: rgb(255 255 255 / 0.1); }
+
+/* Social rail (desktop) */
+html[data-ui='glass'] [data-shell='rail'] [data-part='glow'] {
+  background-image: linear-gradient(to bottom in oklab, transparent 0%, color-mix(in oklab, var(--gs-sky-500) 40%, transparent) 50%, transparent 100%);
+}
+html[data-ui='glass'] [data-shell='rail'] [data-part='line'] {
+  background-image: linear-gradient(to bottom in oklab, transparent 0%, color-mix(in oklab, var(--gs-sky-500) 50%, transparent) 50%, transparent 100%);
+}
+html[data-ui='glass'] [data-shell='rail'] [data-part='dot'] {
+  background: color-mix(in oklab, var(--gs-sky-500) 80%, transparent);
+  box-shadow: 0 0 8px 2px rgba(2,132,199,0.5);
+}
+html[data-ui='glass'] [data-shell='rail'] [data-part='dot'][data-size='sm'] {
+  background: color-mix(in oklab, var(--gs-sky-500) 60%, transparent);
+  box-shadow: 0 0 6px 1px rgba(2,132,199,0.3);
+}
+html[data-ui='glass'] [data-shell='rail'] .ui-pill {
+  isolation: auto;
+  border: 1px solid color-mix(in oklab, var(--gs-gray-700) 50%, transparent);
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-shell='rail'] .ui-pill::before,
+html[data-ui='glass'] [data-shell='rail'] .ui-pill::after { content: none; }
+html[data-ui='glass'] [data-shell='rail'] [data-part='glyph'] { color: var(--gs-slate-500); }
+html[data-ui='glass'] [data-shell='rail'] .ui-tooltip {
+  border: 1px solid color-mix(in oklab, var(--gs-slate-900) 10%, transparent);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--gs-slate-900) 10%, transparent);
+  color: var(--gs-slate-900);
+  box-shadow:
+    0 10px 15px -3px color-mix(in oklab, var(--gs-sky-600) 20%, transparent),
+    0 4px 6px -4px color-mix(in oklab, var(--gs-sky-600) 20%, transparent);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+html[data-ui='glass'].dark [data-shell='rail'] .ui-tooltip {
+  border-color: rgb(255 255 255 / 0.1);
+  color: #f1f5f9;
+}
+html[data-ui='glass'] [data-shell='rail'] [data-part='arrow'] {
+  border-color: transparent;
+  border-right-color: color-mix(in oklab, #fff 10%, transparent);
+}
+
+/* Social dock (mobile) */
+html[data-ui='glass'] [data-shell='dock'] .ui-card {
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 14px 40px rgba(15, 23, 42, 0.14);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+}
+html[data-ui='glass'] [data-shell='dock'] .ui-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: normal;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 48%);
+}
+html[data-ui='glass'] [data-shell='dock'] .ui-card::after,
+html[data-ui='glass'] [data-shell='dock'] .ui-pill::before,
+html[data-ui='glass'] [data-shell='dock'] .ui-pill::after { content: none; }
+html[data-ui='glass'] [data-shell='dock'] .ui-card > * {
+  position: relative;
+  z-index: 1;
+}
+html[data-ui='glass'] [data-shell='dock'] .ui-pill {
+  isolation: auto;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  color: var(--gs-slate-700);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='glass'] [data-shell='dock'] .ui-card,
+  html[data-ui='glass'] [data-shell='dock'] .ui-pill {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.94);
+  }
+}
+html[data-ui='glass'].dark [data-shell='dock'] .ui-card {
+  background: rgba(8, 12, 22, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 14px 40px rgba(0, 0, 0, 0.35);
+}
+html[data-ui='glass'].dark [data-shell='dock'] .ui-card::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 48%);
+}
+html[data-ui='glass'].dark [data-shell='dock'] .ui-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  color: #cbd5e1;
+}
+
+/* Intro splash */
+html[data-ui='glass'] [data-shell='splash'] {
+  --splash-bg: #000000;
+  --splash-track: color-mix(in oklab, #fff 10%, transparent);
+  --splash-accent: linear-gradient(to right in oklab, var(--gs-cyan-300) 0%, var(--gs-sky-400) 50%, var(--gs-indigo-400) 100%);
+}
+html[data-ui='glass'] [data-shell='splash'] .ui-solid {
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid color-mix(in oklab, #fff 20%, transparent);
+  background: color-mix(in oklab, #fff 5%, transparent);
+  box-shadow: none;
+  color: color-mix(in oklab, #fff 75%, transparent);
+}
+html[data-ui='glass'] [data-shell='splash'] .ui-solid:hover {
+  background: color-mix(in oklab, #fff 10%, transparent);
+  color: #fff;
+}
+html[data-ui='glass'] [data-shell='splash'] .ui-solid:focus-visible {
+  outline: 2px solid var(--gs-sky-300);
+  outline-offset: 2px;
+}
+html[data-ui='glass'] [data-shell='splash'] .ui-solid::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+}
+
+/* ===== Pages =====
+   Pins that keep each page's glass look identical to the pre-token markup. */
+
+/* Home: terminal */
+html[data-ui='glass'] [data-part='terminal'] {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+html[data-ui='glass'] [data-part='terminal'] > :first-child {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+}
+
+/* Home: event carousel cards are a flat frost-free card */
+html[data-ui='glass'] .event-strip-card.ui-card {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] .event-strip-card [data-part='badge'] {
+  background: var(--gs-sky-700);
+  color: #fff;
+}
+
+/* Home: domain showcase tab bar */
+html[data-ui='glass'] [data-part='showcase'] [data-part='tabbar'] {
+  border: 0 solid color-mix(in oklab, var(--gs-slate-900) 10%, transparent);
+  border-top-width: 1px;
+  border-radius: 0;
+  background: color-mix(in oklab, var(--gs-slate-900) 6%, transparent);
+  box-shadow: none;
+}
+html[data-ui='glass'].dark [data-part='showcase'] [data-part='tabbar'] {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+}
+html[data-ui='glass'] [data-part='tabbar'] > [role='tab'] {
+  background: color-mix(in oklab, #fff 55%, transparent);
+}
+html[data-ui='glass'] [data-part='tabbar'] > [role='tab']:hover {
+  background: color-mix(in oklab, #fff 75%, transparent);
+}
+html[data-ui='glass'] [data-part='tabbar'] > [aria-selected='true'],
+html[data-ui='glass'] [data-part='tabbar'] > [aria-selected='true']:hover {
+  background: color-mix(in oklab, #fff 85%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+html[data-ui='glass'].dark [data-part='tabbar'] > [role='tab'] {
+  background: color-mix(in oklab, #000 70%, transparent);
+}
+html[data-ui='glass'].dark [data-part='tabbar'] > [role='tab']:hover {
+  background: color-mix(in oklab, #111111 80%, transparent);
+}
+html[data-ui='glass'].dark [data-part='tabbar'] > [aria-selected='true'],
+html[data-ui='glass'].dark [data-part='tabbar'] > [aria-selected='true']:hover {
+  background: color-mix(in oklab, #141414 90%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Home: events list is one card with hairline-divided rows */
+html[data-ui='glass'] [data-part='events-list'] > .ui-well {
+  border: 0 solid color-mix(in oklab, var(--gs-slate-900) 10%, transparent);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-part='events-list'] > .ui-well:not(:last-child) {
+  border-bottom-width: 1px;
+}
+html[data-ui='glass'].dark [data-part='events-list'] > .ui-well {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+}
+html[data-ui='glass'] [data-part='events-list'] a:hover {
+  background: color-mix(in oklab, var(--gs-slate-900) 3%, transparent);
+}
+html[data-ui='glass'].dark [data-part='events-list'] a:hover {
+  background: color-mix(in oklab, #fff 4%, transparent);
+}
+
+/* Share and Back buttons: flat white pills, or frosted ones inside dark regions */
+html[data-ui='glass'] :is([data-part='share'], [data-part='back']).ui-pill {
+  isolation: auto;
+  border: 1px solid var(--gs-slate-200);
+  background: #fff;
+  color: var(--gs-slate-800);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-part='back'].ui-pill { color: var(--gs-slate-700); }
+html[data-ui='glass'] :is([data-part='share'], [data-part='back']).ui-pill::before,
+html[data-ui='glass'] :is([data-part='share'], [data-part='back']).ui-pill::after { content: none; }
+html[data-ui='glass'] :is([data-part='share'], [data-part='back']).ui-pill:hover {
+  border-color: color-mix(in oklab, var(--gs-sky-600) 40%, transparent);
+  color: var(--gs-sky-800);
+}
+html[data-ui='glass'].dark :is([data-part='share'], [data-part='back']).ui-pill {
+  border-color: rgb(255 255 255 / 0.12);
+  background: #111111;
+  color: #e2e8f0;
+}
+html[data-ui='glass'].dark [data-part='back'].ui-pill { color: #cbd5e1; }
+html[data-ui='glass'].dark :is([data-part='share'], [data-part='back']).ui-pill:hover { color: #7dd3fc; }
+html[data-ui='glass'] [data-scheme='dark'] [data-part='share'].ui-pill {
+  border-color: color-mix(in oklab, #fff 20%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+  color: #fff;
+  box-shadow: none;
+}
+html[data-ui='glass'] [data-scheme='dark'] [data-part='back'].ui-pill {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, #fff 5%, transparent);
+  color: color-mix(in oklab, #fff 90%, transparent);
+  box-shadow: none;
+}
+html[data-ui='glass'] [data-scheme='dark'] :is([data-part='share'], [data-part='back']).ui-pill:hover {
+  border-color: color-mix(in oklab, #fff 20%, transparent);
+  background: color-mix(in oklab, #fff 15%, transparent);
+  color: #fff;
+}
+html[data-ui='glass'] [data-scheme='dark'] [data-part='back'].ui-pill:hover {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+  color: color-mix(in oklab, #fff 90%, transparent);
+}
+html[data-ui='glass'] [data-part='share-link'].ui-input {
+  border: 1px solid var(--gs-slate-200);
+  background: #fff;
+  color: var(--gs-slate-700);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'].dark [data-part='share-link'].ui-input {
+  border-color: rgb(255 255 255 / 0.12);
+  background: #111111;
+  color: #cbd5e1;
+}
+
+/* Events: status chip over a cover-fit poster */
+html[data-ui='glass'] [data-part='poster'] [data-part='status'] {
+  border: 1px solid color-mix(in oklab, #fff 30%, transparent);
+  background: color-mix(in oklab, #fff 90%, transparent);
+  box-shadow: none;
+  color: var(--gs-sky-800);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+html[data-ui='glass'].dark [data-part='poster'] [data-part='status'] {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, oklch(12.9% 0.042 264.695) 70%, transparent);
+  color: var(--gs-sky-300);
+}
+
+/* Boot camp page background and its interactive grid */
+html[data-ui='glass'] {
+  --grid-line: rgba(71, 85, 105, 0.28);
+  --grid-cell: rgba(2, 132, 199, 0.12);
+  --grid-cell-edge: rgba(2, 132, 199, 0.4);
+}
+html[data-ui='glass'].dark {
+  --grid-line: rgba(186, 214, 232, 0.22);
+  --grid-cell: rgba(125, 211, 252, 0.14);
+  --grid-cell-edge: rgba(125, 211, 252, 0.55);
+}
+html[data-ui='glass'] [data-surface='grid']:not([data-shell]) {
+  background-color: #eef3f8;
+  background-image:
+    radial-gradient(900px 460px at 0% 0%, rgba(186, 230, 253, 0.72), transparent 62%),
+    radial-gradient(720px 420px at 100% 6%, rgba(199, 210, 254, 0.5), transparent 58%);
+}
+html[data-ui='glass'].dark [data-surface='grid']:not([data-shell]) {
+  background-color: #000000;
+  background-image: none;
+}
+
+/* Event detail: contained poster frame */
+html[data-ui='glass'] [data-part='poster-frame'].ui-well {
+  border-color: var(--gs-slate-200);
+  background: var(--gs-slate-50);
+  box-shadow: none;
+}
+html[data-ui='glass'].dark [data-part='poster-frame'].ui-well {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+  background: color-mix(in oklab, #fff 5%, transparent);
+}
+
+/* Paradox hero */
+html[data-ui='glass'] [data-part='paradox-hero'] { background-color: #05070d; }
+html[data-ui='glass'] [data-part='paradox-hero'] .ui-well {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  background: color-mix(in oklab, #fff 5%, transparent);
+  box-shadow: none;
+}
+html[data-ui='glass'] [data-part='paradox-hero'] [data-part='prize'].ui-well {
+  border-color: color-mix(in oklab, var(--gs-sky-300) 40%, transparent);
+  background: color-mix(in oklab, var(--gs-sky-400) 15%, transparent);
+  color: var(--gs-sky-100);
+}
+html[data-ui='glass'] [data-part='hero-poster'] {
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.18);
+}
+
+/* Lightbox backdrop */
+html[data-ui='glass'] [data-part='lightbox'] {
+  background-color: color-mix(in oklab, var(--gs-slate-900) 80%, transparent);
+}
+
+/* Boot camp hero: a flat white (or black) card with a hairline ring */
+html[data-ui='glass'] [data-part='bootcamp-hero'].ui-card {
+  border: 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--gs-slate-200);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-part='bootcamp-hero'].ui-card::before,
+html[data-ui='glass'] [data-part='bootcamp-hero'].ui-card::after { content: none; }
+html[data-ui='glass'].dark [data-part='bootcamp-hero'].ui-card {
+  background: #000;
+  box-shadow: 0 0 0 1px color-mix(in oklab, #fff 10%, transparent);
+}
+html[data-ui='glass'] [data-part='accent-cta'].ui-solid {
+  border: 0;
+  background-image: none;
+  box-shadow: none;
+}
+
+/* Boot camp day tabs: flat cells on a hairline grid; the gauge is the bar on top */
+html[data-ui='glass'] [data-part='day-tabs'].ui-track {
+  isolation: auto;
+  border: 0 solid var(--gs-slate-200);
+  border-top-width: 1px;
+  border-radius: 0;
+  background: var(--gs-slate-100);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-part='day-tabs'].ui-track::before,
+html[data-ui='glass'] [data-part='day-tabs'].ui-track::after { content: none; }
+html[data-ui='glass'].dark [data-part='day-tabs'].ui-track {
+  border-color: color-mix(in oklab, #fff 10%, transparent);
+  background: color-mix(in oklab, #fff 10%, transparent);
+}
+html[data-ui='glass'] [data-part='day-tabs'] > .ui-thumb { display: none; }
+html[data-ui='glass'] [data-part='day-tabs'] > [role='tab'] { background: var(--gs-slate-50); }
+html[data-ui='glass'] [data-part='day-tabs'] > [role='tab']:hover { background: var(--gs-slate-100); }
+html[data-ui='glass'] [data-part='day-tabs'] > [aria-selected='true'],
+html[data-ui='glass'] [data-part='day-tabs'] > [aria-selected='true']:hover { background: #fff; }
+html[data-ui='glass'].dark [data-part='day-tabs'] > [role='tab'] { background: #000; }
+html[data-ui='glass'].dark [data-part='day-tabs'] > [role='tab']:hover { background: #1a1a1a; }
+html[data-ui='glass'].dark [data-part='day-tabs'] > [aria-selected='true'],
+html[data-ui='glass'].dark [data-part='day-tabs'] > [aria-selected='true']:hover { background: #111111; }
+html[data-ui='glass'] [data-part='gauge'].ui-well {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* Domains */
+@media (max-width: 63.99rem) {
+  html[data-ui='glass'] [data-part='domain-bar'] {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+}
+html[data-ui='glass'] [data-page='domains'] [data-part='badge'] {
+  background-color: var(--gs-sky-700);
+  color: #fff;
+}
+html[data-ui='glass'] [data-part='tip-stat'] {
+  color: var(--gs-sky-400);
+  font-weight: inherit;
+}
+html[data-ui='glass'] [data-part='banner'] .ui-chip {
+  border-color: var(--gs-slate-200);
+  background: none;
+  box-shadow: none;
+}
+html[data-ui='glass'].dark [data-part='banner'] .ui-chip { border-color: color-mix(in oklab, #fff 10%, transparent); }
+html[data-ui='glass'] [data-part='compare-row'] {
+  border-bottom-color: color-mix(in oklab, var(--gs-slate-900) 5%, transparent);
+}
+html[data-ui='glass'] [data-part='compare-row']:hover,
+html[data-ui='glass'] [data-part='compare-row'][data-active] {
+  background-color: color-mix(in oklab, var(--gs-slate-900) 5%, transparent);
+}
+html[data-ui='glass'].dark [data-part='compare-row'] { border-bottom-color: rgb(255 255 255 / 0.1); }
+
+/* Members: a plain frosted filter strip, a flat chip row with the liquid pill,
+   and frosted (not rimmed) member cards */
+html[data-ui='glass'] [data-part='filter-bar'].ui-nav {
+  border: 0 solid var(--gs-slate-200);
+  border-block-width: 1px;
+  background-color: color-mix(in oklab, #fff 95%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+html[data-ui='glass'].dark [data-part='filter-bar'].ui-nav {
+  border-color: rgb(255 255 255 / 0.12);
+  background-color: color-mix(in oklab, #000 95%, transparent);
+}
+html[data-ui='glass'] [data-part='filter-bar'] .ui-track {
+  isolation: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-ui='glass'] [data-part='filter-bar'] .ui-track::before,
+html[data-ui='glass'] [data-part='filter-bar'] .ui-track::after { content: none; }
+html[data-ui='glass'] [data-part='filter-bar'] .ui-track > button[aria-pressed='false']:hover {
+  background-color: color-mix(in oklab, #fff 35%, transparent);
+}
+html[data-ui='glass'].dark [data-part='filter-bar'] .ui-track > button[aria-pressed='false']:hover {
+  background-color: color-mix(in oklab, #fff 10%, transparent);
+}
+html[data-ui='glass'] [data-part='search'].ui-input { border: 1px solid color-mix(in oklab, #fff 80%, transparent); }
+html[data-ui='glass'].dark [data-part='search'].ui-input { border-color: color-mix(in oklab, #fff 10%, transparent); }
+html[data-ui='glass'] [data-part='search'].ui-input:focus-visible { border-color: color-mix(in oklab, var(--gs-sky-600) 40%, transparent); }
+
+html[data-ui='glass'] :is([data-part='member'], [data-part='idle'], [data-part='no-match']).ui-card {
+  isolation: auto;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.68), rgba(255,255,255,0.32) 55%, rgba(255,255,255,0.22)),
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0));
+  -webkit-backdrop-filter: blur(24px) saturate(1.9);
+  backdrop-filter: blur(24px) saturate(1.9);
+  border: 1px solid color-mix(in oklab, #fff 80%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 14px 34px rgba(15,23,42,0.10);
+}
+html[data-ui='glass'].dark :is([data-part='member'], [data-part='idle'], [data-part='no-match']).ui-card {
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06) 55%, rgba(255,255,255,0.04)),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border-color: color-mix(in oklab, #fff 15%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 14px 34px rgba(0,0,0,0.45);
+}
+html[data-ui='glass'] :is([data-part='member'], [data-part='idle'], [data-part='no-match']).ui-card::before,
+html[data-ui='glass'] :is([data-part='member'], [data-part='idle'], [data-part='no-match']).ui-card::after { content: none; }
+html[data-ui='glass'] [data-part='member'].ui-card:hover { border-color: color-mix(in oklab, #fff 95%, transparent); }
+html[data-ui='glass'].dark [data-part='member'].ui-card:hover { border-color: color-mix(in oklab, #fff 35%, transparent); }
+html[data-ui='glass'] [data-part='member'][data-selected].ui-card {
+  border-color: color-mix(in oklab, var(--gs-slate-900) 55%, transparent);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 16px 36px rgba(15,23,42,0.16);
+}
+html[data-ui='glass'].dark [data-part='member'][data-selected].ui-card {
+  border-color: color-mix(in oklab, #fff 65%, transparent);
+  background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    0 18px 38px rgba(0,0,0,0.5);
+}
+html[data-ui='glass'] [data-part='idle'].ui-card { border-style: dotted; border-color: var(--gs-slate-400); }
+html[data-ui='glass'].dark [data-part='idle'].ui-card { border-color: color-mix(in oklab, #fff 40%, transparent); }
+html[data-ui='glass'] [data-part='no-match'].ui-card { border-style: dashed; border-color: var(--gs-slate-200); }
+html[data-ui='glass'].dark [data-part='no-match'].ui-card { border-color: rgb(255 255 255 / 0.12); }
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='glass'] :is([data-part='member'], [data-part='idle'], [data-part='no-match']).ui-card {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  html[data-ui='glass'].dark :is([data-part='member'], [data-part='idle'], [data-part='no-match']).ui-card { background: #111111; }
+}
+html[data-ui='glass'] [data-part='initials'].ui-well {
+  border: 0;
+  background: var(--gs-slate-100);
+  box-shadow: none;
+  color: var(--gs-slate-700);
+}
+html[data-ui='glass'].dark [data-part='initials'].ui-well {
+  background: rgb(255 255 255 / 0.08);
+  color: var(--gs-slate-300);
+}
+html[data-ui='glass'] [data-part='inspector-screen'],
+html[data-ui='glass'] [data-part='inspector-screen'] > :first-child { border-color: var(--gs-slate-300); }
+html[data-ui='glass'].dark [data-part='inspector-screen'] { border-color: color-mix(in oklab, #fff 30%, transparent); }
+html[data-ui='glass'] [data-part='sheet-backdrop'] {
+  background-color: color-mix(in oklab, #fff 35%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+html[data-ui='glass'].dark [data-part='sheet-backdrop'] { background-color: color-mix(in oklab, #000 45%, transparent); }
+
+/* Contact: near-clear cards so the page shows through, a frosted form well */
+html[data-ui='glass'] [data-page='contact'] .ui-card {
+  -webkit-backdrop-filter: blur(2px) saturate(1.8);
+  backdrop-filter: blur(2px) saturate(1.8);
+}
+html[data-ui='glass'] [data-page='contact'] .ui-well {
+  background: color-mix(in srgb, var(--color-surface) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-surface) 85%, transparent);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--color-ink) 10%, transparent),
+    inset 0 1px 3px color-mix(in srgb, var(--color-ink) 6%, transparent);
+}
+html[data-ui='glass'].dark [data-page='contact'] .ui-well {
+  background:
+    linear-gradient(color-mix(in srgb, var(--color-ink) 4%, transparent), color-mix(in srgb, var(--color-ink) 4%, transparent)),
+    color-mix(in srgb, var(--color-page) 40%, transparent);
+  border-color: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--color-page) 60%, transparent),
+    inset 0 1px 3px color-mix(in srgb, var(--color-page) 50%, transparent);
+}
+html[data-ui='glass'] [data-part='form-well']:focus-within { box-shadow: 0 0 0 2px var(--color-ink-muted); }
+html[data-ui='glass'] [data-part='send'].ui-solid:hover { background-color: color-mix(in oklab, var(--color-ink) 85%, transparent); }
+html[data-ui='glass'] [data-page='contact'] [data-part='tile'] {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-page) 25%, transparent);
+}
+html[data-ui='glass'] [data-part='send-overlay'] {
+  background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='glass'] [data-page='contact'] .ui-card,
+  html[data-ui='glass'] [data-page='contact'] .ui-well,
+  html[data-ui='glass'] [data-part='send-overlay'] {
+    background: var(--color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  html[data-ui='glass'] [data-page='contact'] .ui-card { --lg-edge: var(--color-ink-muted); }
+  html[data-ui='glass'] [data-page='contact'] .ui-well { box-shadow: 0 0 0 1px var(--color-ink-muted); }
+}
+html[data-ui='glass'].dark [data-part='compare-row']:hover,
+html[data-ui='glass'].dark [data-part='compare-row'][data-active] { background-color: rgb(255 255 255 / 0.05); }

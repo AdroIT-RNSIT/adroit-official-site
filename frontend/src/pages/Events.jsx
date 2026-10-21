@@ -25,13 +25,13 @@ const formatRange = (start, end) => {
 export default function Events() {
   const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-slate-900 dark:text-slate-100">
+    <div data-page="events" className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-ink">
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
-          <h1 className="fluid-h1 mb-4 font-extrabold">
-            <span className="text-slate-900 dark:text-white">Events</span>
+          <h1 className="ui-heading fluid-h1 mb-4 font-extrabold text-ink">
+            Events
           </h1>
-          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-400 sm:text-lg">
+          <p className="mx-auto max-w-2xl text-base text-ink-muted sm:text-lg">
             Upcoming sessions and recaps from AdroIT.
           </p>
         </header>
@@ -39,7 +39,7 @@ export default function Events() {
         {upcomingEvents.length > 0 && (
           <section className="mb-14">
             <div className="mb-6 flex items-end justify-between gap-4">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
                 Upcoming
               </h2>
             </div>
@@ -53,13 +53,13 @@ export default function Events() {
 
         <section>
           <div className="mb-6 flex items-end justify-between gap-4">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               Completed
             </h2>
           </div>
           {completedEvents.length === 0 ? (
-            <div className="lg-card rounded-[2rem] px-6 py-16 text-center">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">No past events yet</h3>
+            <div className="ui-card rounded-[2rem] px-6 py-16 text-center">
+              <h3 className="ui-heading text-xl font-bold text-ink">No past events yet</h3>
             </div>
           ) : (
             <div className="space-y-6">
@@ -71,6 +71,15 @@ export default function Events() {
         </section>
       </div>
     </div>
+  );
+}
+
+function StatusChip({ label, phase, className = "" }) {
+  return (
+    <span data-part="status" data-phase={phase} className={`ui-chip inline-flex items-center gap-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider text-primary-ink ${className}`}>
+      <span data-part="status-led" aria-hidden="true" className="hidden" />
+      {label}
+    </span>
   );
 }
 
@@ -87,25 +96,26 @@ function FeaturedEvent({ event }) {
 
   return (
     <article
-      className={`lg-card group grid overflow-hidden rounded-[2rem] transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
+      className={`ui-card group grid overflow-hidden rounded-[2rem] transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
       style={posterContained ? { "--poster-col": posterColumn } : undefined}
     >
       {poster && (
         <Link
           to={`/events/${event.slug}`}
-          className={`relative block overflow-hidden bg-black ${posterContained ? "aspect-video w-full" : "h-36 sm:h-40"}`}
+          data-part="poster"
+          data-scheme="dark"
+          aria-label={event.title}
+          className={`relative block overflow-hidden bg-page ${posterContained ? "aspect-video w-full" : "h-36 sm:h-40"}`}
         >
           <img
             src={poster}
             alt=""
-            className={posterContained ? "absolute inset-0 h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}
+            className={posterContained ? "absolute inset-0 h-full w-full object-contain object-center" : "h-full w-full object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"}
           />
           {!posterContained && (
             <>
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-white/20 dark:md:to-[#000000]/40" />
-              <span className="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 backdrop-blur-md dark:border-white/15 dark:bg-slate-950/70 dark:text-sky-300">
-                {statusLabel}
-              </span>
+              <div data-part="poster-scrim" className="absolute inset-0" />
+              <StatusChip label={statusLabel} phase={phase} className="absolute left-4 top-4 px-3 py-1" />
             </>
           )}
         </Link>
@@ -114,39 +124,37 @@ function FeaturedEvent({ event }) {
       <div className="relative flex flex-col justify-between p-4 sm:p-5">
         <Link to={`/events/${event.slug}`} className="block">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               {event.eyebrow || "Fest recap"}
             </p>
             {(!poster || posterContained) && (
-              <span className="lg-well rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-800 dark:text-sky-300">
-                {statusLabel}
-              </span>
+              <StatusChip label={statusLabel} phase={phase} className="px-2.5 py-1" />
             )}
           </div>
-          <h3 className="mt-1 text-xl font-extrabold leading-tight text-slate-900 dark:text-slate-100 sm:text-2xl">
+          <h3 className="ui-heading mt-1 text-xl font-extrabold leading-tight text-ink sm:text-2xl">
             {event.title}
           </h3>
           {event.tagline && (
-            <p className="mt-2 text-base text-sky-700">{event.tagline}</p>
+            <p className="mt-2 text-base text-primary">{event.tagline}</p>
           )}
           {(when || event.location) && (
             <div className="mt-3 flex flex-wrap gap-2">
               {when && (
-                <span className="lg-well inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
-                  <Calendar size={13} className="text-sky-600" />
+                <span className="ui-well inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-ink-muted">
+                  <Calendar size={13} className="text-primary" />
                   {when}
                 </span>
               )}
               {event.location && (
-                <span className="lg-well inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
-                  <MapPin size={13} className="text-sky-600" />
+                <span className="ui-well inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-ink-muted">
+                  <MapPin size={13} className="text-primary" />
                   {event.location}
                 </span>
               )}
             </div>
           )}
           {event.description && (
-            <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+            <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-muted">
               {event.description}
             </p>
           )}
@@ -160,7 +168,7 @@ function FeaturedEvent({ event }) {
                   key={`${src}-${idx}`}
                   src={src}
                   alt=""
-                  className="h-9 w-9 rounded-lg border-2 border-white object-cover shadow-sm dark:border-[#000000]"
+                  className="h-9 w-9 rounded-lg border-2 border-page object-cover shadow-sm"
                 />
               ))}
             </div>
@@ -169,7 +177,7 @@ function FeaturedEvent({ event }) {
             <ShareEventButton title={event.title} text={shareText} path={`/events/${event.slug}`} />
             <Link
               to={`/events/${event.slug}`}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-700 transition-transform duration-300 group-hover:translate-x-0.5"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform duration-300 motion-safe:group-hover:translate-x-0.5"
             >
               {upcoming ? "View and register" : poster ? "View recap" : "View details"}
               <ArrowUpRight size={16} />
