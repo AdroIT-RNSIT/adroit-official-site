@@ -18,7 +18,24 @@ import {
 import { Empty, Notice } from "./ui";
 
 const SEMESTERS = { FIRST_YEAR: [1], SECOND_YEAR: [3] };
-const EMPTY_FILTERS = { q: "", type: "", year: "", semester: "", section: "", first: "", second: "", third: "", status: "", from: "", to: "" };
+const DEFAULT_FILTERS = { q: "", status: "REGISTERED", domain: "", choice: "either", type: "", semester: "", section: "", from: "", to: "" };
+const CHOICE_LABEL = { either: "1st or 2nd", first: "1st choice", second: "2nd choice" };
+
+// Turns the panel's filters into the API's query parameters.
+function toParams(f) {
+  const p = new URLSearchParams();
+  if (f.q) p.set("q", f.q);
+  if (f.status) p.set("status", f.status);
+  if (f.type) p.set("type", f.type);
+  if (f.semester) p.set("semester", f.semester);
+  if (f.section) p.set("section", f.section);
+  if (f.from) p.set("from", f.from);
+  if (f.to) p.set("to", f.to);
+  if (f.domain === "NON_TECH" || (f.domain && f.choice === "either")) p.set("domain", f.domain);
+  else if (f.domain && f.choice === "first") p.set("first", f.domain);
+  else if (f.domain && f.choice === "second") p.set("second", f.domain);
+  return p;
+}
 const COLUMNS = [
   { key: "registrationId", label: "ID", sort: "registrationId" },
   { key: "fullName", label: "Name", sort: "fullName" },
@@ -293,7 +310,7 @@ function Detail({ registration, settings, onClose, onSaved, onDeleted, onExpired
 }
 
 export default function Registrations({ active, settings, onExpired, onChanged }) {
-  const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [q, setQ] = useState("");
   const [sort, setSort] = useState({ key: "createdAt", dir: "desc" });
   const [page, setPage] = useState(1);
@@ -312,8 +329,7 @@ export default function Registrations({ active, settings, onExpired, onChanged }
   }, [q]);
 
   const query = useMemo(() => {
-    const p = new URLSearchParams();
-    for (const [k, v] of Object.entries(filters)) if (v) p.set(k, v);
+    const p = toParams(filters);
     p.set("sort", sort.key);
     p.set("dir", sort.dir);
     return p;
@@ -336,11 +352,14 @@ export default function Registrations({ active, settings, onExpired, onChanged }
   }, [active, load]);
 
   const setFilter = (k, v) => {
-    setFilters((f) => {
-      const next = { ...f, [k]: v };
-      if (k === "year" && v && next.semester && !SEMESTERS[v].includes(Number(next.semester))) next.semester = "";
-      return next;
-    });
+    setFilters((f) => ({ ...f, [k]: v, ...(k === "domain" ? { choice: "either" } : {}) }));
+    if (k === "q") setQ(v);
+    setPage(1);
+  };
+
+  const clearAll = () => {
+    setFilters(DEFAULT_FILTERS);
+    setQ("");
     setPage(1);
   };
 
@@ -358,82 +377,122 @@ export default function Registrations({ active, settings, onExpired, onChanged }
     setNotice(res.ok ? { tone: "ok", text: `Downloaded ${res.name} (${res.count} records).` } : { tone: "error", text: res.message });
   };
 
-  const tech = settings.domains.filter((d) => d.id !== "NON_TECH").map((d) => [d.id, d.name]);
-  const activeFilters = Object.entries(filters).filter(([, v]) => v).length;
-  const semesterOptions = (filters.year ? SEMESTERS[filters.year] : Object.values(SEMESTERS).flat()).map((s) => [String(s), `Semester ${s}`]);
+  const domainOptions = settings.domains.map((d) => [d.id, d.name]);
+  const semesterOptions = Object.values(SEMESTERS)
+    .flat()
+    .map((s) => [String(s), `Semester ${s}`]);
+  const technicalDomain = filters.domain && filters.domain !== "NON_TECH";
+
+  const chips = [
+    filters.q && { key: "q", label: `Search: “${filters.q}”` },
+    filters.domain && {
+      key: "domain",
+      label: technicalDomain ? `${domainName(settings, filters.domain)} · ${CHOICE_LABEL[filters.choice]}` : `${domainName(settings, filters.domain)} (any route)`,
+    },
+    filters.type && { key: "type", label: TYPE_LABEL[filters.type] },
+    filters.semester && { key: "semester", label: `Semester ${filters.semester}` },
+    filters.section && { key: "section", label: `Section ${filters.section}` },
+    filters.status !== DEFAULT_FILTERS.status && { key: "status", label: filters.status ? STATUS_LABEL[filters.status] : "Any status" },
+    filters.from && { key: "from", label: `From ${filters.from}` },
+    filters.to && { key: "to", label: `To ${filters.to}` },
+  ].filter(Boolean);
+  const activeFilters = chips.length;
 
   return (
     <div className="grid gap-4">
       <section className={`${PANEL} p-4 sm:p-5`} aria-label="Filters">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="sm:col-span-2">
+        <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_12rem]">
+          <div>
             <label htmlFor="reg-q" className={LABEL}>
               Search
             </label>
             <div className="relative">
               <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" aria-hidden="true" />
-              <input id="reg-q" className={`${INPUT} pl-9`} placeholder="Name, USN, reference ID or phone" value={q} onChange={(e) => setQ(e.target.value)} maxLength={60} />
+              <input id="reg-q" type="search" className={`${INPUT} pl-9`} placeholder="Name, USN, reference ID or phone" value={q} onChange={(e) => setQ(e.target.value)} maxLength={60} />
             </div>
           </div>
-          <Select id="f-type" label="Type" value={filters.type} onChange={(v) => setFilter("type", v)} options={Object.entries(TYPE_LABEL)} />
-          <Select id="f-status" label="Status" value={filters.status} onChange={(v) => setFilter("status", v)} options={Object.entries(STATUS_LABEL)} />
-          <Select id="f-year" label="Year" value={filters.year} onChange={(v) => setFilter("year", v)} options={Object.entries(YEAR_LABEL)} />
-          <Select id="f-sem" label="Semester" value={filters.semester} onChange={(v) => setFilter("semester", v)} options={semesterOptions} />
+          <Select id="f-status" label="Status" any="Any status" value={filters.status} onChange={(v) => setFilter("status", v)} options={Object.entries(STATUS_LABEL)} />
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,0.8fr)_6rem]">
+          <div className="col-span-2 md:col-span-1">
+            <Select id="f-domain" label="Domain" any="All domains" value={filters.domain} onChange={(v) => setFilter("domain", v)} options={domainOptions} />
+          </div>
+          {technicalDomain ? (
+            <Select
+              id="f-choice"
+              label="Choice"
+              any="1st or 2nd"
+              value={filters.choice === "either" ? "" : filters.choice}
+              onChange={(v) => setFilter("choice", v || "either")}
+              options={[
+                ["first", "1st choice only"],
+                ["second", "2nd choice only"],
+              ]}
+            />
+          ) : (
+            <Select id="f-type" label="Applied for" any="Everything" value={filters.type} onChange={(v) => setFilter("type", v)} options={Object.entries(TYPE_LABEL)} />
+          )}
+          <Select id="f-sem" label="Semester" any="All" value={filters.semester} onChange={(v) => setFilter("semester", v)} options={semesterOptions} />
           <div>
             <label htmlFor="f-sec" className={LABEL}>
               Section
             </label>
             <input
               id="f-sec"
-              className={INPUT}
-              placeholder="Any"
+              className={`${INPUT} text-center uppercase`}
+              placeholder="All"
               maxLength={1}
               value={filters.section}
               onChange={(e) => setFilter("section", e.target.value.replace(/[^a-z]/gi, "").slice(-1).toUpperCase())}
             />
           </div>
-          <Select
-            id="f-third"
-            label="Optional Non-Tech"
-            value={filters.third}
-            onChange={(v) => setFilter("third", v)}
-            options={[
-              ["NON_TECH", "Selected"],
-              ["NONE", "Not selected"],
-            ]}
-          />
-          <Select id="f-first" label="1st preference" value={filters.first} onChange={(v) => setFilter("first", v)} options={tech} />
-          <Select id="f-second" label="2nd preference" value={filters.second} onChange={(v) => setFilter("second", v)} options={tech} />
-          <div>
-            <label htmlFor="f-from" className={LABEL}>
-              Registered from
-            </label>
-            <input id="f-from" type="date" className={INPUT} value={filters.from} onChange={(e) => setFilter("from", e.target.value)} />
-          </div>
-          <div>
-            <label htmlFor="f-to" className={LABEL}>
-              Registered to
-            </label>
-            <input id="f-to" type="date" className={INPUT} value={filters.to} onChange={(e) => setFilter("to", e.target.value)} />
-          </div>
         </div>
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+
+        <details className="mt-3 group" open={Boolean(filters.from || filters.to) || undefined}>
+          <summary className="inline-flex min-h-10 cursor-pointer select-none items-center text-sm text-slate-300 hover:text-white">More filters</summary>
+          <div className="mt-2 grid max-w-md grid-cols-2 gap-3">
+            <div>
+              <label htmlFor="f-from" className={LABEL}>
+                Registered from
+              </label>
+              <input id="f-from" type="date" className={INPUT} value={filters.from} max={filters.to || undefined} onChange={(e) => setFilter("from", e.target.value)} />
+            </div>
+            <div>
+              <label htmlFor="f-to" className={LABEL}>
+                Registered to
+              </label>
+              <input id="f-to" type="date" className={INPUT} value={filters.to} min={filters.from || undefined} onChange={(e) => setFilter("to", e.target.value)} />
+            </div>
+          </div>
+        </details>
+
+        {chips.length > 0 && (
+          <ul className="mt-3 flex flex-wrap gap-2" aria-label="Active filters">
+            {chips.map((c) => (
+              <li key={c.key}>
+                <button
+                  type="button"
+                  onClick={() => setFilter(c.key, c.key === "status" ? DEFAULT_FILTERS.status : "")}
+                  className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 px-3 text-xs font-medium text-sky-200 hover:bg-sky-500/20 focus-visible:outline-2 focus-visible:outline-sky-400"
+                  aria-label={`Remove filter: ${c.label}`}
+                >
+                  {c.label}
+                  <X size={12} aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
           <p className="text-sm text-slate-400" aria-live="polite">
-            {data ? `${data.total} matching registration${data.total === 1 ? "" : "s"}` : "Loading…"}
-            {activeFilters ? ` · ${activeFilters} filter${activeFilters === 1 ? "" : "s"}` : ""}
+            {data ? `${data.total} registration${data.total === 1 ? "" : "s"}` : "Loading…"}
+            {filters.status === "REGISTERED" ? " (withdrawn hidden)" : ""}
           </p>
           <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={BTN}
-              disabled={!activeFilters}
-              onClick={() => {
-                setFilters(EMPTY_FILTERS);
-                setQ("");
-                setPage(1);
-              }}
-            >
-              Clear filters
+            <button type="button" className={BTN} disabled={!activeFilters} onClick={clearAll}>
+              Clear all
             </button>
             <button type="button" className={BTN_PRIMARY} onClick={exportFiltered} disabled={exporting || !data?.total}>
               <Download size={16} aria-hidden="true" />

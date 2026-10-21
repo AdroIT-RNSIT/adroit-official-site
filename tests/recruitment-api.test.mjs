@@ -146,6 +146,19 @@ describe("recruitment API", { skip }, () => {
     assert.equal(otherFormat.status, 201, JSON.stringify(otherFormat.json));
   });
 
+  test("the WhatsApp link is only given to students who just registered", async () => {
+    const link = "https://chat.whatsapp.com/EadapPb17111goHGOtWCEK";
+    assert.equal((await settingsPatch({ whatsappLink: link })).status, 200);
+    const config = await call("GET", "/api/recruitment/config");
+    assert.ok(!JSON.stringify(config.json).includes("chat.whatsapp.com"));
+    const reg = await call("POST", "/api/recruitment/register", { body: student() });
+    assert.equal(reg.status, 201);
+    assert.equal(reg.json.whatsappLink, link);
+    assert.equal((await settingsPatch({ whatsappLink: "https://example.com/group" })).status, 400);
+    await settingsPatch({ whatsappLink: "" });
+    assert.equal((await call("POST", "/api/recruitment/register", { body: student() })).json.whatsappLink, null);
+  });
+
   test("invalid submissions are rejected server-side", async () => {
     const cases = [
       student({ preferences: { first: "CLOUD", second: "CLOUD" } }),
@@ -282,6 +295,12 @@ describe("recruitment API", { skip }, () => {
     assert.equal(list.status, 200);
     assert.equal(list.json.total, 3);
     const target = list.json.registrations[0];
+
+    const nonTech = await call("GET", "/api/admin69/recruitment/registrations?domain=NON_TECH&status=REGISTERED", { admin: true });
+    assert.equal(nonTech.json.total, 3, "Non-Tech interest = 2 Non-Tech only + 1 optional third");
+    const nonTechExport = await call("GET", "/api/admin69/recruitment/export?report=filtered&domain=NON_TECH", { admin: true });
+    assert.equal(nonTechExport.headers["x-record-count"], "3");
+    assert.equal((await call("GET", "/api/admin69/recruitment/registrations?domain=BOGUS", { admin: true })).status, 400);
 
     const bad = await call("PATCH", `/api/admin69/recruitment/registrations/${target.registrationId}`, {
       admin: true,

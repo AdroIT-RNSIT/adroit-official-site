@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { CalendarDays, Check, Copy, Home, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Check, Copy, Home, MapPin } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { formatDateTime, formatDay } from "../../lib/recruitment";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
@@ -66,6 +67,32 @@ export default function RecruitmentSuccess({ registration, config }) {
       <p className="mt-2 text-sm text-ink-muted" aria-live="polite">
         {copied ? "Copied to clipboard." : `Registered ${formatDateTime(registration.createdAt)} IST`}
       </p>
+
+      {registration.whatsappLink && (
+        <div className="ui-well mx-auto mt-6 max-w-md rounded-2xl p-5 text-left" data-part="whatsapp-join">
+          <div className="flex items-start gap-4">
+            <span className="brand-whatsapp brand-whatsapp-tile grid h-12 w-12 shrink-0 place-items-center rounded-2xl" aria-hidden="true">
+              <FaWhatsapp size={26} />
+            </span>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-ink">One more step</p>
+              <h3 className="ui-heading mt-1 text-lg font-bold text-ink">Join the recruitment WhatsApp group</h3>
+              <p className="mt-1 text-sm text-ink-muted">The schedule, venue and any changes are shared here first.</p>
+            </div>
+          </div>
+          <a
+            href={registration.whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`ui-solid mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold ${FOCUS}`}
+          >
+            <FaWhatsapp size={18} aria-hidden="true" />
+            Join WhatsApp group
+            <ArrowUpRight size={16} aria-hidden="true" />
+            <span className="sr-only"> (opens WhatsApp)</span>
+          </a>
+        </div>
+      )}
 
       <div className="mx-auto mt-6 max-w-md text-left">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-muted">

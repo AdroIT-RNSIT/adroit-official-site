@@ -21,6 +21,7 @@ function toForm(s) {
     announcement: s.announcement || "",
     instructions: (s.instructions || []).join("\n"),
     nextSteps: s.nextSteps || "",
+    whatsappLink: s.whatsappLink || "",
     allowedYears: s.allowedYears,
     domains: s.domains.map((d) => ({ ...d })),
   };
@@ -37,6 +38,7 @@ function toPatch(f) {
     announcement: f.announcement,
     instructions: f.instructions.split("\n").map((s) => s.trim()).filter(Boolean),
     nextSteps: f.nextSteps,
+    whatsappLink: f.whatsappLink.trim(),
     allowedYears: f.allowedYears,
     domains: f.domains.map(({ id, name, description, target }) => ({ id, name, description, target: Number(target) || 0 })),
   };
@@ -180,6 +182,33 @@ export default function Settings({ data, onSaved, onExpired }) {
           <div className="sm:col-span-2">
             <Field id="s-next" label="Next steps (shown after registering)" error={errors.nextSteps}>
               <textarea id="s-next" rows={2} className={INPUT} maxLength={600} value={form.nextSteps} onChange={(e) => set("nextSteps", e.target.value)} />
+            </Field>
+          </div>
+          <div className="sm:col-span-2">
+            <Field
+              id="s-wa"
+              label="WhatsApp group link"
+              error={errors.whatsappLink}
+              hint="Shown as a Join button only to students who have just registered; it never appears on the public page. Leave empty for no group."
+            >
+              <div className="flex gap-2">
+                <input
+                  id="s-wa"
+                  type="url"
+                  inputMode="url"
+                  spellCheck={false}
+                  className={INPUT}
+                  placeholder="https://chat.whatsapp.com/…"
+                  value={form.whatsappLink}
+                  onChange={(e) => set("whatsappLink", e.target.value)}
+                />
+                {/^https:\/\/chat\.whatsapp\.com\/\w+/.test(form.whatsappLink.trim()) && (
+                  <a href={form.whatsappLink.trim()} target="_blank" rel="noopener noreferrer" className={`${BTN} shrink-0`}>
+                    Test link
+                    <ExternalLink size={14} aria-hidden="true" />
+                  </a>
+                )}
+              </div>
             </Field>
           </div>
         </section>

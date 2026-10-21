@@ -249,7 +249,7 @@ export default function RecruitmentForm({ config, onSuccess, onClosed }) {
     setSubmitting(false);
 
     if (status === 201 && data.registration) {
-      onSuccess(data.registration);
+      onSuccess({ ...data.registration, whatsappLink: data.whatsappLink || null });
       return;
     }
     if (config.captcha) {

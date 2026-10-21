@@ -217,6 +217,19 @@ html.dark .group:is(:hover, :focus-within) .social-github svg {
   color: #e1306c;
 }
 
+/* WhatsApp brand green; the darker shade keeps the icon at 3:1 on light surfaces. */
+.brand-whatsapp {
+  --brand: #1a9e4b;
+  color: var(--brand);
+}
+html.dark .brand-whatsapp,
+[data-scheme='dark'] .brand-whatsapp {
+  --brand: #25d366;
+}
+.brand-whatsapp-tile {
+  background: color-mix(in oklab, var(--brand) 14%, transparent);
+}
+
 .social-instagram:is(:hover, :focus-visible) svg {
   fill: url("#brand-instagram");
 }
