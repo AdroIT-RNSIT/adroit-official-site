@@ -47,7 +47,7 @@ function copyText(value) {
   return ok;
 }
 
-export default function ShareEventButton({ title, text, path, tone = "light", className = "" }) {
+export default function ShareEventButton({ title, text, path, className = "" }) {
   const [copied, setCopied] = useState(false);
   const [link, setLink] = useState("");
 
@@ -92,21 +92,20 @@ export default function ShareEventButton({ title, text, path, tone = "light", cl
     setLink(url);
   };
 
-  const toneClass =
-    tone === "dark"
-      ? "border-white/20 bg-white/10 text-white hover:bg-white/15"
-      : "border-slate-200 bg-white text-slate-800 shadow-sm hover:border-sky-600/40 hover:text-sky-800 dark:border-white/10 dark:bg-[#111111] dark:text-slate-100";
-
   return (
     <span className={`inline-flex max-w-full flex-col items-stretch gap-1 ${className}`}>
       <button
         type="button"
         onClick={onShare}
-        className={`inline-flex touch-manipulation items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors sm:px-3.5 sm:text-sm ${toneClass}`}
+        data-part="share"
+        className="ui-pill inline-flex min-h-10 touch-manipulation items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-ink transition-colors sm:px-3.5 sm:text-sm"
       >
         {copied ? <Check size={15} /> : <Share2 size={15} />}
         {copied ? "Link copied" : "Share"}
       </button>
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Link copied" : ""}
+      </span>
       {link && (
         <input
           readOnly
@@ -115,7 +114,8 @@ export default function ShareEventButton({ title, text, path, tone = "light", cl
             e.stopPropagation();
             e.currentTarget.select();
           }}
-          className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] text-slate-700"
+          data-part="share-link"
+          className="ui-input w-full min-w-0 rounded-lg px-2 py-1 text-[11px] text-ink"
           aria-label="Event link"
         />
       )}

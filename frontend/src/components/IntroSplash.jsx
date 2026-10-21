@@ -31,7 +31,6 @@ const FOV = 36;
 const CAM_START = 11.6;
 const CAM_REST = 9.8; // camera distance used for responsive fitting
 const CAM_END = 4.2; // exit push (stays in front of the near dust fade)
-const BG_HEX = 0x000000;
 const MAX_PIXELS = 8.5e6; // cap on drawing-buffer size (retina / 4K guard)
 
 const SWEEP_DIR = new THREE.Vector2(1, 0.32).normalize();
@@ -66,10 +65,11 @@ const BG_VERT = /* glsl */ `
 const BG_FRAG = /* glsl */ `
   uniform float uShock;   // 0..1 ring progress (0 = hidden)
   uniform float uAspect;  // canvas width / height
+  uniform vec3  uBg;      // --splash-bg, display space
   varying vec2 vUv;
 
   void main() {
-    vec3 col = vec3(0.0);
+    vec3 col = uBg;
 
     // lock-in ring: expands from the logo centre, aspect-corrected
     vec2 p = (vUv - vec2(0.5, 0.53)) * vec2(uAspect, 1.0);
@@ -319,8 +319,16 @@ function sampleLogo(img, maxCount, startCols) {
   return null;
 }
 
+// --splash-bg as display-space RGB in 0..1 (the theme pack sets it on the host).
+function splashBg(host) {
+  const parts = getComputedStyle(host).backgroundColor.match(/[\d.]+/g);
+  if (!parts || parts.length < 3) return [0, 0, 0];
+  return parts.slice(0, 3).map((n) => Number(n) / 255);
+}
+
 function shouldShow() {
   if (typeof window === "undefined") return false;
+  if (window.location.pathname.startsWith("/dev/")) return false;
   try {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return false;
@@ -400,6 +408,7 @@ export default function IntroSplash({
     let cancelled = false;
     let renderer = null;
     let observer = null;
+    let designObserver = null;
     let removeResize = () => {};
     const disposables = [];
     const track = (o) => {
@@ -445,7 +454,12 @@ export default function IntroSplash({
         return;
       }
 
-      renderer.setClearColor(BG_HEX, 1);
+      const bgRgb = splashBg(host);
+      const clearColor = new THREE.Color();
+      renderer.setClearColor(
+        clearColor.setRGB(bgRgb[0], bgRgb[1], bgRgb[2], THREE.SRGBColorSpace),
+        1
+      );
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.NoToneMapping;
       renderer.domElement.style.cssText =
@@ -461,7 +475,11 @@ export default function IntroSplash({
         new THREE.ShaderMaterial({
           vertexShader: BG_VERT,
           fragmentShader: BG_FRAG,
-          uniforms: { uShock: { value: 0 }, uAspect: { value: 1.78 } },
+          uniforms: {
+            uShock: { value: 0 },
+            uAspect: { value: 1.78 },
+            uBg: { value: new THREE.Vector3(bgRgb[0], bgRgb[1], bgRgb[2]) },
+          },
           depthTest: false,
           depthWrite: false,
         })
@@ -470,6 +488,17 @@ export default function IntroSplash({
       bg.frustumCulled = false;
       bg.renderOrder = -10;
       scene.add(bg);
+
+      // The live design can arrive from the server while the splash is playing.
+      designObserver = new MutationObserver(() => {
+        const [r, g, b] = splashBg(host);
+        renderer.setClearColor(clearColor.setRGB(r, g, b, THREE.SRGBColorSpace), 1);
+        bgMat.uniforms.uBg.value.set(r, g, b);
+      });
+      designObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-ui", "class"],
+      });
 
       /* ---------- stage (scaled to fit the viewport) ---------- */
       const stage = new THREE.Group();
@@ -835,6 +864,7 @@ export default function IntroSplash({
       img.onload = null;
       img.onerror = null;
       observer?.disconnect();
+      designObserver?.disconnect();
       removeResize();
       document.body.style.overflow = prevOverflow;
       disposables.forEach((d) => d.dispose?.());
@@ -856,7 +886,8 @@ export default function IntroSplash({
       role="dialog"
       aria-modal="true"
       aria-label="AdroIT intro"
-      className="fixed inset-x-0 top-0 z-[9999] h-dvh overflow-hidden bg-black"
+      data-shell="splash"
+      className="fixed inset-x-0 top-0 z-[9999] h-dvh overflow-hidden bg-[var(--splash-bg)]"
     >
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 px-6 pb-9">
         <p
@@ -867,10 +898,11 @@ export default function IntroSplash({
           Initializing domains
         </p>
         <div className="flex w-[min(64vw,24rem)] items-center gap-3">
-          <div className="h-[2px] flex-1 overflow-hidden rounded-full bg-white/10">
+          <div data-part="track" className="h-[2px] flex-1 overflow-hidden rounded-full bg-[var(--splash-track)]">
             <div
               ref={barRef}
-              className="h-full w-full origin-left rounded-full bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400"
+              data-part="fill"
+              className="h-full w-full origin-left rounded-full [background:var(--splash-accent)]"
               style={{ transform: "scaleX(0)" }}
             />
           </div>
@@ -886,7 +918,7 @@ export default function IntroSplash({
       <button
         type="button"
         onClick={finish}
-        className="absolute right-5 top-5 z-10 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-sm text-white/75 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
+        className="ui-solid absolute right-5 top-5 z-10 rounded-full px-4 py-1.5 text-sm transition-colors"
       >
         Skip
       </button>

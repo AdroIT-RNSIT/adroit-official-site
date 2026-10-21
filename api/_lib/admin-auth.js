@@ -1,4 +1,4 @@
-import { createHmac, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 
 const COOKIE = "adroit_admin";
 const COOKIE_PATH = "/api/admin69";
@@ -91,7 +91,9 @@ function readToken(key, token) {
   const iat = Number(parts[0]);
   const exp = Number(parts[1]);
   if (!Number.isInteger(iat) || !Number.isInteger(exp) || iat > now + 60 || exp <= now) return null;
-  return { expiresAt: exp * 1000 };
+  // A short, non-secret label for the sign-in session, used in audit logs.
+  const sid = createHash("sha256").update(parts[2]).digest("base64url").slice(0, 10);
+  return { expiresAt: exp * 1000, sid };
 }
 
 function readCookie(req, name) {
@@ -112,7 +114,7 @@ function cookieHeader(req, value, maxAge) {
   return flags.join("; ");
 }
 
-function clientIp(req) {
+export function clientIp(req) {
   return String(req.headers["x-real-ip"] || req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown")
     .split(",")[0]
     .trim();

@@ -1,0 +1,882 @@
+/* Soft Tactile. Every rule is scoped to html[data-ui='neu'].
+   Surfaces are one material, lit from the top-left. No blur. */
+
+html[data-ui='neu'],
+html[data-ui='neu'] .ui-kit-light {
+  --neu-page: #e3e8ef;
+  --neu-surface: var(--neu-page);
+  --neu-shadow-dark: rgba(163, 177, 198, 0.65);
+  --neu-shadow-light: rgba(255, 255, 255, 0.9);
+  --neu-ink: #141820;
+  --neu-ink-muted: #3c4654;
+  --neu-line: #5e6a7c;
+  --neu-face-light: #eef2f7;
+  --neu-face-shade: #d5dce6;
+  --neu-key: #1a212c;
+  --neu-key-ink: #f7f8fa;
+  --neu-accent: #0369a1;
+  --neu-raised-sm: 4px 4px 10px var(--neu-shadow-dark), -4px -4px 10px var(--neu-shadow-light);
+  --neu-raised-md: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light);
+  --neu-raised-lg: 10px 10px 22px var(--neu-shadow-dark), -8px -8px 18px var(--neu-shadow-light);
+  --neu-inset-sm: inset 3px 3px 7px var(--neu-shadow-dark), inset -3px -3px 7px var(--neu-shadow-light);
+  --neu-inset-md: inset 5px 5px 12px var(--neu-shadow-dark), inset -5px -5px 12px var(--neu-shadow-light);
+  --neu-pressed: inset 2px 2px 5px var(--neu-shadow-dark), inset -2px -2px 5px var(--neu-shadow-light);
+  --color-page: var(--neu-page);
+  --color-surface: var(--neu-surface);
+  --color-ink: var(--neu-ink);
+  --color-ink-muted: var(--neu-ink-muted);
+  --color-line: var(--neu-line);
+  --color-success: #065f46;
+  --color-warning: #92400e;
+  color-scheme: light;
+}
+
+html[data-ui='neu'].dark,
+html[data-ui='neu'] .ui-kit-dark,
+html[data-ui='neu'] [data-shell='splash'],
+html[data-ui='neu'] [data-scheme='dark'] > * {
+  --neu-page: #1b1e25;
+  --neu-surface: var(--neu-page);
+  --neu-shadow-dark: rgba(0, 0, 0, 0.55);
+  --neu-shadow-light: rgba(255, 255, 255, 0.05);
+  --neu-ink: #f4f6f8;
+  --neu-ink-muted: #c5ced8;
+  --neu-line: #9aa3b0;
+  --neu-face-light: #262a33;
+  --neu-face-shade: #14171d;
+  --neu-key: #0e1116;
+  --neu-key-ink: #f7f8fa;
+  --neu-accent: #38bdf8;
+  --neu-raised-sm: 4px 4px 10px var(--neu-shadow-dark), -4px -4px 10px var(--neu-shadow-light);
+  --neu-raised-md: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light);
+  --neu-raised-lg: 10px 10px 22px var(--neu-shadow-dark), -8px -8px 18px var(--neu-shadow-light);
+  --neu-inset-sm: inset 3px 3px 7px var(--neu-shadow-dark), inset -3px -3px 7px var(--neu-shadow-light);
+  --neu-inset-md: inset 5px 5px 12px var(--neu-shadow-dark), inset -5px -5px 12px var(--neu-shadow-light);
+  --neu-pressed: inset 2px 2px 5px var(--neu-shadow-dark), inset -2px -2px 5px var(--neu-shadow-light);
+}
+
+html[data-ui='neu'].dark,
+html[data-ui='neu'] .ui-kit-dark,
+html[data-ui='neu'] [data-shell='splash'] {
+  --color-page: var(--neu-page);
+  --color-surface: var(--neu-surface);
+  --color-ink: var(--neu-ink);
+  --color-ink-muted: var(--neu-ink-muted);
+  --color-line: var(--neu-line);
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  color-scheme: dark;
+}
+
+html[data-ui='neu'] {
+  --grid-line: rgba(94, 106, 124, 0.22);
+  --grid-cell: rgba(3, 105, 161, 0.12);
+  --grid-cell-edge: rgba(3, 105, 161, 0.4);
+}
+html[data-ui='neu'].dark {
+  --grid-line: rgba(154, 163, 176, 0.16);
+  --grid-cell: rgba(56, 189, 248, 0.14);
+  --grid-cell-edge: rgba(56, 189, 248, 0.5);
+}
+
+html[data-ui='neu'],
+html[data-ui='neu'] body,
+html[data-ui='neu'] #root {
+  background-color: var(--neu-page);
+  color: var(--neu-ink);
+}
+
+html[data-ui='neu'] .ui-kit-light,
+html[data-ui='neu'] .ui-kit-dark {
+  background: var(--neu-page);
+  color: var(--neu-ink);
+}
+
+@layer components {
+  html[data-ui='neu'] .ui-heading {
+    color: var(--neu-ink);
+    font-weight: 700;
+    background: none;
+  }
+
+  html[data-ui='neu'] .ui-card,
+  html[data-ui='neu'] .ui-dialog,
+  html[data-ui='neu'] .ui-tooltip,
+  html[data-ui='neu'] .ui-nav {
+    color: var(--neu-ink);
+    background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    border-radius: 24px;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  html[data-ui='neu'] .ui-card,
+  html[data-ui='neu'] .ui-nav {
+    box-shadow: var(--neu-raised-md);
+  }
+
+  html[data-ui='neu'] .ui-dialog,
+  html[data-ui='neu'] .ui-tooltip {
+    box-shadow: var(--neu-raised-lg);
+  }
+
+  html[data-ui='neu'] .ui-well,
+  html[data-ui='neu'] .ui-input {
+    color: var(--neu-ink);
+    background: var(--neu-page);
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    border-radius: 14px;
+    box-shadow: var(--neu-inset-sm);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  html[data-ui='neu'] .ui-input {
+    box-shadow: var(--neu-inset-md);
+    min-height: 40px;
+    padding: 0.5rem 0.875rem;
+  }
+
+  html[data-ui='neu'] .ui-input::placeholder {
+    color: var(--neu-ink-muted);
+  }
+
+  html[data-ui='neu'] .ui-input[aria-invalid='true'] {
+    border-color: var(--color-danger);
+  }
+
+  html[data-ui='neu'] .ui-input:focus-visible {
+    outline: 2px solid var(--neu-accent);
+    outline-offset: 2px;
+    box-shadow: var(--neu-inset-md);
+  }
+
+  html[data-ui='neu'] .ui-solid {
+    min-height: 40px;
+    min-width: 40px;
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    background-color: var(--neu-key);
+    background-image: linear-gradient(180deg, color-mix(in srgb, #fff 16%, transparent), transparent 48%);
+    color: var(--neu-key-ink);
+    box-shadow: var(--neu-raised-sm);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+
+  html[data-ui='neu'] .ui-solid:hover {
+    transform: translateY(-1px);
+  }
+
+  html[data-ui='neu'] .ui-solid:active {
+    transform: translateY(1px);
+    box-shadow: var(--neu-pressed);
+  }
+
+  html[data-ui='neu'] .ui-pill,
+  html[data-ui='neu'] .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+    color: var(--neu-ink);
+    box-shadow: var(--neu-raised-sm);
+  }
+
+  html[data-ui='neu'] .ui-pill[aria-pressed="true"],
+  html[data-ui='neu'] .ui-pill[aria-selected="true"],
+  html[data-ui='neu'] .ui-chip[aria-pressed="true"],
+  html[data-ui='neu'] .ui-chip[aria-selected="true"] {
+    background: var(--neu-page);
+    box-shadow: var(--neu-inset-sm);
+    border-color: var(--neu-accent);
+    color: var(--neu-accent);
+  }
+
+  html[data-ui='neu'] .ui-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    background: var(--neu-page);
+    box-shadow: var(--neu-inset-sm);
+  }
+
+  html[data-ui='neu'] .ui-track > button {
+    position: relative;
+    z-index: 1;
+    min-height: 40px;
+    padding: 0.35rem 0.9rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--neu-ink);
+  }
+
+  html[data-ui='neu'] .ui-thumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    box-shadow: var(--neu-raised-sm);
+    transition:
+      transform 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+      width 360ms cubic-bezier(0.22, 1.18, 0.36, 1),
+      height 360ms cubic-bezier(0.22, 1.18, 0.36, 1);
+  }
+
+  html[data-ui='neu'] .ui-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 3.5rem;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0 7px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    background: var(--neu-page);
+    box-shadow: var(--neu-inset-sm);
+    color: var(--neu-ink);
+  }
+
+  html[data-ui='neu'] .ui-switch::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    margin-left: 1px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--neu-accent) 38%, var(--neu-page));
+  }
+
+  html[data-ui='neu'] .ui-switch[aria-checked="true"]::before,
+  html[data-ui='neu'] .ui-switch[aria-pressed="true"]::before {
+    background: var(--neu-accent);
+    box-shadow: 0 0 8px var(--neu-accent);
+  }
+
+  html[data-ui='neu'] .ui-switch::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+    background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+    box-shadow: var(--neu-raised-sm);
+    transition: transform 160ms ease;
+  }
+
+  html[data-ui='neu'] .ui-switch[aria-checked="true"]::after,
+  html[data-ui='neu'] .ui-switch[aria-pressed="true"]::after {
+    transform: translateX(16px);
+  }
+
+  html[data-ui='neu'] .ui-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem;
+  }
+
+  html[data-ui='neu'] .ui-nav > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    color: var(--neu-ink);
+    text-decoration: none;
+    background: transparent;
+  }
+
+  html[data-ui='neu'] .ui-nav > a:hover {
+    background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+    box-shadow: var(--neu-raised-sm);
+  }
+
+  html[data-ui='neu'] .ui-nav > a[aria-current="page"],
+  html[data-ui='neu'] .ui-nav > a[aria-selected="true"],
+  html[data-ui='neu'] .ui-nav > a[aria-current="page"]:hover,
+  html[data-ui='neu'] .ui-nav > a[aria-selected="true"]:hover {
+    background: var(--neu-page);
+    box-shadow: var(--neu-inset-sm);
+  }
+
+  html[data-ui='neu'] .ui-solid:focus-visible,
+  html[data-ui='neu'] .ui-pill:focus-visible,
+  html[data-ui='neu'] .ui-chip:focus-visible,
+  html[data-ui='neu'] .ui-switch:focus-visible,
+  html[data-ui='neu'] .ui-nav > a:focus-visible,
+  html[data-ui='neu'] .ui-track > button:focus-visible {
+    outline: 2px solid var(--neu-accent);
+    outline-offset: 2px;
+  }
+
+  html[data-ui='neu'] .ui-led {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    box-shadow: 0 0 6px currentColor;
+  }
+}
+
+html[data-ui='neu'],
+html[data-ui='neu'] * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--neu-face-light) var(--neu-page);
+}
+
+html[data-ui='neu'] *::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html[data-ui='neu'] *::-webkit-scrollbar-track {
+  background: var(--neu-page);
+  border-radius: 999px;
+  box-shadow: var(--neu-inset-sm);
+}
+
+html[data-ui='neu'] *::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade)) padding-box;
+  box-shadow: var(--neu-raised-sm);
+}
+
+/* ===== Global shell: navbar, mobile menu, footer, social rail and dock, splash =====
+   Unlayered so they replace the glass-sized utilities left in the markup. */
+html[data-ui='neu'] {
+  --neu-edge: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+  --neu-face: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+}
+html[data-ui='neu'] [data-brand='instagram'] { --brand: #e1306c; }
+html[data-ui='neu'] [data-brand='linkedin'] { --brand: #0a66c2; }
+html[data-ui='neu'] [data-brand='github'] { --brand: var(--neu-ink); }
+html[data-ui='neu'] [data-domain='ml'] { --domain: #22d3ee; }
+html[data-ui='neu'] [data-domain='cloud'] { --domain: #c084fc; }
+html[data-ui='neu'] [data-domain='cyber'] { --domain: #f472b6; }
+html[data-ui='neu'] [data-domain='data'] { --domain: #34d399; }
+
+/* Navbar: one raised bar, flat links, pressed active tab, raised hover bump */
+html[data-ui='neu'] [data-shell='nav'] {
+  display: block;
+  padding-bottom: 0;
+  border: 0 solid color-mix(in srgb, var(--neu-line) 35%, transparent);
+  border-bottom-width: 1px;
+  border-radius: 0;
+  background: linear-gradient(180deg, var(--neu-face-light), var(--neu-page));
+  box-shadow: 0 8px 20px -8px var(--neu-shadow-dark), inset 0 1px 0 var(--neu-shadow-light);
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-track {
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-track a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  border-radius: 999px;
+  color: var(--neu-ink-muted);
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-track a:hover { color: var(--neu-ink); }
+html[data-ui='neu'] [data-shell='nav'] .ui-track a[aria-current='page'] {
+  color: var(--neu-ink);
+  background: var(--neu-page);
+  box-shadow: var(--neu-pressed);
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-track a:focus-visible {
+  outline: 2px solid var(--neu-accent);
+  outline-offset: 2px;
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-thumb {
+  height: 40px;
+  border: var(--neu-edge);
+  background: var(--neu-face);
+  box-shadow: var(--neu-raised-sm);
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-thumb[data-state='rest'] { opacity: 0; }
+html[data-ui='neu'] [data-shell='nav'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--neu-line) 40%, transparent);
+}
+
+/* Theme toggle: a groove with a moon/sun knob and an LED that lights in dark mode */
+html[data-ui='neu'] .ui-switch[data-shell='theme'] {
+  width: 3.5rem;
+  height: 40px;
+  padding: 0;
+  justify-content: flex-start;
+}
+html[data-ui='neu'] .ui-switch[data-shell='theme']::before {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  margin: -3.5px 0 0;
+}
+html[data-ui='neu'] .ui-switch[data-shell='theme']::after { content: none; }
+html[data-ui='neu'] .ui-switch[data-shell='theme'] [data-part='knob'] {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: var(--neu-edge);
+  background: var(--neu-face);
+  box-shadow: var(--neu-raised-sm);
+  color: var(--neu-ink);
+  transition: transform 160ms ease;
+}
+html[data-ui='neu'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-part='knob'] {
+  transform: translateX(16px);
+}
+html[data-ui='neu'] .ui-switch[data-shell='theme'] [data-glyph='sun'] { display: block; }
+html[data-ui='neu'] .ui-switch[data-shell='theme'] [data-glyph='moon'],
+html[data-ui='neu'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='sun'] { display: none; }
+html[data-ui='neu'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='moon'] { display: block; }
+
+/* Mobile menu button and menu */
+html[data-ui='neu'] [data-shell='nav'] .ui-pill {
+  padding: 0;
+  color: var(--neu-ink);
+}
+html[data-ui='neu'] [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-sm);
+  color: var(--neu-accent);
+}
+html[data-ui='neu'] [data-shell='scrim'] {
+  background: color-mix(in srgb, var(--neu-shadow-dark) 55%, transparent);
+}
+html[data-ui='neu'] [data-shell='menu'] {
+  width: 13.5rem;
+  border-radius: 24px;
+}
+html[data-ui='neu'] [data-shell='menu'] [data-part='caret'] { display: none; }
+html[data-ui='neu'] [data-shell='menu'] [data-part='scroll'] { padding: 12px; }
+html[data-ui='neu'] [data-shell='menu'] nav { gap: 8px; }
+html[data-ui='neu'] [data-shell='menu'] .ui-well { margin-bottom: 12px; }
+html[data-ui='neu'] [data-shell='menu'] [data-part='avatar'] {
+  background-color: var(--neu-key);
+  background-image: linear-gradient(180deg, color-mix(in srgb, #fff 16%, transparent), transparent 48%);
+  color: var(--neu-key-ink);
+}
+html[data-ui='neu'] [data-shell='menu'] [data-part='name'] { color: var(--neu-ink); }
+html[data-ui='neu'] [data-shell='menu'] [data-part='email'] { color: var(--neu-ink-muted); }
+html[data-ui='neu'] [data-shell='menu'] .ui-chip {
+  justify-content: flex-start;
+  color: var(--neu-ink);
+}
+html[data-ui='neu'] [data-shell='menu'] .ui-chip[aria-current='page'] {
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-sm);
+}
+html[data-ui='neu'] [data-shell='menu'] .ui-chip:focus-visible {
+  outline: 2px solid var(--neu-accent);
+  outline-offset: 2px;
+}
+html[data-ui='neu'] [data-shell='menu'] [data-part='icon'] {
+  border-radius: 999px;
+  color: var(--neu-ink-muted);
+}
+html[data-ui='neu'] [data-shell='menu'] [data-part='chev'] { color: var(--neu-ink-muted); }
+html[data-ui='neu'] [data-shell='menu'] [aria-current='page'] [data-part='icon'],
+html[data-ui='neu'] [data-shell='menu'] [aria-current='page'] [data-part='chev'] { color: var(--neu-accent); }
+html[data-ui='neu'] [data-shell='menu'] [data-part='divider'] {
+  margin: 12px 0;
+  background: color-mix(in srgb, var(--neu-line) 40%, transparent);
+}
+
+/* Footer: raised section cards on the page material */
+html[data-ui='neu'] [data-shell='footer'] {
+  border: 0 solid color-mix(in srgb, var(--neu-line) 35%, transparent);
+  border-top-width: 1px;
+  background: var(--neu-page);
+  color: var(--neu-ink);
+}
+html[data-ui='neu'] [data-shell='footer'] .ui-card { padding: 1.25rem; }
+html[data-ui='neu'] [data-shell='footer'] [data-part='icon'] { color: var(--neu-accent); }
+html[data-ui='neu'] [data-shell='footer'] [data-part='dot'] {
+  width: 6px;
+  height: 6px;
+  background: var(--neu-accent);
+  box-shadow: 0 0 6px var(--neu-accent);
+}
+html[data-ui='neu'] [data-shell='footer'] [data-part='muted'],
+html[data-ui='neu'] [data-shell='footer'] [data-part='faint'],
+html[data-ui='neu'] [data-shell='footer'] [data-part='domain'] { color: var(--neu-ink-muted); }
+html[data-ui='neu'] [data-shell='footer'] [data-part='domain']:hover { color: var(--neu-ink); }
+html[data-ui='neu'] [data-shell='footer'] a[data-part='muted']:hover,
+html[data-ui='neu'] [data-shell='footer'] button[data-part='faint']:hover { color: var(--neu-accent); }
+html[data-ui='neu'] [data-shell='footer'] [data-part='domain-icon'] {
+  border-radius: 10px;
+  color: var(--domain, var(--neu-accent));
+}
+html[data-ui='neu'] [data-shell='footer'] .ui-pill {
+  padding: 0;
+  border-radius: 999px;
+  color: var(--neu-ink-muted);
+}
+html[data-ui='neu'] [data-shell='footer'] [data-part='map'] {
+  border-radius: 20px;
+  background: var(--neu-page);
+}
+html[data-ui='neu'] [data-shell='footer'] [data-part='map']::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  box-shadow: var(--neu-inset-md);
+  pointer-events: none;
+}
+html[data-ui='neu'] [data-shell='footer'] .ui-chip {
+  z-index: 2;
+  border-radius: 999px;
+}
+html[data-ui='neu'] [data-shell='footer'] .ui-chip:focus-visible {
+  outline: 2px solid var(--neu-accent);
+  outline-offset: 2px;
+}
+html[data-ui='neu'] [data-shell='footer'] [data-part='bar'] {
+  border-color: color-mix(in srgb, var(--neu-line) 35%, transparent);
+}
+
+/* Social rail and dock: round raised buttons with a brand LED */
+html[data-ui='neu'] [data-shell='rail'] .ui-pill,
+html[data-ui='neu'] [data-shell='dock'] .ui-pill,
+html[data-ui='neu'] [data-shell='footer'] .ui-pill {
+  position: relative;
+}
+html[data-ui='neu'] [data-shell='rail'] .ui-pill,
+html[data-ui='neu'] [data-shell='dock'] .ui-pill {
+  padding: 0;
+  border-radius: 999px;
+  color: var(--neu-ink-muted);
+}
+html[data-ui='neu'] [data-shell='rail'] .ui-pill::after,
+html[data-ui='neu'] [data-shell='dock'] .ui-pill::after,
+html[data-ui='neu'] [data-shell='footer'] .ui-pill::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand, var(--neu-accent)) 30%, var(--neu-page));
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+html[data-ui='neu'] [data-shell='rail'] a:is(:hover, :focus-visible) .ui-pill::after,
+html[data-ui='neu'] [data-shell='dock'] a:is(:hover, :focus-visible) .ui-pill::after,
+html[data-ui='neu'] [data-shell='footer'] .ui-pill:is(:hover, :focus-visible)::after {
+  background: var(--brand, var(--neu-accent));
+  box-shadow: 0 0 8px var(--brand, var(--neu-accent));
+}
+html[data-ui='neu'] [data-shell='rail'] a:active .ui-pill,
+html[data-ui='neu'] [data-shell='dock'] a:active .ui-pill,
+html[data-ui='neu'] [data-shell='footer'] .ui-pill:active {
+  background: var(--neu-page);
+  box-shadow: var(--neu-pressed);
+}
+html[data-ui='neu'] [data-shell='rail'] a:focus-visible,
+html[data-ui='neu'] [data-shell='dock'] a:focus-visible,
+html[data-ui='neu'] [data-shell='footer'] .ui-pill:focus-visible {
+  outline: 2px solid var(--neu-accent);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+html[data-ui='neu'] [data-shell='rail'] [data-part='glyph'] { color: inherit; }
+html[data-ui='neu'] [data-shell='rail'] [data-part='glow'] { display: none; }
+html[data-ui='neu'] [data-shell='rail'] [data-part='line'] {
+  width: 6px;
+  border: 1px solid color-mix(in srgb, var(--neu-line) 40%, transparent);
+  border-radius: 999px;
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-sm);
+}
+html[data-ui='neu'] [data-shell='rail'] [data-part='dot'] {
+  width: 6px;
+  height: 6px;
+  background: var(--neu-accent);
+  box-shadow: 0 0 6px var(--neu-accent);
+}
+html[data-ui='neu'] [data-shell='rail'] [data-part='dot'][data-size='sm'] {
+  width: 4px;
+  height: 4px;
+  opacity: 0.7;
+}
+html[data-ui='neu'] [data-shell='rail'] .ui-tooltip { border-radius: 14px; }
+html[data-ui='neu'] [data-shell='rail'] [data-part='arrow'] {
+  border-color: transparent;
+  border-right-color: var(--neu-face-light);
+}
+html[data-ui='neu'] [data-shell='dock'] .ui-card {
+  border-radius: 999px;
+  box-shadow: var(--neu-raised-md);
+}
+
+/* Intro splash: always the dark material (tokens come from the dark block above) */
+html[data-ui='neu'] [data-shell='splash'] {
+  --splash-bg: var(--neu-page);
+  --splash-track: var(--neu-page);
+  --splash-accent: var(--neu-accent);
+}
+html[data-ui='neu'] [data-shell='splash'] [data-part='track'] {
+  height: 8px;
+  border: 1px solid color-mix(in srgb, var(--neu-line) 40%, transparent);
+  box-shadow: var(--neu-inset-sm);
+}
+html[data-ui='neu'] [data-shell='splash'] [data-part='fill'] {
+  box-shadow: 0 0 8px var(--neu-accent);
+}
+
+/* ===== Pages ===== */
+
+/* Home: the terminal stays black inside a raised bezel of page material */
+html[data-ui='neu'] [data-part='terminal'] {
+  border: 10px solid var(--neu-face-light);
+  border-radius: 28px;
+  box-shadow: var(--neu-raised-lg);
+  outline: 1px solid rgba(0, 0, 0, 0.6);
+  outline-offset: -11px;
+}
+
+/* Home: domain showcase tab bar is recessed, tabs are keys, the active one pressed in */
+html[data-ui='neu'] [data-part='showcase'] [data-part='tabbar'] {
+  gap: 0.5rem;
+  margin: 0 0.75rem 0.75rem;
+  padding: 0.5rem;
+  border-radius: 20px;
+  box-shadow: var(--neu-inset-md);
+}
+html[data-ui='neu'] [data-part='tabbar'] > [role='tab'] {
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--neu-face-light), var(--neu-face-shade));
+  box-shadow: var(--neu-raised-sm);
+  transition: box-shadow 160ms ease, background 160ms ease;
+}
+html[data-ui='neu'] [data-part='tabbar'] > [aria-selected='true'] {
+  background: var(--neu-page);
+  box-shadow: var(--neu-pressed);
+}
+html[data-ui='neu'] [data-part='tabbar'] [data-part='led'] {
+  top: 6px;
+  left: 14px;
+  width: calc(100% - 28px);
+  height: 3px;
+  border-radius: 999px;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Home: events list rows are recessed wells inside the card */
+html[data-ui='neu'] [data-part='events-list'] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-block: 1rem;
+}
+html[data-ui='neu'] [data-part='events-list'] > .ui-well {
+  padding-inline: 0.75rem;
+  box-shadow: var(--neu-pressed);
+  transition: box-shadow 160ms ease;
+}
+html[data-ui='neu'] [data-part='events-list'] > .ui-well:has(a:hover) {
+  box-shadow: var(--neu-inset-md);
+}
+html[data-ui='neu'] [data-part='events-list'] a {
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+/* Events: posters sit recessed in an inset frame */
+html[data-ui='neu'] [data-part='poster'] {
+  width: auto;
+  margin: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--neu-line) 60%, transparent);
+  border-radius: 18px;
+}
+html[data-ui='neu'] [data-part='poster']::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.55), inset -3px -3px 8px var(--neu-shadow-light);
+}
+
+/* Status chips carry an LED: lit for upcoming, green for live, dark when completed */
+html[data-ui='neu'] [data-part='status'] {
+  --led: var(--neu-accent);
+  min-height: 0;
+}
+html[data-ui='neu'] [data-part='poster'] [data-part='status'] { color: var(--neu-ink); }
+html[data-ui='neu'] [data-part='status'][data-phase='live'] { --led: var(--color-success); }
+html[data-ui='neu'] [data-part='status'][data-phase='completed'] { --led: var(--neu-ink-muted); }
+html[data-ui='neu'] [data-part='status-led'] {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--led);
+  box-shadow: 0 0 6px var(--led);
+}
+html[data-ui='neu'] [data-part='status'][data-phase='completed'] [data-part='status-led'] {
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Event detail: contained poster sits in a recessed well */
+html[data-ui='neu'] [data-part='poster-frame'] {
+  padding: 0.5rem;
+  border-radius: 22px;
+  box-shadow: var(--neu-inset-md);
+}
+html[data-ui='neu'] [data-part='hero-poster'] {
+  box-shadow: var(--neu-raised-lg);
+}
+
+/* Boot camp: the day tabs are a recessed track with a raised thumb on the active day,
+   and the 6s progress runs in an inset gauge along the bottom of that day */
+html[data-ui='neu'] [data-part='day-tabs'] {
+  gap: 0.5rem;
+  margin: 0 0.75rem 0.75rem;
+  padding: 0.5rem;
+  border-radius: 22px;
+  box-shadow: var(--neu-inset-md);
+}
+html[data-ui='neu'] [data-part='day-tabs'] > button {
+  border-radius: 16px;
+}
+html[data-ui='neu'] [data-part='day-tabs'] > .ui-thumb {
+  border-radius: 16px;
+}
+html[data-ui='neu'] [data-part='gauge'] {
+  top: auto;
+  bottom: 8px;
+  left: 16px;
+  width: calc(100% - 32px);
+  height: 6px;
+  padding: 0;
+  border-radius: 999px;
+  box-shadow: var(--neu-inset-sm);
+}
+html[data-ui='neu'] [data-part='gauge'] > span {
+  border-radius: 999px;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* Boot camp: the accent register button keeps its domain colour on the key */
+html[data-ui='neu'] [data-part='accent-cta'] {
+  background-image: linear-gradient(180deg, color-mix(in srgb, #fff 22%, transparent), transparent 55%);
+}
+
+/* Domains: comparison rows press in on hover and for the selected domain */
+html[data-ui='neu'] [data-part='compare-row'] {
+  border-bottom-color: color-mix(in srgb, var(--neu-line) 45%, transparent);
+}
+html[data-ui='neu'] [data-part='compare-row']:hover,
+html[data-ui='neu'] [data-part='compare-row'][data-active] {
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-sm);
+}
+html[data-ui='neu'] [data-part='tip-stat'] {
+  color: var(--neu-accent);
+}
+
+/* Members: the selected card presses in; the terminal inspector sits in a raised bezel */
+html[data-ui='neu'] [data-part='filter-bar'] .ui-track {
+  margin-inline: 0;
+  padding: 4px;
+}
+html[data-ui='neu'] [data-part='member'][data-selected] {
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-md);
+}
+html[data-ui='neu'] [data-part='inspector'] {
+  padding: 8px;
+  border-radius: 26px;
+}
+html[data-ui='neu'] [data-part='inspector-screen'] {
+  border-radius: 18px;
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-sm);
+}
+
+/* Contact: the map sits in a recessed frame; the form well shows focus with an accent ring */
+html[data-ui='neu'] [data-part='map-frame'] {
+  padding: 6px;
+  border-radius: 1.5rem;
+  background: var(--neu-page);
+  box-shadow: var(--neu-inset-md);
+}
+html[data-ui='neu'] [data-part='form-well'] > *,
+html[data-ui='neu'] [data-page='contact'] li > .border-line,
+html[data-ui='neu'] [data-page='resources'] .ui-card .border-line {
+  border-color: color-mix(in srgb, var(--neu-line) 45%, transparent);
+}
+html[data-ui='neu'] [data-part='form-well']:focus-within {
+  outline: 2px solid var(--neu-accent);
+  outline-offset: 2px;
+}
+html[data-ui='neu'] [data-page='contact'] .ui-pill:active {
+  box-shadow: var(--neu-pressed);
+}
+html[data-ui='neu'] [data-page='contact'] [data-part='tile'] {
+  box-shadow: var(--neu-raised-sm);
+}
+html[data-ui='neu'] [data-part='send-overlay'] {
+  background: var(--neu-page);
+}
+
+/* Dark regions (Paradox hero, lightbox): wells sit on the black, not on page material */
+html[data-ui='neu'] [data-scheme='dark'] .ui-well {
+  background: color-mix(in srgb, #fff 4%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui='neu'] .ui-switch[data-shell='theme'] [data-part='knob'],
+  html[data-ui='neu'] [data-shell='nav'] .ui-thumb,
+  html[data-ui='neu'] [data-shell] .ui-pill::after {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui='neu'] .ui-solid,
+  html[data-ui='neu'] .ui-solid:hover,
+  html[data-ui='neu'] .ui-thumb,
+  html[data-ui='neu'] .ui-switch::after,
+  html[data-ui='neu'] .ui-nav > a,
+  html[data-ui='neu'] .ui-pill,
+  html[data-ui='neu'] .ui-chip,
+  html[data-ui='neu'] [data-part='tabbar'] > [role='tab'],
+  html[data-ui='neu'] [data-part='events-list'] > .ui-well,
+  html[data-ui='neu'] [data-part='compare-row'] {
+    transition: none;
+  }
+
+  html[data-ui='neu'] .ui-solid:hover {
+    transform: none;
+  }
+}

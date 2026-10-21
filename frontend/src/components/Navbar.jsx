@@ -24,7 +24,29 @@ const NAV_ICONS = {
   Members: Users,
   Contact: Mail,
   Profile: User,
+  Admin: Settings,
 };
+
+const LINK_CLASS =
+  "relative z-10 px-3 py-1.5 text-sm font-medium text-ink-muted transition-colors duration-300 ease-out hover:text-ink aria-[current=page]:text-ink motion-reduce:transition-none";
+
+function MenuRow({ name, path, active, onSelect }) {
+  const Icon = NAV_ICONS[name] || Home;
+  return (
+    <Link
+      to={path}
+      onClick={onSelect}
+      aria-current={active ? "page" : undefined}
+      className="ui-chip flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out"
+    >
+      <span data-part="icon" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+        <Icon size={16} strokeWidth={2} />
+      </span>
+      <span className="flex-1 pr-2">{name}</span>
+      <ChevronRight data-part="chev" size={14} strokeWidth={2} />
+    </Link>
+  );
+}
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -32,7 +54,7 @@ const Navbar = () => {
   const { isDark } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [pill, setPill] = useState({ x: 0, w: 0, visible: false });
+  const [pill, setPill] = useState({ x: 0, w: 0, state: "hidden" });
   const navListRef = useRef(null);
   const { data: session, isPending } = useSession();
 
@@ -40,7 +62,6 @@ const Navbar = () => {
     path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
   const isLoggedIn = !!session;
   const isAdmin = session?.user?.role === "admin";
-  const isDarkNav = isDark;
   const glassy = pathname === "/events/skill-up-bootcamp";
 
   const handleLogout = async () => {
@@ -61,24 +82,29 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  const placePill = (el) => {
+  const placePill = (el, state) => {
     const parent = navListRef.current;
     if (!parent || !el) return;
     const parentBox = parent.getBoundingClientRect();
     const box = el.getBoundingClientRect();
     setPill({
-      x: box.left - parentBox.left,
+      x: box.left - parentBox.left - parent.clientLeft,
       w: box.width,
-      visible: true,
+      state,
     });
+  };
+
+  const hoverPill = (e) => {
+    const el = e.currentTarget;
+    placePill(el, el.dataset.navActive === "true" ? "rest" : "hover");
   };
 
   const restPillToActive = () => {
     const parent = navListRef.current;
     if (!parent) return;
     const activeEl = parent.querySelector("[data-nav-active='true']");
-    if (activeEl) placePill(activeEl);
-    else setPill((prev) => ({ ...prev, visible: false }));
+    if (activeEl) placePill(activeEl, "rest");
+    else setPill((prev) => ({ ...prev, state: "hidden" }));
   };
 
   useEffect(() => {
@@ -102,103 +128,66 @@ const Navbar = () => {
 
   // ===== ACCOUNT LINKS - Only visible when logged in =====
   const protectedLinks = [
-    { name: "Profile", path: "/profile" }
+    { name: "Profile", path: "/profile" },
+    ...(isAdmin ? [{ name: "Admin", path: "/admin" }] : []),
   ];
 
-  const linkTone = (active) =>
-    active
-      ? isDarkNav
-        ? "text-white"
-        : "text-slate-900"
-      : isDarkNav
-        ? "text-slate-300 hover:text-white"
-        : "text-slate-700 hover:text-slate-900";
+  const navLink = (link) => {
+    const active = isActive(link.path);
+    return (
+      <Link
+        key={link.path}
+        to={link.path}
+        aria-current={active ? "page" : undefined}
+        data-nav-active={active ? "true" : undefined}
+        onMouseEnter={hoverPill}
+        className={LINK_CLASS}
+      >
+        {link.name}
+      </Link>
+    );
+  };
+
+  const closeMenu = () => setMobileMenuOpen(false);
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] md:transition-[background-color,border-color,box-shadow] md:duration-300 ${
-          glassy
-            ? "border-b border-slate-200/80 bg-white/82 backdrop-blur-2xl dark:border-white/10 dark:bg-black/72"
-            : isDarkNav
-            ? scrolled
-              ? "border-b border-white/15 bg-black/78 backdrop-blur-2xl"
-              : "border-b border-white/15 bg-black/70 backdrop-blur-xl"
-            : scrolled
-              ? "border-b border-slate-200/80 bg-white/82 backdrop-blur-2xl"
-              : "border-b border-slate-200/80 bg-white/74 backdrop-blur-xl"
-        }`}
+        data-shell="nav"
+        data-scrolled={scrolled ? "true" : undefined}
+        data-surface={glassy ? "grid" : undefined}
+        className="ui-nav fixed top-0 left-0 right-0 z-[1000] h-[var(--nav-height)] pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] md:transition-[background-color,border-color,box-shadow] md:duration-300"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
           
           {/* ===== LOGO ===== */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <BrandMark size="nav" onDark={isDarkNav} />
+            <BrandMark size="nav" onDark={isDark} />
           </Link>
 
           {/* ===== DESKTOP NAVIGATION ===== */}
           <div className="hidden md:flex items-center gap-3">
             <div
               ref={navListRef}
-              className="relative flex items-center"
+              className="ui-track relative flex items-center"
               onMouseLeave={restPillToActive}
             >
               <span
                 aria-hidden
-                className={`pointer-events-none absolute left-0 top-1/2 h-8 rounded-full transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
-                  isDarkNav
-                    ? "border border-white/30 bg-white/12 backdrop-blur-xl [box-shadow:inset_0_1px_0_rgba(255,255,255,0.32),inset_0_-6px_14px_rgba(125,211,252,0.14)]"
-                    : "border border-sky-200/70 bg-sky-100/55 backdrop-blur-xl [box-shadow:inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-6px_14px_rgba(56,189,248,0.14)]"
-                }`}
+                data-state={pill.state}
+                className="ui-thumb pointer-events-none absolute left-0 top-1/2 h-8 rounded-full transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
                 style={{
                   width: pill.w,
-                  opacity: pill.visible ? 1 : 0,
                   transform: `translate3d(${pill.x}px, -50%, 0)`,
                 }}
               />
 
-              {publicLinks.map((link) => {
-                const active = isActive(link.path);
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    data-nav-active={active ? "true" : undefined}
-                    onMouseEnter={(e) => placePill(e.currentTarget)}
-                    className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(active)}`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
+              {publicLinks.map(navLink)}
 
               {isLoggedIn && (
                 <>
-                  <span className={`mx-1 h-5 w-px ${isDarkNav ? "bg-white/15" : "bg-slate-900/10"}`} />
-                  {protectedLinks.map((link) => {
-                    const active = isActive(link.path);
-                    return (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        data-nav-active={active ? "true" : undefined}
-                        onMouseEnter={(e) => placePill(e.currentTarget)}
-                        className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(active)}`}
-                      >
-                        {link.name}
-                      </Link>
-                    );
-                  })}
-                  {isAdmin && (
-                    <Link
-                      to="/admin"
-                      data-nav-active={isActive("/admin") ? "true" : undefined}
-                      onMouseEnter={(e) => placePill(e.currentTarget)}
-                      className={`relative z-10 px-3 py-1.5 text-sm font-medium transition-colors duration-300 ease-out motion-reduce:transition-none ${linkTone(isActive("/admin"))}`}
-                    >
-                      Admin
-                    </Link>
-                  )}
+                  <span data-part="divider" className="mx-1 h-5 w-px bg-line" />
+                  {protectedLinks.map(navLink)}
                 </>
               )}
             </div>
@@ -212,17 +201,10 @@ const Navbar = () => {
             <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`md:hidden flex h-10 w-10 items-center justify-center rounded-xl border transition-colors ${
-              isDarkNav
-                ? mobileMenuOpen
-                  ? "border-sky-400/40 bg-white/10 text-sky-300"
-                  : "border-white/15 bg-white/10 text-white hover:bg-white/15"
-                : mobileMenuOpen
-                  ? "border-sky-500/40 bg-white text-sky-700"
-                  : "border-slate-900/10 bg-white/50 text-slate-800 hover:bg-white/80"
-            }`}
+            className="ui-pill md:hidden flex h-10 w-10 items-center justify-center transition-colors"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {mobileMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
           </button>
@@ -234,26 +216,23 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 top-[var(--nav-height)] z-[999] bg-slate-900/40 md:hidden"
-            onClick={() => setMobileMenuOpen(false)}
+            data-shell="scrim"
+            className="fixed inset-0 top-[var(--nav-height)] z-[999] md:hidden"
+            onClick={closeMenu}
           />
           <div
-            className={`fixed right-3 top-[calc(var(--nav-height)+0.5rem)] z-[1001] w-44 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-2xl border backdrop-blur-2xl md:hidden ${
-              isDarkNav
-                ? "border-white/10 bg-black/88"
-                : "border-slate-200 bg-white"
-            }`}
-            aria-hidden={!mobileMenuOpen}
+            id="mobile-menu"
+            data-shell="menu"
+            className="ui-dialog fixed right-3 top-[calc(var(--nav-height)+0.5rem)] z-[1001] w-44 max-w-[calc(100vw-1.5rem)] origin-top-right md:hidden"
           >
             <div
-              className={`pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t ${
-                isDarkNav ? "border-white/10 bg-[#000000]" : "border-slate-200 bg-white"
-              }`}
+              data-part="caret"
+              className="pointer-events-none absolute -top-1.5 right-5 h-3 w-3 rotate-45 rounded-[2px] border-l border-t"
             />
-            <div className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-1.5">
+            <div data-part="scroll" className="max-h-[min(28rem,calc(100dvh-var(--nav-height)-1.5rem))] overflow-y-auto p-1.5">
           {isLoggedIn && (
-            <div className={`mb-1 flex items-center gap-2.5 rounded-xl px-2 py-2 ${isDarkNav ? "bg-white/5" : "bg-slate-50"}`}>
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-sky-500 to-sky-700 text-sm font-bold text-white">
+            <div className="ui-well mb-1 flex items-center gap-2.5 rounded-xl px-2 py-2">
+              <div data-part="avatar" className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg text-sm font-bold">
                 {session?.user?.image ? (
                   <img src={session.user.image} alt="" className="h-full w-full object-cover" />
                 ) : (
@@ -261,128 +240,25 @@ const Navbar = () => {
                 )}
               </div>
               <div className="min-w-0 max-w-[11rem]">
-                <p className={`truncate text-sm font-medium ${isDarkNav ? "text-white" : "text-slate-900"}`}>{session?.user?.name}</p>
-                <p className={`truncate text-xs ${isDarkNav ? "text-slate-400" : "text-slate-500"}`}>{session?.user?.email}</p>
+                <p data-part="name" className="truncate text-sm font-medium text-ink">{session?.user?.name}</p>
+                <p data-part="email" className="truncate text-xs text-ink-muted">{session?.user?.email}</p>
               </div>
             </div>
           )}
 
           <nav className="flex flex-col">
-            {publicLinks.map((link) => {
-              const Icon = NAV_ICONS[link.name] || Home;
-              const active = isActive(link.path);
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out ${
-                    active
-                      ? isDarkNav
-                        ? "bg-sky-500/15 text-white"
-                        : "bg-sky-50 text-slate-900"
-                      : isDarkNav
-                        ? "text-slate-300 hover:bg-white/5 hover:text-white"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
-                >
-                  <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                      active
-                        ? "bg-sky-500/15 text-sky-500"
-                        : isDarkNav
-                          ? "bg-white/10 text-slate-300"
-                          : "bg-slate-100 text-slate-500"
-                    }`}
-                  >
-                    <Icon size={16} strokeWidth={2} />
-                  </span>
-                  <span className="flex-1 pr-2">{link.name}</span>
-                  <ChevronRight
-                    size={14}
-                    className={active ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
-                    strokeWidth={2}
-                  />
-                </Link>
-              );
-            })}
+            {publicLinks.map((link) => (
+              <MenuRow key={link.path} {...link} active={isActive(link.path)} onSelect={closeMenu} />
+            ))}
           </nav>
 
           {isLoggedIn && (
             <>
-              <div className={`my-1.5 h-px ${isDarkNav ? "bg-white/10" : "bg-slate-200"}`} />
+              <div data-part="divider" className="my-1.5 h-px bg-line" />
               <nav className="flex flex-col">
-                {protectedLinks.map((link) => {
-                  const Icon = NAV_ICONS[link.name] || User;
-                  const active = isActive(link.path);
-                  return (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out ${
-                        active
-                          ? isDarkNav
-                            ? "bg-sky-500/15 text-white"
-                            : "bg-sky-50 text-slate-900"
-                          : isDarkNav
-                            ? "text-slate-300 hover:bg-white/5 hover:text-white"
-                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                      }`}
-                    >
-                      <span
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                          active
-                            ? "bg-sky-500/15 text-sky-500"
-                            : isDarkNav
-                              ? "bg-white/10 text-slate-300"
-                              : "bg-slate-100 text-slate-500"
-                        }`}
-                      >
-                        <Icon size={16} strokeWidth={2} />
-                      </span>
-                      <span className="flex-1 pr-2">{link.name}</span>
-                      <ChevronRight
-                        size={14}
-                        className={active ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
-                        strokeWidth={2}
-                      />
-                    </Link>
-                  );
-                })}
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ease-out ${
-                      isActive("/admin")
-                        ? isDarkNav
-                          ? "bg-sky-500/15 text-white"
-                          : "bg-sky-50 text-slate-900"
-                        : isDarkNav
-                          ? "text-slate-300 hover:bg-white/5 hover:text-white"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                    }`}
-                  >
-                    <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                        isActive("/admin")
-                          ? "bg-sky-500/15 text-sky-500"
-                          : isDarkNav
-                            ? "bg-white/10 text-slate-300"
-                            : "bg-slate-100 text-slate-500"
-                      }`}
-                    >
-                      <Settings size={16} strokeWidth={2} />
-                    </span>
-                    <span className="flex-1 pr-2">Admin</span>
-                    <ChevronRight
-                      size={14}
-                      className={isActive("/admin") ? "text-sky-500" : isDarkNav ? "text-slate-600" : "text-slate-300"}
-                      strokeWidth={2}
-                    />
-                  </Link>
-                )}
+                {protectedLinks.map((link) => (
+                  <MenuRow key={link.path} {...link} active={isActive(link.path)} onSelect={closeMenu} />
+                ))}
               </nav>
             </>
           )}

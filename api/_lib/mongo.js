@@ -5,7 +5,7 @@ export const mongoConfigured = () => Boolean(process.env.MONGODB_URI);
 // Reused across invocations while the serverless instance stays warm.
 let clientPromise = null;
 
-export async function collection(name) {
+export async function database() {
   if (!mongoConfigured()) throw new Error("MongoDB isn't connected to this project yet.");
   clientPromise ||= new MongoClient(process.env.MONGODB_URI, {
     serverSelectionTimeoutMS: 5000,
@@ -17,5 +17,9 @@ export async function collection(name) {
       throw err;
     });
   const client = await clientPromise;
-  return client.db(process.env.MONGODB_DB || "adroit").collection(name);
+  return client.db(process.env.MONGODB_DB || "adroit");
+}
+
+export async function collection(name) {
+  return (await database()).collection(name);
 }

@@ -74,6 +74,26 @@ export const PARADOX_SLUG = "paradox-2026";
 
 export const sharedEvents = [
   {
+    _id: "recruitment-2026",
+    title: "AdroIT Recruitment 2026",
+    tagline: "Join AdroIT. Open to first- and second-year CSE students.",
+    eyebrow: "Recruitment",
+    description:
+      "AdroIT is recruiting first- and second-year CSE students for its Cloud Computing, Machine Learning / AI, Cybersecurity, Data Analytics and Non-Tech teams.",
+    about: [
+      "AdroIT is opening recruitment for first- and second-year CSE students at RNS Institute of Technology.",
+      "Pick two technical domains you genuinely want to work in: Cloud Computing, Machine Learning / AI, Cybersecurity or Data Analytics. You can add Non-Tech as an optional third preference, or apply for Non-Tech only if events, design, media and outreach are more your thing.",
+      "Registration is online and takes a couple of minutes. The registration deadline, recruitment date and venue are shown on the recruitment page as soon as they're announced.",
+    ],
+    // No fixed date: the live schedule is set in admin69 and shown on /recruitment.
+    // Set status to "completed" once this recruitment cycle is over.
+    dateLabel: "Dates announced soon",
+    location: "RNSIT",
+    slug: "recruitment-2026",
+    status: "upcoming",
+    registerHref: "/recruitment",
+  },
+  {
     _id: "skill-up-bootcamp-2026",
     title: "Skill Up Boot Camp",
     tagline: "A 4-day hands-on tech bootcamp for 3rd sem CSE students.",

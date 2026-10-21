@@ -135,8 +135,10 @@ function buildFormations(N) {
   return [bars, cloud, net, shield, megaphone];
 }
 
-export function ParticleStage({ activeRef, rotateRef }) {
+export function ParticleStage({ activeRef, rotateRef, accent }) {
   const hostRef = useRef(null);
+  const accentRef = useRef(accent);
+  accentRef.current = accent;
 
   useEffect(() => {
     const host = hostRef.current;
@@ -190,7 +192,7 @@ export function ParticleStage({ activeRef, rotateRef }) {
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      color: new THREE.Color(ACCENTS[0]),
+      color: new THREE.Color(accentRef.current),
     });
     group.add(new THREE.Points(geo, mat));
 
@@ -259,7 +261,7 @@ export function ParticleStage({ activeRef, rotateRef }) {
     };
     document.addEventListener("visibilitychange", onVis);
 
-    const accent = new THREE.Color();
+    const target = new THREE.Color();
     const clock = new THREE.Clock();
     let spin = 0;
     let shown = activeRef.current;
@@ -287,7 +289,7 @@ export function ParticleStage({ activeRef, rotateRef }) {
         cur[b + 2] += (tgt[b + 2] - cur[b + 2]) * k;
       }
       attr.needsUpdate = true;
-      mat.color.lerp(accent.set(ACCENTS[idx]), 0.06);
+      mat.color.lerp(target.set(accentRef.current), reduce ? 1 : 0.06);
       smooth.x += (mouse.x - smooth.x) * 0.05;
       smooth.y += (mouse.y - smooth.y) * 0.05;
       const userY = rotateRef?.current?.y || 0;

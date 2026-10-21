@@ -1,0 +1,197 @@
+/* Design-agnostic fallbacks. Packs override these under html[data-ui='<id>'].
+   Kept in the components layer so a pack rule with a stronger selector wins,
+   and so Tailwind utilities can still override spacing and position. */
+@layer components {
+  .ui-card,
+  .ui-dialog,
+  .ui-nav,
+  .ui-tooltip {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+  }
+
+  .ui-card {
+    position: relative;
+  }
+
+  .ui-well,
+  .ui-chip,
+  .ui-input {
+    background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+  }
+
+  .ui-solid {
+    background: var(--color-ink);
+    color: var(--color-page);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    min-height: 40px;
+    min-width: 40px;
+  }
+
+  .ui-pill,
+  .ui-track {
+    position: relative;
+    border-radius: 999px;
+  }
+
+  .ui-thumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+  }
+
+  .ui-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  }
+
+  .ui-heading {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+
+  .ui-thumb[data-state='hidden'] {
+    opacity: 0;
+  }
+
+  .ui-switch [data-glyph='sun'],
+  .ui-switch[aria-checked='true'] [data-glyph='moon'] {
+    display: none;
+  }
+
+  .ui-switch[aria-checked='true'] [data-glyph='sun'] {
+    display: block;
+  }
+
+  [data-shell='scrim'] {
+    background: color-mix(in srgb, var(--color-ink) 40%, transparent);
+  }
+
+  /* Regions that stay dark in every design and theme (terminal, Paradox hero) */
+  [data-scheme='dark'] {
+    --color-page: #000000;
+    --color-surface: #111111;
+    --color-ink: var(--color-slate-100);
+    --color-ink-muted: var(--color-slate-400);
+    --color-ink-subtle: var(--color-slate-400);
+    --color-line: rgb(255 255 255 / 0.12);
+    --color-primary: var(--color-sky-400);
+    --color-primary-ink: var(--color-sky-300);
+    --color-on-primary: var(--color-slate-950);
+    color-scheme: dark;
+  }
+
+  /* Legibility scrim over cover-fit event posters */
+  [data-part='poster-scrim'] {
+    background-image: linear-gradient(to top in oklab,
+      color-mix(in oklab, var(--color-slate-950) 70%, transparent) 0%,
+      color-mix(in oklab, var(--color-slate-950) 10%, transparent) 50%,
+      transparent 100%);
+  }
+  @media (width >= 48rem) {
+    [data-part='poster-scrim'] {
+      background-image: linear-gradient(to right in oklab, transparent 0%, transparent 50%, color-mix(in oklab, #fff 20%, transparent) 100%);
+    }
+    html.dark [data-part='poster-scrim'] {
+      background-image: linear-gradient(to right in oklab, transparent 0%, transparent 50%, color-mix(in oklab, #000 40%, transparent) 100%);
+    }
+  }
+
+  /* Full-bleed event poster fading into the page */
+  [data-part='hero-fade'] {
+    background-image: linear-gradient(to top in oklab,
+      var(--color-page) 0%,
+      color-mix(in oklab, var(--color-page) 70%, transparent) 50%,
+      color-mix(in oklab, #000 25%, transparent) 100%);
+  }
+  html.dark [data-part='hero-fade'] {
+    background-image: linear-gradient(to top in oklab,
+      var(--color-page) 0%,
+      color-mix(in oklab, var(--color-page) 70%, transparent) 50%,
+      color-mix(in oklab, #000 40%, transparent) 100%);
+  }
+
+  /* Caption scrim on photos */
+  [data-part='media-scrim'] {
+    background-image: linear-gradient(to top in oklab,
+      var(--color-slate-950) 0%,
+      color-mix(in oklab, var(--color-slate-950) 20%, transparent) 50%,
+      transparent 100%);
+  }
+  [data-part='glimpse-scrim'] {
+    background-image: linear-gradient(to top in oklab,
+      color-mix(in oklab, var(--color-slate-950) 35%, transparent) 0%,
+      transparent 50%,
+      transparent 100%);
+  }
+
+  [data-part='compare-row'] {
+    border-bottom: 1px solid var(--color-line);
+  }
+  [data-part='compare-row']:hover,
+  [data-part='compare-row'][data-active] {
+    background-color: color-mix(in srgb, var(--color-ink) 5%, transparent);
+  }
+
+  [data-part='tip-stat'] {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  [data-part='send-overlay'] {
+    background: var(--color-surface);
+  }
+
+  [data-shell='splash'] {
+    --splash-bg: #000000;
+    --splash-track: rgb(255 255 255 / 0.1);
+    --splash-accent: var(--color-primary);
+  }
+
+  .ui-solid:focus-visible,
+  .ui-input:focus-visible,
+  .ui-switch:focus-visible,
+  .ui-pill:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-thumb,
+  .ui-pill,
+  .ui-switch {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .ui-card,
+  .ui-nav,
+  .ui-dialog,
+  .ui-tooltip,
+  .ui-well,
+  .ui-chip,
+  .ui-input {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

@@ -113,7 +113,8 @@ const DomainShowcase = () => {
   return (
     <section className="px-3 sm:px-6 lg:px-8 py-14 sm:py-20">
       <div
-        className="lg-card max-w-6xl mx-auto overflow-hidden rounded-3xl sm:rounded-[2rem] text-slate-900 dark:text-white"
+        data-part="showcase"
+        className="ui-card max-w-6xl mx-auto overflow-hidden rounded-3xl sm:rounded-[2rem] text-ink"
         onPointerEnter={(e) => {
           if (e.pointerType !== "touch") setPaused(true);
         }}
@@ -138,11 +139,11 @@ const DomainShowcase = () => {
 
         <div className="relative z-10 flex flex-col lg:min-h-[36rem]">
           <div className="px-5 pt-6 sm:px-10 sm:pt-10">
-            <h2 className="text-2xl sm:text-5xl font-black leading-tight">
+            <h2 className="ui-heading text-ink text-2xl sm:text-5xl font-black leading-tight">
               What you could build
             </h2>
 
-            <p className="mt-2 max-w-xl text-slate-600 dark:text-white/70">
+            <p className="mt-2 max-w-xl text-ink-muted">
               Explore the technical and non-technical domains at AdroIT, and
               build real projects and events while learning the fundamentals.
             </p>
@@ -152,6 +153,7 @@ const DomainShowcase = () => {
             <ParticleStage
               activeRef={activeRef}
               rotateRef={rotateRef}
+              accent={accent}
             />
 
             <div
@@ -174,18 +176,18 @@ const DomainShowcase = () => {
               }}
             >
               <p
-                className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base font-semibold"
-                style={{ color: accent }}
+                className="accent-ink flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base font-semibold"
+                style={{ "--accent": accent }}
               >
                 <d.Icon size={18} className="shrink-0" />
                 <span className="min-w-0 break-words">{d.tools}</span>
               </p>
 
-              <h3 className="mt-1 text-2xl sm:text-5xl font-extrabold leading-tight">
+              <h3 className="ui-heading text-ink mt-1 text-2xl sm:text-5xl font-extrabold leading-tight">
                 {d.name}
               </h3>
 
-              <p className="mt-3 max-w-md text-base sm:text-lg text-slate-600 dark:text-white/70">
+              <p className="mt-3 max-w-md text-base sm:text-lg text-ink-muted">
                 {d.text}
               </p>
             </div>
@@ -193,7 +195,8 @@ const DomainShowcase = () => {
 
           <div
             role="tablist"
-            className="grid grid-cols-2 lg:grid-cols-5 gap-px border-t border-slate-900/10 bg-slate-900/[0.06] dark:border-white/10 dark:bg-white/10"
+            data-part="tabbar"
+            className="ui-well grid grid-cols-2 lg:grid-cols-5 gap-px"
           >
             {showcase.map((s, i) => {
               const on = i === active;
@@ -208,18 +211,16 @@ const DomainShowcase = () => {
                     setActive(i);
                     setTick((t) => t + 1);
                   }}
-                  className={`relative flex min-h-[3.25rem] items-center justify-between gap-2 px-3 py-3 sm:min-h-[3.5rem] sm:px-7 sm:py-5 lg:px-5 text-left transition-colors last:col-span-2 lg:last:col-span-1 ${
-                    on
-                      ? "bg-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] dark:bg-[#141414]/90 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-                      : "bg-white/55 hover:bg-white/75 dark:bg-black/70 dark:hover:bg-[#111111]/80"
-                  }`}
+                  className="relative flex min-h-[3.25rem] items-center justify-between gap-2 px-3 py-3 sm:min-h-[3.5rem] sm:px-7 sm:py-5 lg:px-5 text-left transition-colors last:col-span-2 lg:last:col-span-1"
                 >
                   {on && (
                     <span
                       key={`${active}-${tick}`}
+                      data-part="led"
                       className="absolute left-0 top-0 h-[3px] w-full origin-left"
                       style={{
                         backgroundColor: ACCENTS[i],
+                        color: ACCENTS[i],
                         animation: reduce
                           ? "none"
                           : `domFill ${AUTO_MS}ms linear forwards`,
@@ -232,22 +233,16 @@ const DomainShowcase = () => {
 
                   <span
                     className={`text-[13px] leading-snug sm:text-lg font-bold ${
-                      on
-                        ? "text-slate-900 dark:text-white"
-                        : "text-slate-600 dark:text-white/70"
+                      on ? "text-ink" : "text-ink-muted"
                     }`}
                   >
                     {s.name}
                   </span>
 
                   <s.Icon
-                    className="hidden sm:block shrink-0"
+                    className={`hidden sm:block shrink-0 ${on ? "" : "text-ink-muted opacity-50"}`}
                     size={22}
-                    style={{
-                      color: on
-                        ? ACCENTS[i]
-                        : "rgba(71,85,105,.5)",
-                    }}
+                    style={on ? { color: ACCENTS[i] } : undefined}
                   />
                 </button>
               );
@@ -382,14 +377,16 @@ const Terminal = () => {
   return (
     <div
       ref={ref}
-      className="overflow-hidden rounded-2xl border border-white/10 bg-black text-slate-100 shadow-xl"
+      data-part="terminal"
+      data-scheme="dark"
+      className="overflow-hidden rounded-2xl border border-line bg-page text-ink"
     >
-      <div className="flex items-center gap-2 border-b border-white/10 bg-[#111111] px-4 py-3">
+      <div className="flex items-center gap-2 border-b border-line bg-surface px-4 py-3">
         <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
         <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.18)]" />
 
-        <span className="ml-3 font-mono text-xs text-slate-400">
+        <span className="ml-3 font-mono text-xs text-ink-muted">
           adroit.sh
         </span>
       </div>
@@ -410,14 +407,14 @@ const Terminal = () => {
           return (
             <div key={s.cmd}>
               <p className="break-words">
-                <span className="text-sky-400">
+                <span className="text-primary">
                   ${" "}
                 </span>
                 {s.cmd.slice(0, shown)}
               </p>
 
               {done && (
-                <p className="mt-1 pl-4 font-sans text-sm text-slate-400 sm:text-base">
+                <p className="mt-1 pl-4 font-sans text-sm text-ink-muted sm:text-base">
                   {s.out}
                 </p>
               )}
@@ -426,8 +423,8 @@ const Terminal = () => {
         })}
 
         <p aria-hidden="true">
-          <span className="text-sky-400">$ </span>
-          <span className="inline-block h-4 w-2 animate-pulse align-middle bg-sky-400" />
+          <span className="text-primary">$ </span>
+          <span className="inline-block h-4 w-2 animate-pulse align-middle bg-primary motion-reduce:animate-none" />
         </p>
       </div>
     </div>
@@ -516,24 +513,29 @@ const Home = () => {
         className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-6 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-700 ease-out motion-reduce:transition-none"
       >
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <span className="lg-well inline-flex max-w-full items-center mb-4 rounded-full px-3 py-1 font-mono text-[10px] tracking-[0.18em] uppercase text-sky-800 whitespace-nowrap sm:px-3.5 sm:text-xs sm:tracking-[0.22em]">
-            Recruiting soon
-          </span>
+          <Link
+            to="/recruitment"
+            className="ui-chip mb-4 inline-flex min-h-10 max-w-full items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-primary-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-4 sm:text-xs sm:tracking-[0.22em]"
+          >
+            <span className="h-2 w-2 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" aria-hidden="true" />
+            Recruitment opening soon
+            <ArrowUpRight size={14} className="shrink-0" aria-hidden="true" />
+          </Link>
           <img
             alt="AdroIT"
             className="block object-contain h-16 sm:h-24 md:h-[7.5rem] w-auto max-w-[min(100%,18rem)] mx-auto mb-4 sm:mb-5"
             src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
           />
-          <h1 className="mx-auto mb-5 max-w-xl px-1 text-base sm:mb-8 sm:px-4 sm:text-xl md:text-2xl font-medium tracking-tight text-slate-900 leading-snug dark:text-white">
+          <h1 className="ui-heading mx-auto mb-5 max-w-xl px-1 text-base sm:mb-8 sm:px-4 sm:text-xl md:text-2xl font-medium tracking-tight text-ink leading-snug">
             <span className="sr-only">AdroIT — </span>
             Department of
             <span className="mt-0.5 block font-bold">
               Computer Science &amp; Engineering
             </span>
           </h1>
-          <p className="text-[0.95rem] leading-relaxed text-slate-600 max-w-4xl mx-auto mb-4 sm:mb-8 sm:text-lg md:text-xl">
+          <p className="text-[0.95rem] leading-relaxed text-ink-muted max-w-4xl mx-auto mb-4 sm:mb-8 sm:text-lg md:text-xl">
             The Premier Technical Club{" "}
-            <span className="text-sky-800">Empowering Tomorrow's Innovators</span>{" "}
+            <span className="text-primary-ink">Empowering Tomorrow's Innovators</span>{" "}
             through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
           <EventCarousel
@@ -548,11 +550,11 @@ const Home = () => {
       <section className="px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-14">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
-            <h2 className="fluid-h2 font-bold text-slate-900 dark:text-white leading-[1.1] mb-5">
+            <h2 className="ui-heading fluid-h2 font-bold text-ink leading-[1.1] mb-5">
               Learn it. Build it. Show it.
             </h2>
 
-            <p className="text-slate-600 dark:text-white/70 text-lg leading-relaxed max-w-md">
+            <p className="text-ink-muted text-lg leading-relaxed max-w-md">
               At AdroIT, learning goes beyond following tutorials.
               You learn a concept, apply it to a project, work with
               other students and present what you built.
@@ -567,7 +569,7 @@ const Home = () => {
 
       <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="max-w-5xl mx-auto">
-          <p className="fluid-h2 font-bold text-slate-900 dark:text-white leading-[1.15] max-w-4xl">
+          <p className="fluid-h2 font-bold text-ink leading-[1.15] max-w-4xl">
             Learn from seniors. Build with your peers. Then become
             the senior who helps someone else get started.
           </p>
@@ -576,30 +578,30 @@ const Home = () => {
 
       <section className="px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-8">
+          <h2 className="ui-heading text-2xl sm:text-4xl font-bold text-ink mb-8">
             Events through the year
           </h2>
 
-          <ul className="lg-card divide-y divide-slate-900/10 rounded-3xl px-4 sm:rounded-[2rem] sm:px-8 dark:divide-white/10">
+          <ul data-part="events-list" className="ui-card rounded-3xl px-4 sm:rounded-[2rem] sm:px-8">
             {events.map((e, i) => {
               const n = String(i + 1).padStart(2, "0");
               const inner = (
                 <>
-                  <span className="font-mono text-xs text-sky-800 dark:text-sky-300 pt-1.5 w-8 shrink-0">
+                  <span className="font-mono text-xs text-primary-ink pt-1.5 w-8 shrink-0">
                     {n}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">
+                    <span className="block text-lg sm:text-xl font-semibold text-ink">
                       {e.name}
                     </span>
-                    <span className="mt-1 block text-sm text-slate-600 dark:text-white/60 leading-relaxed">
+                    <span className="mt-1 block text-sm text-ink-muted leading-relaxed">
                       {e.text}
                     </span>
                   </span>
                   {e.href ? (
                     <ArrowUpRight
                       size={18}
-                      className="mt-1.5 shrink-0 text-slate-400 transition-colors group-hover:text-sky-700 dark:group-hover:text-sky-300"
+                      className="mt-1.5 shrink-0 text-ink-muted transition-colors group-hover:text-primary"
                       aria-hidden="true"
                     />
                   ) : (
@@ -609,11 +611,11 @@ const Home = () => {
               );
 
               return (
-                <li key={e.name}>
+                <li key={e.name} className="ui-well">
                   {e.href ? (
                     <Link
                       to={e.href}
-                      className="group -mx-2 flex items-start gap-3 rounded-2xl px-2 py-5 transition-colors hover:bg-slate-900/[0.03] sm:-mx-4 sm:gap-4 sm:px-4 sm:py-6 dark:hover:bg-white/[0.04]"
+                      className="group -mx-2 flex items-start gap-3 rounded-2xl px-2 py-5 transition-colors sm:-mx-4 sm:gap-4 sm:px-4 sm:py-6"
                     >
                       {inner}
                     </Link>
@@ -630,13 +632,13 @@ const Home = () => {
       </section>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-10 pb-24">
-        <div className="lg-card max-w-6xl mx-auto rounded-3xl sm:rounded-[2rem] text-slate-900 dark:text-white p-6 sm:p-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="ui-card max-w-6xl mx-auto rounded-3xl sm:rounded-[2rem] text-ink p-6 sm:p-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
-            <h2 className="text-2xl sm:text-4xl font-bold">
+            <h2 className="ui-heading text-ink text-2xl sm:text-4xl font-bold">
               Skill Up Boot Camp
             </h2>
 
-            <p className="mt-2 text-slate-600 dark:text-white/70">
+            <p className="mt-2 text-ink-muted">
               Four days. Four domains. Hands-on technical
               exposure from October 6 to October 9, 2026.
             </p>
@@ -644,7 +646,7 @@ const Home = () => {
 
           <Link
             to={liveEvent.href}
-            className="lg-solid shrink-0 inline-flex w-full sm:w-auto justify-center rounded-full bg-ink px-6 py-3 font-semibold text-page transition-transform duration-200 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none"
+            className="ui-solid shrink-0 inline-flex w-full sm:w-auto justify-center rounded-full px-6 py-3 font-semibold transition-transform duration-200 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none"
           >
             Explore the boot camp
           </Link>

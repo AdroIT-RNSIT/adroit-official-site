@@ -3,6 +3,8 @@ import { Eye, EyeOff, LockKeyhole, LogOut, CalendarDays, BookOpen, ClipboardList
 import { call } from "./api";
 import MembersEditor from "./MembersEditor";
 import Inbox from "./Inbox";
+import Appearance from "./Appearance";
+import Recruitment from "./recruitment/Recruitment";
 
 const formatTime = (ms) =>
   new Date(ms).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -137,9 +139,11 @@ const comingSoon = [
 ];
 
 const TABS = [
-  { id: "registrations", label: "Registrations" },
+  { id: "recruitment", label: "Recruitment" },
+  { id: "registrations", label: "Boot camp" },
   { id: "members", label: "Members" },
   { id: "inbox", label: "Inbox" },
+  { id: "appearance", label: "Appearance" },
 ];
 
 function BootcampRegistrations({ onExpired }) {
@@ -265,8 +269,21 @@ function BootcampRegistrations({ onExpired }) {
 }
 
 function Dashboard({ expiresAt, onSignOut, onExpired }) {
-  const [tab, setTab] = useState("registrations");
+  const [tab, setTab] = useState("recruitment");
   const [unread, setUnread] = useState(0);
+  const [appearanceDirty, setAppearanceDirty] = useState(false);
+
+  const openTab = (id) => {
+    if (
+      tab === "appearance" &&
+      id !== "appearance" &&
+      appearanceDirty &&
+      !window.confirm("You picked a design but haven't applied it. Leave this tab anyway? Your selection is kept.")
+    ) {
+      return;
+    }
+    setTab(id);
+  };
 
   return (
     <div className="min-h-dvh">
@@ -304,7 +321,7 @@ function Dashboard({ expiresAt, onSignOut, onExpired }) {
               id={`tab-${t.id}`}
               aria-selected={tab === t.id}
               aria-controls={`panel-${t.id}`}
-              onClick={() => setTab(t.id)}
+              onClick={() => openTab(t.id)}
               className={`-mb-px inline-flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
                 tab === t.id ? "border-sky-400 text-white" : "border-transparent text-slate-400 hover:text-white"
               }`}
@@ -319,6 +336,9 @@ function Dashboard({ expiresAt, onSignOut, onExpired }) {
 
         {/* Panels stay mounted so unsaved member edits survive switching tabs. */}
         <div className="mt-6">
+          <div role="tabpanel" id="panel-recruitment" aria-labelledby="tab-recruitment" hidden={tab !== "recruitment"}>
+            <Recruitment active={tab === "recruitment"} onExpired={onExpired} />
+          </div>
           <div role="tabpanel" id="panel-registrations" aria-labelledby="tab-registrations" hidden={tab !== "registrations"}>
             <BootcampRegistrations onExpired={onExpired} />
           </div>
@@ -327,6 +347,9 @@ function Dashboard({ expiresAt, onSignOut, onExpired }) {
           </div>
           <div role="tabpanel" id="panel-inbox" aria-labelledby="tab-inbox" hidden={tab !== "inbox"}>
             <Inbox onExpired={onExpired} onUnreadChange={setUnread} />
+          </div>
+          <div role="tabpanel" id="panel-appearance" aria-labelledby="tab-appearance" hidden={tab !== "appearance"}>
+            <Appearance active={tab === "appearance"} onExpired={onExpired} onDirtyChange={setAppearanceDirty} />
           </div>
         </div>
 
