@@ -163,6 +163,7 @@ async function handleRegister(req, res) {
         preferences: registration.preferences,
         createdAt: registration.createdAt,
       },
+      whatsappLink: settings.whatsappLink || null,
     });
   } catch (err) {
     if (err instanceof DuplicateRegistrationError) {
@@ -211,6 +212,7 @@ const SETTINGS_AUDIT_KEYS = [
   "announcement",
   "instructions",
   "nextSteps",
+  "whatsappLink",
   "allowedYears",
   "sections",
   "domains",

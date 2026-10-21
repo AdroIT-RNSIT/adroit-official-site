@@ -65,6 +65,7 @@ export function resolveReport(params, settings) {
       if (f.year) labels.push(`Year: ${YEARS[f.year].label}`);
       if (f.semester) labels.push(`Semester: ${f.semester}`);
       if (f.section) labels.push(`Section: ${f.section}`);
+      if (f.domain) labels.push(f.domain === NON_TECH ? `Interested in ${domainName(f.domain)} (either route)` : `${domainName(f.domain)} as 1st or 2nd preference`);
       if (f.first) labels.push(`First preference: ${domainName(f.first)}`);
       if (f.second) labels.push(`Second preference: ${domainName(f.second)}`);
       if (f.third) labels.push(f.third === "NON_TECH" ? "Third preference: Non-Tech" : "No third preference");

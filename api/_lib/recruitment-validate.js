@@ -179,6 +179,22 @@ export function validateRegistration(input, settings, { existing = null, admin =
   };
 }
 
+/** "" stays "" (no group); otherwise only https://chat.whatsapp.com/<code> invites are accepted. Returns null if invalid. */
+export function normalizeWhatsappLink(value) {
+  if (typeof value !== "string") return null;
+  const raw = value.trim();
+  if (!raw) return "";
+  let url;
+  try {
+    url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+  } catch {
+    return null;
+  }
+  const code = url.pathname.replace(/^\/+|\/+$/g, "");
+  if (url.hostname.toLowerCase() !== "chat.whatsapp.com" || !/^[A-Za-z0-9]{10,40}$/.test(code)) return null;
+  return `https://chat.whatsapp.com/${code}`;
+}
+
 function parseInstant(value, label, errors, key) {
   if (value === null || value === "") return null;
   if (typeof value !== "string" || value.length > 40) {
@@ -215,6 +231,7 @@ const SETTINGS_KEYS = new Set([
   "announcement",
   "instructions",
   "nextSteps",
+  "whatsappLink",
   "allowedYears",
   "sections",
   "domains",
@@ -248,6 +265,11 @@ export function validateSettingsPatch(patch, current) {
   if (has("recruitmentVenue")) next.recruitmentVenue = boundedString(patch.recruitmentVenue, 120, "Venue", errors, "recruitmentVenue");
   if (has("announcement")) next.announcement = boundedString(patch.announcement, 1000, "Announcement", errors, "announcement");
   if (has("nextSteps")) next.nextSteps = boundedString(patch.nextSteps, 600, "Next steps", errors, "nextSteps");
+  if (has("whatsappLink")) {
+    const link = normalizeWhatsappLink(patch.whatsappLink);
+    if (link === null) errors.whatsappLink = "Paste a WhatsApp group invite link like https://chat.whatsapp.com/AbCdEf123.";
+    else next.whatsappLink = link;
+  }
   if (has("instructions")) {
     const list = patch.instructions;
     if (!Array.isArray(list) || list.length > 10 || !list.every((s) => typeof s === "string" && s.trim().length <= 300)) {
@@ -332,10 +354,12 @@ export function parseFilters(params) {
   if (semester) /^[1-8]$/.test(semester) ? (f.semester = Number(semester)) : (errors.semester = "Unknown semester.");
   const section = get("section");
   if (section) /^[A-Za-z0-9]{1,3}$/.test(section) ? (f.section = section.toUpperCase()) : (errors.section = "Unknown section.");
-  for (const k of ["first", "second", "domain"]) {
+  for (const k of ["first", "second"]) {
     const v = get(k);
     if (v) TECH_DOMAIN_IDS.includes(v) ? (f[k] = v) : (errors[k] = "Unknown domain.");
   }
+  const domain = get("domain");
+  if (domain) [...TECH_DOMAIN_IDS, NON_TECH].includes(domain) ? (f.domain = domain) : (errors.domain = "Unknown domain.");
   const third = get("third");
   if (third) ["NON_TECH", "NONE"].includes(third) ? (f.third = third) : (errors.third = "Unknown value.");
   const status = get("status");
@@ -370,7 +394,10 @@ export function filtersToQuery(f) {
   if (f.section) query.section = f.section;
   if (f.first) query["preferences.first"] = f.first;
   if (f.second) query["preferences.second"] = f.second;
-  if (f.domain) {
+  if (f.domain === NON_TECH) {
+    // Non-Tech interest: Non-Tech only applicants plus technical applicants who added Non-Tech.
+    query.$or = [{ registrationType: "NON_TECH_ONLY" }, { "preferences.third": NON_TECH }];
+  } else if (f.domain) {
     query.registrationType = "TECHNICAL";
     query.$or = [{ "preferences.first": f.domain }, { "preferences.second": f.domain }];
   }

@@ -66,7 +66,9 @@ export const DEFAULT_SETTINGS = {
     "Only interested in Non-Tech? Pick just Non-Tech.",
     "You can register once. Contact the AdroIT team if your details need correcting.",
   ],
-  nextSteps: "Watch the AdroIT WhatsApp groups and Instagram for the recruitment schedule.",
+  nextSteps: "Keep an eye on the WhatsApp group for the recruitment schedule and updates.",
+  // Shown only to students who have just registered (in the register response), never in the public config.
+  whatsappLink: "",
   allowedYears: YEAR_IDS,
   allowedBranch: BRANCH,
   sections: ["A", "B", "C", "D"],

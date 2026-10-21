@@ -4,6 +4,7 @@ import {
   normalizeGithub,
   normalizePhone,
   normalizeUsn,
+  normalizeWhatsappLink,
   parseFilters,
   validateRegistration,
   validateSettingsPatch,
@@ -116,6 +117,17 @@ test("settings: end must follow start, domains must stay complete", () => {
   assert.ok(validateSettingsPatch({ registrationOpen: "yes" }, settings).errors.registrationOpen);
   assert.ok(validateSettingsPatch({ sections: ["A", "A"] }, settings).errors.sections);
   assert.deepEqual(validateSettingsPatch({ sections: ["a", "b1"] }, settings).value.sections, ["A", "B1"]);
+});
+
+test("WhatsApp link must be a chat.whatsapp.com group invite", () => {
+  assert.equal(normalizeWhatsappLink(""), "");
+  assert.equal(normalizeWhatsappLink(" chat.whatsapp.com/EadapPb17111goHGOtWCEK/ "), "https://chat.whatsapp.com/EadapPb17111goHGOtWCEK");
+  assert.equal(normalizeWhatsappLink("https://chat.whatsapp.com/EadapPb17111goHGOtWCEK?mode=ac"), "https://chat.whatsapp.com/EadapPb17111goHGOtWCEK");
+  assert.equal(normalizeWhatsappLink("https://wa.me/919876543210"), null);
+  assert.equal(normalizeWhatsappLink("https://evil.example/chat.whatsapp.com/abc"), null);
+  assert.equal(normalizeWhatsappLink("javascript:alert(1)"), null);
+  assert.ok(validateSettingsPatch({ whatsappLink: "https://example.com" }, settings).errors.whatsappLink);
+  assert.equal(validateSettingsPatch({ whatsappLink: "https://chat.whatsapp.com/EadapPb17111goHGOtWCEK" }, settings).value.whatsappLink, "https://chat.whatsapp.com/EadapPb17111goHGOtWCEK");
 });
 
 test("filters are whitelisted", () => {
