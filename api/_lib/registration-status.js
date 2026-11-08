@@ -1,4 +1,4 @@
-import { defaultClosed, readClosed, storeConfigured } from "./registration-store.js";
+import { BOOTCAMP_SESSIONS } from "./bootcamp-sessions.js";
 
 export async function handleRegistrationStatus(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -8,17 +8,8 @@ export async function handleRegistrationStatus(req, res) {
     res.end(JSON.stringify({ message: "Method not allowed" }));
     return;
   }
-  let closed = defaultClosed();
-  let cache = "no-store";
-  if (storeConfigured()) {
-    try {
-      closed = await readClosed();
-      cache = "public, max-age=0, s-maxage=5, stale-while-revalidate=30";
-    } catch {
-      /* fall back to the defaults in code */
-    }
-  }
+  const closed = Object.fromEntries(BOOTCAMP_SESSIONS.map((s) => [s.slug, Boolean(s.closed)]));
   res.statusCode = 200;
-  res.setHeader("Cache-Control", cache);
+  res.setHeader("Cache-Control", "public, max-age=0, s-maxage=60, stale-while-revalidate=300");
   res.end(JSON.stringify({ closed }));
 }

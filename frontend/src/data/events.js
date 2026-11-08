@@ -87,8 +87,10 @@ export const sharedEvents = [
     ],
     // No fixed date: the live schedule is set in admin69 and shown on /recruitment.
     // Set status to "completed" once this recruitment cycle is over.
-    dateLabel: "Dates announced soon",
-    location: "RNSIT",
+    date: "2026-11-12T08:30:00Z",
+    endDate: "2026-11-13T08:30:00Z",
+    dateLabel: "November 12–13, 2026 · After 2:00 PM",
+    location: "Admin Block Seminar Hall (2nd Floor), RNSIT",
     slug: "recruitment-2026",
     status: "upcoming",
     registerHref: "/recruitment",

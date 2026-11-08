@@ -6,8 +6,6 @@ import { adminRoutes } from "../api/_lib/admin-routes.js";
 import { handleRegistrationStatus } from "../api/_lib/registration-status.js";
 import { handleMembers } from "../api/_lib/members-public.js";
 import { handleUiDesign } from "../api/_lib/ui-design.js";
-import { handleRecruitment, routeFromUrl } from "../api/_lib/recruitment.js";
-
 const fail = (res) => () => {
   res.statusCode = 500;
   res.end();
@@ -30,14 +28,7 @@ function adminApi() {
       server.middlewares.use("/api/ui-design", (req, res) => {
         handleUiDesign(req, res).catch(fail(res));
       });
-      server.middlewares.use("/api/recruitment", (req, res) => {
-        handleRecruitment(req, res, routeFromUrl(req.originalUrl)).catch(fail(res));
-      });
       server.middlewares.use("/api/admin69", (req, res) => {
-        if (req.url.startsWith("/recruitment")) {
-          handleRecruitment(req, res, routeFromUrl(req.originalUrl)).catch(fail(res));
-          return;
-        }
         const route = adminRoutes[req.url.split("?")[0]];
         if (!route) {
           res.statusCode = 404;
@@ -113,16 +104,11 @@ export default defineConfig(({ mode }) => {
   process.env.FORMSUBMIT_ENDPOINT = env.FORMSUBMIT_ENDPOINT;
   process.env.ADMIN_PASSWORD_HASH ||= env.ADMIN_PASSWORD_HASH || "";
   process.env.ADMIN_SESSION_SECRET ||= env.ADMIN_SESSION_SECRET || "";
-  process.env.MONGODB_URI ||= env.MONGODB_URI || "";
-  process.env.MONGODB_DB ||= env.MONGODB_DB || "";
   for (const key of [
     "CLOUDINARY_URL",
     "CLOUDINARY_CLOUD_NAME",
     "CLOUDINARY_API_KEY",
     "CLOUDINARY_API_SECRET",
-    "TURNSTILE_SITE_KEY",
-    "TURNSTILE_SECRET_KEY",
-    "RECRUITMENT_RATE_SECRET",
   ]) {
     process.env[key] ||= env[key] || "";
   }

@@ -1,6 +1,6 @@
 # ☁️ AdroIT Official Site
 
-This repository contains the official AdroIT platform built using the **MERN Stack** (MongoDB, Express.js, React, Node.js) following scalable cloud-native architecture principles. The project is designed for collaborative development with structured workflows and open-source standards.
+This repository contains the official AdroIT platform built using React, Supabase, and Vercel following scalable cloud-native architecture principles. The project is designed for collaborative development with structured workflows and open-source standards.
 
 ---
 
@@ -23,7 +23,6 @@ The AdroIT Official Site is a full-stack web application developed under the Clo
 
 * Node.js
 * Express.js
-* MongoDB
 * REST APIs
 
 ### Dev Tools
@@ -54,7 +53,6 @@ Install the following:
 * Node.js (v16 or higher)
 * npm
 * Git
-* MongoDB (local or cloud instance later)
 
 Check versions:
 
@@ -136,7 +134,6 @@ Before contributing:
 
 ## 🧪 Coding Guidelines
 
-* Follow MERN best practices.
 * Maintain separation between frontend and backend logic.
 * Avoid unnecessary dependencies.
 * Keep components modular and reusable.
@@ -164,7 +161,6 @@ npm run dev -- --port 5173
 
 *  Frontend foundation (React + Vite)
 *  Backend API structure (Node + Express)
-*  MongoDB integration
 *  Authentication system
 *  API integration
 *  Cloud deployment (AWS / Azure / GCP)
@@ -190,5 +186,5 @@ License details available in the LICENSE file.
 
 ## ⭐ Project Vision
 
-Build a scalable MERN-stack platform aligned with modern cloud engineering practices and collaborative open-source development.
+Build a scalable platform aligned with modern cloud engineering practices and collaborative open-source development.
 
