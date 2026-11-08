@@ -93,6 +93,7 @@ export const sharedEvents = [
     location: "Admin Block Seminar Hall (2nd Floor), RNSIT",
     slug: "recruitment-2026",
     status: "upcoming",
+    statusLabel: "Open",
     registerHref: "/recruitment",
   },
   {
@@ -282,7 +283,7 @@ export function sessionCompleted(event, index, now = new Date()) {
 export function eventStatusLabel(event, now = new Date()) {
   const phase = eventPhase(event, now);
   if (phase === "live") return "Event live";
-  if (phase === "upcoming") return "Upcoming";
+  if (phase === "upcoming") return event.statusLabel || "Upcoming";
   return "Completed";
 }
 

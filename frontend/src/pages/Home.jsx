@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, BarChart3, Brain, Cloud, Megaphone, ShieldCheck } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import EventCarousel from '../components/EventCarousel';
+import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
-import { registrationDomains } from '../data/domainRegistration';
 import { useTheme } from '../lib/theme';
 
 const liveEvent = {
@@ -433,7 +431,6 @@ const Terminal = () => {
 
 const Home = () => {
   const { isDark } = useTheme();
-  const navigate = useNavigate();
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -455,16 +452,6 @@ const Home = () => {
 
     return () => cancelAnimationFrame(frame);
   }, []);
-
-  const domainCards = registrationDomains
-    .filter((domain) => domain.slug !== "non-tech")
-    .map((domain) => ({
-      _id: domain.slug,
-      title: domain.title,
-      description: domain.description,
-      label: domain.label,
-      link: `/register/${domain.slug}`,
-    }));
 
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip bg-page">
@@ -514,11 +501,11 @@ const Home = () => {
       >
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
           <Link
-            to="/recruitment"
+            to="/events"
             className="ui-chip mb-4 inline-flex min-h-10 max-w-full items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-primary-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-4 sm:text-xs sm:tracking-[0.22em]"
           >
             <span className="h-2 w-2 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" aria-hidden="true" />
-            Recruitment opening soon
+            Recruitments are open
             <ArrowUpRight size={14} className="shrink-0" aria-hidden="true" />
           </Link>
           <img
@@ -538,12 +525,29 @@ const Home = () => {
             <span className="text-primary-ink">Empowering Tomorrow's Innovators</span>{" "}
             through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
-          <EventCarousel
-            events={domainCards}
-            onSelect={(domain) => {
-              navigate(`/events/skill-up-bootcamp?domain=${domain._id}`);
-            }}
-          />
+          <Link
+            to="/events"
+            className="event-strip-card ui-card mx-auto my-6 flex w-full max-w-md flex-col justify-between rounded-2xl p-5 text-left sm:my-10 sm:min-h-[12rem] sm:rounded-3xl sm:p-6"
+          >
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-primary-ink sm:text-sm">
+                AdroIT
+              </span>
+              <span
+                data-part="badge"
+                className="shrink-0 rounded-full bg-primary px-2.5 py-1 text-[10px] font-semibold leading-none text-on-primary sm:text-[11px]"
+              >
+                Open
+              </span>
+            </div>
+            <h2 className="ui-heading text-xl font-bold text-ink sm:text-2xl">
+              Recruitments are open
+            </h2>
+            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-ink">
+              View events
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </span>
+          </Link>
         </div>
       </section>
 
