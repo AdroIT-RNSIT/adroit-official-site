@@ -104,6 +104,7 @@ export default function Recruitment() {
             Second preference: <strong>{form.second_preference}</strong>
             {form.non_tech && <>, and you've opted for <strong>Non-Tech</strong></>}.
             See you at the recruitment!
+            Whatsapp Link : https://chat.whatsapp.com/FZd81AJ9dXaE84utZAss2V?s=cl&p=a&mlu=4&ilr=4&iam=2
           </p>
         </div>
       ) : (
