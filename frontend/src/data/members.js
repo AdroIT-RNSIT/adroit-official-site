@@ -116,8 +116,7 @@ export const memberGroups = [
         "https://www.linkedin.com/in/anoushka-kanchi-a20105379",
         "https://res.cloudinary.com/vkdnztnm/image/upload/c_fill,g_face,w_800,h_800,f_auto,q_auto/v1791094083/WhatsApp_Image_2026-10-04_at_11.18.41.webp",
       ),
-      member("Raashi"),
-      member("Shahzaib Ali Khan"),
+      member("Raashi")
     ],
   },
   {
