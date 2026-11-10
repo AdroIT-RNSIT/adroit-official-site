@@ -48,6 +48,9 @@ export default function RecruitmentSuccess({ registration, config }) {
       <p className="mx-auto mt-2 max-w-md text-ink-muted">
         Thanks, {registration.fullName.split(" ")[0]}. Your registration is saved. Keep your reference ID handy.
       </p>
+      <p className="mx-auto mt-2 max-w-md text-ink-muted">
+        Whatsapp Link : https://chat.whatsapp.com/FZd81AJ9dXaE84utZAss2V?s=cl&p=a&mlu=4&ilr=4&iam=2
+      </p>
 
       <div className="ui-well mx-auto mt-6 flex max-w-sm items-center justify-between gap-3 rounded-2xl px-5 py-4 text-left">
         <div>
