@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -37,6 +37,17 @@ export const DESIGNS = [
       sample: "sketch",
     },
     loader: () => import("./pencil/pencil.css"),
+  },
+  {
+    id: "swiss",
+    label: "Swiss Editorial",
+    description: "Swiss typography, hairline grids, and modern tech-studio restraint.",
+    preview: {
+      light: ["#f7f7f5", "#ffffff", "#245bdb"],
+      dark: ["#111214", "#191b20", "#6d91ff"],
+      sample: "swiss",
+    },
+    loader: () => import("./swiss/swiss.css"),
   },
 ];
 

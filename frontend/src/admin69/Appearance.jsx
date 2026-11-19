@@ -36,6 +36,14 @@ function sampleStyle(sample, surface, dark) {
         : "2px 3px 0 rgb(41 41 41 / 0.14)",
     };
   }
+  if (sample === "swiss") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "#30333a" : "#e2e3e6"}`,
+      borderRadius: "2px",
+      boxShadow: "none",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 
@@ -50,10 +58,13 @@ function SwatchHalf({ colors = [], sample, dark }) {
           style={{ background: accent }}
         />
       )}
-      <div className="relative w-full rounded-lg p-2.5" style={sampleStyle(sample, surface, dark)}>
-        <div className="h-1.5 w-3/4 rounded-full" style={{ background: ink }} />
-        <div className="mt-1.5 h-1.5 w-1/2 rounded-full opacity-50" style={{ background: ink }} />
-        <div className="mt-2.5 h-3 w-10 rounded-full" style={{ background: accent }} />
+      <div
+        className={`relative w-full p-2.5 ${sample === "swiss" ? "rounded-sm" : "rounded-lg"}`}
+        style={sampleStyle(sample, surface, dark)}
+      >
+        <div className={`h-1.5 w-3/4 ${sample === "swiss" ? "rounded-none" : "rounded-full"}`} style={{ background: ink }} />
+        <div className={`mt-1.5 h-1.5 w-1/2 opacity-50 ${sample === "swiss" ? "rounded-none" : "rounded-full"}`} style={{ background: ink }} />
+        <div className={`mt-2.5 h-3 w-10 ${sample === "swiss" ? "rounded-none" : "rounded-full"}`} style={{ background: accent }} />
       </div>
     </div>
   );
