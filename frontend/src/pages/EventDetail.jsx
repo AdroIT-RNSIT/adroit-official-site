@@ -87,7 +87,7 @@ export default function EventDetail() {
     return <ParadoxPage event={event} glimpseIndex={glimpseIndex} setGlimpseIndex={setGlimpseIndex} />;
   }
 
-  const isCompleted = event.status === "completed";
+  const isCompleted = eventPhase(event) === "completed";
   const individualRegistration = event.registration === "individual";
   const poster = event.poster || event.imageUrl;
   const posterContained = event.posterFit === "contain";

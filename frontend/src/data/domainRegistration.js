@@ -5,6 +5,7 @@ export const registrationDomains = [
     label: "Technical",
     description: "Build intelligent systems that learn from data. Dive into neural networks, computer vision, and NLP.",
     whatsapp: "https://chat.whatsapp.com/EadapPb17111goHGOtWCEK",
+    closed: true,
   },
   {
     slug: "cloud-computing",
@@ -12,6 +13,7 @@ export const registrationDomains = [
     label: "Technical",
     description: "Design and deploy scalable applications on AWS, Azure, and GCP. Master Docker and Kubernetes.",
     whatsapp: "https://chat.whatsapp.com/ER8Gziquf8v2EvAXmiFDbt",
+    closed: true,
   },
   {
     slug: "cybersecurity",
@@ -19,6 +21,7 @@ export const registrationDomains = [
     label: "Technical",
     description: "Protect systems from threats. Learn ethical hacking, network security, and cryptography.",
     whatsapp: "https://chat.whatsapp.com/KqKSXPEhPQk0YHVYpjOE2F",
+    closed: true,
   },
   {
     slug: "data-analytics",
@@ -32,6 +35,7 @@ export const registrationDomains = [
     title: "Non-Tech",
     label: "Non-Tech",
     description: "Events, social media, marketing, and outreach that keep the club visible and moving.",
+    closed: true,
   },
 ];
 

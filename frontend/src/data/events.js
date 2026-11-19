@@ -85,15 +85,13 @@ export const sharedEvents = [
       "Pick two technical domains you genuinely want to work in: Cloud Computing, Machine Learning / AI, Cybersecurity or Data Analytics. You can add Non-Tech as an optional third preference, or apply for Non-Tech only if events, design, media and outreach are more your thing.",
       "Registration is online and takes a couple of minutes. The registration deadline, recruitment date and venue are shown on the recruitment page as soon as they're announced.",
     ],
-    // No fixed date: the live schedule is set in admin69 and shown on /recruitment.
-    // Set status to "completed" once this recruitment cycle is over.
     date: "2026-11-12T08:30:00Z",
     endDate: "2026-11-13T08:30:00Z",
     dateLabel: "November 12–13, 2026 · After 2:00 PM",
     location: "Admin Block Seminar Hall (2nd Floor), RNSIT",
     slug: "recruitment-2026",
-    status: "upcoming",
-    statusLabel: "Open",
+    status: "completed",
+    statusLabel: "Completed",
     registerHref: "/recruitment",
   },
   {
@@ -118,7 +116,7 @@ export const sharedEvents = [
     endDate: "2026-10-09T05:00:00Z",
     dateLabel: "October 6–9, 2026",
     slug: "skill-up-bootcamp",
-    status: "upcoming",
+    status: "completed",
     registration: "individual",
     poster: "/skill-up-bootcamp.webp",
     imageUrl: "/skill-up-bootcamp.webp",
