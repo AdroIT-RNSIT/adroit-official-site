@@ -26,6 +26,16 @@ function sampleStyle(sample, surface, dark) {
       WebkitBackdropFilter: "blur(6px)",
     };
   }
+  if (sample === "sketch") {
+    return {
+      background: surface,
+      border: `1.5px solid ${dark ? "#ece7dc" : "#292929"}`,
+      borderRadius: "18px 6px 16px 7px / 7px 16px 6px 18px",
+      boxShadow: dark
+        ? "2px 3px 0 rgb(0 0 0 / 0.45)"
+        : "2px 3px 0 rgb(41 41 41 / 0.14)",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 
