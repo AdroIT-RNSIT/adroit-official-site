@@ -141,7 +141,7 @@ const Footer = ({ showMap = false }) => {
                   </svg>
                 </a>
                 <a
-                  href="https://www.instagram.com/adroit_rnsit"
+                  href="https://www.instagram.com/adroit.rnsit"
                   target="_blank"
                   rel="noopener noreferrer"
                   data-brand="instagram"
