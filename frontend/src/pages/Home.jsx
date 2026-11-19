@@ -4,12 +4,6 @@ import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { useTheme } from '../lib/theme';
 
-const liveEvent = {
-  name: "Skill Up Boot Camp",
-  when: "October 6–9, 2026",
-  href: "/events/skill-up-bootcamp",
-};
-
 const showcase = [
   {
     name: "Data Analytics",
@@ -500,14 +494,6 @@ const Home = () => {
         className="relative flex flex-col items-center overflow-x-clip px-4 sm:px-6 lg:px-8 pt-6 pb-6 sm:pt-24 sm:pb-10 lg:pt-28 lg:pb-8 opacity-0 translate-y-4 transition-all duration-700 ease-out motion-reduce:transition-none"
       >
         <div className="max-w-5xl text-center z-10 relative w-full mx-auto">
-          <Link
-            to="/events"
-            className="ui-chip mb-4 inline-flex min-h-10 max-w-full items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-primary-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:px-4 sm:text-xs sm:tracking-[0.22em]"
-          >
-            <span className="h-2 w-2 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" aria-hidden="true" />
-            Recruitments are open
-            <ArrowUpRight size={14} className="shrink-0" aria-hidden="true" />
-          </Link>
           <img
             alt="AdroIT"
             className="block object-contain h-16 sm:h-24 md:h-[7.5rem] w-auto max-w-[min(100%,18rem)] mx-auto mb-4 sm:mb-5"
@@ -525,29 +511,6 @@ const Home = () => {
             <span className="text-primary-ink">Empowering Tomorrow's Innovators</span>{" "}
             through cutting-edge technology, collaborative projects, and industry-ready skills
           </p>
-          <Link
-            to="/events"
-            className="event-strip-card ui-card mx-auto my-6 flex w-full max-w-md flex-col justify-between rounded-2xl p-5 text-left sm:my-10 sm:min-h-[12rem] sm:rounded-3xl sm:p-6"
-          >
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <span className="text-[11px] font-semibold uppercase tracking-wide text-primary-ink sm:text-sm">
-                AdroIT
-              </span>
-              <span
-                data-part="badge"
-                className="shrink-0 rounded-full bg-primary px-2.5 py-1 text-[10px] font-semibold leading-none text-on-primary sm:text-[11px]"
-              >
-                Open
-              </span>
-            </div>
-            <h2 className="ui-heading text-xl font-bold text-ink sm:text-2xl">
-              Recruitments are open
-            </h2>
-            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-ink">
-              View events
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </span>
-          </Link>
         </div>
       </section>
 
@@ -580,7 +543,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <section className="px-4 sm:px-6 lg:px-8 pt-14 pb-24 sm:pt-20">
         <div className="max-w-6xl mx-auto">
           <h2 className="ui-heading text-2xl sm:text-4xl font-bold text-ink mb-8">
             Events through the year
@@ -635,27 +598,6 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="px-4 sm:px-6 lg:px-8 pt-10 pb-24">
-        <div className="ui-card max-w-6xl mx-auto rounded-3xl sm:rounded-[2rem] text-ink p-6 sm:p-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div>
-            <h2 className="ui-heading text-ink text-2xl sm:text-4xl font-bold">
-              Skill Up Boot Camp
-            </h2>
-
-            <p className="mt-2 text-ink-muted">
-              Four days. Four domains. Hands-on technical
-              exposure from October 6 to October 9, 2026.
-            </p>
-          </div>
-
-          <Link
-            to={liveEvent.href}
-            className="ui-solid shrink-0 inline-flex w-full sm:w-auto justify-center rounded-full px-6 py-3 font-semibold transition-transform duration-200 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none"
-          >
-            Explore the boot camp
-          </Link>
-        </div>
-      </section>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import { ArrowRight, Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
-import { Link, useLocation } from 'react-router-dom';
+import { Brain, Cloud, ShieldCheck, BarChart3 } from "lucide-react";
+import { useLocation } from 'react-router-dom';
 
 const Footer = ({ showMap = false }) => {
   const currentYear = new Date().getFullYear();
@@ -107,13 +107,6 @@ const Footer = ({ showMap = false }) => {
               </li>
 
               </ul>
-            <Link
-              to="/recruitment"
-              className="ui-pill mt-5 inline-flex min-h-10 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              Join AdroIT: recruitment
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
           </div>
 
           {/* ===== COLUMN 4: CONNECT (3 cols) - CONDITIONAL ===== */}
