@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus" | "immersive") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus" | "immersive" | "flow") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -125,6 +125,17 @@ export const DESIGNS = [
       sample: "immersive",
     },
     loader: () => import("./3d-immersive/3d-immersive.css"),
+  },
+  {
+    id: "gradient-flow",
+    label: "Gradient Flow",
+    description: "Aurora mesh gradients, frosted panels, and fluid studio compositions.",
+    preview: {
+      light: ["#f4f0ff", "#ffffff", "#7c3aed"],
+      dark: ["#0a0814", "#141022", "#a78bfa"],
+      sample: "flow",
+    },
+    loader: () => import("./gradient-flow/gradient-flow.css"),
   },
 ];
 

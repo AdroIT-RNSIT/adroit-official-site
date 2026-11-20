@@ -10,6 +10,7 @@ import HomeBlueprint from "./HomeBlueprint";
 import HomeCreativeCampus from "./HomeCreativeCampus";
 import HomeDarkLuxury from "./HomeDarkLuxury";
 import HomeFuturistic from "./HomeFuturistic";
+import HomeGradientFlow from "./HomeGradientFlow";
 import HomeNeoBrutal from "./HomeNeoBrutal";
 
 const showcase = [
@@ -482,6 +483,10 @@ const Home = () => {
 
   if (design === "3d-immersive") {
     return <Home3dImmersive />;
+  }
+
+  if (design === "gradient-flow") {
+    return <HomeGradientFlow />;
   }
 
   return (

@@ -130,6 +130,19 @@ function sampleStyle(sample, surface, dark) {
         : "radial-gradient(circle at 20% 30%, rgb(8 145 178 / 0.22), transparent 40%), radial-gradient(circle at 75% 65%, rgb(124 58 237 / 0.16), transparent 42%)",
     };
   }
+  if (sample === "flow") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "rgb(167 139 250 / 0.4)" : "rgb(124 58 237 / 0.35)"}`,
+      borderRadius: "18px",
+      boxShadow: dark
+        ? "0 16px 32px rgb(0 0 0 / 0.45), 0 0 20px rgb(244 114 182 / 0.18)"
+        : "0 14px 28px rgb(124 58 237 / 0.14)",
+      backgroundImage: dark
+        ? "radial-gradient(circle at 15% 20%, rgb(167 139 250 / 0.4), transparent 42%), radial-gradient(circle at 85% 30%, rgb(34 211 238 / 0.28), transparent 40%), radial-gradient(circle at 60% 90%, rgb(244 114 182 / 0.25), transparent 45%)"
+        : "radial-gradient(circle at 15% 20%, rgb(124 58 237 / 0.28), transparent 42%), radial-gradient(circle at 85% 30%, rgb(6 182 212 / 0.22), transparent 40%), radial-gradient(circle at 60% 90%, rgb(219 39 119 / 0.16), transparent 45%)",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 
