@@ -72,6 +72,7 @@ const CSS = `
 export default function Members() {
   const { design } = useUiDesign();
   const campus = design === "creative-campus";
+  const brutal = design === "neo-brutalism";
   const memberGroups = useMemberGroups();
   const GROUPS = useMemo(() => buildGroups(memberGroups), [memberGroups]);
   const ALL = useMemo(() => GROUPS.flatMap((g) => g.items), [GROUPS]);
@@ -171,7 +172,7 @@ export default function Members() {
   return (
     <div
       data-page="members"
-      data-layout={campus ? "campus" : undefined}
+      data-layout={campus ? "campus" : brutal ? "brutal" : undefined}
       className="relative min-h-dvh overflow-x-clip bg-page pt-6 font-sans text-ink antialiased lg:pt-8"
     >
       <style>{CSS}</style>
@@ -185,7 +186,12 @@ export default function Members() {
               People · domains · community
             </p>
           )}
-          <h1 style={{ animationDelay: "90ms" }} className="ui-heading fluid-h1 members-rise mt-3 font-extrabold leading-[1.05] text-ink">
+          {brutal && (
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Roster / crew directory
+            </p>
+          )}
+          <h1 style={{ animationDelay: "90ms" }} className={`ui-heading fluid-h1 members-rise mt-3 font-extrabold leading-[1.05] text-ink ${brutal ? "uppercase tracking-tight" : ""}`}>
             AdroIT Members
           </h1>
           <p style={{ animationDelay: "180ms" }} className="members-rise mt-3 max-w-md text-base text-ink-muted sm:text-lg">

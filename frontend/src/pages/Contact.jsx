@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, CircleAlert, Clock, ExternalLink, Mail, MapPin, X } from "lucide-react";
+import { useUiDesign } from "../ui-designs/useUiDesign";
 
 const RATE_LIMIT_KEY = "adroit_contact_submissions";
 const RATE_LIMIT_MAX = 2;
@@ -342,6 +343,8 @@ function SentConfirmation({ headingRef, recipient, onWriteAnother }) {
 }
 
 export default function Contact() {
+  const { design } = useUiDesign();
+  const brutal = design === "neo-brutalism";
   const formOpenedAtRef = useRef(Date.now());
   const cardRef = useRef(null);
   const buttonRef = useRef(null);
@@ -537,14 +540,23 @@ export default function Contact() {
   };
 
   return (
-    <div data-page="contact" className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-12 text-ink sm:pb-16">
+    <div
+      data-page="contact"
+      data-layout={brutal ? "brutal" : undefined}
+      className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-12 text-ink sm:pb-16"
+    >
       <style>{CSS}</style>
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <header className="mb-6 text-center sm:mb-12">
-          <h1 className="ui-heading fluid-h1 mb-3 font-extrabold text-ink sm:mb-4">
+        <header className={`mb-6 sm:mb-12 ${brutal ? "text-left" : "text-center"}`}>
+          {brutal && (
+            <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Inbox / write us
+            </p>
+          )}
+          <h1 className={`ui-heading fluid-h1 mb-3 font-extrabold text-ink sm:mb-4 ${brutal ? "uppercase tracking-tight" : ""}`}>
             Contact
           </h1>
-          <p className="mx-auto max-w-2xl text-sm text-ink-muted sm:text-lg">
+          <p className={`max-w-2xl text-sm text-ink-muted sm:text-lg ${brutal ? "" : "mx-auto"}`}>
             Questions about events, domains, or joining the club? Write to us and we’ll reply on weekdays.
           </p>
         </header>

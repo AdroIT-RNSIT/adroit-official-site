@@ -63,7 +63,7 @@ export const DESIGNS = [
   {
     id: "neo-brutalism",
     label: "Neo-Brutalism",
-    description: "Thick outlines, hard shadows, and bold color-block layouts.",
+    description: "Poster blocks, thick ink outlines, hard shadows, and asymmetric layouts.",
     preview: {
       light: ["#f8f5ec", "#ffe44d", "#3155e7"],
       dark: ["#121212", "#1c1c1c", "#ffe44d"],

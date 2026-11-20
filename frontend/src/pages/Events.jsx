@@ -64,13 +64,13 @@ export default function Events() {
         {upcomingEvents.length > 0 && (
           <section className="mb-14">
             <div className="mb-6 flex items-end justify-between gap-4">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+              <h2 className={`text-xs font-semibold uppercase tracking-[0.22em] text-primary ${brutal ? "font-mono font-bold" : ""}`}>
                 Upcoming
               </h2>
             </div>
-            <div className="space-y-6">
+            <div data-part={brutal ? "poster-wall" : undefined} className={brutal ? "" : "space-y-6"}>
               {upcomingEvents.map((event, index) => (
-                <FeaturedEvent key={event._id} event={event} docRef={`EVT-${String(index + 1).padStart(2, "0")}`} />
+                <FeaturedEvent key={event._id} event={event} docRef={`EVT-${String(index + 1).padStart(2, "0")}`} brutal={brutal} />
               ))}
             </div>
           </section>
@@ -78,7 +78,7 @@ export default function Events() {
 
         <section>
           <div className="mb-6 flex items-end justify-between gap-4">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+            <h2 className={`text-xs font-semibold uppercase tracking-[0.22em] text-primary ${brutal ? "font-mono font-bold" : ""}`}>
               Completed
             </h2>
           </div>
@@ -87,12 +87,13 @@ export default function Events() {
               <h3 className="ui-heading text-xl font-bold text-ink">No past events yet</h3>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div data-part={brutal ? "poster-wall" : undefined} className={brutal ? "" : "space-y-6"}>
               {completedEvents.map((event, index) => (
                 <FeaturedEvent
                   key={event._id}
                   event={event}
                   docRef={`EVT-${String(upcomingEvents.length + index + 1).padStart(2, "0")}`}
+                  brutal={brutal}
                 />
               ))}
             </div>
@@ -112,7 +113,7 @@ function StatusChip({ label, phase, className = "" }) {
   );
 }
 
-function FeaturedEvent({ event, docRef }) {
+function FeaturedEvent({ event, docRef, brutal = false }) {
   const poster = event.poster || event.imageUrl;
   const posterContained = event.posterFit === "contain";
   const posterColumn = event.posterColumn || "52%";
@@ -126,8 +127,18 @@ function FeaturedEvent({ event, docRef }) {
   return (
     <article
       data-part="event-card"
-      className={`ui-card group grid overflow-hidden rounded-[2rem] transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
-      style={posterContained ? { "--poster-col": posterColumn } : undefined}
+      className={`ui-card group grid overflow-hidden rounded-[2rem] transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${
+        brutal
+          ? poster
+            ? "md:grid-cols-[minmax(0,42%)_1fr]"
+            : ""
+          : poster
+            ? posterContained
+              ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center"
+              : "md:grid-cols-[minmax(0,14rem)_1fr]"
+            : ""
+      }`}
+      style={!brutal && posterContained ? { "--poster-col": posterColumn } : undefined}
     >
       {poster && (
         <Link

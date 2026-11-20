@@ -790,18 +790,171 @@ html[data-ui='neo-brutalism'] [data-part='doc-ref'] {
   color: var(--nb-blue);
 }
 
+/* Flatten soft radii from Tailwind markup — neo needs hard corners */
+html[data-ui='neo-brutalism'] .rounded-full,
+html[data-ui='neo-brutalism'] .rounded-3xl,
+html[data-ui='neo-brutalism'] .rounded-\[2rem\],
+html[data-ui='neo-brutalism'] .sm\:rounded-\[2rem\],
+html[data-ui='neo-brutalism'] .rounded-2xl,
+html[data-ui='neo-brutalism'] .sm\:rounded-3xl,
+html[data-ui='neo-brutalism'] .rounded-xl,
+html[data-ui='neo-brutalism'] .rounded-lg,
+html[data-ui='neo-brutalism'] .rounded-md,
+html[data-ui='neo-brutalism'] .rounded-\[1\.375rem\],
+html[data-ui='neo-brutalism'] .sm\:rounded-\[1\.25rem\],
+html[data-ui='neo-brutalism'] .rounded-\[1\.5rem\] {
+  border-radius: var(--nb-radius);
+}
+
+html[data-ui='neo-brutalism'] .ui-pill.rounded-full,
+html[data-ui='neo-brutalism'] .ui-chip.rounded-full,
+html[data-ui='neo-brutalism'] .ui-solid.rounded-full {
+  border-radius: 999px;
+}
+
 html[data-ui='neo-brutalism'] [data-page='events'] [data-part='event-card'] {
-  border-radius: var(--nb-radius-lg);
+  border-radius: var(--nb-radius);
+  overflow: hidden;
 }
 
 html[data-ui='neo-brutalism'] [data-page='events'] [data-part='event-card']:nth-child(3n+1) {
-  background: color-mix(in srgb, var(--nb-yellow) 35%, var(--color-surface));
+  background: color-mix(in srgb, var(--nb-yellow) 42%, var(--color-surface));
 }
 html[data-ui='neo-brutalism'] [data-page='events'] [data-part='event-card']:nth-child(3n+2) {
-  background: color-mix(in srgb, var(--nb-pink) 25%, var(--color-surface));
+  background: color-mix(in srgb, var(--nb-pink) 32%, var(--color-surface));
 }
 html[data-ui='neo-brutalism'] [data-page='events'] [data-part='event-card']:nth-child(3n) {
-  background: color-mix(in srgb, var(--nb-blue) 18%, var(--color-surface));
+  background: color-mix(in srgb, var(--nb-blue) 22%, var(--color-surface));
+}
+
+/* Poster wall composition */
+html[data-ui='neo-brutalism'] [data-page='events'][data-layout='brutal'] [data-part='poster-wall'] {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  html[data-ui='neo-brutalism'] [data-page='events'][data-layout='brutal'] [data-part='poster-wall'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html[data-ui='neo-brutalism'] [data-page='events'][data-layout='brutal'] [data-part='poster-wall'] > [data-part='event-card']:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+html[data-ui='neo-brutalism'] [data-page='events'][data-layout='brutal'] [data-part='event-card'] {
+  box-shadow: var(--nb-shadow-lg);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+html[data-ui='neo-brutalism'] [data-page='events'][data-layout='brutal'] [data-part='event-card']:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--nb-ink);
+}
+
+html[data-ui='neo-brutalism'].dark [data-page='events'][data-layout='brutal'] [data-part='event-card']:hover {
+  box-shadow: 8px 8px 0 #f5f5f5;
+}
+
+html[data-ui='neo-brutalism'] [data-page='events'][data-layout='brutal'] [data-part='event-card'] .ui-heading {
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+
+html[data-ui='neo-brutalism'] [data-page='members'] [data-part='member'] {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow-sm);
+  border-radius: var(--nb-radius);
+  background: var(--color-surface);
+}
+
+html[data-ui='neo-brutalism'] [data-page='members'] [data-part='member']:nth-child(5n+1) {
+  background: color-mix(in srgb, var(--nb-yellow) 40%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='members'] [data-part='member']:nth-child(5n+2) {
+  background: color-mix(in srgb, var(--nb-pink) 28%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='members'] [data-part='member']:nth-child(5n+3) {
+  background: color-mix(in srgb, var(--nb-blue) 16%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='members'] [data-part='member']:nth-child(5n+4) {
+  background: color-mix(in srgb, var(--nb-orange) 28%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='members'] [data-part='member']:nth-child(5n) {
+  background: var(--color-surface);
+}
+
+html[data-ui='neo-brutalism'] [data-page='members'][data-layout='brutal'] > header .ui-heading {
+  text-transform: uppercase;
+}
+
+html[data-ui='neo-brutalism'] [data-page='domains'] [data-part='banner'] {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow-lg);
+  background: var(--nb-yellow);
+  color: #171717;
+}
+
+html[data-ui='neo-brutalism'] [data-page='domains'][data-layout='brutal'] > .relative > section:first-child .ui-heading {
+  text-transform: uppercase;
+}
+
+html[data-ui='neo-brutalism'] [data-page='domains'] .ui-card {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow);
+}
+
+html[data-ui='neo-brutalism'] [data-page='contact'] [data-part='tile']:nth-child(3n+1) {
+  background: color-mix(in srgb, var(--nb-yellow) 35%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='contact'] [data-part='tile']:nth-child(3n+2) {
+  background: color-mix(in srgb, var(--nb-pink) 25%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='contact'] [data-part='tile']:nth-child(3n) {
+  background: color-mix(in srgb, var(--nb-blue) 16%, var(--color-surface));
+}
+
+html[data-ui='neo-brutalism'] [data-page='contact'] [data-part='form-well'],
+html[data-ui='neo-brutalism'] [data-page='contact'] .ui-card {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow-lg);
+}
+
+html[data-ui='neo-brutalism'] [data-page='resources'] .ui-card {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow);
+}
+
+html[data-ui='neo-brutalism'] [data-page='resources'] .ui-card:nth-child(4n+1) {
+  background: color-mix(in srgb, var(--nb-yellow) 35%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='resources'] .ui-card:nth-child(4n+2) {
+  background: color-mix(in srgb, var(--nb-pink) 25%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='resources'] .ui-card:nth-child(4n+3) {
+  background: color-mix(in srgb, var(--nb-blue) 16%, var(--color-surface));
+}
+html[data-ui='neo-brutalism'] [data-page='resources'] .ui-card:nth-child(4n) {
+  background: color-mix(in srgb, var(--nb-orange) 22%, var(--color-surface));
+}
+
+html[data-ui='neo-brutalism'] [data-page='recruitment'] .ui-card {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow-lg);
+  background: var(--nb-yellow);
+  color: #171717;
+}
+
+html[data-ui='neo-brutalism'] [data-page='recruitment'] .ui-heading {
+  color: #171717;
+}
+
+html[data-ui='neo-brutalism'] [data-page='event'] .ui-card,
+html[data-ui='neo-brutalism'] [data-page='paradox'] .ui-card,
+html[data-ui='neo-brutalism'] [data-page='bootcamp'] .ui-card {
+  border: var(--nb-border);
+  box-shadow: var(--nb-shadow);
 }
 
 /* Neo home composition helpers */
@@ -828,6 +981,42 @@ html[data-ui='neo-brutalism'] [data-part='nb-block'] {
   border: var(--nb-border);
   box-shadow: var(--nb-shadow-lg);
   background: var(--color-surface);
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-block'][data-tone='blue'] {
+  background: var(--nb-blue);
+  color: #fff;
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-block'][data-tone='blue'] .ui-heading {
+  color: #fff;
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-mark'] {
+  background: var(--nb-yellow);
+  color: #171717;
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-about'] {
+  background: var(--nb-yellow);
+  color: #171717;
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-about'] .ui-heading,
+html[data-ui='neo-brutalism'] [data-part='nb-about'] [data-part='nb-num'] {
+  color: #171717;
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-shape'] {
+  border: var(--nb-border);
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-shape'][data-tone='pink'] {
+  background: var(--nb-pink);
+}
+
+html[data-ui='neo-brutalism'] [data-part='nb-shape'][data-tone='blue'] {
+  background: var(--nb-blue);
 }
 
 html[data-ui='neo-brutalism'] [data-part='nb-num'] {
