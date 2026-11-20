@@ -104,8 +104,8 @@ The first-visit **intro splash** sits above all of this.
 
 ## 3. Design system
 
-The public site supports several **UI designs**. Today there are two: **Liquid Glass** (`glass`, the
-default) and **Soft Tactile** (`neu`). Pages never hardcode a look. They use a fixed set of semantic
+The public site supports several **UI designs**. Today there are four: **Liquid Glass** (`glass`, the
+default), **Soft Tactile** (`neu`), **Pencil Sketch** (`pencil`), and **Swiss Editorial** (`swiss`). Pages never hardcode a look. They use a fixed set of semantic
 classes and colour tokens, and the active **theme pack** decides what those look like. Light and dark
 mode are separate from the design: every design styles both.
 

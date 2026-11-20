@@ -32,8 +32,8 @@ Then:
 
 1. Fill in the tokens (section 3), then each semantic class (section 2), light and dark.
 2. Replace the description and the `preview` colours in `registry.js`. `preview.light` and
-   `preview.dark` are `[page, surface, accent]`. Set `preview.sample` to `"glass"` or `"raised"` if
-   the admin swatch should draw that kind of mini card; leave it out for flat.
+   `preview.dark` are `[page, surface, accent]`. Set `preview.sample` to `"glass"`, `"raised"`,
+   `"sketch"`, or `"swiss"` if the admin swatch should draw that kind of mini card; leave it out for flat.
    If the design's page colour isn't plain white (light) and black (dark), add matching
    `html[data-ui="<id>"]` and `html[data-ui="<id>"].dark` background and text colours to the
    `<style>` in `frontend/index.html`, so the first paint and overscroll match the design.
@@ -201,4 +201,5 @@ frontend `prebuild` runs the check, so an incomplete pack fails `npm run build` 
 - [ ] Reduced motion and reduced transparency both look right.
 - [ ] Glass and Soft Tactile look unchanged (spot-check Home and one other tab in each).
 - [ ] No edits outside the pack folder, apart from the three id lists and `registry.js`.
-- [ ] Admin69 is unchanged and still flat dark.
+- [ ] All three id lists are committed together: `registry.js`, `api/_lib/ui-design.js` (`UI_DESIGN_IDS`), and `frontend/index.html` (`var designs`). A missing allowlist entry fails `check:ui` / Vercel builds.
+- [ ] Admin69 is unchanged and still flat dark. Appearance still lists every registry entry for preview and publish.

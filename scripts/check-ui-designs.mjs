@@ -82,7 +82,13 @@ for (const [rel, pattern, what] of [
   }
   const missing = ids.filter((id) => !listed.includes(id));
   const extra = listed.filter((id) => !ids.includes(id));
-  if (missing.length) errors.push(`${rel}: ${what} is missing ${missing.join(", ")}.`);
+  if (missing.length) {
+    errors.push(
+      `${rel}: ${what} is missing ${missing.join(", ")}. ` +
+        `Every design in registry.js must also be listed in api/_lib/ui-design.js (UI_DESIGN_IDS) and frontend/index.html (var designs). ` +
+        `Run \`npm run new:ui\` or update all three lists before committing.`,
+    );
+  }
   if (extra.length) errors.push(`${rel}: ${what} lists ${extra.join(", ")}, which registry.js doesn't have.`);
 }
 

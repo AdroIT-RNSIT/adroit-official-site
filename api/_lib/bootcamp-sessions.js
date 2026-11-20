@@ -3,7 +3,7 @@
 // sessions in frontend/src/data/events.js and `closed` in domainRegistration.js.
 export const BOOTCAMP_SESSIONS = [
   { slug: "data-analytics", title: "Data Analytics", day: "October 6", closed: true },
-  { slug: "cloud-computing", title: "Cloud Computing", day: "October 7", closed: false },
-  { slug: "machine-learning", title: "Machine Learning", day: "October 8", closed: false },
-  { slug: "cybersecurity", title: "Cybersecurity", day: "October 9", closed: false },
+  { slug: "cloud-computing", title: "Cloud Computing", day: "October 7", closed: true },
+  { slug: "machine-learning", title: "Machine Learning", day: "October 8", closed: true },
+  { slug: "cybersecurity", title: "Cybersecurity", day: "October 9", closed: true },
 ];
