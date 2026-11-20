@@ -3,7 +3,7 @@ import { mongoConfigured } from "./mongo.js";
 import { readUiDesign, writeUiDesign } from "./ui-design-store.js";
 
 // Keep in sync with frontend/src/ui-designs/registry.js
-const UI_DESIGN_IDS = ["glass", "neu", "pencil", "swiss"];
+const UI_DESIGN_IDS = ["glass", "neu", "pencil", "swiss", "blueprint"];
 const ALLOWED = new Set(UI_DESIGN_IDS);
 const DEFAULT_DESIGN = "glass";
 const PUBLIC_CACHE = "public, max-age=0, s-maxage=60, stale-while-revalidate=300";

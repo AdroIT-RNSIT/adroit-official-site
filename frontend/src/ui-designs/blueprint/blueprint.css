@@ -1,0 +1,1109 @@
+/* Blueprint Tech. Every rule is scoped to html[data-ui='blueprint'].
+   Engineering drawing board: navy grids, cyan outlines, CAD precision.
+   Contract: docs/ADDING_A_UI_DESIGN.md */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+html[data-ui='blueprint'] {
+  --bp-display: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bp-body: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bp-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --bp-radius: 2px;
+  --bp-radius-md: 4px;
+  --bp-grid-minor: color-mix(in srgb, var(--bp-cyan) 10%, transparent);
+  --bp-grid-major: color-mix(in srgb, var(--bp-cyan) 18%, transparent);
+  --bp-grid:
+    linear-gradient(to right, var(--bp-grid-minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bp-grid-minor) 1px, transparent 1px),
+    linear-gradient(to right, var(--bp-grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bp-grid-major) 1px, transparent 1px);
+  --bp-grid-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  --bp-border: 1px solid color-mix(in srgb, var(--bp-cyan) 32%, transparent);
+  --bp-border-strong: 1px solid color-mix(in srgb, var(--bp-cyan) 55%, transparent);
+}
+
+/* ===== 1. Tokens =====
+   Light = paper blueprint. Dark = navy drawing board (primary look). */
+html[data-ui='blueprint'],
+html[data-ui='blueprint'] .ui-kit-light {
+  --bp-navy: #f4f8fc;
+  --bp-deep: #ffffff;
+  --bp-elevated: #eef5fb;
+  --bp-cyan: #0b7ea8;
+  --bp-white: #071b33;
+  --bp-steel: #397fa8;
+  --bp-amber: #c48a2e;
+  --bp-muted: #4a6b82;
+
+  --color-page: var(--bp-navy);
+  --color-surface: var(--bp-deep);
+  --color-ink: var(--bp-white);
+  --color-ink-muted: var(--bp-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--bp-muted) 75%, var(--bp-navy));
+  --color-line: color-mix(in srgb, var(--bp-cyan) 28%, #c5d8e6);
+  --color-line-strong: color-mix(in srgb, var(--bp-cyan) 42%, #8eb4c8);
+  --color-primary: var(--bp-cyan);
+  --color-primary-ink: #086687;
+  --color-on-primary: #f4f8fc;
+
+  --grid-line: color-mix(in srgb, var(--bp-cyan) 12%, transparent);
+  --grid-cell: color-mix(in srgb, var(--bp-deep) 70%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--bp-cyan) 30%, transparent);
+}
+
+html[data-ui='blueprint'].dark,
+html[data-ui='blueprint'] .ui-kit-dark,
+html[data-ui='blueprint'] [data-shell='splash'],
+html[data-ui='blueprint'] [data-scheme='dark'] > * {
+  --bp-navy: #071b33;
+  --bp-deep: #0d2948;
+  --bp-elevated: #123454;
+  --bp-cyan: #42d9f5;
+  --bp-white: #d9f3ff;
+  --bp-steel: #397fa8;
+  --bp-amber: #e5a94d;
+  --bp-muted: #91b6ce;
+
+  --color-page: var(--bp-navy);
+  --color-surface: var(--bp-deep);
+  --color-ink: var(--bp-white);
+  --color-ink-muted: var(--bp-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--bp-muted) 70%, var(--bp-navy));
+  --color-line: color-mix(in srgb, var(--bp-cyan) 28%, transparent);
+  --color-line-strong: color-mix(in srgb, var(--bp-cyan) 48%, transparent);
+  --color-primary: var(--bp-cyan);
+  --color-primary-ink: #7ee7f8;
+  --color-on-primary: #071b33;
+
+  --grid-line: color-mix(in srgb, var(--bp-cyan) 12%, transparent);
+  --grid-cell: color-mix(in srgb, var(--bp-deep) 65%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--bp-cyan) 28%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='splash'] {
+  --splash-bg: var(--bp-navy);
+  --splash-track: color-mix(in srgb, var(--bp-cyan) 25%, transparent);
+  --splash-accent: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'],
+html[data-ui='blueprint'] body,
+html[data-ui='blueprint'] #root {
+  background-color: var(--bp-navy);
+  background-image: var(--bp-grid);
+  background-size: var(--bp-grid-size);
+  color: var(--bp-white);
+  font-family: var(--bp-body);
+  letter-spacing: -0.01em;
+}
+
+html[data-ui='blueprint'] .ui-kit-light,
+html[data-ui='blueprint'] .ui-kit-dark {
+  background-color: var(--bp-navy);
+  background-image: var(--bp-grid);
+  background-size: var(--bp-grid-size);
+  color: var(--bp-white);
+}
+
+html[data-ui='blueprint'] .fluid-h1,
+html[data-ui='blueprint'] .fluid-h2,
+html[data-ui='blueprint'] .ui-heading.fluid-h1,
+html[data-ui='blueprint'] .ui-heading.fluid-h2 {
+  font-family: var(--bp-display);
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+html[data-ui='blueprint'] .fluid-h1 {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.02;
+}
+
+html[data-ui='blueprint'] .fluid-h2 {
+  font-size: clamp(1.85rem, 4.2vw, 3.25rem);
+  line-height: 1.05;
+}
+
+html[data-ui='blueprint'] .font-mono,
+html[data-ui='blueprint'] .uppercase {
+  font-family: var(--bp-mono);
+}
+
+/* ===== 2. Semantic classes ===== */
+@layer components {
+  html[data-ui='blueprint'] .ui-heading {
+    color: var(--bp-white);
+    font-family: var(--bp-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  html[data-ui='blueprint'] .ui-card,
+  html[data-ui='blueprint'] .ui-dialog,
+  html[data-ui='blueprint'] .ui-tooltip,
+  html[data-ui='blueprint'] .ui-nav {
+    color: var(--bp-white);
+    background: var(--bp-deep);
+    border: var(--bp-border);
+    border-radius: var(--bp-radius);
+    box-shadow: none;
+  }
+
+  html[data-ui='blueprint'] .ui-card {
+    position: relative;
+    transition: border-color 160ms ease, background-color 160ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-card:hover {
+    border-color: color-mix(in srgb, var(--bp-cyan) 60%, transparent);
+  }
+
+  /* Corner ticks — CAD frame */
+  html[data-ui='blueprint'] .ui-card::before,
+  html[data-ui='blueprint'] .ui-card::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: color-mix(in srgb, var(--bp-cyan) 55%, transparent);
+    border-style: solid;
+    pointer-events: none;
+  }
+
+  html[data-ui='blueprint'] .ui-card::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+
+  html[data-ui='blueprint'] .ui-card::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 1px 1px 0;
+  }
+
+  html[data-ui='blueprint'] .ui-dialog {
+    background: var(--bp-elevated);
+    border: var(--bp-border-strong);
+    box-shadow: 0 20px 48px color-mix(in srgb, #000 35%, transparent);
+  }
+
+  html[data-ui='blueprint'] .ui-dialog::before,
+  html[data-ui='blueprint'] .ui-dialog::after {
+    content: none;
+  }
+
+  html[data-ui='blueprint'] .ui-tooltip {
+    font-family: var(--bp-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: var(--bp-border-strong);
+  }
+
+  html[data-ui='blueprint'] .ui-well,
+  html[data-ui='blueprint'] .ui-input {
+    color: var(--bp-white);
+    background: color-mix(in srgb, var(--bp-navy) 55%, var(--bp-deep));
+    border: var(--bp-border);
+    border-radius: var(--bp-radius);
+    box-shadow: none;
+  }
+
+  html[data-ui='blueprint'] .ui-input {
+    min-height: 44px;
+    font-family: var(--bp-mono);
+    font-size: 0.9rem;
+  }
+
+  html[data-ui='blueprint'] .ui-input::placeholder {
+    color: var(--bp-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.75rem;
+  }
+
+  html[data-ui='blueprint'] .ui-input[aria-invalid='true'] {
+    border-color: var(--bp-amber);
+  }
+
+  html[data-ui='blueprint'] .ui-input:focus-visible {
+    outline: 2px solid var(--bp-cyan);
+    outline-offset: 2px;
+    border-color: var(--bp-cyan);
+  }
+
+  html[data-ui='blueprint'] .ui-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    border: 1px solid var(--bp-cyan);
+    border-radius: var(--bp-radius);
+    background: var(--bp-cyan);
+    color: var(--color-on-primary);
+    font-family: var(--bp-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    box-shadow: none;
+    transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-solid:hover {
+    background: transparent;
+    color: var(--bp-cyan);
+  }
+
+  html[data-ui='blueprint'] .ui-solid:active {
+    background: color-mix(in srgb, var(--bp-cyan) 18%, transparent);
+  }
+
+  html[data-ui='blueprint'] .ui-solid:disabled,
+  html[data-ui='blueprint'] .ui-solid[aria-disabled='true'] {
+    opacity: 0.4;
+  }
+
+  html[data-ui='blueprint'] .ui-pill,
+  html[data-ui='blueprint'] .ui-chip {
+    border: var(--bp-border);
+    border-radius: var(--bp-radius);
+    background: color-mix(in srgb, var(--bp-deep) 80%, transparent);
+    color: var(--bp-white);
+    box-shadow: none;
+    min-height: 40px;
+    font-family: var(--bp-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-chip {
+    min-height: 28px;
+    font-size: 0.62rem;
+  }
+
+  html[data-ui='blueprint'] .ui-pill[aria-pressed='true'],
+  html[data-ui='blueprint'] .ui-pill[aria-selected='true'],
+  html[data-ui='blueprint'] .ui-chip[aria-pressed='true'],
+  html[data-ui='blueprint'] .ui-chip[aria-selected='true'] {
+    background: color-mix(in srgb, var(--bp-cyan) 14%, transparent);
+    border-color: var(--bp-cyan);
+    color: var(--bp-cyan);
+  }
+
+  html[data-ui='blueprint'] .ui-track {
+    position: relative;
+    border: var(--bp-border);
+    border-radius: var(--bp-radius);
+    background: color-mix(in srgb, var(--bp-navy) 70%, var(--bp-deep));
+    box-shadow: none;
+  }
+
+  html[data-ui='blueprint'] .ui-track > button {
+    position: relative;
+    z-index: 1;
+    color: var(--bp-muted);
+    font-family: var(--bp-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  html[data-ui='blueprint'] .ui-thumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    border: 1px solid var(--bp-cyan);
+    border-radius: var(--bp-radius);
+    background: color-mix(in srgb, var(--bp-cyan) 12%, transparent);
+    box-shadow: none;
+    transition: transform 180ms ease, width 180ms ease, height 180ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 40px;
+    padding: 3px;
+    border: var(--bp-border);
+    border-radius: var(--bp-radius);
+    background: var(--bp-navy);
+    color: var(--bp-white);
+  }
+
+  html[data-ui='blueprint'] .ui-switch::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    background: color-mix(in srgb, var(--bp-cyan) 18%, transparent);
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-switch[aria-checked='true']::before,
+  html[data-ui='blueprint'] .ui-switch[aria-pressed='true']::before {
+    opacity: 1;
+  }
+
+  html[data-ui='blueprint'] .ui-switch::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--bp-cyan);
+    border-radius: 1px;
+    background: var(--bp-deep);
+    transition: transform 140ms ease, background-color 140ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-switch[aria-checked='true']::after,
+  html[data-ui='blueprint'] .ui-switch[aria-pressed='true']::after {
+    transform: translateX(18px);
+    background: var(--bp-cyan);
+  }
+
+  html[data-ui='blueprint'] .ui-nav {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    background: color-mix(in srgb, var(--bp-navy) 92%, transparent);
+  }
+
+  html[data-ui='blueprint'] .ui-nav > a {
+    color: var(--bp-muted);
+    border-radius: var(--bp-radius);
+    font-family: var(--bp-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 140ms ease;
+  }
+
+  html[data-ui='blueprint'] .ui-nav > a:hover {
+    color: var(--bp-white);
+  }
+
+  html[data-ui='blueprint'] .ui-nav > a[aria-current='page'],
+  html[data-ui='blueprint'] .ui-nav > a[aria-selected='true'],
+  html[data-ui='blueprint'] .ui-nav > a[aria-current='page']:hover,
+  html[data-ui='blueprint'] .ui-nav > a[aria-selected='true']:hover {
+    color: var(--bp-cyan);
+    background: transparent;
+    box-shadow: inset 0 -2px 0 var(--bp-cyan);
+  }
+
+  html[data-ui='blueprint'] .ui-solid:focus-visible,
+  html[data-ui='blueprint'] .ui-pill:focus-visible,
+  html[data-ui='blueprint'] .ui-chip:focus-visible,
+  html[data-ui='blueprint'] .ui-switch:focus-visible,
+  html[data-ui='blueprint'] .ui-nav > a:focus-visible,
+  html[data-ui='blueprint'] .ui-track > button:focus-visible {
+    outline: 2px solid var(--bp-cyan);
+    outline-offset: 2px;
+  }
+
+  html[data-ui='blueprint'] .ui-led {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 0;
+    background: var(--bp-cyan);
+    box-shadow: none;
+  }
+}
+
+/* Flatten large radii from markup */
+html[data-ui='blueprint'] .rounded-full,
+html[data-ui='blueprint'] .rounded-3xl,
+html[data-ui='blueprint'] .rounded-\[2rem\],
+html[data-ui='blueprint'] .sm\:rounded-\[2rem\],
+html[data-ui='blueprint'] .rounded-2xl,
+html[data-ui='blueprint'] .sm\:rounded-3xl,
+html[data-ui='blueprint'] .rounded-xl,
+html[data-ui='blueprint'] .rounded-lg,
+html[data-ui='blueprint'] .rounded-md,
+html[data-ui='blueprint'] .rounded-\[1\.375rem\],
+html[data-ui='blueprint'] .sm\:rounded-\[1\.25rem\],
+html[data-ui='blueprint'] .rounded-\[1\.5rem\] {
+  border-radius: var(--bp-radius-md);
+}
+
+html[data-ui='blueprint'] .ui-solid.rounded-full,
+html[data-ui='blueprint'] .ui-pill.rounded-full,
+html[data-ui='blueprint'] .ui-chip.rounded-full {
+  border-radius: var(--bp-radius);
+}
+
+/* ===== 3. Shell hooks ===== */
+html[data-ui='blueprint'] [data-brand='instagram'] { --brand: #e5a94d; }
+html[data-ui='blueprint'] [data-brand='linkedin'] { --brand: #42d9f5; }
+html[data-ui='blueprint'] [data-brand='github'] { --brand: var(--bp-white); }
+html[data-ui='blueprint'] [data-domain='ml'] { --domain: #22d3ee; }
+html[data-ui='blueprint'] [data-domain='cloud'] { --domain: #c084fc; }
+html[data-ui='blueprint'] [data-domain='cyber'] { --domain: #f472b6; }
+html[data-ui='blueprint'] [data-domain='data'] { --domain: #34d399; }
+
+html[data-ui='blueprint'] [data-shell='nav'] {
+  border-bottom: var(--bp-border);
+  background: color-mix(in srgb, var(--bp-navy) 94%, transparent);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-track {
+  background: transparent;
+  border: 0;
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-track a {
+  color: var(--bp-muted);
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-track a:hover { color: var(--bp-white); }
+html[data-ui='blueprint'] [data-shell='nav'] .ui-track a[aria-current='page'] {
+  color: var(--bp-cyan);
+  font-weight: 600;
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-track a:focus-visible {
+  outline: 2px solid var(--bp-cyan);
+  outline-offset: 2px;
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-thumb {
+  border: 0;
+  border-bottom: 2px solid var(--bp-cyan);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-thumb[data-state='rest'] { opacity: 0; }
+
+html[data-ui='blueprint'] [data-shell='nav'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--bp-cyan) 28%, transparent);
+}
+
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'] {
+  width: 2.75rem;
+  height: 2.5rem;
+  border-radius: var(--bp-radius);
+  background: var(--bp-deep);
+}
+
+html[data-ui='blueprint'] .ui-switch[data-shell='theme']::before {
+  inset: 3px;
+  opacity: 1;
+  background: var(--bp-navy);
+}
+
+html[data-ui='blueprint'] .ui-switch[data-shell='theme']::after { content: none; }
+
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'] [data-part='knob'] {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--bp-cyan);
+  border-radius: 1px;
+  background: var(--bp-deep);
+  color: var(--bp-white);
+  transition: transform 140ms ease;
+}
+
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-part='knob'] {
+  transform: translateX(1.05rem);
+  background: var(--bp-cyan);
+  border-color: var(--bp-cyan);
+  color: #071b33;
+}
+
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'] [data-glyph='sun'] { display: block; }
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'] [data-glyph='moon'],
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='sun'] { display: none; }
+html[data-ui='blueprint'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='moon'] { display: block; }
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-pill {
+  border: var(--bp-border);
+  color: var(--bp-white);
+  background: var(--bp-deep);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  border-color: var(--bp-cyan);
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-shell='scrim'] {
+  background: color-mix(in srgb, #04101f 70%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] {
+  border: var(--bp-border-strong);
+  border-radius: var(--bp-radius);
+  background: var(--bp-deep);
+  box-shadow: 0 16px 40px color-mix(in srgb, #000 40%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='caret'] {
+  border-color: color-mix(in srgb, var(--bp-cyan) 40%, transparent);
+  background: var(--bp-deep);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='scroll'] { padding: 12px; }
+html[data-ui='blueprint'] [data-shell='menu'] nav { gap: 2px; }
+html[data-ui='blueprint'] [data-shell='menu'] .ui-well { margin-bottom: 12px; }
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='avatar'] {
+  background: var(--bp-cyan);
+  color: #071b33;
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='name'] {
+  color: var(--bp-white);
+  font-family: var(--bp-display);
+}
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='email'] {
+  color: var(--bp-muted);
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] .ui-chip { color: var(--bp-white); }
+
+html[data-ui='blueprint'] [data-shell='menu'] .ui-chip[aria-current='page'] {
+  background: color-mix(in srgb, var(--bp-cyan) 14%, transparent);
+  border-color: var(--bp-cyan);
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] .ui-chip:focus-visible {
+  outline: 2px solid var(--bp-cyan);
+  outline-offset: 2px;
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='icon'] {
+  color: var(--bp-muted);
+  border: var(--bp-border);
+  background: var(--bp-navy);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='chev'] { color: var(--bp-muted); }
+html[data-ui='blueprint'] [data-shell='menu'] [aria-current='page'] [data-part='icon'],
+html[data-ui='blueprint'] [data-shell='menu'] [aria-current='page'] [data-part='chev'] {
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-shell='menu'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--bp-cyan) 22%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] {
+  border-top: var(--bp-border-strong);
+  background: color-mix(in srgb, var(--bp-navy) 96%, transparent);
+  color: var(--bp-white);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] .ui-card {
+  padding: 1.5rem;
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] .ui-heading {
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='icon'] { color: var(--bp-cyan); }
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='dot'] {
+  background: var(--bp-cyan);
+  border-radius: 0;
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='muted'],
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='faint'],
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='domain'] { color: var(--bp-muted); }
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='domain']:hover { color: var(--bp-white); }
+html[data-ui='blueprint'] [data-shell='footer'] a[data-part='muted']:hover,
+html[data-ui='blueprint'] [data-shell='footer'] button[data-part='faint']:hover { color: var(--bp-cyan); }
+
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='domain-icon'] {
+  border: var(--bp-border);
+  background: var(--bp-deep);
+  color: var(--domain, var(--bp-cyan));
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] .ui-pill {
+  border: var(--bp-border);
+  color: var(--bp-muted);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='map'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+  overflow: hidden;
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] .ui-chip {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] .ui-chip:focus-visible {
+  outline: 2px solid var(--bp-cyan);
+  outline-offset: 2px;
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='bar'] {
+  border-color: color-mix(in srgb, var(--bp-cyan) 22%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] .ui-pill,
+html[data-ui='blueprint'] [data-shell='dock'] .ui-pill {
+  border: var(--bp-border);
+  background: var(--bp-deep);
+  color: var(--bp-white);
+  border-radius: var(--bp-radius);
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='blueprint'] [data-shell='dock'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='blueprint'] [data-shell='footer'] .ui-pill:is(:hover, :focus-visible) {
+  border-color: var(--brand, var(--bp-cyan));
+  color: var(--brand, var(--bp-cyan));
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] a:focus-visible,
+html[data-ui='blueprint'] [data-shell='dock'] a:focus-visible,
+html[data-ui='blueprint'] [data-shell='footer'] .ui-pill:focus-visible {
+  outline: 2px solid var(--bp-cyan);
+  outline-offset: 2px;
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] [data-part='glyph'] { color: inherit; }
+html[data-ui='blueprint'] [data-shell='rail'] [data-part='glow'] { display: none; }
+
+html[data-ui='blueprint'] [data-shell='rail'] [data-part='line'] {
+  width: 1px;
+  background: color-mix(in srgb, var(--bp-cyan) 35%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] [data-part='dot'] {
+  background: var(--bp-cyan);
+  border-radius: 0;
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] .ui-tooltip {
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='rail'] [data-part='arrow'] {
+  border-color: color-mix(in srgb, var(--bp-cyan) 40%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='dock'] .ui-card {
+  border: var(--bp-border-strong);
+  background: var(--bp-deep);
+  box-shadow: 0 12px 32px color-mix(in srgb, #000 35%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='dock'] .ui-card::before,
+html[data-ui='blueprint'] [data-shell='dock'] .ui-card::after {
+  content: none;
+}
+
+html[data-ui='blueprint'] [data-shell='splash'] {
+  background-color: var(--bp-navy);
+  background-image: var(--bp-grid);
+  background-size: var(--bp-grid-size);
+  color: var(--bp-white);
+}
+
+html[data-ui='blueprint'] [data-shell='splash'] [data-part='track'] {
+  border: var(--bp-border);
+  background: var(--bp-deep);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-shell='splash'] [data-part='fill'] {
+  background: var(--bp-cyan);
+}
+
+/* ===== 4. Page hooks (non-home get stronger documentation look) ===== */
+
+/* Technical section stamps — Events, Domains, Members, Contact, Resources, Event */
+html[data-ui='blueprint'] [data-page='events'] > .relative > header::before {
+  content: "PROJECT / EVENTS · DOC-REF 04";
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-page='domains']::before {
+  content: "SYSTEM / DOMAINS · SCHEMA 02";
+  display: block;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem 0.5rem;
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-page='members']::before {
+  content: "DIRECTORY / MEMBERS · ROSTER 01";
+  display: block;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem 0.5rem;
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-page='contact']::before {
+  content: "MODULE / CONTACT · CHANNEL 07";
+  display: block;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem 0.5rem;
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-page='resources']::before {
+  content: "ARCHIVE / RESOURCES · LIB 03";
+  display: block;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 0.25rem;
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-page='event'] h1.ui-heading,
+html[data-ui='blueprint'] [data-page='bootcamp'] h1.ui-heading,
+html[data-ui='blueprint'] [data-page='paradox'] h1.ui-heading {
+  font-size: clamp(2.1rem, 5vw, 3.75rem);
+  letter-spacing: -0.035em;
+}
+
+html[data-ui='blueprint'] [data-page='events'] .ui-card,
+html[data-ui='blueprint'] [data-page='domains'] .ui-card,
+html[data-ui='blueprint'] [data-page='members'] .ui-card,
+html[data-ui='blueprint'] [data-page='contact'] .ui-card,
+html[data-ui='blueprint'] [data-page='resources'] .ui-card,
+html[data-ui='blueprint'] [data-page='event'] .ui-card {
+  background: color-mix(in srgb, var(--bp-deep) 92%, transparent);
+}
+
+html[data-ui='blueprint'] [data-page='events'] [data-part='poster'],
+html[data-ui='blueprint'] [data-part='poster'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+  overflow: hidden;
+}
+
+html[data-ui='blueprint'] [data-part='status'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+  font-family: var(--bp-mono);
+  letter-spacing: 0.1em;
+}
+
+html[data-ui='blueprint'] [data-part='status'][data-phase='live'] { --led: var(--bp-cyan); }
+html[data-ui='blueprint'] [data-part='status'][data-phase='completed'] { --led: var(--bp-steel); }
+
+html[data-ui='blueprint'] [data-part='status-led'] {
+  display: inline-block !important;
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--led, var(--bp-cyan));
+  border-radius: 0;
+}
+
+html[data-ui='blueprint'] [data-part='terminal'] {
+  border: var(--bp-border-strong);
+  border-radius: var(--bp-radius);
+  background: #04101f;
+  color: #d9f3ff;
+  box-shadow: none;
+}
+
+html[data-ui='blueprint'] [data-part='showcase'] [data-part='tabbar'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+  background: var(--bp-deep);
+}
+
+html[data-ui='blueprint'] [data-part='tabbar'] > [role='tab'] {
+  border-radius: var(--bp-radius);
+  color: var(--bp-muted);
+  font-family: var(--bp-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html[data-ui='blueprint'] [data-part='tabbar'] > [aria-selected='true'] {
+  color: var(--bp-cyan);
+  box-shadow: inset 0 -2px 0 var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-part='tabbar'] [data-part='led'] {
+  border-radius: 0;
+  background: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-part='events-list'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+  background: var(--bp-deep);
+}
+
+html[data-ui='blueprint'] [data-part='events-list'] > .ui-well {
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--bp-cyan) 18%, transparent);
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-ui='blueprint'] [data-part='events-list'] > .ui-well:last-child { border-bottom: 0; }
+
+html[data-ui='blueprint'] [data-part='events-list'] > .ui-well:has(a:hover) {
+  background: color-mix(in srgb, var(--bp-cyan) 6%, transparent);
+}
+
+html[data-ui='blueprint'] [data-part='poster-frame'],
+html[data-ui='blueprint'] [data-part='hero-poster'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-part='day-tabs'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+  background: var(--bp-navy);
+}
+
+html[data-ui='blueprint'] [data-part='gauge'] {
+  border: var(--bp-border);
+  background: var(--bp-navy);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-part='gauge'] > span {
+  background: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-part='accent-cta'] {
+  border: 1px solid var(--bp-cyan);
+  background: var(--bp-cyan);
+  color: #071b33;
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-part='compare-row'] {
+  border-bottom: 1px solid color-mix(in srgb, var(--bp-cyan) 16%, transparent);
+}
+
+html[data-ui='blueprint'] [data-part='compare-row']:hover,
+html[data-ui='blueprint'] [data-part='compare-row'][data-active] {
+  background: color-mix(in srgb, var(--bp-cyan) 7%, transparent);
+}
+
+html[data-ui='blueprint'] [data-part='tip-stat'] {
+  font-family: var(--bp-mono);
+  color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-part='domain-bar'] {
+  border-bottom: var(--bp-border);
+  background: color-mix(in srgb, var(--bp-navy) 95%, transparent) !important;
+}
+
+html[data-ui='blueprint'] [data-part='banner'] {
+  border: var(--bp-border-strong);
+}
+
+html[data-ui='blueprint'] [data-part='badge'] {
+  border-radius: var(--bp-radius) !important;
+  border: 1px solid color-mix(in srgb, var(--bp-cyan) 40%, transparent);
+}
+
+html[data-ui='blueprint'] [data-part='member'] {
+  border: var(--bp-border);
+  transition: border-color 160ms ease;
+}
+
+html[data-ui='blueprint'] [data-part='member'][data-selected] {
+  border-color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-part='member'] img {
+  filter: contrast(1.05) saturate(0.92);
+  transition: filter 180ms ease;
+}
+
+html[data-ui='blueprint'] [data-part='member']:hover img {
+  filter: contrast(1.08) saturate(1);
+}
+
+html[data-ui='blueprint'] [data-part='inspector'] {
+  border: var(--bp-border-strong);
+  background: var(--bp-elevated);
+}
+
+html[data-ui='blueprint'] [data-part='inspector-screen'] {
+  border-color: color-mix(in srgb, var(--bp-cyan) 35%, transparent) !important;
+  border-style: solid !important;
+}
+
+html[data-ui='blueprint'] [data-part='filter-bar'] {
+  border-bottom: var(--bp-border);
+  background: color-mix(in srgb, var(--bp-navy) 96%, transparent);
+}
+
+html[data-ui='blueprint'] [data-part='map-frame'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-part='form-well']:focus-within {
+  border-color: var(--bp-cyan);
+}
+
+html[data-ui='blueprint'] [data-page='contact'] [data-part='tile'] {
+  border: var(--bp-border);
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-part='send-overlay'] {
+  background: color-mix(in srgb, var(--bp-navy) 88%, transparent);
+}
+
+html[data-ui='blueprint'] [data-part='back'] {
+  font-family: var(--bp-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+html[data-ui='blueprint'] [data-part='doc-ref'] {
+  color: var(--bp-cyan);
+  letter-spacing: 0.14em;
+}
+
+html[data-ui='blueprint'] [data-part='event-card']:hover {
+  border-color: color-mix(in srgb, var(--bp-cyan) 65%, transparent);
+}
+
+html[data-ui='blueprint'] [data-scheme='dark'] .ui-well {
+  background: color-mix(in srgb, #fff 4%, transparent);
+  border-color: color-mix(in srgb, var(--bp-cyan) 22%, transparent);
+}
+
+html[data-ui='blueprint'],
+html[data-ui='blueprint'] * {
+  scrollbar-color: color-mix(in srgb, var(--bp-cyan) 35%, transparent) var(--bp-navy);
+}
+
+html[data-ui='blueprint'] *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html[data-ui='blueprint'] *::-webkit-scrollbar-track {
+  background: var(--bp-navy);
+}
+
+html[data-ui='blueprint'] *::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--bp-cyan) 35%, var(--bp-deep));
+  border: 1px solid var(--bp-navy);
+  border-radius: 0;
+}
+
+/* ===== 5. User preferences ===== */
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui='blueprint'] .ui-card,
+  html[data-ui='blueprint'] .ui-solid,
+  html[data-ui='blueprint'] .ui-pill,
+  html[data-ui='blueprint'] .ui-chip,
+  html[data-ui='blueprint'] .ui-thumb,
+  html[data-ui='blueprint'] .ui-switch::after,
+  html[data-ui='blueprint'] .ui-switch[data-shell='theme'] [data-part='knob'],
+  html[data-ui='blueprint'] [data-shell='nav'] .ui-thumb,
+  html[data-ui='blueprint'] [data-part='member'] img,
+  html[data-ui='blueprint'] [data-part='tabbar'] > [role='tab'],
+  html[data-ui='blueprint'] [data-part='events-list'] > .ui-well,
+  html[data-ui='blueprint'] [data-part='compare-row'] {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='blueprint'] [data-shell='nav'],
+  html[data-ui='blueprint'] [data-shell='menu'],
+  html[data-ui='blueprint'] [data-shell='dock'] .ui-card,
+  html[data-ui='blueprint'] .ui-card,
+  html[data-ui='blueprint'] .ui-dialog,
+  html[data-ui='blueprint'] .ui-tooltip,
+  html[data-ui='blueprint'] .ui-nav,
+  html[data-ui='blueprint'] [data-page='events'] .ui-card,
+  html[data-ui='blueprint'] [data-page='domains'] .ui-card,
+  html[data-ui='blueprint'] [data-page='members'] .ui-card {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--bp-deep);
+  }
+
+  html[data-ui='blueprint'] [data-shell='nav'],
+  html[data-ui='blueprint'] [data-part='domain-bar'],
+  html[data-ui='blueprint'] [data-part='filter-bar'] {
+    background-color: var(--bp-navy) !important;
+  }
+
+  html[data-ui='blueprint'] [data-part='send-overlay'] {
+    background: var(--bp-navy);
+  }
+}

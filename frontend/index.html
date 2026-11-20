@@ -37,7 +37,7 @@
           var stored = localStorage.getItem("adroit-theme") || localStorage.getItem("adroit-nav-color");
           var dark = stored === "dark" || stored === "black";
           if (dark) document.documentElement.classList.add("dark");
-          var designs = ["glass", "neu", "pencil", "swiss"];
+          var designs = ["glass", "neu", "pencil", "swiss", "blueprint"];
           var ui = localStorage.getItem("adroit-ui-design");
           if (designs.indexOf(ui) === -1) ui = "glass";
           var params = new URLSearchParams(location.search);
@@ -58,6 +58,8 @@
       html[data-ui="pencil"].dark, html[data-ui="pencil"].dark body { background-color: #1c1b19; color: #ece7dc; }
       html[data-ui="swiss"], html[data-ui="swiss"] body { background-color: #f7f7f5; color: #171717; }
       html[data-ui="swiss"].dark, html[data-ui="swiss"].dark body { background-color: #111214; color: #f5f5f5; }
+      html[data-ui="blueprint"], html[data-ui="blueprint"] body { background-color: #f4f8fc; color: #071b33; }
+      html[data-ui="blueprint"].dark, html[data-ui="blueprint"].dark body { background-color: #071b33; color: #d9f3ff; }
     </style>
   </head>
   <body>

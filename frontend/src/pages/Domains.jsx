@@ -611,6 +611,9 @@ export default function Domains() {
                     </div>
                   </div>
                   <div>
+                    <p data-part="doc-ref" className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-subtle">
+                      DOMAIN / {String(currentDomain.id).toUpperCase()}-01
+                    </p>
                     <div className="flex flex-wrap items-center gap-3 mb-2">
                       <h2 className="ui-heading text-2xl sm:text-3xl md:text-4xl text-ink">{currentDomain.name}</h2>
                       <span className="ui-chip min-h-0 rounded-full px-3 py-1 text-xs font-medium text-ink-muted">

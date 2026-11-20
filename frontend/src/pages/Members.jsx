@@ -467,6 +467,9 @@ function NodeCard({ el, dim, selected, delay, onSelect }) {
       >
         <Avatar el={el} size={40} />
         <span className="min-w-0 flex-1">
+          <span data-part="doc-ref" className="mb-0.5 block font-mono text-[10px] uppercase tracking-[0.16em] text-ink-subtle">
+            ID / {el.key?.slice(0, 8) || "member"}
+          </span>
           <span className="block break-words text-sm font-semibold leading-snug text-ink">{el.name}</span>
           {el.isLead && (
             <span className="mt-1 inline-flex items-center gap-0.5 rounded bg-ink px-1 font-mono text-[11px] font-semibold text-page">

@@ -44,8 +44,8 @@ export default function Events() {
               </h2>
             </div>
             <div className="space-y-6">
-              {upcomingEvents.map((event) => (
-                <FeaturedEvent key={event._id} event={event} />
+              {upcomingEvents.map((event, index) => (
+                <FeaturedEvent key={event._id} event={event} docRef={`EVT-${String(index + 1).padStart(2, "0")}`} />
               ))}
             </div>
           </section>
@@ -63,8 +63,12 @@ export default function Events() {
             </div>
           ) : (
             <div className="space-y-6">
-              {completedEvents.map((event) => (
-                <FeaturedEvent key={event._id} event={event} />
+              {completedEvents.map((event, index) => (
+                <FeaturedEvent
+                  key={event._id}
+                  event={event}
+                  docRef={`EVT-${String(upcomingEvents.length + index + 1).padStart(2, "0")}`}
+                />
               ))}
             </div>
           )}
@@ -83,7 +87,7 @@ function StatusChip({ label, phase, className = "" }) {
   );
 }
 
-function FeaturedEvent({ event }) {
+function FeaturedEvent({ event, docRef }) {
   const poster = event.poster || event.imageUrl;
   const posterContained = event.posterFit === "contain";
   const posterColumn = event.posterColumn || "52%";
@@ -96,6 +100,7 @@ function FeaturedEvent({ event }) {
 
   return (
     <article
+      data-part="event-card"
       className={`ui-card group grid overflow-hidden rounded-[2rem] transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${poster ? (posterContained ? "md:grid-cols-[minmax(0,var(--poster-col))_1fr] md:items-center" : "md:grid-cols-[minmax(0,14rem)_1fr]") : ""}`}
       style={posterContained ? { "--poster-col": posterColumn } : undefined}
     >
@@ -127,6 +132,11 @@ function FeaturedEvent({ event }) {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
               {event.eyebrow || "Fest recap"}
             </p>
+            {docRef && (
+              <span data-part="doc-ref" className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-subtle">
+                {docRef}
+              </span>
+            )}
             {(!poster || posterContained) && (
               <StatusChip label={statusLabel} phase={phase} className="px-2.5 py-1" />
             )}

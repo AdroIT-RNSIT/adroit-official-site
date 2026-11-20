@@ -44,6 +44,18 @@ function sampleStyle(sample, surface, dark) {
       boxShadow: "none",
     };
   }
+  if (sample === "blueprint") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "rgb(66 217 245 / 0.45)" : "rgb(11 126 168 / 0.45)"}`,
+      borderRadius: "2px",
+      boxShadow: "none",
+      backgroundImage: dark
+        ? "linear-gradient(to right, rgb(66 217 245 / 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgb(66 217 245 / 0.12) 1px, transparent 1px)"
+        : "linear-gradient(to right, rgb(11 126 168 / 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgb(11 126 168 / 0.12) 1px, transparent 1px)",
+      backgroundSize: "10px 10px",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 

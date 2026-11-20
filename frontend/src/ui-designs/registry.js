@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -48,6 +48,17 @@ export const DESIGNS = [
       sample: "swiss",
     },
     loader: () => import("./swiss/swiss.css"),
+  },
+  {
+    id: "blueprint",
+    label: "Blueprint Tech",
+    description: "Navy engineering grids, cyan CAD outlines, and technical documentation layout.",
+    preview: {
+      light: ["#f4f8fc", "#ffffff", "#0b7ea8"],
+      dark: ["#071b33", "#0d2948", "#42d9f5"],
+      sample: "blueprint",
+    },
+    loader: () => import("./blueprint/blueprint.css"),
   },
 ];
 
