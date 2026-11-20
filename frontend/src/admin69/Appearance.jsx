@@ -143,6 +143,20 @@ function sampleStyle(sample, surface, dark) {
         : "radial-gradient(circle at 15% 20%, rgb(124 58 237 / 0.28), transparent 42%), radial-gradient(circle at 85% 30%, rgb(6 182 212 / 0.22), transparent 40%), radial-gradient(circle at 60% 90%, rgb(219 39 119 / 0.16), transparent 45%)",
     };
   }
+  if (sample === "cyber") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "rgb(57 255 154 / 0.45)" : "rgb(13 143 91 / 0.45)"}`,
+      borderRadius: "4px",
+      boxShadow: dark
+        ? "0 0 16px rgb(57 255 154 / 0.25), 0 10px 22px rgb(0 0 0 / 0.5)"
+        : "0 0 12px rgb(13 143 91 / 0.15), 0 8px 18px rgb(10 31 20 / 0.1)",
+      backgroundImage: dark
+        ? "linear-gradient(to right, rgb(57 255 154 / 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgb(57 255 154 / 0.12) 1px, transparent 1px)"
+        : "linear-gradient(to right, rgb(13 143 91 / 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgb(13 143 91 / 0.12) 1px, transparent 1px)",
+      backgroundSize: "10px 10px",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 

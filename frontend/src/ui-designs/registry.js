@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus" | "immersive" | "flow") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus" | "immersive" | "flow" | "cyber") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -136,6 +136,17 @@ export const DESIGNS = [
       sample: "flow",
     },
     loader: () => import("./gradient-flow/gradient-flow.css"),
+  },
+  {
+    id: "cyber",
+    label: "Cyber",
+    description: "Neon terminal grids, phosphor green, and magenta threat accents.",
+    preview: {
+      light: ["#e8f5ec", "#f4fbf6", "#0d8f5b"],
+      dark: ["#030806", "#07140e", "#39ff9a"],
+      sample: "cyber",
+    },
+    loader: () => import("./cyber/cyber.css"),
   },
 ];
 

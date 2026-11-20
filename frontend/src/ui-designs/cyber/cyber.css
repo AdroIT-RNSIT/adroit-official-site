@@ -1,0 +1,1022 @@
+/* Cyber. Every rule is scoped to html[data-ui='cyber'].
+   Neon terminal aesthetic: phosphor green, magenta accents, scan grids, mono type.
+   Distinct from futuristic-dark. Contract: docs/ADDING_A_UI_DESIGN.md */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+
+html[data-ui='cyber'] {
+  --cy-display: "Share Tech Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --cy-body: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --cy-radius: 4px;
+  --cy-radius-lg: 8px;
+  --cy-border: 1px solid color-mix(in srgb, var(--cy-neon) 35%, transparent);
+  --cy-border-strong: 1px solid color-mix(in srgb, var(--cy-neon) 55%, transparent);
+  --cy-glow: 0 0 18px color-mix(in srgb, var(--cy-neon) 28%, transparent);
+  --cy-glow-hot: 0 0 22px color-mix(in srgb, var(--cy-hot) 30%, transparent);
+  overflow-x: clip;
+}
+
+/* ===== 1. Tokens =====
+   Dark is the signature look. Light = green phosphor on pale terminal paper. */
+html[data-ui='cyber'],
+html[data-ui='cyber'] .ui-kit-light {
+  --cy-void: #e8f5ec;
+  --cy-deep: #f4fbf6;
+  --cy-elevated: #dcefe3;
+  --cy-neon: #0d8f5b;
+  --cy-hot: #c0266b;
+  --cy-amber: #b45309;
+  --cy-ink: #0a1f14;
+  --cy-muted: #3d5c4a;
+  --cy-rim: color-mix(in srgb, #0d8f5b 22%, #b7d4c4);
+
+  --color-page: var(--cy-void);
+  --color-surface: var(--cy-deep);
+  --color-ink: var(--cy-ink);
+  --color-ink-muted: var(--cy-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--cy-muted) 75%, var(--cy-void));
+  --color-line: var(--cy-rim);
+  --color-line-strong: color-mix(in srgb, var(--cy-neon) 40%, #6b9a7e);
+  --color-primary: var(--cy-neon);
+  --color-primary-ink: #066644;
+  --color-on-primary: #f0fdf6;
+
+  --grid-line: color-mix(in srgb, var(--cy-neon) 12%, transparent);
+  --grid-cell: color-mix(in srgb, var(--cy-deep) 80%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--cy-neon) 30%, transparent);
+}
+
+html[data-ui='cyber'].dark,
+html[data-ui='cyber'] .ui-kit-dark,
+html[data-ui='cyber'] [data-shell='splash'],
+html[data-ui='cyber'] [data-scheme='dark'] > * {
+  --cy-void: #030806;
+  --cy-deep: #07140e;
+  --cy-elevated: #0c1f16;
+  --cy-neon: #39ff9a;
+  --cy-hot: #ff2d95;
+  --cy-amber: #fbbf24;
+  --cy-ink: #d8ffe8;
+  --cy-muted: #7aab90;
+  --cy-rim: color-mix(in srgb, #39ff9a 18%, #123226);
+
+  --color-page: var(--cy-void);
+  --color-surface: var(--cy-deep);
+  --color-ink: var(--cy-ink);
+  --color-ink-muted: var(--cy-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--cy-muted) 68%, var(--cy-void));
+  --color-line: var(--cy-rim);
+  --color-line-strong: color-mix(in srgb, var(--cy-neon) 42%, transparent);
+  --color-primary: var(--cy-neon);
+  --color-primary-ink: #7dffa8;
+  --color-on-primary: #03140c;
+
+  --grid-line: color-mix(in srgb, var(--cy-neon) 10%, transparent);
+  --grid-cell: color-mix(in srgb, var(--cy-deep) 70%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--cy-neon) 26%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='splash'] {
+  --splash-bg: var(--cy-void);
+  --splash-track: color-mix(in srgb, var(--cy-neon) 18%, transparent);
+  --splash-accent: var(--cy-neon);
+}
+
+html[data-ui='cyber'],
+html[data-ui='cyber'] body,
+html[data-ui='cyber'] #root {
+  background-color: var(--cy-void);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--cy-neon) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--cy-neon) 7%, transparent) 1px, transparent 1px),
+    radial-gradient(ellipse 60% 40% at 80% 10%, color-mix(in srgb, var(--cy-hot) 12%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 10% 90%, color-mix(in srgb, var(--cy-neon) 10%, transparent), transparent 50%);
+  background-size: 40px 40px, 40px 40px, auto, auto;
+  background-attachment: fixed;
+  color: var(--cy-ink);
+  font-family: var(--cy-body);
+  letter-spacing: -0.01em;
+  overflow-x: clip;
+}
+
+html[data-ui='cyber'] .ui-kit-light,
+html[data-ui='cyber'] .ui-kit-dark {
+  background-color: var(--cy-void);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--cy-neon) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--cy-neon) 7%, transparent) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--cy-ink);
+}
+
+html[data-ui='cyber'] .fluid-h1,
+html[data-ui='cyber'] .fluid-h2,
+html[data-ui='cyber'] .ui-heading.fluid-h1,
+html[data-ui='cyber'] .ui-heading.fluid-h2 {
+  font-family: var(--cy-display);
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+html[data-ui='cyber'] .fluid-h1 {
+  font-size: clamp(2.4rem, 6.5vw, 4.75rem);
+  line-height: 1.05;
+}
+
+html[data-ui='cyber'] .fluid-h2 {
+  font-size: clamp(1.75rem, 4.2vw, 3.1rem);
+  line-height: 1.1;
+}
+
+html[data-ui='cyber'] .font-mono,
+html[data-ui='cyber'] .uppercase {
+  font-family: var(--cy-display);
+  letter-spacing: 0.12em;
+}
+
+/* ===== 2. Semantic classes ===== */
+@layer components {
+  html[data-ui='cyber'] .ui-heading {
+    color: var(--cy-ink);
+    font-family: var(--cy-display);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+
+  html[data-ui='cyber'] .ui-card,
+  html[data-ui='cyber'] .ui-dialog,
+  html[data-ui='cyber'] .ui-tooltip,
+  html[data-ui='cyber'] .ui-nav {
+    color: var(--cy-ink);
+    background: color-mix(in srgb, var(--cy-deep) 92%, transparent);
+    border: var(--cy-border);
+    border-radius: var(--cy-radius-lg);
+    box-shadow: var(--cy-glow), inset 0 0 0 1px color-mix(in srgb, var(--cy-neon) 8%, transparent);
+  }
+
+  html[data-ui='cyber'] .ui-card {
+    position: relative;
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  html[data-ui='cyber'] .ui-card:hover {
+    border-color: color-mix(in srgb, var(--cy-neon) 60%, transparent);
+    box-shadow: var(--cy-glow), 0 12px 32px color-mix(in srgb, #000 35%, transparent);
+    transform: translateY(-2px);
+  }
+
+  html[data-ui='cyber'] .ui-dialog {
+    background: var(--cy-elevated);
+    border: var(--cy-border-strong);
+    box-shadow: var(--cy-glow-hot), 0 24px 64px color-mix(in srgb, #000 50%, transparent);
+  }
+
+  html[data-ui='cyber'] .ui-tooltip {
+    font-family: var(--cy-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--cy-elevated);
+    border: var(--cy-border);
+    border-radius: 2px;
+    box-shadow: var(--cy-glow);
+  }
+
+  html[data-ui='cyber'] .ui-nav {
+    background: color-mix(in srgb, var(--cy-deep) 90%, transparent);
+    border-radius: var(--cy-radius);
+  }
+
+  html[data-ui='cyber'] .ui-nav > a[aria-current='page'] {
+    color: var(--cy-neon);
+  }
+
+  html[data-ui='cyber'] .ui-well,
+  html[data-ui='cyber'] .ui-input {
+    background: color-mix(in srgb, var(--cy-void) 60%, var(--cy-deep));
+    border: 1px solid color-mix(in srgb, var(--cy-neon) 22%, transparent);
+    border-radius: var(--cy-radius);
+    color: var(--cy-ink);
+    box-shadow: inset 0 0 12px color-mix(in srgb, var(--cy-neon) 6%, transparent);
+    font-family: var(--cy-display);
+  }
+
+  html[data-ui='cyber'] .ui-input::placeholder {
+    color: var(--cy-muted);
+    opacity: 0.85;
+  }
+
+  html[data-ui='cyber'] .ui-input:focus-visible {
+    outline: 2px solid var(--cy-neon);
+    outline-offset: 2px;
+    border-color: var(--cy-neon);
+    box-shadow: var(--cy-glow);
+  }
+
+  html[data-ui='cyber'] .ui-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--cy-radius);
+    border: 1px solid var(--cy-neon);
+    background: color-mix(in srgb, var(--cy-neon) 18%, transparent);
+    color: var(--cy-neon);
+    font-family: var(--cy-display);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow: var(--cy-glow), inset 0 0 12px color-mix(in srgb, var(--cy-neon) 15%, transparent);
+    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  }
+
+  html[data-ui='cyber'] .ui-solid:hover {
+    background: var(--cy-neon);
+    color: var(--color-on-primary);
+    box-shadow: 0 0 28px color-mix(in srgb, var(--cy-neon) 45%, transparent);
+  }
+
+  html[data-ui='cyber'] .ui-solid:active {
+    transform: translateY(1px);
+  }
+
+  html[data-ui='cyber'] .ui-solid:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  html[data-ui='cyber'] .ui-solid:focus-visible {
+    outline: 2px solid var(--cy-hot);
+    outline-offset: 3px;
+  }
+
+  html[data-ui='cyber'] .ui-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.95rem;
+    border-radius: var(--cy-radius);
+    border: 1px solid color-mix(in srgb, var(--cy-neon) 30%, transparent);
+    background: color-mix(in srgb, var(--cy-deep) 88%, transparent);
+    color: var(--cy-ink);
+    font-family: var(--cy-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+  }
+
+  html[data-ui='cyber'] .ui-pill:hover {
+    border-color: var(--cy-neon);
+    color: var(--cy-neon);
+    box-shadow: var(--cy-glow);
+  }
+
+  html[data-ui='cyber'] .ui-pill[aria-pressed='true'],
+  html[data-ui='cyber'] .ui-pill[aria-selected='true'] {
+    background: color-mix(in srgb, var(--cy-neon) 16%, transparent);
+    border-color: var(--cy-neon);
+    color: var(--cy-neon);
+    box-shadow: var(--cy-glow);
+  }
+
+  html[data-ui='cyber'] .ui-pill:focus-visible {
+    outline: 2px solid var(--cy-neon);
+    outline-offset: 2px;
+  }
+
+  html[data-ui='cyber'] .ui-track {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.2rem;
+    border-radius: var(--cy-radius);
+    background: color-mix(in srgb, var(--cy-void) 55%, var(--cy-deep));
+    border: 1px solid color-mix(in srgb, var(--cy-neon) 18%, transparent);
+  }
+
+  html[data-ui='cyber'] .ui-track > button {
+    position: relative;
+    z-index: 1;
+  }
+
+  html[data-ui='cyber'] .ui-thumb {
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--cy-neon) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cy-neon) 45%, transparent);
+    box-shadow: var(--cy-glow);
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), width 200ms cubic-bezier(0.22, 1, 0.36, 1), height 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-ui='cyber'] .ui-switch {
+    position: relative;
+    width: 2.85rem;
+    height: 1.65rem;
+    border-radius: 2px;
+    border: 1px solid color-mix(in srgb, var(--cy-neon) 35%, transparent);
+    background: var(--cy-elevated);
+    transition: background-color 140ms ease, border-color 140ms ease;
+  }
+
+  html[data-ui='cyber'] .ui-switch[aria-checked='true'] {
+    background: color-mix(in srgb, var(--cy-neon) 25%, var(--cy-deep));
+    border-color: var(--cy-neon);
+  }
+
+  html[data-ui='cyber'] .ui-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 2px;
+    background: var(--cy-neon);
+    box-shadow: var(--cy-glow);
+    transition: transform 140ms ease, background-color 140ms ease;
+  }
+
+  html[data-ui='cyber'] .ui-switch[aria-checked='true']::after {
+    transform: translateX(1.15rem);
+    background: var(--cy-hot);
+    box-shadow: var(--cy-glow-hot);
+  }
+
+  html[data-ui='cyber'] .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 1.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    border: 1px solid color-mix(in srgb, var(--cy-neon) 30%, transparent);
+    background: color-mix(in srgb, var(--cy-neon) 10%, transparent);
+    color: var(--cy-neon);
+    font-family: var(--cy-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  html[data-ui='cyber'] .ui-chip[aria-pressed='true'] {
+    background: color-mix(in srgb, var(--cy-hot) 18%, transparent);
+    border-color: var(--cy-hot);
+    color: var(--cy-hot);
+  }
+}
+
+/* ===== 3. Shell ===== */
+html[data-ui='cyber'] [data-brand='instagram'] { --brand: var(--cy-hot); }
+html[data-ui='cyber'] [data-brand='linkedin'] { --brand: var(--cy-neon); }
+html[data-ui='cyber'] [data-brand='github'] { --brand: var(--cy-ink); }
+html[data-ui='cyber'] [data-domain='ml'] { --domain: #22d3ee; }
+html[data-ui='cyber'] [data-domain='cloud'] { --domain: #c084fc; }
+html[data-ui='cyber'] [data-domain='cyber'] { --domain: #f472b6; }
+html[data-ui='cyber'] [data-domain='data'] { --domain: #34d399; }
+
+html[data-ui='cyber'] [data-shell='nav'] {
+  border-bottom: 1px solid color-mix(in srgb, var(--cy-neon) 20%, transparent);
+  background: color-mix(in srgb, var(--cy-void) 82%, transparent);
+  box-shadow: 0 8px 28px color-mix(in srgb, #000 28%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-track {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-track a {
+  color: var(--cy-muted);
+  font-family: var(--cy-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-track a:hover { color: var(--cy-ink); }
+html[data-ui='cyber'] [data-shell='nav'] .ui-track a[aria-current='page'] {
+  color: var(--cy-neon);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--cy-neon) 45%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-track a:focus-visible {
+  outline: 2px solid var(--cy-neon);
+  outline-offset: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-thumb {
+  border: 0;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--cy-neon) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cy-neon) 40%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-thumb[data-state='rest'] { opacity: 0; }
+
+html[data-ui='cyber'] [data-shell='nav'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--cy-neon) 30%, transparent);
+}
+
+html[data-ui='cyber'] .ui-switch[data-shell='theme'] {
+  width: 2.85rem;
+  height: 2.5rem;
+  border-radius: 2px;
+  background: var(--cy-deep);
+  border: 1px solid color-mix(in srgb, var(--cy-neon) 35%, transparent);
+}
+
+html[data-ui='cyber'] .ui-switch[data-shell='theme']::before {
+  inset: 3px;
+  opacity: 1;
+  background: var(--cy-void);
+}
+
+html[data-ui='cyber'] .ui-switch[data-shell='theme']::after { content: none; }
+
+html[data-ui='cyber'] .ui-switch[data-shell='theme'] [data-part='knob'] {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 1.3rem;
+  height: 1.3rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--cy-neon) 45%, transparent);
+  border-radius: 2px;
+  background: var(--cy-elevated);
+  color: var(--cy-neon);
+  transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+html[data-ui='cyber'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-part='knob'] {
+  transform: translateX(1.05rem);
+  background: var(--cy-neon);
+  color: #03140c;
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] .ui-switch[data-shell='theme'] [data-glyph='sun'] { display: block; }
+html[data-ui='cyber'] .ui-switch[data-shell='theme'] [data-glyph='moon'],
+html[data-ui='cyber'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='sun'] { display: none; }
+html[data-ui='cyber'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='moon'] { display: block; }
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-pill {
+  border: var(--cy-border);
+  color: var(--cy-ink);
+  background: color-mix(in srgb, var(--cy-deep) 88%, transparent);
+  border-radius: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  border-color: var(--cy-neon);
+  color: var(--cy-neon);
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-shell='scrim'] {
+  background: color-mix(in srgb, #010503 78%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='menu'] {
+  border: var(--cy-border-strong);
+  border-radius: var(--cy-radius-lg);
+  background: color-mix(in srgb, var(--cy-deep) 95%, transparent);
+  box-shadow: var(--cy-glow), 0 20px 48px color-mix(in srgb, #000 50%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='menu'] [data-part='caret'] {
+  border-color: color-mix(in srgb, var(--cy-neon) 40%, transparent);
+  background: var(--cy-deep);
+}
+
+html[data-ui='cyber'] [data-shell='menu'] [data-part='scroll'] { padding: 12px; }
+html[data-ui='cyber'] [data-shell='menu'] nav { gap: 4px; }
+html[data-ui='cyber'] [data-shell='menu'] .ui-well { margin-bottom: 12px; }
+
+html[data-ui='cyber'] [data-shell='menu'] [data-part='avatar'] {
+  background: color-mix(in srgb, var(--cy-neon) 25%, transparent);
+  color: var(--cy-neon);
+  border: 1px solid var(--cy-neon);
+  border-radius: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='menu'] [data-part='name'] {
+  font-family: var(--cy-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+html[data-ui='cyber'] [data-shell='menu'] [data-part='email'] {
+  font-family: var(--cy-display);
+  font-size: 0.68rem;
+  color: var(--cy-muted);
+}
+
+html[data-ui='cyber'] [data-shell='menu'] .ui-chip[aria-current='page'] {
+  background: color-mix(in srgb, var(--cy-neon) 14%, transparent);
+  border-color: var(--cy-neon);
+  color: var(--cy-neon);
+}
+
+html[data-ui='cyber'] [data-shell='menu'] .ui-chip:focus-visible {
+  outline: 2px solid var(--cy-neon);
+  outline-offset: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='menu'] [data-part='icon'] {
+  border: var(--cy-border);
+  background: var(--cy-void);
+  color: var(--cy-neon);
+  border-radius: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='menu'] [aria-current='page'] [data-part='icon'] {
+  border-color: var(--cy-neon);
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-shell='menu'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--cy-neon) 22%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] {
+  border-top: 1px solid color-mix(in srgb, var(--cy-neon) 22%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--cy-neon) 6%, transparent), transparent 40%),
+    color-mix(in srgb, var(--cy-void) 92%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] .ui-heading {
+  font-family: var(--cy-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cy-neon);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] [data-part='icon'] { color: var(--cy-neon); }
+html[data-ui='cyber'] [data-shell='footer'] [data-part='dot'] {
+  background: var(--cy-neon);
+  box-shadow: 0 0 8px var(--cy-neon);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] [data-part='domain-icon'] {
+  border: var(--cy-border);
+  background: var(--cy-deep);
+  color: var(--domain, var(--cy-neon));
+  border-radius: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='footer'] .ui-pill {
+  border: var(--cy-border);
+  border-radius: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='footer'] [data-part='map'] {
+  border: var(--cy-border);
+  border-radius: var(--cy-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] .ui-chip:focus-visible {
+  outline: 2px solid var(--cy-neon);
+}
+
+html[data-ui='cyber'] [data-shell='footer'] [data-part='bar'] {
+  border-color: color-mix(in srgb, var(--cy-neon) 18%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='rail'] .ui-pill,
+html[data-ui='cyber'] [data-shell='dock'] .ui-pill {
+  border: var(--cy-border);
+  background: color-mix(in srgb, var(--cy-deep) 90%, transparent);
+  border-radius: 2px;
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-shell='rail'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='cyber'] [data-shell='dock'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='cyber'] [data-shell='footer'] .ui-pill:is(:hover, :focus-visible) {
+  border-color: var(--brand, var(--cy-neon));
+  color: var(--brand, var(--cy-neon));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--brand, var(--cy-neon)) 40%, transparent);
+}
+
+html[data-ui='cyber'] [data-shell='rail'] a:focus-visible,
+html[data-ui='cyber'] [data-shell='dock'] a:focus-visible,
+html[data-ui='cyber'] [data-shell='footer'] .ui-pill:focus-visible {
+  outline: 2px solid var(--cy-neon);
+  outline-offset: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='rail'] [data-part='glow'] {
+  background: color-mix(in srgb, var(--cy-neon) 40%, transparent);
+  filter: blur(10px);
+}
+
+html[data-ui='cyber'] [data-shell='rail'] [data-part='line'] {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--cy-neon), var(--cy-hot), transparent);
+}
+
+html[data-ui='cyber'] [data-shell='rail'] [data-part='dot'] {
+  background: var(--cy-neon);
+  box-shadow: 0 0 10px var(--cy-neon);
+  border-radius: 0;
+}
+
+html[data-ui='cyber'] [data-shell='dock'] .ui-card {
+  border: var(--cy-border-strong);
+  background: color-mix(in srgb, var(--cy-deep) 94%, transparent);
+  box-shadow: var(--cy-glow);
+  border-radius: var(--cy-radius-lg);
+}
+
+html[data-ui='cyber'] [data-shell='splash'] {
+  background-color: var(--cy-void);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--cy-neon) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--cy-neon) 8%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+html[data-ui='cyber'] [data-shell='splash'] [data-part='track'] {
+  border: var(--cy-border);
+  background: var(--cy-deep);
+  border-radius: 2px;
+}
+
+html[data-ui='cyber'] [data-shell='splash'] [data-part='fill'] {
+  background: linear-gradient(90deg, var(--cy-neon), var(--cy-hot));
+  box-shadow: var(--cy-glow);
+}
+
+/* ===== 4. Page hooks + cyber home ===== */
+html[data-ui='cyber'] [data-part='terminal'] {
+  border: var(--cy-border-strong);
+  background: #020805;
+  color: #c8ffd8;
+  box-shadow: var(--cy-glow);
+  border-radius: var(--cy-radius-lg);
+  font-family: var(--cy-display);
+}
+
+html[data-ui='cyber'] [data-part='showcase'] [data-part='tabbar'] {
+  border-top: 1px solid color-mix(in srgb, var(--cy-neon) 18%, transparent);
+  background: color-mix(in srgb, var(--cy-void) 40%, var(--cy-deep));
+}
+
+html[data-ui='cyber'] [data-part='tabbar'] > [role='tab'] {
+  font-family: var(--cy-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html[data-ui='cyber'] [data-part='tabbar'] > [aria-selected='true'] {
+  color: var(--cy-neon);
+  background: color-mix(in srgb, var(--cy-neon) 12%, transparent);
+}
+
+html[data-ui='cyber'] [data-part='events-list'] {
+  border: var(--cy-border);
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-part='events-list'] > .ui-well {
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--cy-neon) 14%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui='cyber'] [data-part='events-list'] > .ui-well:last-child { border-bottom: 0; }
+html[data-ui='cyber'] [data-part='events-list'] > .ui-well:has(a:hover) {
+  background: color-mix(in srgb, var(--cy-neon) 8%, transparent);
+}
+
+html[data-ui='cyber'] [data-part='poster'],
+html[data-ui='cyber'] [data-part='event-card'] {
+  border: var(--cy-border);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+html[data-ui='cyber'] [data-part='event-card']:hover {
+  border-color: color-mix(in srgb, var(--cy-neon) 55%, transparent);
+  box-shadow: var(--cy-glow);
+  transform: translateY(-2px);
+}
+
+html[data-ui='cyber'] [data-part='status'] {
+  border: 1px solid color-mix(in srgb, var(--cy-neon) 45%, transparent);
+  background: color-mix(in srgb, var(--cy-neon) 12%, transparent);
+  color: var(--cy-neon);
+  border-radius: 2px;
+  font-family: var(--cy-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+html[data-ui='cyber'] [data-part='status'][data-phase='live'] {
+  border-color: color-mix(in srgb, var(--cy-hot) 50%, transparent);
+  background: color-mix(in srgb, var(--cy-hot) 14%, transparent);
+  color: var(--cy-hot);
+  box-shadow: var(--cy-glow-hot);
+}
+
+html[data-ui='cyber'] [data-part='status'][data-phase='completed'] {
+  border-color: color-mix(in srgb, var(--cy-muted) 40%, transparent);
+  background: color-mix(in srgb, var(--cy-muted) 10%, transparent);
+  color: var(--cy-muted);
+  box-shadow: none;
+}
+
+html[data-ui='cyber'] [data-part='status-led'] {
+  display: inline-block !important;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 0;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+html[data-ui='cyber'] [data-part='member'] {
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+html[data-ui='cyber'] [data-part='member'][data-selected] {
+  border-color: var(--cy-neon);
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-part='inspector'] {
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-part='filter-bar'],
+html[data-ui='cyber'] [data-part='domain-bar'] {
+  border-bottom: 1px solid color-mix(in srgb, var(--cy-neon) 16%, transparent);
+  background: color-mix(in srgb, var(--cy-void) 90%, transparent) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+html[data-ui='cyber'] [data-part='banner'] {
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-part='badge'] {
+  border: 1px solid color-mix(in srgb, var(--cy-neon) 40%, transparent) !important;
+  border-radius: 2px !important;
+  background: color-mix(in srgb, var(--cy-neon) 12%, transparent);
+  color: var(--cy-neon);
+  font-family: var(--cy-display);
+}
+
+html[data-ui='cyber'] [data-part='compare-row'] {
+  border-bottom: 1px solid color-mix(in srgb, var(--cy-neon) 12%, transparent);
+}
+html[data-ui='cyber'] [data-part='compare-row']:hover,
+html[data-ui='cyber'] [data-part='compare-row'][data-active] {
+  background: color-mix(in srgb, var(--cy-neon) 8%, transparent);
+}
+
+html[data-ui='cyber'] [data-part='map-frame'],
+html[data-ui='cyber'] [data-page='contact'] [data-part='tile'] {
+  border: var(--cy-border);
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-part='form-well']:focus-within {
+  outline: 2px solid var(--cy-neon);
+  box-shadow: var(--cy-glow);
+}
+
+html[data-ui='cyber'] [data-part='doc-ref'] {
+  font-family: var(--cy-display);
+  font-weight: 400;
+  color: var(--cy-hot);
+  letter-spacing: 0.14em;
+}
+
+html[data-ui='cyber'] [data-page='events'] [data-part='event-card'] {
+  border-radius: var(--cy-radius-lg);
+  background: color-mix(in srgb, var(--cy-deep) 92%, transparent);
+}
+
+html[data-ui='cyber'] [data-page='events'][data-layout='cyber'] header,
+html[data-ui='cyber'] [data-page='domains'][data-layout='cyber'] > .relative > section:first-child,
+html[data-ui='cyber'] [data-page='members'][data-layout='cyber'] > header,
+html[data-ui='cyber'] [data-page='contact'][data-layout='cyber'] header {
+  text-align: left;
+}
+
+html[data-ui='cyber'] [data-page='recruitment'],
+html[data-ui='cyber'] [data-page='events'],
+html[data-ui='cyber'] [data-page='domains'],
+html[data-ui='cyber'] [data-page='members'],
+html[data-ui='cyber'] [data-page='contact'] {
+  overflow-x: clip;
+}
+
+/* Cyber home */
+html[data-ui='cyber'] [data-page='home-cyber'] {
+  background: transparent;
+}
+
+html[data-ui='cyber'] [data-part='cy-hero'] {
+  position: relative;
+  isolation: isolate;
+}
+
+html[data-ui='cyber'] [data-part='cy-hero']::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(transparent 50%, color-mix(in srgb, var(--cy-neon) 4%, transparent) 50%),
+    radial-gradient(ellipse 50% 50% at 85% 40%, color-mix(in srgb, var(--cy-hot) 12%, transparent), transparent 70%);
+  background-size: 100% 4px, auto;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+html[data-ui='cyber'] [data-part='cy-kicker'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--cy-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cy-neon);
+}
+
+html[data-ui='cyber'] [data-part='cy-kicker']::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--cy-neon);
+  box-shadow: 0 0 10px var(--cy-neon);
+  animation: cy-blink 1.6s steps(2, end) infinite;
+}
+
+html[data-ui='cyber'] [data-part='cy-panel'] {
+  position: relative;
+  border: var(--cy-border-strong);
+  border-radius: var(--cy-radius-lg);
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--cy-deep) 90%, transparent), color-mix(in srgb, var(--cy-void) 70%, transparent));
+  box-shadow: var(--cy-glow);
+  overflow: hidden;
+}
+
+html[data-ui='cyber'] [data-part='cy-panel']::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--cy-neon) 6%, transparent));
+  background-size: 100% 6px;
+  animation: cy-scan 5s linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+html[data-ui='cyber'] [data-part='cy-meta'] {
+  font-family: var(--cy-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cy-muted);
+}
+
+html[data-ui='cyber'] [data-part='cy-domain'] {
+  border: var(--cy-border);
+  border-radius: var(--cy-radius-lg);
+  background: color-mix(in srgb, var(--cy-deep) 90%, transparent);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+html[data-ui='cyber'] [data-part='cy-domain']:hover {
+  border-color: color-mix(in srgb, var(--cy-neon) 55%, transparent);
+  box-shadow: var(--cy-glow);
+  transform: translateY(-2px);
+}
+
+html[data-ui='cyber'] [data-part='cy-divider'] {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cy-neon), var(--cy-hot), transparent);
+  border: 0;
+  opacity: 0.55;
+}
+
+html[data-ui='cyber'] [data-part='cy-stat'] {
+  border: var(--cy-border);
+  border-radius: var(--cy-radius);
+  background: color-mix(in srgb, var(--cy-deep) 75%, transparent);
+  padding: 0.85rem 1rem;
+}
+
+html[data-ui='cyber'] [data-part='cy-stat'] [data-part='value'] {
+  font-family: var(--cy-display);
+  font-size: 1.35rem;
+  color: var(--cy-neon);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--cy-neon) 40%, transparent);
+}
+
+html[data-ui='cyber'] [data-part='cy-stat'] [data-part='label'] {
+  margin-top: 0.25rem;
+  font-family: var(--cy-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cy-muted);
+}
+
+@keyframes cy-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+@keyframes cy-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* ===== 5. User preferences ===== */
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui='cyber'] .ui-card,
+  html[data-ui='cyber'] .ui-solid,
+  html[data-ui='cyber'] .ui-pill,
+  html[data-ui='cyber'] .ui-chip,
+  html[data-ui='cyber'] .ui-thumb,
+  html[data-ui='cyber'] .ui-switch::after,
+  html[data-ui='cyber'] .ui-switch[data-shell='theme'] [data-part='knob'],
+  html[data-ui='cyber'] [data-shell='nav'] .ui-thumb,
+  html[data-ui='cyber'] [data-part='member'],
+  html[data-ui='cyber'] [data-part='tabbar'] > [role='tab'],
+  html[data-ui='cyber'] [data-part='events-list'] > .ui-well,
+  html[data-ui='cyber'] [data-part='compare-row'],
+  html[data-ui='cyber'] [data-part='cy-domain'],
+  html[data-ui='cyber'] [data-part='event-card'] {
+    transition: none;
+    animation: none;
+  }
+
+  html[data-ui='cyber'] [data-part='cy-kicker']::before,
+  html[data-ui='cyber'] [data-part='cy-panel']::after {
+    animation: none;
+  }
+
+  html[data-ui='cyber'] .ui-card:hover,
+  html[data-ui='cyber'] [data-part='cy-domain']:hover,
+  html[data-ui='cyber'] [data-part='event-card']:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='cyber'] [data-shell='nav'],
+  html[data-ui='cyber'] [data-shell='menu'],
+  html[data-ui='cyber'] [data-shell='dock'] .ui-card,
+  html[data-ui='cyber'] .ui-card,
+  html[data-ui='cyber'] .ui-dialog,
+  html[data-ui='cyber'] .ui-tooltip,
+  html[data-ui='cyber'] .ui-nav,
+  html[data-ui='cyber'] [data-part='cy-panel'],
+  html[data-ui='cyber'] [data-part='cy-domain'],
+  html[data-ui='cyber'] [data-shell='rail'] .ui-pill,
+  html[data-ui='cyber'] [data-shell='dock'] .ui-pill {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--cy-deep);
+  }
+
+  html[data-ui='cyber'] [data-shell='nav'],
+  html[data-ui='cyber'] [data-part='domain-bar'],
+  html[data-ui='cyber'] [data-part='filter-bar'] {
+    background-color: var(--cy-void) !important;
+  }
+
+  html[data-ui='cyber'] [data-part='send-overlay'] {
+    background: var(--cy-void);
+  }
+}

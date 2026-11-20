@@ -8,6 +8,7 @@ import Home3dImmersive from "./Home3dImmersive";
 import HomeBauhaus from "./HomeBauhaus";
 import HomeBlueprint from "./HomeBlueprint";
 import HomeCreativeCampus from "./HomeCreativeCampus";
+import HomeCyber from "./HomeCyber";
 import HomeDarkLuxury from "./HomeDarkLuxury";
 import HomeFuturistic from "./HomeFuturistic";
 import HomeGradientFlow from "./HomeGradientFlow";
@@ -487,6 +488,10 @@ const Home = () => {
 
   if (design === "gradient-flow") {
     return <HomeGradientFlow />;
+  }
+
+  if (design === "cyber") {
+    return <HomeCyber />;
   }
 
   return (
