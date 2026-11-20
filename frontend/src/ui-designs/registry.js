@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -70,6 +70,17 @@ export const DESIGNS = [
       sample: "brutal",
     },
     loader: () => import("./neo-brutalism/neo-brutalism.css"),
+  },
+  {
+    id: "futuristic-dark",
+    label: "Futuristic Dark",
+    description: "Midnight navy, cyan–violet accents, and an immersive AI-lab layout.",
+    preview: {
+      light: ["#eef2f8", "#ffffff", "#0891b2"],
+      dark: ["#05070f", "#0b1220", "#22d3ee"],
+      sample: "futuristic",
+    },
+    loader: () => import("./futuristic-dark/futuristic-dark.css"),
   },
 ];
 

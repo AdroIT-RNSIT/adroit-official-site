@@ -26,20 +26,31 @@ const formatRange = (start, end) => {
 export default function Events() {
   const { design } = useUiDesign();
   const brutal = design === "neo-brutalism";
+  const futuristic = design === "futuristic-dark";
+  const editorial = brutal || futuristic;
   const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
-    <div data-page="events" className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-ink">
+    <div
+      data-page="events"
+      data-layout={futuristic ? "futuristic" : brutal ? "brutal" : undefined}
+      className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-ink"
+    >
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <header className={`mb-12 ${brutal ? "text-left" : "text-center"}`}>
+        <header className={`mb-12 ${editorial ? "text-left" : "text-center"}`}>
           {brutal && (
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Poster wall / live calendar
             </p>
           )}
+          {futuristic && (
+            <p className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-primary">
+              Ops calendar · event stream
+            </p>
+          )}
           <h1 className={`ui-heading fluid-h1 mb-4 font-extrabold text-ink ${brutal ? "uppercase tracking-tight" : ""}`}>
             Events
           </h1>
-          <p className={`max-w-2xl text-base text-ink-muted sm:text-lg ${brutal ? "" : "mx-auto"}`}>
+          <p className={`max-w-2xl text-base text-ink-muted sm:text-lg ${editorial ? "" : "mx-auto"}`}>
             Upcoming sessions and recaps from AdroIT.
           </p>
         </header>

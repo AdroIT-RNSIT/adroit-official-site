@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { useTheme } from '../lib/theme';
 import { useUiDesign } from "../ui-designs/useUiDesign";
+import HomeFuturistic from "./HomeFuturistic";
 import HomeNeoBrutal from "./HomeNeoBrutal";
 
 const showcase = [
@@ -452,6 +453,10 @@ const Home = () => {
 
   if (design === "neo-brutalism") {
     return <HomeNeoBrutal />;
+  }
+
+  if (design === "futuristic-dark") {
+    return <HomeFuturistic />;
   }
 
   return (

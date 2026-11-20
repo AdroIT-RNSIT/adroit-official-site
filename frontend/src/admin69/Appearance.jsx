@@ -64,6 +64,20 @@ function sampleStyle(sample, surface, dark) {
       boxShadow: dark ? "4px 4px 0 #f5f5f5" : "4px 4px 0 #171717",
     };
   }
+  if (sample === "futuristic") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "rgb(34 211 238 / 0.4)" : "rgb(8 145 178 / 0.4)"}`,
+      borderRadius: "12px",
+      boxShadow: dark
+        ? "0 0 18px rgb(34 211 238 / 0.18), 0 10px 24px rgb(0 0 0 / 0.45)"
+        : "0 0 14px rgb(8 145 178 / 0.12), 0 8px 18px rgb(15 23 42 / 0.1)",
+      backgroundImage: dark
+        ? "linear-gradient(to right, rgb(34 211 238 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgb(34 211 238 / 0.08) 1px, transparent 1px)"
+        : "linear-gradient(to right, rgb(8 145 178 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgb(8 145 178 / 0.08) 1px, transparent 1px)",
+      backgroundSize: "12px 12px",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 
