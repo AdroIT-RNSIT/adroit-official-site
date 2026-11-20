@@ -56,6 +56,14 @@ function sampleStyle(sample, surface, dark) {
       backgroundSize: "10px 10px",
     };
   }
+  if (sample === "brutal") {
+    return {
+      background: surface,
+      border: `3px solid ${dark ? "#f5f5f5" : "#171717"}`,
+      borderRadius: "4px",
+      boxShadow: dark ? "4px 4px 0 #f5f5f5" : "4px 4px 0 #171717",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 

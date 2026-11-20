@@ -3,6 +3,8 @@ import { ArrowUpRight, BarChart3, Brain, Cloud, Megaphone, ShieldCheck } from "l
 import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { useTheme } from '../lib/theme';
+import { useUiDesign } from "../ui-designs/useUiDesign";
+import HomeNeoBrutal from "./HomeNeoBrutal";
 
 const showcase = [
   {
@@ -425,6 +427,7 @@ const Terminal = () => {
 
 const Home = () => {
   const { isDark } = useTheme();
+  const { design } = useUiDesign();
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -446,6 +449,10 @@ const Home = () => {
 
     return () => cancelAnimationFrame(frame);
   }, []);
+
+  if (design === "neo-brutalism") {
+    return <HomeNeoBrutal />;
+  }
 
   return (
     <div className="home-root relative min-h-dvh overflow-x-clip bg-page">

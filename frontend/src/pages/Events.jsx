@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Calendar, MapPin } from "lucide-react";
 import { eventPhase, eventStatusLabel, partitionEvents } from "../data/events";
 import ShareEventButton from "../components/ShareEventButton";
+import { useUiDesign } from "../ui-designs/useUiDesign";
 
 const formatRange = (start, end) => {
   const startDate = new Date(start);
@@ -23,15 +24,22 @@ const formatRange = (start, end) => {
 };
 
 export default function Events() {
+  const { design } = useUiDesign();
+  const brutal = design === "neo-brutalism";
   const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
     <div data-page="events" className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-ink">
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <header className="mb-12 text-center">
-          <h1 className="ui-heading fluid-h1 mb-4 font-extrabold text-ink">
+        <header className={`mb-12 ${brutal ? "text-left" : "text-center"}`}>
+          {brutal && (
+            <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Poster wall / live calendar
+            </p>
+          )}
+          <h1 className={`ui-heading fluid-h1 mb-4 font-extrabold text-ink ${brutal ? "uppercase tracking-tight" : ""}`}>
             Events
           </h1>
-          <p className="mx-auto max-w-2xl text-base text-ink-muted sm:text-lg">
+          <p className={`max-w-2xl text-base text-ink-muted sm:text-lg ${brutal ? "" : "mx-auto"}`}>
             Upcoming sessions and recaps from AdroIT.
           </p>
         </header>

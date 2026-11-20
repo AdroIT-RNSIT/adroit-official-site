@@ -104,9 +104,9 @@ The first-visit **intro splash** sits above all of this.
 
 ## 3. Design system
 
-The public site supports several **UI designs**. Today there are five: **Liquid Glass** (`glass`, the
-default), **Soft Tactile** (`neu`), **Pencil Sketch** (`pencil`), **Swiss Editorial** (`swiss`), and **Blueprint Tech** (`blueprint`). Pages never hardcode a look. They use a fixed set of semantic
-classes and colour tokens, and the active **theme pack** decides what those look like. Light and dark
+The public site supports several **UI designs**. Today there are six: **Liquid Glass** (`glass`, the
+default), **Soft Tactile** (`neu`), **Pencil Sketch** (`pencil`), **Swiss Editorial** (`swiss`), **Blueprint Tech** (`blueprint`), and **Neo-Brutalism** (`neo-brutalism`). Pages mostly use semantic
+classes and colour tokens; some designs (like Neo-Brutalism) also swap presentation layouts while keeping the same content and routes. Light and dark
 mode are separate from the design: every design styles both.
 
 To add a design, see [ADDING_A_UI_DESIGN.md](./ADDING_A_UI_DESIGN.md).
