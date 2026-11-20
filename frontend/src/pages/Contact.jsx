@@ -347,6 +347,7 @@ export default function Contact() {
   const brutal = design === "neo-brutalism";
   const blueprint = design === "blueprint";
   const luxury = design === "dark-luxury";
+  const bauhaus = design === "bauhaus-modern";
   const formOpenedAtRef = useRef(Date.now());
   const cardRef = useRef(null);
   const buttonRef = useRef(null);
@@ -544,12 +545,12 @@ export default function Contact() {
   return (
     <div
       data-page="contact"
-      data-layout={brutal ? "brutal" : blueprint ? "blueprint" : luxury ? "luxury" : undefined}
+      data-layout={brutal ? "brutal" : blueprint ? "blueprint" : luxury ? "luxury" : bauhaus ? "bauhaus" : undefined}
       className="relative min-h-screen overflow-x-clip bg-page pb-16 pt-8 text-ink sm:pb-20"
     >
       <style>{CSS}</style>
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <header className={`mb-6 sm:mb-12 ${brutal || blueprint || luxury ? "text-left" : "text-center"}`}>
+        <header className={`mb-6 sm:mb-12 ${brutal || blueprint || luxury || bauhaus ? "text-left" : "text-center"}`}>
           {brutal && (
             <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Inbox / write us
@@ -565,10 +566,15 @@ export default function Contact() {
               Correspondence · write the studio
             </p>
           )}
-          <h1 className={`ui-heading fluid-h1 mb-3 font-extrabold text-ink sm:mb-4 ${brutal ? "uppercase tracking-tight" : ""}`}>
+          {bauhaus && (
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+              Signal · write the studio
+            </p>
+          )}
+          <h1 className={`ui-heading fluid-h1 mb-3 font-extrabold text-ink sm:mb-4 ${brutal || bauhaus ? "uppercase tracking-tight" : ""}`}>
             Contact
           </h1>
-          <p className={`max-w-2xl text-sm text-ink-muted sm:text-lg ${brutal || blueprint || luxury ? "" : "mx-auto"}`}>
+          <p className={`max-w-2xl text-sm text-ink-muted sm:text-lg ${brutal || blueprint || luxury || bauhaus ? "" : "mx-auto"}`}>
             Questions about events, domains, or joining the club? Write to us and we’ll reply on weekdays.
           </p>
         </header>

@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -103,6 +103,17 @@ export const DESIGNS = [
       sample: "luxury",
     },
     loader: () => import("./dark-luxury/dark-luxury.css"),
+  },
+  {
+    id: "bauhaus-modern",
+    label: "Bauhaus Modern",
+    description: "Geometric blocks, bold grids, and red–cobalt–yellow studio compositions.",
+    preview: {
+      light: ["#f4f1ea", "#fffcf7", "#1f4fd8"],
+      dark: ["#101010", "#1a1a1a", "#5b7fff"],
+      sample: "bauhaus",
+    },
+    loader: () => import("./bauhaus-modern/bauhaus-modern.css"),
   },
 ];
 

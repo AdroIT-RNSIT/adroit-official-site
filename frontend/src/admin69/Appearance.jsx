@@ -103,6 +103,20 @@ function sampleStyle(sample, surface, dark) {
         : "linear-gradient(165deg, rgb(154 123 79 / 0.08), transparent 55%)",
     };
   }
+  if (sample === "bauhaus") {
+    return {
+      background: surface,
+      border: `2px solid ${dark ? "#f5f2eb" : "#121212"}`,
+      borderRadius: "0",
+      boxShadow: dark ? "4px 4px 0 #5b7fff" : "4px 4px 0 #121212",
+      backgroundImage: dark
+        ? "linear-gradient(90deg, #ff5a4a 0 8px, #f5d04a 8px 16px, #5b7fff 16px 24px, transparent 24px)"
+        : "linear-gradient(90deg, #e23b2e 0 8px, #f0c41a 8px 16px, #1f4fd8 16px 24px, transparent 24px)",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "100% 6px",
+      backgroundPosition: "top left",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 

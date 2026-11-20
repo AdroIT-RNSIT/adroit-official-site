@@ -1,0 +1,1022 @@
+/* Bauhaus Modern. Every rule is scoped to html[data-ui='bauhaus-modern'].
+   Geometric studio aesthetic: red / cobalt / yellow blocks, bold grids, Space Grotesk.
+   Contract: docs/ADDING_A_UI_DESIGN.md */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@500;600;700;800&display=swap");
+
+html[data-ui='bauhaus-modern'] {
+  --bh-display: Archivo, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bh-body: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bh-radius: 0;
+  --bh-radius-soft: 2px;
+  --bh-border: 2px solid var(--bh-ink);
+  --bh-border-thin: 1.5px solid var(--bh-ink);
+  --bh-shadow: 6px 6px 0 var(--bh-ink);
+  --bh-shadow-sm: 3px 3px 0 var(--bh-ink);
+  overflow-x: clip;
+}
+
+/* ===== 1. Tokens ===== */
+html[data-ui='bauhaus-modern'],
+html[data-ui='bauhaus-modern'] .ui-kit-light {
+  --bh-page: #f4f1ea;
+  --bh-surface: #fffcf7;
+  --bh-ink: #121212;
+  --bh-muted: #5c5c5c;
+  --bh-red: #e23b2e;
+  --bh-blue: #1f4fd8;
+  --bh-yellow: #f0c41a;
+  --bh-grey: #d4d0c8;
+  --bh-rim: #121212;
+
+  --color-page: var(--bh-page);
+  --color-surface: var(--bh-surface);
+  --color-ink: var(--bh-ink);
+  --color-ink-muted: var(--bh-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--bh-muted) 72%, var(--bh-page));
+  --color-line: color-mix(in srgb, var(--bh-ink) 18%, transparent);
+  --color-line-strong: var(--bh-ink);
+  --color-primary: var(--bh-blue);
+  --color-primary-ink: #1639a8;
+  --color-on-primary: #fffcf7;
+
+  --grid-line: color-mix(in srgb, var(--bh-ink) 10%, transparent);
+  --grid-cell: color-mix(in srgb, var(--bh-surface) 80%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--bh-blue) 35%, transparent);
+}
+
+html[data-ui='bauhaus-modern'].dark,
+html[data-ui='bauhaus-modern'] .ui-kit-dark,
+html[data-ui='bauhaus-modern'] [data-shell='splash'],
+html[data-ui='bauhaus-modern'] [data-scheme='dark'] > * {
+  --bh-page: #101010;
+  --bh-surface: #1a1a1a;
+  --bh-ink: #f5f2eb;
+  --bh-muted: #a8a49c;
+  --bh-red: #ff5a4a;
+  --bh-blue: #5b7fff;
+  --bh-yellow: #f5d04a;
+  --bh-grey: #2c2c2c;
+  --bh-rim: #f5f2eb;
+
+  --color-page: var(--bh-page);
+  --color-surface: var(--bh-surface);
+  --color-ink: var(--bh-ink);
+  --color-ink-muted: var(--bh-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--bh-muted) 70%, var(--bh-page));
+  --color-line: color-mix(in srgb, var(--bh-ink) 22%, transparent);
+  --color-line-strong: var(--bh-ink);
+  --color-primary: var(--bh-blue);
+  --color-primary-ink: #9db0ff;
+  --color-on-primary: #101010;
+
+  --grid-line: color-mix(in srgb, var(--bh-ink) 12%, transparent);
+  --grid-cell: color-mix(in srgb, var(--bh-surface) 75%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--bh-blue) 40%, transparent);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='splash'] {
+  --splash-bg: var(--bh-page);
+  --splash-track: color-mix(in srgb, var(--bh-ink) 14%, transparent);
+  --splash-accent: var(--bh-red);
+}
+
+html[data-ui='bauhaus-modern'],
+html[data-ui='bauhaus-modern'] body,
+html[data-ui='bauhaus-modern'] #root {
+  background-color: var(--bh-page);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--bh-ink) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--bh-ink) 7%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-attachment: fixed;
+  color: var(--bh-ink);
+  font-family: var(--bh-body);
+  letter-spacing: -0.015em;
+  overflow-x: clip;
+}
+
+html[data-ui='bauhaus-modern'] .ui-kit-light,
+html[data-ui='bauhaus-modern'] .ui-kit-dark {
+  background-color: var(--bh-page);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--bh-ink) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--bh-ink) 7%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  color: var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] .fluid-h1,
+html[data-ui='bauhaus-modern'] .fluid-h2,
+html[data-ui='bauhaus-modern'] .ui-heading.fluid-h1,
+html[data-ui='bauhaus-modern'] .ui-heading.fluid-h2 {
+  font-family: var(--bh-display);
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+html[data-ui='bauhaus-modern'] .fluid-h1 {
+  font-size: clamp(2.6rem, 7.5vw, 5.5rem);
+  line-height: 0.95;
+}
+
+html[data-ui='bauhaus-modern'] .fluid-h2 {
+  font-size: clamp(1.85rem, 4.8vw, 3.4rem);
+  line-height: 1;
+}
+
+html[data-ui='bauhaus-modern'] .font-mono,
+html[data-ui='bauhaus-modern'] .uppercase {
+  font-family: var(--bh-display);
+  letter-spacing: 0.08em;
+}
+
+/* ===== 2. Semantic classes ===== */
+@layer components {
+  html[data-ui='bauhaus-modern'] .ui-heading {
+    color: var(--bh-ink);
+    font-family: var(--bh-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-card,
+  html[data-ui='bauhaus-modern'] .ui-dialog,
+  html[data-ui='bauhaus-modern'] .ui-tooltip,
+  html[data-ui='bauhaus-modern'] .ui-nav {
+    color: var(--bh-ink);
+    background: var(--bh-surface);
+    border: var(--bh-border-thin);
+    border-radius: var(--bh-radius);
+    box-shadow: var(--bh-shadow-sm);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-card {
+    position: relative;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--bh-shadow);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-dialog {
+    border: var(--bh-border);
+    box-shadow: 10px 10px 0 var(--bh-blue);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-tooltip {
+    font-family: var(--bh-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--bh-yellow);
+    color: #121212;
+    border: 2px solid #121212;
+    border-radius: 0;
+    box-shadow: 3px 3px 0 #121212;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-nav {
+    background: var(--bh-surface);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-nav > a[aria-current='page'] {
+    color: var(--bh-red);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-well,
+  html[data-ui='bauhaus-modern'] .ui-input {
+    background: color-mix(in srgb, var(--bh-page) 70%, var(--bh-surface));
+    border: 1.5px solid color-mix(in srgb, var(--bh-ink) 55%, transparent);
+    border-radius: 0;
+    color: var(--bh-ink);
+    box-shadow: inset 2px 2px 0 color-mix(in srgb, var(--bh-ink) 8%, transparent);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-input::placeholder {
+    color: var(--bh-muted);
+    opacity: 0.9;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-input:focus-visible {
+    outline: 2px solid var(--bh-blue);
+    outline-offset: 2px;
+    border-color: var(--bh-blue);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0;
+    border: 2px solid var(--bh-ink);
+    background: var(--bh-red);
+    color: #fffcf7;
+    font-family: var(--bh-display);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--bh-ink);
+    transition: transform 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-solid:hover {
+    background: var(--bh-blue);
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--bh-ink);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-solid:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--bh-ink);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-solid:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-solid:focus-visible {
+    outline: 2px solid var(--bh-yellow);
+    outline-offset: 3px;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.95rem;
+    border-radius: 0;
+    border: 1.5px solid var(--bh-ink);
+    background: var(--bh-surface);
+    color: var(--bh-ink);
+    font-family: var(--bh-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-pill:hover {
+    background: var(--bh-yellow);
+    color: #121212;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-pill[aria-pressed='true'],
+  html[data-ui='bauhaus-modern'] .ui-pill[aria-selected='true'] {
+    background: var(--bh-blue);
+    color: #fffcf7;
+    box-shadow: 3px 3px 0 var(--bh-ink);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-pill:focus-visible {
+    outline: 2px solid var(--bh-red);
+    outline-offset: 2px;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-track {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.2rem;
+    border-radius: 0;
+    background: var(--bh-grey);
+    border: 1.5px solid var(--bh-ink);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-track > button {
+    position: relative;
+    z-index: 1;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-thumb {
+    border-radius: 0;
+    background: var(--bh-yellow);
+    border: 1.5px solid var(--bh-ink);
+    box-shadow: none;
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), width 200ms cubic-bezier(0.22, 1, 0.36, 1), height 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-switch {
+    position: relative;
+    width: 2.85rem;
+    height: 1.65rem;
+    border-radius: 0;
+    border: 2px solid var(--bh-ink);
+    background: var(--bh-surface);
+    transition: background-color 140ms ease;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-switch[aria-checked='true'] {
+    background: var(--bh-blue);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 0;
+    background: var(--bh-yellow);
+    border: 1.5px solid var(--bh-ink);
+    transition: transform 140ms ease;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-switch[aria-checked='true']::after {
+    transform: translateX(1.1rem);
+    background: var(--bh-red);
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 1.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 0;
+    border: 1.5px solid var(--bh-ink);
+    background: var(--bh-surface);
+    color: var(--bh-ink);
+    font-family: var(--bh-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  html[data-ui='bauhaus-modern'] .ui-chip[aria-pressed='true'] {
+    background: var(--bh-red);
+    color: #fffcf7;
+  }
+}
+
+/* ===== 3. Shell ===== */
+html[data-ui='bauhaus-modern'] [data-brand='instagram'] { --brand: var(--bh-red); }
+html[data-ui='bauhaus-modern'] [data-brand='linkedin'] { --brand: var(--bh-blue); }
+html[data-ui='bauhaus-modern'] [data-brand='github'] { --brand: var(--bh-ink); }
+html[data-ui='bauhaus-modern'] [data-domain='ml'] { --domain: #22d3ee; }
+html[data-ui='bauhaus-modern'] [data-domain='cloud'] { --domain: #c084fc; }
+html[data-ui='bauhaus-modern'] [data-domain='cyber'] { --domain: #f472b6; }
+html[data-ui='bauhaus-modern'] [data-domain='data'] { --domain: #34d399; }
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] {
+  border-bottom: 2px solid var(--bh-ink);
+  background: color-mix(in srgb, var(--bh-page) 92%, transparent);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-track {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-track a {
+  color: var(--bh-muted);
+  font-family: var(--bh-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-track a:hover { color: var(--bh-ink); }
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-track a[aria-current='page'] {
+  color: var(--bh-red);
+  font-weight: 800;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-track a:focus-visible {
+  outline: 2px solid var(--bh-blue);
+  outline-offset: 2px;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-thumb {
+  border: 0;
+  border-radius: 0;
+  background: color-mix(in srgb, var(--bh-yellow) 85%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-thumb[data-state='rest'] { opacity: 0; }
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] [data-part='divider'] {
+  background: var(--bh-ink);
+  width: 2px;
+}
+
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'] {
+  width: 2.85rem;
+  height: 2.5rem;
+  border-radius: 0;
+  background: var(--bh-surface);
+  border: 2px solid var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme']::before {
+  inset: 3px;
+  opacity: 1;
+  background: var(--bh-page);
+}
+
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme']::after { content: none; }
+
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'] [data-part='knob'] {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 1.3rem;
+  height: 1.3rem;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--bh-ink);
+  border-radius: 0;
+  background: var(--bh-yellow);
+  color: #121212;
+  transition: transform 140ms ease, background-color 140ms ease;
+}
+
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-part='knob'] {
+  transform: translateX(1.05rem);
+  background: var(--bh-red);
+  color: #fffcf7;
+}
+
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'] [data-glyph='sun'] { display: block; }
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'] [data-glyph='moon'],
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='sun'] { display: none; }
+html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='moon'] { display: block; }
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-pill {
+  border: 2px solid var(--bh-ink);
+  color: var(--bh-ink);
+  background: var(--bh-surface);
+  box-shadow: 2px 2px 0 var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  background: var(--bh-yellow);
+  color: #121212;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='scrim'] {
+  background: color-mix(in srgb, #121212 70%, transparent);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] {
+  border: 2px solid var(--bh-ink);
+  border-radius: 0;
+  background: var(--bh-surface);
+  box-shadow: 8px 8px 0 var(--bh-blue);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='caret'] {
+  border-color: var(--bh-ink);
+  background: var(--bh-surface);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='scroll'] { padding: 12px; }
+html[data-ui='bauhaus-modern'] [data-shell='menu'] nav { gap: 4px; }
+html[data-ui='bauhaus-modern'] [data-shell='menu'] .ui-well { margin-bottom: 12px; }
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='avatar'] {
+  background: var(--bh-red);
+  color: #fffcf7;
+  border: 2px solid var(--bh-ink);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='name'] {
+  font-family: var(--bh-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='email'] {
+  font-size: 0.7rem;
+  color: var(--bh-muted);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] .ui-chip[aria-current='page'] {
+  background: var(--bh-yellow);
+  border-color: var(--bh-ink);
+  color: #121212;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] .ui-chip:focus-visible {
+  outline: 2px solid var(--bh-blue);
+  outline-offset: 2px;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='icon'] {
+  border: 1.5px solid var(--bh-ink);
+  background: var(--bh-page);
+  color: var(--bh-blue);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [aria-current='page'] [data-part='icon'] {
+  background: var(--bh-blue);
+  color: #fffcf7;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='menu'] [data-part='divider'] {
+  background: var(--bh-ink);
+  height: 2px;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] {
+  border-top: 3px solid var(--bh-ink);
+  background:
+    linear-gradient(90deg, var(--bh-red) 0 8px, transparent 8px),
+    linear-gradient(90deg, transparent calc(100% - 8px), var(--bh-blue) 0),
+    var(--bh-page);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+  box-shadow: var(--bh-shadow-sm);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] .ui-heading {
+  font-family: var(--bh-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bh-red);
+  font-weight: 800;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] [data-part='icon'] { color: var(--bh-blue); }
+html[data-ui='bauhaus-modern'] [data-shell='footer'] [data-part='dot'] {
+  background: var(--bh-yellow);
+  border: 1px solid var(--bh-ink);
+  box-shadow: none;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] [data-part='domain-icon'] {
+  border: 1.5px solid var(--bh-ink);
+  background: var(--bh-surface);
+  color: var(--domain, var(--bh-blue));
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] .ui-pill {
+  border: 1.5px solid var(--bh-ink);
+  box-shadow: 2px 2px 0 var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] [data-part='map'] {
+  border: 2px solid var(--bh-ink);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 6px 6px 0 var(--bh-yellow);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] .ui-chip:focus-visible {
+  outline: 2px solid var(--bh-blue);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='footer'] [data-part='bar'] {
+  border-color: var(--bh-ink);
+  border-top-width: 2px;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='rail'] .ui-pill,
+html[data-ui='bauhaus-modern'] [data-shell='dock'] .ui-pill {
+  border: 2px solid var(--bh-ink);
+  background: var(--bh-surface);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='rail'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='bauhaus-modern'] [data-shell='dock'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='bauhaus-modern'] [data-shell='footer'] .ui-pill:is(:hover, :focus-visible) {
+  background: var(--brand, var(--bh-yellow));
+  color: #121212;
+  border-color: var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='rail'] a:focus-visible,
+html[data-ui='bauhaus-modern'] [data-shell='dock'] a:focus-visible,
+html[data-ui='bauhaus-modern'] [data-shell='footer'] .ui-pill:focus-visible {
+  outline: 2px solid var(--bh-blue);
+  outline-offset: 2px;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='rail'] [data-part='glow'] {
+  background: color-mix(in srgb, var(--bh-red) 35%, transparent);
+  filter: blur(8px);
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='rail'] [data-part='line'] {
+  width: 3px;
+  background: linear-gradient(to bottom, var(--bh-red), var(--bh-yellow), var(--bh-blue));
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='rail'] [data-part='dot'] {
+  background: var(--bh-red);
+  border: 1px solid var(--bh-ink);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='dock'] .ui-card {
+  border: 2px solid var(--bh-ink);
+  background: var(--bh-surface);
+  box-shadow: 6px 6px 0 var(--bh-blue);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='splash'] {
+  background-color: var(--bh-page);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--bh-ink) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--bh-ink) 8%, transparent) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='splash'] [data-part='track'] {
+  border: 2px solid var(--bh-ink);
+  background: var(--bh-surface);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-shell='splash'] [data-part='fill'] {
+  background: linear-gradient(90deg, var(--bh-red), var(--bh-yellow), var(--bh-blue));
+}
+
+/* ===== 4. Page hooks + bauhaus home ===== */
+html[data-ui='bauhaus-modern'] [data-part='terminal'] {
+  border: 2px solid var(--bh-ink);
+  background: #121212;
+  color: #f5f2eb;
+  box-shadow: 6px 6px 0 var(--bh-red);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='showcase'] [data-part='tabbar'] {
+  border-top: 2px solid var(--bh-ink);
+  background: var(--bh-grey);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='tabbar'] > [role='tab'] {
+  font-family: var(--bh-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='tabbar'] > [aria-selected='true'] {
+  color: #fffcf7;
+  background: var(--bh-blue);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='events-list'] {
+  border: 2px solid var(--bh-ink);
+  box-shadow: 6px 6px 0 var(--bh-yellow);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='events-list'] > .ui-well {
+  border: 0;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--bh-ink) 25%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='events-list'] > .ui-well:last-child { border-bottom: 0; }
+html[data-ui='bauhaus-modern'] [data-part='events-list'] > .ui-well:has(a:hover) {
+  background: color-mix(in srgb, var(--bh-yellow) 28%, transparent);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='poster'],
+html[data-ui='bauhaus-modern'] [data-part='event-card'] {
+  border: 2px solid var(--bh-ink);
+  border-radius: 0;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='event-card']:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--bh-blue);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='status'] {
+  border: 1.5px solid var(--bh-ink);
+  background: var(--bh-yellow);
+  color: #121212;
+  border-radius: 0;
+  font-family: var(--bh-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='status'][data-phase='live'] {
+  background: var(--bh-red);
+  color: #fffcf7;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='status'][data-phase='completed'] {
+  background: var(--bh-grey);
+  color: var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='status-led'] {
+  display: inline-block !important;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 0;
+  background: currentColor;
+  border: 1px solid var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='member'] {
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+html[data-ui='bauhaus-modern'] [data-part='member'][data-selected] {
+  border-color: var(--bh-ink);
+  box-shadow: 4px 4px 0 var(--bh-red);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='inspector'] {
+  box-shadow: 8px 8px 0 var(--bh-blue);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='filter-bar'],
+html[data-ui='bauhaus-modern'] [data-part='domain-bar'] {
+  border-bottom: 2px solid var(--bh-ink);
+  background: color-mix(in srgb, var(--bh-page) 94%, transparent) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='banner'] {
+  box-shadow: 6px 6px 0 var(--bh-ink);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='badge'] {
+  border: 1.5px solid var(--bh-ink) !important;
+  border-radius: 0 !important;
+  background: var(--bh-yellow);
+  color: #121212;
+  font-family: var(--bh-display);
+  font-weight: 700;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='compare-row'] {
+  border-bottom: 1.5px solid color-mix(in srgb, var(--bh-ink) 20%, transparent);
+}
+html[data-ui='bauhaus-modern'] [data-part='compare-row']:hover,
+html[data-ui='bauhaus-modern'] [data-part='compare-row'][data-active] {
+  background: color-mix(in srgb, var(--bh-yellow) 22%, transparent);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='map-frame'],
+html[data-ui='bauhaus-modern'] [data-page='contact'] [data-part='tile'] {
+  border: 2px solid var(--bh-ink);
+  box-shadow: 5px 5px 0 var(--bh-red);
+  border-radius: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='form-well']:focus-within {
+  outline: 2px solid var(--bh-blue);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='doc-ref'] {
+  font-family: var(--bh-display);
+  font-weight: 800;
+  color: var(--bh-red);
+  letter-spacing: 0.1em;
+}
+
+html[data-ui='bauhaus-modern'] [data-page='events'] [data-part='event-card'] {
+  border-radius: 0;
+  background: var(--bh-surface);
+}
+
+html[data-ui='bauhaus-modern'] [data-page='events'][data-layout='bauhaus'] header,
+html[data-ui='bauhaus-modern'] [data-page='domains'][data-layout='bauhaus'] > .relative > section:first-child,
+html[data-ui='bauhaus-modern'] [data-page='members'][data-layout='bauhaus'] > header,
+html[data-ui='bauhaus-modern'] [data-page='contact'][data-layout='bauhaus'] header {
+  text-align: left;
+}
+
+html[data-ui='bauhaus-modern'] [data-page='events'][data-layout='bauhaus'] [data-part='event-card'] {
+  box-shadow: 5px 5px 0 var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-page='recruitment'],
+html[data-ui='bauhaus-modern'] [data-page='events'],
+html[data-ui='bauhaus-modern'] [data-page='domains'],
+html[data-ui='bauhaus-modern'] [data-page='members'],
+html[data-ui='bauhaus-modern'] [data-page='contact'] {
+  overflow-x: clip;
+}
+
+/* Bauhaus home composition */
+html[data-ui='bauhaus-modern'] [data-page='home-bauhaus'] {
+  background: transparent;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-hero'] {
+  position: relative;
+  isolation: isolate;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-shape'] {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-shape'][data-kind='circle'] {
+  width: clamp(4rem, 12vw, 8rem);
+  height: clamp(4rem, 12vw, 8rem);
+  border-radius: 999px;
+  border: 3px solid var(--bh-ink);
+  background: var(--bh-yellow);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-shape'][data-kind='square'] {
+  width: clamp(3rem, 9vw, 6rem);
+  height: clamp(3rem, 9vw, 6rem);
+  border: 3px solid var(--bh-ink);
+  background: var(--bh-red);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-shape'][data-kind='triangle'] {
+  width: 0;
+  height: 0;
+  border-left: clamp(2rem, 5vw, 3.25rem) solid transparent;
+  border-right: clamp(2rem, 5vw, 3.25rem) solid transparent;
+  border-bottom: clamp(3.5rem, 9vw, 5.5rem) solid var(--bh-blue);
+  filter: drop-shadow(3px 3px 0 var(--bh-ink));
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-kicker'] {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+  padding: 0.25rem 0.55rem;
+  font-family: var(--bh-display);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #121212;
+  background: var(--bh-yellow);
+  border: 2px solid var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-panel'] {
+  position: relative;
+  border: 3px solid var(--bh-ink);
+  background: var(--bh-surface);
+  box-shadow: 8px 8px 0 var(--bh-ink);
+  overflow: hidden;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-panel'] [data-part='bh-band'] {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 2px solid var(--bh-ink);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-panel'] [data-part='bh-band'] > span {
+  min-height: 0.85rem;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-panel'] [data-part='bh-band'] > span:nth-child(1) { background: var(--bh-red); }
+html[data-ui='bauhaus-modern'] [data-part='bh-panel'] [data-part='bh-band'] > span:nth-child(2) { background: var(--bh-yellow); }
+html[data-ui='bauhaus-modern'] [data-part='bh-panel'] [data-part='bh-band'] > span:nth-child(3) { background: var(--bh-blue); }
+
+html[data-ui='bauhaus-modern'] [data-part='bh-num'] {
+  font-family: var(--bh-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--bh-red);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-domain'] {
+  border: 2px solid var(--bh-ink);
+  background: var(--bh-surface);
+  box-shadow: 4px 4px 0 var(--bh-ink);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-domain']:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--bh-blue);
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-domain'][data-tone='red'] { border-top: 8px solid var(--bh-red); }
+html[data-ui='bauhaus-modern'] [data-part='bh-domain'][data-tone='blue'] { border-top: 8px solid var(--bh-blue); }
+html[data-ui='bauhaus-modern'] [data-part='bh-domain'][data-tone='yellow'] { border-top: 8px solid var(--bh-yellow); }
+
+html[data-ui='bauhaus-modern'] [data-part='bh-step'][data-tone='red'] { border-top: 6px solid var(--bh-red); }
+html[data-ui='bauhaus-modern'] [data-part='bh-step'][data-tone='blue'] { border-top: 6px solid var(--bh-blue); }
+html[data-ui='bauhaus-modern'] [data-part='bh-step'][data-tone='yellow'] { border-top: 6px solid var(--bh-yellow); }
+
+html[data-ui='bauhaus-modern'] [data-part='bh-divider'] {
+  height: 3px;
+  background: var(--bh-ink);
+  border: 0;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-stat'] {
+  border: 2px solid var(--bh-ink);
+  background: var(--bh-surface);
+  padding: 0.85rem 1rem;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-stat'][data-tone='red'] { background: var(--bh-red); color: #fffcf7; }
+html[data-ui='bauhaus-modern'] [data-part='bh-stat'][data-tone='blue'] { background: var(--bh-blue); color: #fffcf7; }
+html[data-ui='bauhaus-modern'] [data-part='bh-stat'][data-tone='yellow'] { background: var(--bh-yellow); color: #121212; }
+
+html[data-ui='bauhaus-modern'] [data-part='bh-stat'] [data-part='value'] {
+  font-family: var(--bh-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+html[data-ui='bauhaus-modern'] [data-part='bh-stat'] [data-part='label'] {
+  margin-top: 0.35rem;
+  font-family: var(--bh-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+/* ===== 5. User preferences ===== */
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui='bauhaus-modern'] .ui-card,
+  html[data-ui='bauhaus-modern'] .ui-solid,
+  html[data-ui='bauhaus-modern'] .ui-pill,
+  html[data-ui='bauhaus-modern'] .ui-chip,
+  html[data-ui='bauhaus-modern'] .ui-thumb,
+  html[data-ui='bauhaus-modern'] .ui-switch::after,
+  html[data-ui='bauhaus-modern'] .ui-switch[data-shell='theme'] [data-part='knob'],
+  html[data-ui='bauhaus-modern'] [data-shell='nav'] .ui-thumb,
+  html[data-ui='bauhaus-modern'] [data-part='member'] img,
+  html[data-ui='bauhaus-modern'] [data-part='tabbar'] > [role='tab'],
+  html[data-ui='bauhaus-modern'] [data-part='events-list'] > .ui-well,
+  html[data-ui='bauhaus-modern'] [data-part='compare-row'],
+  html[data-ui='bauhaus-modern'] [data-part='bh-domain'],
+  html[data-ui='bauhaus-modern'] [data-part='event-card'] {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='bauhaus-modern'] [data-shell='nav'],
+  html[data-ui='bauhaus-modern'] [data-shell='menu'],
+  html[data-ui='bauhaus-modern'] [data-shell='dock'] .ui-card,
+  html[data-ui='bauhaus-modern'] .ui-card,
+  html[data-ui='bauhaus-modern'] .ui-dialog,
+  html[data-ui='bauhaus-modern'] .ui-tooltip,
+  html[data-ui='bauhaus-modern'] .ui-nav,
+  html[data-ui='bauhaus-modern'] [data-part='filter-bar'],
+  html[data-ui='bauhaus-modern'] [data-part='domain-bar'] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--bh-surface);
+  }
+
+  html[data-ui='bauhaus-modern'] [data-shell='nav'],
+  html[data-ui='bauhaus-modern'] [data-part='domain-bar'],
+  html[data-ui='bauhaus-modern'] [data-part='filter-bar'] {
+    background-color: var(--bh-page) !important;
+  }
+
+  html[data-ui='bauhaus-modern'] [data-part='send-overlay'] {
+    background: var(--bh-page);
+  }
+}

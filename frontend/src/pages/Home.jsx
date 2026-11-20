@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { useTheme } from '../lib/theme';
 import { useUiDesign } from "../ui-designs/useUiDesign";
+import HomeBauhaus from "./HomeBauhaus";
 import HomeBlueprint from "./HomeBlueprint";
 import HomeCreativeCampus from "./HomeCreativeCampus";
 import HomeDarkLuxury from "./HomeDarkLuxury";
@@ -472,6 +473,10 @@ const Home = () => {
 
   if (design === "dark-luxury") {
     return <HomeDarkLuxury />;
+  }
+
+  if (design === "bauhaus-modern") {
+    return <HomeBauhaus />;
   }
 
   return (

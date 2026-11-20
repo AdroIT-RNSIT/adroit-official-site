@@ -30,7 +30,8 @@ export default function Events() {
   const campus = design === "creative-campus";
   const blueprint = design === "blueprint";
   const luxury = design === "dark-luxury";
-  const editorial = brutal || futuristic || campus || blueprint || luxury;
+  const bauhaus = design === "bauhaus-modern";
+  const editorial = brutal || futuristic || campus || blueprint || luxury || bauhaus;
   const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
     <div
@@ -46,7 +47,9 @@ export default function Events() {
                 ? "blueprint"
                 : luxury
                   ? "luxury"
-                  : undefined
+                  : bauhaus
+                    ? "bauhaus"
+                    : undefined
       }
       className="relative min-h-screen overflow-x-clip bg-page pb-16 pt-8 text-ink"
     >
@@ -77,7 +80,12 @@ export default function Events() {
               Calendar · curated season
             </p>
           )}
-          <h1 className={`ui-heading fluid-h1 mb-4 font-extrabold text-ink ${brutal ? "uppercase tracking-tight" : ""}`}>
+          {bauhaus && (
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+              Grid · season calendar
+            </p>
+          )}
+          <h1 className={`ui-heading fluid-h1 mb-4 font-extrabold text-ink ${brutal || bauhaus ? "uppercase tracking-tight" : ""}`}>
             Events
           </h1>
           <p className={`max-w-2xl text-base text-ink-muted sm:text-lg ${editorial ? "" : "mx-auto"}`}>
