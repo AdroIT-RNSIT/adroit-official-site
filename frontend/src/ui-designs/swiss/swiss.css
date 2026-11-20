@@ -568,6 +568,10 @@ html[data-ui='swiss'] [data-shell='footer'] {
   color: var(--swiss-ink);
 }
 
+html[data-ui='swiss'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+}
+
 html[data-ui='swiss'] [data-shell='footer'] .ui-card {
   padding: 1.5rem;
   border-radius: var(--swiss-radius);

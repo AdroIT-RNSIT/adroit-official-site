@@ -587,6 +587,11 @@ html[data-ui='creative-campus'] [data-shell='footer'] {
     linear-gradient(180deg, color-mix(in srgb, var(--cc-peach) 70%, transparent), var(--cc-peach));
 }
 
+html[data-ui='creative-campus'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+  box-shadow: var(--cc-shadow);
+}
+
 html[data-ui='creative-campus'] [data-shell='footer'] .ui-heading {
   font-family: var(--cc-label);
   font-size: 0.78rem;

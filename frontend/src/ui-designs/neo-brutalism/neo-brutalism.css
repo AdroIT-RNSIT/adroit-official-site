@@ -570,9 +570,16 @@ html[data-ui='neo-brutalism'] [data-shell='menu'] [data-part='divider'] {
 html[data-ui='neo-brutalism'] [data-shell='footer'] {
   border-top: var(--nb-border);
   background: var(--color-page);
+  padding-inline: 0;
 }
 
 html[data-ui='neo-brutalism'] [data-shell='footer'] .ui-card {
+  box-shadow: var(--nb-shadow);
+  overflow: visible;
+}
+
+html[data-ui='neo-brutalism'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
   box-shadow: var(--nb-shadow);
 }
 

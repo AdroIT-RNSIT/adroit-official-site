@@ -627,6 +627,11 @@ html[data-ui='blueprint'] [data-shell='footer'] .ui-card {
   padding: 1.5rem;
 }
 
+html[data-ui='blueprint'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+  border-color: color-mix(in srgb, var(--bp-cyan) 32%, transparent);
+}
+
 html[data-ui='blueprint'] [data-shell='footer'] .ui-heading {
   font-family: var(--bp-mono);
   font-size: 0.68rem;

@@ -543,7 +543,7 @@ export default function Contact() {
     <div
       data-page="contact"
       data-layout={brutal ? "brutal" : undefined}
-      className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-12 text-ink sm:pb-16"
+      className="relative min-h-screen overflow-x-clip bg-page pb-16 pt-8 text-ink sm:pb-20"
     >
       <style>{CSS}</style>
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

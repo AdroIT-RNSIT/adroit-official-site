@@ -92,7 +92,7 @@ export default function HomeNeoBrutal() {
         AdroIT · RNSIT CSE · Build · Ship · Show
       </div>
 
-      <section data-part="nb-hero" className="relative px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-20">
+      <section data-part="nb-hero" className="relative overflow-x-clip px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-20">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-stretch lg:gap-6">
           <div className="flex flex-col justify-end">
             <p className="mb-4 font-mono text-xs font-bold uppercase tracking-[0.22em] text-ink-muted">

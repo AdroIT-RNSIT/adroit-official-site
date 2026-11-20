@@ -118,19 +118,19 @@ export default function HomeFuturistic() {
             </div>
           </div>
 
-          <div data-part="fd-panel" className="relative min-h-[20rem] p-6 sm:min-h-[24rem] sm:p-8">
-            <div className="absolute left-4 top-4 flex flex-wrap gap-2 sm:left-6 sm:top-6">
-              <span data-part="fd-label">NODE · LAB</span>
-              <span data-part="fd-label">AI · SEC · CLOUD</span>
-            </div>
-            <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+          <div data-part="fd-panel" className="relative flex min-h-[18rem] flex-col gap-6 overflow-hidden p-5 sm:min-h-[22rem] sm:p-7">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div className="flex flex-wrap gap-2">
+                <span data-part="fd-label">NODE · LAB</span>
+                <span data-part="fd-label">AI · SEC · CLOUD</span>
+              </div>
               <span data-part="fd-label">v2026.1</span>
             </div>
 
-            <div className="flex h-full min-h-[16rem] flex-col items-center justify-center pt-10 sm:min-h-[18rem]">
+            <div className="flex flex-1 flex-col items-center justify-center py-4">
               <img
                 alt="AdroIT"
-                className="mb-6 h-20 w-auto object-contain sm:h-28"
+                className="mb-5 h-20 w-auto object-contain sm:h-28"
                 src={isDark ? "/adroit-ctf-logo-white-blue.png" : "/adroit-ctf-logo.png"}
               />
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted">
@@ -138,7 +138,7 @@ export default function HomeFuturistic() {
               </p>
             </div>
 
-            <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-end justify-between gap-3 sm:bottom-6 sm:left-6 sm:right-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <span data-part="fd-label">LATENCY · LOW</span>
               <span data-part="fd-label">ENCRYPT · ON</span>
             </div>

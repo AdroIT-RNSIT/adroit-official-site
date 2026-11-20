@@ -12,7 +12,7 @@ export default function MainLayout({ children }) {
   return (
     <div
       data-surface={gridLines ? "grid" : undefined}
-      className={`min-h-dvh font-sans overflow-x-clip bg-page text-ink ${location.pathname === "/" ? "pb-32 lg:pb-0" : ""}`}
+      className={`flex min-h-dvh flex-col font-sans overflow-x-clip bg-page text-ink ${location.pathname === "/" ? "pb-28 lg:pb-0" : ""}`}
     >
       {gridLines && <InteractiveGrid />}
       <svg width="0" height="0" className="absolute" aria-hidden="true">
@@ -26,7 +26,7 @@ export default function MainLayout({ children }) {
       </svg>
       <Navbar />
       <Sidebar />  {/* No showOnHomepage prop! */}
-      <main className="pt-[var(--nav-height)] relative z-10">{children}</main>
+      <main className="relative z-10 flex-1 pt-[var(--nav-height)]">{children}</main>
       <Footer showMap={showMap} />
     </div>
   );

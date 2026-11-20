@@ -82,24 +82,24 @@ export default function HomeCreativeCampus() {
 
   return (
     <div data-page="home-campus" className="home-root relative min-h-dvh overflow-x-clip bg-page text-ink">
-      <section data-part="cc-hero" className="relative px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:px-10 lg:pb-24 lg:pt-16">
+      <section data-part="cc-hero" className="relative overflow-x-clip px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:px-10 lg:pb-24 lg:pt-16">
         <span
           data-part="cc-blob"
           data-tone="yellow"
           aria-hidden="true"
-          className="left-[8%] top-8 h-28 w-28 opacity-70 sm:h-40 sm:w-40"
+          className="pointer-events-none left-[8%] top-8 hidden h-28 w-28 opacity-70 sm:block sm:h-40 sm:w-40"
         />
         <span
           data-part="cc-blob"
           data-tone="sky"
           aria-hidden="true"
-          className="right-[6%] top-24 h-24 w-32 opacity-60 sm:h-36 sm:w-44"
+          className="pointer-events-none right-[6%] top-24 hidden h-24 w-32 opacity-60 sm:block sm:h-36 sm:w-44"
         />
         <span
           data-part="cc-blob"
           data-tone="lavender"
           aria-hidden="true"
-          className="bottom-6 left-[42%] hidden h-20 w-28 opacity-50 lg:block"
+          className="pointer-events-none bottom-6 left-[42%] hidden h-20 w-28 opacity-50 lg:block"
         />
 
         <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-12">
@@ -132,12 +132,12 @@ export default function HomeCreativeCampus() {
             </div>
           </div>
 
-          <div data-part="cc-panel" className="relative p-6 sm:p-8">
+          <div data-part="cc-panel" className="relative overflow-hidden p-6 sm:p-8">
             <span
               data-part="cc-blob"
               data-tone="coral"
               aria-hidden="true"
-              className="-right-6 -top-8 h-24 w-24 opacity-50"
+              className="pointer-events-none -right-8 -top-10 h-24 w-24 opacity-45"
             />
             <img
               alt="AdroIT"

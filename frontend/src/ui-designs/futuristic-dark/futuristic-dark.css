@@ -580,6 +580,11 @@ html[data-ui='futuristic-dark'] [data-shell='footer'] {
   background: color-mix(in srgb, var(--fd-void) 92%, transparent);
 }
 
+html[data-ui='futuristic-dark'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+  box-shadow: 0 12px 40px color-mix(in srgb, #000 22%, transparent);
+}
+
 html[data-ui='futuristic-dark'] [data-shell='footer'] .ui-heading {
   font-family: var(--fd-mono);
   font-size: 0.7rem;
@@ -977,8 +982,15 @@ html[data-ui='futuristic-dark'] [data-part='fd-stat'] [data-part='label'] {
   to { background-position: 0 0, 0 0, 48px 48px; }
 }
 
+/* Drift only the page backdrop layers, not layout geometry */
 html[data-ui='futuristic-dark'] body {
-  animation: fd-grid-drift 48s linear infinite;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-ui='futuristic-dark'] #root {
+    background-attachment: fixed;
+  }
 }
 
 /* ===== 5. User preferences ===== */
@@ -1001,7 +1013,6 @@ html[data-ui='futuristic-dark'] body {
     animation: none;
   }
 
-  html[data-ui='futuristic-dark'] body,
   html[data-ui='futuristic-dark'] [data-part='fd-status']::before,
   html[data-ui='futuristic-dark'] [data-part='fd-panel']::before {
     animation: none;

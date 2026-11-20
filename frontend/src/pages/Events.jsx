@@ -34,7 +34,7 @@ export default function Events() {
     <div
       data-page="events"
       data-layout={campus ? "campus" : futuristic ? "futuristic" : brutal ? "brutal" : undefined}
-      className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-ink"
+      className="relative min-h-screen overflow-x-clip bg-page pb-16 pt-8 text-ink"
     >
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className={`mb-12 ${editorial ? "text-left" : "text-center"}`}>

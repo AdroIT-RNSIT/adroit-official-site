@@ -516,6 +516,9 @@ html[data-ui='neu'] [data-shell='footer'] {
   color: var(--neu-ink);
 }
 html[data-ui='neu'] [data-shell='footer'] .ui-card { padding: 1.25rem; }
+html[data-ui='neu'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+}
 html[data-ui='neu'] [data-shell='footer'] [data-part='icon'] { color: var(--neu-accent); }
 html[data-ui='neu'] [data-shell='footer'] [data-part='dot'] {
   width: 6px;

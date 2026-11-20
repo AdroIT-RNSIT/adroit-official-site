@@ -533,6 +533,9 @@ html[data-ui='pencil'] [data-shell='footer'] {
 }
 
 html[data-ui='pencil'] [data-shell='footer'] .ui-card { padding: 1.25rem; }
+html[data-ui='pencil'] [data-shell='footer'] .ui-card:hover {
+  transform: none;
+}
 html[data-ui='pencil'] [data-shell='footer'] [data-part='icon'] { color: var(--pencil-blue); }
 html[data-ui='pencil'] [data-shell='footer'] [data-part='dot'] {
   background: var(--pencil-blue);
