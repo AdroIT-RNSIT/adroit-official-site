@@ -27,12 +27,13 @@ export default function Events() {
   const { design } = useUiDesign();
   const brutal = design === "neo-brutalism";
   const futuristic = design === "futuristic-dark";
-  const editorial = brutal || futuristic;
+  const campus = design === "creative-campus";
+  const editorial = brutal || futuristic || campus;
   const { upcoming: upcomingEvents, completed: completedEvents } = partitionEvents();
   return (
     <div
       data-page="events"
-      data-layout={futuristic ? "futuristic" : brutal ? "brutal" : undefined}
+      data-layout={campus ? "campus" : futuristic ? "futuristic" : brutal ? "brutal" : undefined}
       className="relative min-h-screen overflow-x-clip bg-page pt-8 pb-10 text-ink"
     >
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -45,6 +46,11 @@ export default function Events() {
           {futuristic && (
             <p className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-primary">
               Ops calendar · event stream
+            </p>
+          )}
+          {campus && (
+            <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              Campus calendar · what&apos;s on
             </p>
           )}
           <h1 className={`ui-heading fluid-h1 mb-4 font-extrabold text-ink ${brutal ? "uppercase tracking-tight" : ""}`}>

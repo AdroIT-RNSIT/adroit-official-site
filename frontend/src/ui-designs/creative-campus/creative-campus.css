@@ -1,0 +1,1084 @@
+/* Creative Campus. Every rule is scoped to html[data-ui='creative-campus'].
+   Warm cream campus studio: coral accents, playful rounded surfaces, friendly type.
+   Contract: docs/ADDING_A_UI_DESIGN.md */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+html[data-ui='creative-campus'] {
+  --cc-display: "Plus Jakarta Sans", "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --cc-body: "DM Sans", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --cc-label: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --cc-radius: 1.25rem;
+  --cc-radius-lg: 1.75rem;
+  --cc-radius-pill: 999px;
+  --cc-shadow: 0 10px 28px color-mix(in srgb, #292725 8%, transparent);
+  --cc-shadow-lg: 0 18px 40px color-mix(in srgb, #292725 12%, transparent);
+  --cc-border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  --cc-dots:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--cc-coral) 18%, transparent) 1px, transparent 0);
+  --cc-dots-size: 22px 22px;
+}
+
+/* ===== 1. Tokens =====
+   Light = cream campus (primary). Dark = warm evening studio. */
+html[data-ui='creative-campus'],
+html[data-ui='creative-campus'] .ui-kit-light {
+  --cc-cream: #fff9f0;
+  --cc-peach: #fff0e4;
+  --cc-surface: #ffffff;
+  --cc-coral: #ff7667;
+  --cc-orange: #ffaa55;
+  --cc-lavender: #b9a4f5;
+  --cc-sky: #91cff4;
+  --cc-mint: #a9d9b8;
+  --cc-yellow: #f7d66d;
+  --cc-ink: #292725;
+  --cc-muted: #6b6560;
+
+  --color-page: var(--cc-cream);
+  --color-surface: var(--cc-surface);
+  --color-ink: var(--cc-ink);
+  --color-ink-muted: var(--cc-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--cc-muted) 72%, var(--cc-cream));
+  --color-line: color-mix(in srgb, var(--cc-ink) 10%, #e8dccf);
+  --color-line-strong: color-mix(in srgb, var(--cc-coral) 28%, #d6c8b8);
+  --color-primary: var(--cc-coral);
+  --color-primary-ink: #e85a4b;
+  --color-on-primary: #fff9f0;
+
+  --grid-line: color-mix(in srgb, var(--cc-coral) 12%, transparent);
+  --grid-cell: color-mix(in srgb, var(--cc-surface) 80%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--cc-coral) 22%, transparent);
+}
+
+html[data-ui='creative-campus'].dark,
+html[data-ui='creative-campus'] .ui-kit-dark,
+html[data-ui='creative-campus'] [data-shell='splash'],
+html[data-ui='creative-campus'] [data-scheme='dark'] > * {
+  --cc-cream: #1a1614;
+  --cc-peach: #241f1c;
+  --cc-surface: #2a2420;
+  --cc-coral: #ff8a7c;
+  --cc-orange: #ffb86b;
+  --cc-lavender: #c4b2ff;
+  --cc-sky: #9dd7f8;
+  --cc-mint: #b5e0c3;
+  --cc-yellow: #f8de86;
+  --cc-ink: #f6efe6;
+  --cc-muted: #b0a59a;
+
+  --color-page: var(--cc-cream);
+  --color-surface: var(--cc-surface);
+  --color-ink: var(--cc-ink);
+  --color-ink-muted: var(--cc-muted);
+  --color-ink-subtle: color-mix(in srgb, var(--cc-muted) 70%, var(--cc-cream));
+  --color-line: color-mix(in srgb, var(--cc-ink) 12%, transparent);
+  --color-line-strong: color-mix(in srgb, var(--cc-coral) 35%, transparent);
+  --color-primary: var(--cc-coral);
+  --color-primary-ink: #ffb0a5;
+  --color-on-primary: #1a1614;
+
+  --grid-line: color-mix(in srgb, var(--cc-coral) 14%, transparent);
+  --grid-cell: color-mix(in srgb, var(--cc-surface) 70%, transparent);
+  --grid-cell-edge: color-mix(in srgb, var(--cc-coral) 28%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='splash'] {
+  --splash-bg: var(--cc-cream);
+  --splash-track: color-mix(in srgb, var(--cc-coral) 22%, transparent);
+  --splash-accent: var(--cc-coral);
+}
+
+html[data-ui='creative-campus'],
+html[data-ui='creative-campus'] body,
+html[data-ui='creative-campus'] #root {
+  background-color: var(--cc-cream);
+  background-image:
+    radial-gradient(ellipse 70% 45% at 0% 0%, color-mix(in srgb, var(--cc-yellow) 35%, transparent), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 100% 8%, color-mix(in srgb, var(--cc-sky) 30%, transparent), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 80% 100%, color-mix(in srgb, var(--cc-lavender) 22%, transparent), transparent 55%),
+    var(--cc-dots);
+  background-size: auto, auto, auto, var(--cc-dots-size);
+  background-attachment: fixed;
+  color: var(--cc-ink);
+  font-family: var(--cc-body);
+  letter-spacing: -0.01em;
+}
+
+html[data-ui='creative-campus'] .ui-kit-light,
+html[data-ui='creative-campus'] .ui-kit-dark {
+  background-color: var(--cc-cream);
+  background-image:
+    radial-gradient(ellipse 70% 45% at 0% 0%, color-mix(in srgb, var(--cc-yellow) 28%, transparent), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 100% 8%, color-mix(in srgb, var(--cc-sky) 24%, transparent), transparent 50%),
+    var(--cc-dots);
+  background-size: auto, auto, var(--cc-dots-size);
+  color: var(--cc-ink);
+}
+
+html[data-ui='creative-campus'] .fluid-h1,
+html[data-ui='creative-campus'] .fluid-h2,
+html[data-ui='creative-campus'] .ui-heading.fluid-h1,
+html[data-ui='creative-campus'] .ui-heading.fluid-h2 {
+  font-family: var(--cc-display);
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+html[data-ui='creative-campus'] .fluid-h1 {
+  font-size: clamp(2.6rem, 7vw, 4.8rem);
+  line-height: 1.02;
+}
+
+html[data-ui='creative-campus'] .fluid-h2 {
+  font-size: clamp(1.95rem, 4.5vw, 3.4rem);
+  line-height: 1.06;
+}
+
+html[data-ui='creative-campus'] .font-mono,
+html[data-ui='creative-campus'] .uppercase {
+  font-family: var(--cc-label);
+}
+
+/* ===== 2. Semantic classes ===== */
+@layer components {
+  html[data-ui='creative-campus'] .ui-heading {
+    color: var(--cc-ink);
+    font-family: var(--cc-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+
+  html[data-ui='creative-campus'] .ui-card,
+  html[data-ui='creative-campus'] .ui-dialog,
+  html[data-ui='creative-campus'] .ui-tooltip,
+  html[data-ui='creative-campus'] .ui-nav {
+    color: var(--cc-ink);
+    background: var(--cc-surface);
+    border: var(--cc-border);
+    border-radius: var(--cc-radius-lg);
+    box-shadow: var(--cc-shadow);
+  }
+
+  html[data-ui='creative-campus'] .ui-card {
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  }
+
+  html[data-ui='creative-campus'] .ui-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--cc-shadow-lg);
+    border-color: color-mix(in srgb, var(--cc-coral) 35%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-dialog {
+    background: var(--cc-surface);
+    border: 2px solid color-mix(in srgb, var(--cc-lavender) 45%, transparent);
+    box-shadow: var(--cc-shadow-lg);
+  }
+
+  html[data-ui='creative-campus'] .ui-tooltip {
+    font-family: var(--cc-label);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    background: var(--cc-ink);
+    color: var(--cc-cream);
+    border: 0;
+    border-radius: 0.75rem;
+    box-shadow: var(--cc-shadow);
+  }
+
+  html[data-ui='creative-campus'] .ui-nav {
+    background: color-mix(in srgb, var(--cc-surface) 92%, transparent);
+    border-radius: var(--cc-radius);
+  }
+
+  html[data-ui='creative-campus'] .ui-nav > a[aria-current='page'] {
+    color: var(--cc-coral);
+  }
+
+  html[data-ui='creative-campus'] .ui-well,
+  html[data-ui='creative-campus'] .ui-input {
+    background: var(--cc-peach);
+    border: 1.5px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+    border-radius: var(--cc-radius);
+    color: var(--cc-ink);
+  }
+
+  html[data-ui='creative-campus'] .ui-input {
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    background: var(--cc-surface);
+  }
+
+  html[data-ui='creative-campus'] .ui-input::placeholder {
+    color: color-mix(in srgb, var(--cc-muted) 75%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-input[aria-invalid='true'] {
+    border-color: var(--cc-coral);
+  }
+
+  html[data-ui='creative-campus'] .ui-input:focus-visible {
+    outline: 2px solid var(--cc-coral);
+    outline-offset: 2px;
+    border-color: var(--cc-coral);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--cc-coral) 18%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--cc-radius-pill);
+    border: 2px solid color-mix(in srgb, var(--cc-ink) 12%, transparent);
+    background: var(--cc-coral);
+    color: var(--color-on-primary);
+    font-family: var(--cc-display);
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: -0.02em;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--cc-ink) 16%, transparent);
+    transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+  }
+
+  html[data-ui='creative-campus'] .ui-solid:hover {
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 0 color-mix(in srgb, var(--cc-ink) 16%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-solid:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--cc-ink) 16%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-solid:disabled,
+  html[data-ui='creative-campus'] .ui-solid[aria-disabled='true'] {
+    opacity: 0.45;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  html[data-ui='creative-campus'] .ui-pill,
+  html[data-ui='creative-campus'] .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: var(--cc-radius-pill);
+    border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+    background: var(--cc-surface);
+    color: var(--cc-ink);
+    font-family: var(--cc-label);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  html[data-ui='creative-campus'] .ui-chip {
+    min-height: 1.75rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  html[data-ui='creative-campus'] .ui-pill:hover,
+  html[data-ui='creative-campus'] .ui-chip:hover {
+    border-color: color-mix(in srgb, var(--cc-coral) 40%, transparent);
+    color: var(--cc-coral);
+  }
+
+  html[data-ui='creative-campus'] .ui-pill[aria-pressed='true'],
+  html[data-ui='creative-campus'] .ui-pill[aria-selected='true'],
+  html[data-ui='creative-campus'] .ui-chip[aria-pressed='true'],
+  html[data-ui='creative-campus'] .ui-chip[aria-selected='true'] {
+    background: color-mix(in srgb, var(--cc-coral) 16%, var(--cc-surface));
+    border-color: color-mix(in srgb, var(--cc-coral) 45%, transparent);
+    color: var(--cc-coral);
+  }
+
+  html[data-ui='creative-campus'] .ui-track {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    gap: 2px;
+    padding: 4px;
+    border-radius: var(--cc-radius-pill);
+    border: var(--cc-border);
+    background: var(--cc-peach);
+  }
+
+  html[data-ui='creative-campus'] .ui-track > button {
+    position: relative;
+    z-index: 1;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.9rem;
+    border: 0;
+    background: transparent;
+    color: var(--cc-muted);
+    font-family: var(--cc-label);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  html[data-ui='creative-campus'] .ui-thumb {
+    position: absolute;
+    z-index: 0;
+    border-radius: var(--cc-radius-pill);
+    background: var(--cc-surface);
+    border: 1.5px solid color-mix(in srgb, var(--cc-coral) 30%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--cc-coral) 18%, transparent);
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-ui='creative-campus'] .ui-switch {
+    position: relative;
+    width: 2.85rem;
+    height: 1.65rem;
+    border-radius: var(--cc-radius-pill);
+    border: 1.5px solid color-mix(in srgb, var(--cc-ink) 12%, transparent);
+    background: var(--cc-peach);
+    transition: background-color 160ms ease, border-color 160ms ease;
+  }
+
+  html[data-ui='creative-campus'] .ui-switch::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 1;
+  }
+
+  html[data-ui='creative-campus'] .ui-switch[aria-checked='true']::before,
+  html[data-ui='creative-campus'] .ui-switch[aria-pressed='true']::before {
+    background: color-mix(in srgb, var(--cc-coral) 18%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 999px;
+    background: var(--cc-surface);
+    border: 1.5px solid color-mix(in srgb, var(--cc-ink) 12%, transparent);
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  }
+
+  html[data-ui='creative-campus'] .ui-switch[aria-checked='true']::after,
+  html[data-ui='creative-campus'] .ui-switch[aria-pressed='true']::after {
+    transform: translateX(1.15rem);
+    background: var(--cc-coral);
+    border-color: color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  }
+
+  html[data-ui='creative-campus'] .ui-solid:focus-visible,
+  html[data-ui='creative-campus'] .ui-pill:focus-visible,
+  html[data-ui='creative-campus'] .ui-chip:focus-visible,
+  html[data-ui='creative-campus'] .ui-switch:focus-visible,
+  html[data-ui='creative-campus'] .ui-nav > a:focus-visible,
+  html[data-ui='creative-campus'] .ui-track > button:focus-visible {
+    outline: 2px solid var(--cc-coral);
+    outline-offset: 3px;
+  }
+
+  html[data-ui='creative-campus'] .ui-led {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--cc-mint);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cc-mint) 35%, transparent);
+  }
+}
+
+/* Soften sharp radii from markup toward campus curves */
+html[data-ui='creative-campus'] .rounded-\[2rem\],
+html[data-ui='creative-campus'] .sm\:rounded-\[2rem\],
+html[data-ui='creative-campus'] .rounded-3xl,
+html[data-ui='creative-campus'] .sm\:rounded-3xl {
+  border-radius: var(--cc-radius-lg);
+}
+
+/* ===== 3. Shell ===== */
+html[data-ui='creative-campus'] [data-brand='instagram'] { --brand: #ff7667; }
+html[data-ui='creative-campus'] [data-brand='linkedin'] { --brand: #91cff4; }
+html[data-ui='creative-campus'] [data-brand='github'] { --brand: var(--cc-ink); }
+html[data-ui='creative-campus'] [data-domain='ml'] { --domain: #22d3ee; }
+html[data-ui='creative-campus'] [data-domain='cloud'] { --domain: #b9a4f5; }
+html[data-ui='creative-campus'] [data-domain='cyber'] { --domain: #ff7667; }
+html[data-ui='creative-campus'] [data-domain='data'] { --domain: #a9d9b8; }
+
+html[data-ui='creative-campus'] [data-shell='nav'] {
+  border-bottom: 1.5px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  background: color-mix(in srgb, var(--cc-cream) 86%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, #292725 5%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-track {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-track a {
+  color: var(--cc-muted);
+  font-family: var(--cc-label);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-track a:hover { color: var(--cc-ink); }
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-track a[aria-current='page'] {
+  color: var(--cc-coral);
+  font-weight: 700;
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-track a:focus-visible {
+  outline: 2px solid var(--cc-coral);
+  outline-offset: 2px;
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-thumb {
+  border: 0;
+  border-radius: var(--cc-radius-pill);
+  background: color-mix(in srgb, var(--cc-coral) 16%, var(--cc-surface));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--cc-coral) 28%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-thumb[data-state='rest'] { opacity: 0; }
+
+html[data-ui='creative-campus'] [data-shell='nav'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--cc-ink) 12%, transparent);
+}
+
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'] {
+  width: 2.85rem;
+  height: 2.5rem;
+  border-radius: var(--cc-radius-pill);
+  background: var(--cc-peach);
+}
+
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme']::before {
+  inset: 3px;
+  opacity: 1;
+  background: var(--cc-surface);
+}
+
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme']::after { content: none; }
+
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'] [data-part='knob'] {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 1.3rem;
+  height: 1.3rem;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 12%, transparent);
+  border-radius: 999px;
+  background: var(--cc-yellow);
+  color: var(--cc-ink);
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-part='knob'] {
+  transform: translateX(1.05rem);
+  background: var(--cc-lavender);
+}
+
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'] [data-glyph='sun'] { display: block; }
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'] [data-glyph='moon'],
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='sun'] { display: none; }
+html[data-ui='creative-campus'] .ui-switch[data-shell='theme'][aria-checked='true'] [data-glyph='moon'] { display: block; }
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-pill {
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  color: var(--cc-ink);
+  background: var(--cc-surface);
+}
+
+html[data-ui='creative-campus'] [data-shell='nav'] .ui-pill[aria-expanded='true'] {
+  background: var(--cc-coral);
+  color: var(--color-on-primary);
+  border-color: color-mix(in srgb, var(--cc-ink) 12%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='scrim'] {
+  background: color-mix(in srgb, #292725 45%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] {
+  border: 2px solid color-mix(in srgb, var(--cc-lavender) 40%, transparent);
+  border-radius: var(--cc-radius-lg);
+  background: var(--cc-surface);
+  box-shadow: var(--cc-shadow-lg);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='caret'] {
+  border-color: color-mix(in srgb, var(--cc-lavender) 40%, transparent);
+  background: var(--cc-surface);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='scroll'] { padding: 12px; }
+html[data-ui='creative-campus'] [data-shell='menu'] nav { gap: 4px; }
+html[data-ui='creative-campus'] [data-shell='menu'] .ui-well { margin-bottom: 12px; }
+
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='avatar'] {
+  background: var(--cc-yellow);
+  color: var(--cc-ink);
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='name'] {
+  font-family: var(--cc-display);
+  font-weight: 700;
+}
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='email'] {
+  font-family: var(--cc-label);
+  font-size: 0.7rem;
+  color: var(--cc-muted);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] .ui-chip[aria-current='page'] {
+  background: color-mix(in srgb, var(--cc-coral) 16%, transparent);
+  border-color: color-mix(in srgb, var(--cc-coral) 40%, transparent);
+  color: var(--cc-coral);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] .ui-chip:focus-visible {
+  outline: 2px solid var(--cc-coral);
+  outline-offset: 2px;
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='icon'] {
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-peach);
+  color: var(--cc-coral);
+  border-radius: 0.75rem;
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] [aria-current='page'] [data-part='icon'] {
+  background: var(--cc-coral);
+  color: var(--color-on-primary);
+}
+
+html[data-ui='creative-campus'] [data-shell='menu'] [data-part='divider'] {
+  background: color-mix(in srgb, var(--cc-ink) 10%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] {
+  border-top: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--cc-peach) 70%, transparent), var(--cc-peach));
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] .ui-heading {
+  font-family: var(--cc-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cc-coral);
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] [data-part='icon'] { color: var(--cc-coral); }
+html[data-ui='creative-campus'] [data-shell='footer'] [data-part='dot'] {
+  background: var(--cc-coral);
+  width: 0.4rem;
+  height: 0.4rem;
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] [data-part='domain-icon'] {
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-surface);
+  color: var(--domain, var(--cc-coral));
+  border-radius: 0.75rem;
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] .ui-pill {
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-surface);
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] [data-part='map'] {
+  border: 2px solid color-mix(in srgb, var(--cc-sky) 50%, transparent);
+  border-radius: var(--cc-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--cc-shadow);
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] .ui-chip:focus-visible {
+  outline: 2px solid var(--cc-coral);
+}
+
+html[data-ui='creative-campus'] [data-shell='footer'] [data-part='bar'] {
+  border-color: color-mix(in srgb, var(--cc-ink) 10%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='rail'] .ui-pill,
+html[data-ui='creative-campus'] [data-shell='dock'] .ui-pill {
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-surface);
+  box-shadow: var(--cc-shadow);
+}
+
+html[data-ui='creative-campus'] [data-shell='rail'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='creative-campus'] [data-shell='dock'] a:is(:hover, :focus-visible) .ui-pill,
+html[data-ui='creative-campus'] [data-shell='footer'] .ui-pill:is(:hover, :focus-visible) {
+  background: var(--brand, var(--cc-coral));
+  color: var(--color-on-primary);
+  border-color: color-mix(in srgb, var(--cc-ink) 12%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-shell='rail'] a:focus-visible,
+html[data-ui='creative-campus'] [data-shell='dock'] a:focus-visible,
+html[data-ui='creative-campus'] [data-shell='footer'] .ui-pill:focus-visible {
+  outline: 2px solid var(--cc-coral);
+  outline-offset: 2px;
+}
+
+html[data-ui='creative-campus'] [data-shell='rail'] [data-part='glow'] {
+  background: color-mix(in srgb, var(--cc-coral) 40%, transparent);
+  filter: blur(8px);
+}
+
+html[data-ui='creative-campus'] [data-shell='rail'] [data-part='line'] {
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--cc-yellow), var(--cc-coral), var(--cc-lavender));
+}
+
+html[data-ui='creative-campus'] [data-shell='rail'] [data-part='dot'] {
+  background: var(--cc-coral);
+  border: 2px solid var(--cc-cream);
+}
+
+html[data-ui='creative-campus'] [data-shell='dock'] .ui-card {
+  border: 2px solid color-mix(in srgb, var(--cc-lavender) 40%, transparent);
+  background: var(--cc-surface);
+  box-shadow: var(--cc-shadow-lg);
+}
+
+html[data-ui='creative-campus'] [data-shell='splash'] {
+  background-color: var(--cc-cream);
+  background-image:
+    radial-gradient(ellipse 60% 50% at 30% 40%, color-mix(in srgb, var(--cc-yellow) 35%, transparent), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 75% 55%, color-mix(in srgb, var(--cc-sky) 30%, transparent), transparent 55%);
+}
+
+html[data-ui='creative-campus'] [data-shell='splash'] [data-part='track'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-surface);
+}
+
+html[data-ui='creative-campus'] [data-shell='splash'] [data-part='fill'] {
+  background: linear-gradient(90deg, var(--cc-coral), var(--cc-orange), var(--cc-yellow));
+}
+
+/* ===== 4. Page hooks (site-wide) ===== */
+html[data-ui='creative-campus'] [data-part='terminal'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 12%, transparent);
+  background: #2a2420;
+  color: #f6efe6;
+  box-shadow: var(--cc-shadow-lg);
+  border-radius: var(--cc-radius-lg);
+}
+
+html[data-ui='creative-campus'] [data-part='showcase'] [data-part='tabbar'] {
+  border-top: 1.5px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  background: var(--cc-peach);
+}
+
+html[data-ui='creative-campus'] [data-part='tabbar'] > [role='tab'] {
+  font-family: var(--cc-label);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+html[data-ui='creative-campus'] [data-part='tabbar'] > [aria-selected='true'] {
+  color: var(--cc-coral);
+  background: color-mix(in srgb, var(--cc-coral) 12%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='events-list'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  box-shadow: var(--cc-shadow);
+}
+
+html[data-ui='creative-campus'] [data-part='events-list'] > .ui-well {
+  border: 0;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-ui='creative-campus'] [data-part='events-list'] > .ui-well:last-child { border-bottom: 0; }
+html[data-ui='creative-campus'] [data-part='events-list'] > .ui-well:has(a:hover) {
+  background: color-mix(in srgb, var(--cc-yellow) 35%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='poster'],
+html[data-ui='creative-campus'] [data-part='event-card'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  border-radius: var(--cc-radius-lg);
+}
+
+html[data-ui='creative-campus'] [data-page='events'] [data-part='event-card']:nth-child(4n+1) {
+  background: color-mix(in srgb, var(--cc-yellow) 28%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='events'] [data-part='event-card']:nth-child(4n+2) {
+  background: color-mix(in srgb, var(--cc-sky) 28%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='events'] [data-part='event-card']:nth-child(4n+3) {
+  background: color-mix(in srgb, var(--cc-lavender) 26%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='events'] [data-part='event-card']:nth-child(4n) {
+  background: color-mix(in srgb, var(--cc-mint) 28%, var(--cc-surface));
+}
+
+html[data-ui='creative-campus'] [data-part='status'] {
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-yellow);
+  color: var(--cc-ink);
+}
+
+html[data-ui='creative-campus'] [data-part='status'][data-phase='live'] {
+  background: var(--cc-mint);
+}
+html[data-ui='creative-campus'] [data-part='status'][data-phase='completed'] {
+  background: var(--cc-peach);
+  color: var(--cc-muted);
+}
+
+html[data-ui='creative-campus'] [data-part='status-led'] {
+  display: inline-block !important;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+html[data-ui='creative-campus'] [data-part='member'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  border-radius: var(--cc-radius);
+  background: var(--cc-surface);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+html[data-ui='creative-campus'] [data-part='member']:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 color-mix(in srgb, var(--cc-ink) 10%, transparent);
+}
+html[data-ui='creative-campus'] [data-part='member'][data-selected] {
+  background: color-mix(in srgb, var(--cc-yellow) 45%, var(--cc-surface));
+  border-color: color-mix(in srgb, var(--cc-orange) 50%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-page='members'] [data-part='member']:nth-child(5n+1) {
+  background: color-mix(in srgb, var(--cc-peach) 55%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='members'] [data-part='member']:nth-child(5n+2) {
+  background: color-mix(in srgb, var(--cc-sky) 22%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='members'] [data-part='member']:nth-child(5n+3) {
+  background: color-mix(in srgb, var(--cc-mint) 24%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='members'] [data-part='member']:nth-child(5n+4) {
+  background: color-mix(in srgb, var(--cc-lavender) 22%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='members'] [data-part='member']:nth-child(5n) {
+  background: color-mix(in srgb, var(--cc-yellow) 28%, var(--cc-surface));
+}
+
+html[data-ui='creative-campus'] [data-part='inspector'] {
+  border: 2px solid color-mix(in srgb, var(--cc-lavender) 45%, transparent);
+  box-shadow: var(--cc-shadow-lg);
+}
+
+html[data-ui='creative-campus'] [data-part='filter-bar'],
+html[data-ui='creative-campus'] [data-part='domain-bar'] {
+  border-bottom: 1.5px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  background: color-mix(in srgb, var(--cc-cream) 92%, transparent) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+html[data-ui='creative-campus'] [data-part='banner'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  background: linear-gradient(135deg, var(--cc-peach), color-mix(in srgb, var(--cc-sky) 35%, var(--cc-surface)));
+  box-shadow: var(--cc-shadow);
+}
+
+html[data-ui='creative-campus'] [data-part='badge'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 10%, transparent) !important;
+  border-radius: 1rem !important;
+  background: var(--cc-coral) !important;
+  color: var(--color-on-primary) !important;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--cc-ink) 14%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='compare-row'] {
+  border-bottom: 1.5px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+}
+html[data-ui='creative-campus'] [data-part='compare-row']:hover,
+html[data-ui='creative-campus'] [data-part='compare-row'][data-active] {
+  background: color-mix(in srgb, var(--cc-yellow) 30%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='map-frame'],
+html[data-ui='creative-campus'] [data-page='contact'] [data-part='tile'] {
+  border: 2px solid color-mix(in srgb, var(--cc-sky) 45%, transparent);
+  border-radius: var(--cc-radius-lg);
+  box-shadow: var(--cc-shadow);
+}
+
+html[data-ui='creative-campus'] [data-page='contact'] [data-part='tile']:nth-child(3n+1) {
+  background: color-mix(in srgb, var(--cc-peach) 70%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='contact'] [data-part='tile']:nth-child(3n+2) {
+  background: color-mix(in srgb, var(--cc-mint) 30%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='contact'] [data-part='tile']:nth-child(3n) {
+  background: color-mix(in srgb, var(--cc-lavender) 28%, var(--cc-surface));
+}
+
+html[data-ui='creative-campus'] [data-part='form-well']:focus-within {
+  outline: 2px solid var(--cc-coral);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cc-coral) 16%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='doc-ref'] {
+  font-family: var(--cc-label);
+  font-weight: 600;
+  color: var(--cc-lavender);
+  letter-spacing: 0.08em;
+}
+
+html[data-ui='creative-campus'] [data-page='domains'] .ui-card {
+  border-radius: var(--cc-radius-lg);
+}
+
+html[data-ui='creative-campus'] [data-page='resources'] .ui-card {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-page='resources'] .ui-card:nth-child(4n+1) {
+  background: color-mix(in srgb, var(--cc-peach) 60%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='resources'] .ui-card:nth-child(4n+2) {
+  background: color-mix(in srgb, var(--cc-sky) 24%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='resources'] .ui-card:nth-child(4n+3) {
+  background: color-mix(in srgb, var(--cc-mint) 26%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-page='resources'] .ui-card:nth-child(4n) {
+  background: color-mix(in srgb, var(--cc-yellow) 30%, var(--cc-surface));
+}
+
+html[data-ui='creative-campus'] [data-page='event'] .ui-card,
+html[data-ui='creative-campus'] [data-page='paradox'] .ui-card,
+html[data-ui='creative-campus'] [data-page='bootcamp'] .ui-card {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-page='recruitment'] .ui-card {
+  background: linear-gradient(160deg, var(--cc-peach), color-mix(in srgb, var(--cc-lavender) 25%, var(--cc-surface)));
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-page='events'][data-layout='campus'] header,
+html[data-ui='creative-campus'] [data-page='members'][data-layout='campus'] > header,
+html[data-ui='creative-campus'] [data-page='domains'][data-layout='campus'] > .relative > section:first-child {
+  text-align: left;
+}
+
+html[data-ui='creative-campus'] [data-page='events'][data-layout='campus'] [data-part='event-card'] {
+  border-radius: 1.5rem 2.25rem 1.25rem 2rem;
+}
+
+/* Creative home composition */
+html[data-ui='creative-campus'] [data-page='home-campus'] {
+  background: transparent;
+}
+
+html[data-ui='creative-campus'] [data-part='cc-blob'] {
+  position: absolute;
+  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+  pointer-events: none;
+  z-index: 0;
+  animation: cc-float 9s ease-in-out infinite;
+}
+
+html[data-ui='creative-campus'] [data-part='cc-blob'][data-tone='coral'] {
+  background: color-mix(in srgb, var(--cc-coral) 45%, transparent);
+}
+html[data-ui='creative-campus'] [data-part='cc-blob'][data-tone='sky'] {
+  background: color-mix(in srgb, var(--cc-sky) 50%, transparent);
+  animation-delay: -2s;
+}
+html[data-ui='creative-campus'] [data-part='cc-blob'][data-tone='yellow'] {
+  background: color-mix(in srgb, var(--cc-yellow) 55%, transparent);
+  animation-delay: -4s;
+}
+html[data-ui='creative-campus'] [data-part='cc-blob'][data-tone='lavender'] {
+  background: color-mix(in srgb, var(--cc-lavender) 45%, transparent);
+  animation-delay: -1s;
+}
+
+html[data-ui='creative-campus'] [data-part='cc-hero'] {
+  position: relative;
+  isolation: isolate;
+}
+
+html[data-ui='creative-campus'] [data-part='cc-chip'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--cc-label);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--cc-radius-pill);
+  border: 1.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  background: var(--cc-surface);
+}
+
+html[data-ui='creative-campus'] [data-part='cc-panel'] {
+  position: relative;
+  border: 2.5px solid color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  border-radius: 2rem 1.25rem 2.25rem 1.5rem;
+  background: var(--cc-surface);
+  box-shadow: 0 8px 0 color-mix(in srgb, var(--cc-ink) 10%, transparent);
+  overflow: hidden;
+}
+
+html[data-ui='creative-campus'] [data-part='cc-domain'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  border-radius: 1.5rem 2rem 1.25rem 1.75rem;
+  background: var(--cc-surface);
+  box-shadow: 0 5px 0 color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-ui='creative-campus'] [data-part='cc-domain']:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 0 color-mix(in srgb, var(--cc-ink) 10%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='cc-domain'][data-tone='coral'] {
+  background: color-mix(in srgb, var(--cc-coral) 14%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-domain'][data-tone='sky'] {
+  background: color-mix(in srgb, var(--cc-sky) 28%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-domain'][data-tone='lavender'] {
+  background: color-mix(in srgb, var(--cc-lavender) 26%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-domain'][data-tone='mint'] {
+  background: color-mix(in srgb, var(--cc-mint) 30%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-domain'][data-tone='yellow'] {
+  background: color-mix(in srgb, var(--cc-yellow) 35%, var(--cc-surface));
+}
+
+html[data-ui='creative-campus'] [data-part='cc-event'] {
+  border: 2px solid color-mix(in srgb, var(--cc-ink) 8%, transparent);
+  border-radius: 1.35rem 1.9rem 1.2rem 1.7rem;
+  background: var(--cc-surface);
+  box-shadow: 0 5px 0 color-mix(in srgb, var(--cc-ink) 8%, transparent);
+}
+
+html[data-ui='creative-campus'] [data-part='cc-event'][data-tone='peach'] {
+  background: color-mix(in srgb, var(--cc-peach) 80%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-event'][data-tone='sky'] {
+  background: color-mix(in srgb, var(--cc-sky) 30%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-event'][data-tone='mint'] {
+  background: color-mix(in srgb, var(--cc-mint) 30%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-event'][data-tone='lavender'] {
+  background: color-mix(in srgb, var(--cc-lavender) 26%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-event'][data-tone='yellow'] {
+  background: color-mix(in srgb, var(--cc-yellow) 35%, var(--cc-surface));
+}
+html[data-ui='creative-campus'] [data-part='cc-event'][data-tone='coral'] {
+  background: color-mix(in srgb, var(--cc-coral) 14%, var(--cc-surface));
+}
+
+html[data-ui='creative-campus'] [data-part='cc-divider'] {
+  height: 0;
+  border: 0;
+  border-top: 2.5px dashed color-mix(in srgb, var(--cc-ink) 12%, transparent);
+}
+
+@keyframes cc-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(4deg); }
+}
+
+/* ===== 5. User preferences ===== */
+@media (prefers-reduced-motion: reduce) {
+  html[data-ui='creative-campus'] .ui-card,
+  html[data-ui='creative-campus'] .ui-solid,
+  html[data-ui='creative-campus'] .ui-pill,
+  html[data-ui='creative-campus'] .ui-chip,
+  html[data-ui='creative-campus'] .ui-thumb,
+  html[data-ui='creative-campus'] .ui-switch::after,
+  html[data-ui='creative-campus'] .ui-switch[data-shell='theme'] [data-part='knob'],
+  html[data-ui='creative-campus'] [data-shell='nav'] .ui-thumb,
+  html[data-ui='creative-campus'] [data-part='member'],
+  html[data-ui='creative-campus'] [data-part='tabbar'] > [role='tab'],
+  html[data-ui='creative-campus'] [data-part='events-list'] > .ui-well,
+  html[data-ui='creative-campus'] [data-part='compare-row'],
+  html[data-ui='creative-campus'] [data-part='cc-domain'],
+  html[data-ui='creative-campus'] [data-part='cc-blob'] {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ui='creative-campus'] [data-shell='nav'],
+  html[data-ui='creative-campus'] [data-shell='menu'],
+  html[data-ui='creative-campus'] [data-shell='dock'] .ui-card,
+  html[data-ui='creative-campus'] .ui-card,
+  html[data-ui='creative-campus'] .ui-dialog,
+  html[data-ui='creative-campus'] .ui-tooltip,
+  html[data-ui='creative-campus'] .ui-nav,
+  html[data-ui='creative-campus'] [data-page='events'] .ui-card,
+  html[data-ui='creative-campus'] [data-page='domains'] .ui-card,
+  html[data-ui='creative-campus'] [data-page='members'] .ui-card {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--cc-surface);
+  }
+
+  html[data-ui='creative-campus'] [data-shell='nav'],
+  html[data-ui='creative-campus'] [data-part='domain-bar'],
+  html[data-ui='creative-campus'] [data-part='filter-bar'] {
+    background-color: var(--cc-cream) !important;
+  }
+
+  html[data-ui='creative-campus'] [data-part='send-overlay'] {
+    background: var(--cc-cream);
+  }
+}

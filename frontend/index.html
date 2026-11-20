@@ -37,7 +37,7 @@
           var stored = localStorage.getItem("adroit-theme") || localStorage.getItem("adroit-nav-color");
           var dark = stored === "dark" || stored === "black";
           if (dark) document.documentElement.classList.add("dark");
-          var designs = ["glass", "neu", "pencil", "swiss", "blueprint", "neo-brutalism", "futuristic-dark"];
+          var designs = ["glass", "neu", "pencil", "swiss", "blueprint", "neo-brutalism", "futuristic-dark", "creative-campus"];
           var ui = localStorage.getItem("adroit-ui-design");
           if (designs.indexOf(ui) === -1) ui = "glass";
           var params = new URLSearchParams(location.search);
@@ -64,6 +64,8 @@
       html[data-ui="neo-brutalism"].dark, html[data-ui="neo-brutalism"].dark body { background-color: #121212; color: #f5f5f5; }
       html[data-ui="futuristic-dark"], html[data-ui="futuristic-dark"] body { background-color: #eef2f8; color: #0b1220; }
       html[data-ui="futuristic-dark"].dark, html[data-ui="futuristic-dark"].dark body { background-color: #05070f; color: #e8eef8; }
+      html[data-ui="creative-campus"], html[data-ui="creative-campus"] body { background-color: #fff9f0; color: #292725; }
+      html[data-ui="creative-campus"].dark, html[data-ui="creative-campus"].dark body { background-color: #1a1614; color: #f6efe6; }
     </style>
   </head>
   <body>

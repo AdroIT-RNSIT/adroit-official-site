@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Brain, Cloud, Shield, BarChart3, Megaphone, User, Search, X, Crown } from "lucide-react";
 import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import { useMemberGroups } from "../lib/memberGroups";
+import { useUiDesign } from "../ui-designs/useUiDesign";
 
 const DOMAINS = {
   ml: { icon: Brain, c: "#22d3ee" },
@@ -69,6 +70,8 @@ const CSS = `
 `;
 
 export default function Members() {
+  const { design } = useUiDesign();
+  const campus = design === "creative-campus";
   const memberGroups = useMemberGroups();
   const GROUPS = useMemo(() => buildGroups(memberGroups), [memberGroups]);
   const ALL = useMemo(() => GROUPS.flatMap((g) => g.items), [GROUPS]);
@@ -166,13 +169,22 @@ export default function Members() {
   }, [active, visibleGroups]);
 
   return (
-    <div data-page="members" className="relative min-h-dvh overflow-x-clip bg-page pt-6 font-sans text-ink antialiased lg:pt-8">
+    <div
+      data-page="members"
+      data-layout={campus ? "campus" : undefined}
+      className="relative min-h-dvh overflow-x-clip bg-page pt-6 font-sans text-ink antialiased lg:pt-8"
+    >
       <style>{CSS}</style>
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[44rem] text-ink/[0.08] dark:text-ink/20 bg-[radial-gradient(currentColor_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
       <header className="relative mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 pb-8 sm:px-6 lg:px-8">
         <div className="min-w-0">
+          {campus && (
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              People · domains · community
+            </p>
+          )}
           <h1 style={{ animationDelay: "90ms" }} className="ui-heading fluid-h1 members-rise mt-3 font-extrabold leading-[1.05] text-ink">
             AdroIT Members
           </h1>

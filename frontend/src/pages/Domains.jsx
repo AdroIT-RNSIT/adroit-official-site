@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { useMemberGroups } from '../lib/memberGroups';
 import { Link } from 'react-router-dom';
+import { useUiDesign } from '../ui-designs/useUiDesign';
 import {
   Brain,
   Cloud,
@@ -109,6 +110,8 @@ function LiquidTrack({ activeKey, layoutKey, label, className, children }) {
 }
 
 export default function Domains() {
+  const { design } = useUiDesign();
+  const campus = design === 'creative-campus';
   const memberGroups = useMemberGroups();
   const [activeDomain, setActiveDomain] = useState('ml');
   const [activePanel, setActivePanel] = useState('overview');
@@ -475,19 +478,28 @@ export default function Domains() {
   const showStats = currentDomain.stats.members != null;
 
   return (
-    <div data-page="domains" className="relative min-h-dvh overflow-x-clip bg-page pb-16 pt-6 font-sans text-ink lg:pt-8">
+    <div
+      data-page="domains"
+      data-layout={campus ? 'campus' : undefined}
+      className="relative min-h-dvh overflow-x-clip bg-page pb-16 pt-6 font-sans text-ink lg:pt-8"
+    >
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className="mb-8 text-center lg:mb-16"
+          className={`mb-8 lg:mb-16 ${campus ? 'text-left' : 'text-center'}`}
         >
+          {campus && (
+            <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              Tracks · projects · mentorship
+            </p>
+          )}
           <h1 className="ui-heading fluid-h1 mb-3 pb-2 font-extrabold text-ink lg:mb-6">
             Domains
           </h1>
 
-          <p className="mx-auto max-w-4xl text-base leading-relaxed text-ink-muted lg:fluid-lead">
+          <p className={`max-w-4xl text-base leading-relaxed text-ink-muted lg:fluid-lead ${campus ? '' : 'mx-auto'}`}>
             Explore AdroIT's technical tracks and the non-tech work behind events and outreach, with
             <span className="text-primary"> hands-on projects</span> and
             <span className="text-primary"> expert mentorship</span>

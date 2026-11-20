@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -81,6 +81,17 @@ export const DESIGNS = [
       sample: "futuristic",
     },
     loader: () => import("./futuristic-dark/futuristic-dark.css"),
+  },
+  {
+    id: "creative-campus",
+    label: "Creative Campus",
+    description: "Warm cream, coral accents, and a friendly student-community layout.",
+    preview: {
+      light: ["#fff9f0", "#ffffff", "#ff7667"],
+      dark: ["#1a1614", "#2a2420", "#ff8a7c"],
+      sample: "campus",
+    },
+    loader: () => import("./creative-campus/creative-campus.css"),
   },
 ];
 

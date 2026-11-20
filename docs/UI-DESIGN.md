@@ -104,9 +104,9 @@ The first-visit **intro splash** sits above all of this.
 
 ## 3. Design system
 
-The public site supports several **UI designs**. Today there are seven: **Liquid Glass** (`glass`, the
-default), **Soft Tactile** (`neu`), **Pencil Sketch** (`pencil`), **Swiss Editorial** (`swiss`), **Blueprint Tech** (`blueprint`), **Neo-Brutalism** (`neo-brutalism`), and **Futuristic Dark** (`futuristic-dark`). Pages mostly use semantic
-classes and colour tokens; some designs (like Neo-Brutalism and Futuristic Dark) also swap presentation layouts while keeping the same content and routes. Light and dark
+The public site supports several **UI designs**. Today there are eight: **Liquid Glass** (`glass`, the
+default), **Soft Tactile** (`neu`), **Pencil Sketch** (`pencil`), **Swiss Editorial** (`swiss`), **Blueprint Tech** (`blueprint`), **Neo-Brutalism** (`neo-brutalism`), **Futuristic Dark** (`futuristic-dark`), and **Creative Campus** (`creative-campus`). Pages mostly use semantic
+classes and colour tokens; some designs (like Neo-Brutalism, Futuristic Dark, and Creative Campus) also swap presentation layouts while keeping the same content and routes. Light and dark
 mode are separate from the design: every design styles both.
 
 To add a design, see [ADDING_A_UI_DESIGN.md](./ADDING_A_UI_DESIGN.md).

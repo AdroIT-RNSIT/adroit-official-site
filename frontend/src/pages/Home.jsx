@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { useTheme } from '../lib/theme';
 import { useUiDesign } from "../ui-designs/useUiDesign";
+import HomeCreativeCampus from "./HomeCreativeCampus";
 import HomeFuturistic from "./HomeFuturistic";
 import HomeNeoBrutal from "./HomeNeoBrutal";
 
@@ -457,6 +458,10 @@ const Home = () => {
 
   if (design === "futuristic-dark") {
     return <HomeFuturistic />;
+  }
+
+  if (design === "creative-campus") {
+    return <HomeCreativeCampus />;
   }
 
   return (

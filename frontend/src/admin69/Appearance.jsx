@@ -78,6 +78,18 @@ function sampleStyle(sample, surface, dark) {
       backgroundSize: "12px 12px",
     };
   }
+  if (sample === "campus") {
+    return {
+      background: surface,
+      border: `2px solid ${dark ? "rgb(255 138 124 / 0.45)" : "rgb(255 118 103 / 0.45)"}`,
+      borderRadius: "18px",
+      boxShadow: dark ? "0 6px 0 rgb(246 239 230 / 0.12)" : "0 6px 0 rgb(41 39 37 / 0.1)",
+      backgroundImage: dark
+        ? "radial-gradient(circle at 1px 1px, rgb(255 138 124 / 0.22) 1px, transparent 0)"
+        : "radial-gradient(circle at 1px 1px, rgb(255 118 103 / 0.18) 1px, transparent 0)",
+      backgroundSize: "10px 10px",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 
