@@ -33,7 +33,7 @@ Then:
 1. Fill in the tokens (section 3), then each semantic class (section 2), light and dark.
 2. Replace the description and the `preview` colours in `registry.js`. `preview.light` and
    `preview.dark` are `[page, surface, accent]`. Set `preview.sample` to `"glass"`, `"raised"`,
-   `"sketch"`, `"swiss"`, `"blueprint"`, `"brutal"`, `"futuristic"`, or `"campus"` if the admin swatch should draw that kind of mini card; leave it out for flat.
+   `"sketch"`, `"swiss"`, `"blueprint"`, `"brutal"`, `"futuristic"`, `"campus"`, or `"luxury"` if the admin swatch should draw that kind of mini card; leave it out for flat.
    If the design's page colour isn't plain white (light) and black (dark), add matching
    `html[data-ui="<id>"]` and `html[data-ui="<id>"].dark` background and text colours to the
    `<style>` in `frontend/index.html`, so the first paint and overscroll match the design.

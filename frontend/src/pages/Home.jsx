@@ -6,6 +6,7 @@ import { useTheme } from '../lib/theme';
 import { useUiDesign } from "../ui-designs/useUiDesign";
 import HomeBlueprint from "./HomeBlueprint";
 import HomeCreativeCampus from "./HomeCreativeCampus";
+import HomeDarkLuxury from "./HomeDarkLuxury";
 import HomeFuturistic from "./HomeFuturistic";
 import HomeNeoBrutal from "./HomeNeoBrutal";
 
@@ -467,6 +468,10 @@ const Home = () => {
 
   if (design === "blueprint") {
     return <HomeBlueprint />;
+  }
+
+  if (design === "dark-luxury") {
+    return <HomeDarkLuxury />;
   }
 
   return (

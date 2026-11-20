@@ -90,6 +90,19 @@ function sampleStyle(sample, surface, dark) {
       backgroundSize: "10px 10px",
     };
   }
+  if (sample === "luxury") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "rgb(201 168 108 / 0.45)" : "rgb(154 123 79 / 0.45)"}`,
+      borderRadius: "10px",
+      boxShadow: dark
+        ? "inset 0 1px 0 rgb(255 255 255 / 0.06), 0 14px 28px rgb(0 0 0 / 0.5)"
+        : "inset 0 1px 0 rgb(255 255 255 / 0.7), 0 10px 22px rgb(26 24 22 / 0.12)",
+      backgroundImage: dark
+        ? "linear-gradient(165deg, rgb(201 168 108 / 0.08), transparent 55%)"
+        : "linear-gradient(165deg, rgb(154 123 79 / 0.08), transparent 55%)",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 
