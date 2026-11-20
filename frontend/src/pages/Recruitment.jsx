@@ -9,7 +9,7 @@ export default function Recruitment() {
   }, []);
 
   return (
-    <div data-page="recruitment" className="mx-auto max-w-xl px-4 py-12 sm:px-6 sm:py-16">
+    <div data-page="recruitment" className="mx-auto max-w-xl overflow-x-clip px-4 py-12 sm:px-6 sm:py-16">
       <Link
         to="/"
         className="ui-pill inline-flex w-fit min-h-10 items-center gap-2 rounded-full px-3.5 py-1.5 text-sm text-ink transition-colors"

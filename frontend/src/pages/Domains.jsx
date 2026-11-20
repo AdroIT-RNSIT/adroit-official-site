@@ -113,6 +113,7 @@ export default function Domains() {
   const { design } = useUiDesign();
   const campus = design === 'creative-campus';
   const brutal = design === 'neo-brutalism';
+  const blueprint = design === 'blueprint';
   const memberGroups = useMemberGroups();
   const [activeDomain, setActiveDomain] = useState('ml');
   const [activePanel, setActivePanel] = useState('overview');
@@ -481,7 +482,7 @@ export default function Domains() {
   return (
     <div
       data-page="domains"
-      data-layout={campus ? 'campus' : brutal ? 'brutal' : undefined}
+      data-layout={campus ? 'campus' : brutal ? 'brutal' : blueprint ? 'blueprint' : undefined}
       className="relative min-h-dvh overflow-x-clip bg-page pb-16 pt-6 font-sans text-ink lg:pt-8"
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -489,7 +490,7 @@ export default function Domains() {
         {/* ===== HERO SECTION ===== */}
         <section
           ref={sectionRefs.hero}
-          className={`mb-8 lg:mb-16 ${campus || brutal ? 'text-left' : 'text-center'}`}
+          className={`mb-8 lg:mb-16 ${campus || brutal || blueprint ? 'text-left' : 'text-center'}`}
         >
           {campus && (
             <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -501,11 +502,16 @@ export default function Domains() {
               Color blocks / tech tracks
             </p>
           )}
+          {blueprint && (
+            <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-primary">
+              System / domains · schema 02
+            </p>
+          )}
           <h1 className={`ui-heading fluid-h1 mb-3 pb-2 font-extrabold text-ink lg:mb-6 ${brutal ? 'uppercase tracking-tight' : ''}`}>
             Domains
           </h1>
 
-          <p className={`max-w-4xl text-base leading-relaxed text-ink-muted lg:fluid-lead ${campus || brutal ? '' : 'mx-auto'}`}>
+          <p className={`max-w-4xl text-base leading-relaxed text-ink-muted lg:fluid-lead ${campus || brutal || blueprint ? '' : 'mx-auto'}`}>
             Explore AdroIT's technical tracks and the non-tech work behind events and outreach, with
             <span className="text-primary"> hands-on projects</span> and
             <span className="text-primary"> expert mentorship</span>

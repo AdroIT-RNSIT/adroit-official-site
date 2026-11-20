@@ -92,9 +92,11 @@ html[data-ui='blueprint'] #root {
   background-color: var(--bp-navy);
   background-image: var(--bp-grid);
   background-size: var(--bp-grid-size);
+  background-attachment: scroll;
   color: var(--bp-white);
   font-family: var(--bp-body);
   letter-spacing: -0.01em;
+  overflow-x: clip;
 }
 
 html[data-ui='blueprint'] .ui-kit-light,
@@ -759,70 +761,69 @@ html[data-ui='blueprint'] [data-shell='splash'] [data-part='fill'] {
   background: var(--bp-cyan);
 }
 
-/* ===== 4. Page hooks (non-home get stronger documentation look) ===== */
+/* ===== 4. Page hooks + blueprint home ===== */
 
-/* Technical section stamps — Events, Domains, Members, Contact, Resources, Event */
-html[data-ui='blueprint'] [data-page='events'] > .relative > header::before {
-  content: "PROJECT / EVENTS · DOC-REF 04";
-  display: block;
-  margin-bottom: 0.75rem;
-  font-family: var(--bp-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bp-cyan);
+html[data-ui='blueprint'] [data-page='home-blueprint'],
+html[data-ui='blueprint'] [data-page='events'],
+html[data-ui='blueprint'] [data-page='domains'],
+html[data-ui='blueprint'] [data-page='members'],
+html[data-ui='blueprint'] [data-page='contact'],
+html[data-ui='blueprint'] [data-page='resources'],
+html[data-ui='blueprint'] [data-page='recruitment'],
+html[data-ui='blueprint'] [data-page='event'],
+html[data-ui='blueprint'] [data-page='paradox'],
+html[data-ui='blueprint'] [data-page='bootcamp'] {
+  overflow-x: clip;
 }
 
-html[data-ui='blueprint'] [data-page='domains']::before {
-  content: "SYSTEM / DOMAINS · SCHEMA 02";
-  display: block;
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: 0 1rem 0.5rem;
-  font-family: var(--bp-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bp-cyan);
+html[data-ui='blueprint'] [data-page='home-blueprint'] [data-part='bp-sheet'] {
+  position: relative;
 }
 
-html[data-ui='blueprint'] [data-page='members']::before {
-  content: "DIRECTORY / MEMBERS · ROSTER 01";
-  display: block;
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: 0 1rem 0.5rem;
-  font-family: var(--bp-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bp-cyan);
+html[data-ui='blueprint'] [data-page='home-blueprint'] [data-part='bp-meta'] {
+  border-color: color-mix(in srgb, var(--bp-cyan) 28%, transparent);
 }
 
-html[data-ui='blueprint'] [data-page='contact']::before {
-  content: "MODULE / CONTACT · CHANNEL 07";
-  display: block;
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: 0 1rem 0.5rem;
-  font-family: var(--bp-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bp-cyan);
+html[data-ui='blueprint'] [data-page='home-blueprint'] [data-part='bp-hero'],
+html[data-ui='blueprint'] [data-page='home-blueprint'] section {
+  border-color: color-mix(in srgb, var(--bp-cyan) 22%, transparent);
 }
 
-html[data-ui='blueprint'] [data-page='resources']::before {
-  content: "ARCHIVE / RESOURCES · LIB 03";
-  display: block;
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 1rem 1rem 0.25rem;
-  font-family: var(--bp-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bp-cyan);
+html[data-ui='blueprint'] [data-page='home-blueprint'] [data-part='bp-titleblock'] {
+  background: color-mix(in srgb, var(--bp-deep) 94%, transparent);
+}
+
+html[data-ui='blueprint'] [data-page='home-blueprint'] [data-part='bp-module']:hover {
+  border-color: color-mix(in srgb, var(--bp-cyan) 60%, transparent);
+}
+
+html[data-ui='blueprint'] [data-page='events'][data-layout='blueprint'] header,
+html[data-ui='blueprint'] [data-page='domains'][data-layout='blueprint'] > .relative > section:first-child,
+html[data-ui='blueprint'] [data-page='members'][data-layout='blueprint'] > header,
+html[data-ui='blueprint'] [data-page='contact'][data-layout='blueprint'] header {
+  text-align: left;
+}
+
+html[data-ui='blueprint'] [data-page='events'][data-layout='blueprint'] [data-part='event-card'] {
+  border-radius: var(--bp-radius);
+}
+
+html[data-ui='blueprint'] [data-page='recruitment'] .ui-card {
+  border: var(--bp-border-strong);
+  background: color-mix(in srgb, var(--bp-deep) 94%, transparent);
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] .ui-card::before,
+html[data-ui='blueprint'] [data-shell='footer'] .ui-card::after {
+  content: none;
+}
+
+html[data-ui='blueprint'] [data-shell='footer'] [data-part='brand'] .ui-heading {
+  font-family: var(--bp-display);
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--bp-white);
 }
 
 html[data-ui='blueprint'] [data-page='event'] h1.ui-heading,

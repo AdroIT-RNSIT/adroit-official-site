@@ -52,7 +52,7 @@ export const DESIGNS = [
   {
     id: "blueprint",
     label: "Blueprint Tech",
-    description: "Navy engineering grids, cyan CAD outlines, and technical documentation layout.",
+    description: "CAD grids, cyan title blocks, and documentation-style layouts site-wide.",
     preview: {
       light: ["#f4f8fc", "#ffffff", "#0b7ea8"],
       dark: ["#071b33", "#0d2948", "#42d9f5"],
