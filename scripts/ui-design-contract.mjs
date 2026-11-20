@@ -98,7 +98,8 @@ export const PACK_TOKENS = [
 
 export const TODO_MARK = "TODO(ui-design)";
 
-export const ID_PATTERN = /^[a-z][a-z0-9-]{1,23}$/;
+// Digits may lead (e.g. 3d-immersive); still 2–24 chars of lowercase, digits, dashes.
+export const ID_PATTERN = /^[a-z0-9][a-z0-9-]{1,23}$/;
 
 // Matches `const UI_DESIGN_IDS = ["glass", "neu"];` in the server and `var designs = [...]` in index.html.
 export const SERVER_IDS = /const UI_DESIGN_IDS = \[([^\]]*)\];/;

@@ -117,6 +117,19 @@ function sampleStyle(sample, surface, dark) {
       backgroundPosition: "top left",
     };
   }
+  if (sample === "immersive") {
+    return {
+      background: surface,
+      border: `1px solid ${dark ? "rgb(34 211 238 / 0.4)" : "rgb(8 145 178 / 0.4)"}`,
+      borderRadius: "14px",
+      boxShadow: dark
+        ? "0 14px 28px rgb(0 0 0 / 0.5), 0 0 18px rgb(167 139 250 / 0.2)"
+        : "0 12px 24px rgb(15 23 42 / 0.12), 0 0 14px rgb(8 145 178 / 0.12)",
+      backgroundImage: dark
+        ? "radial-gradient(circle at 20% 30%, rgb(34 211 238 / 0.35), transparent 40%), radial-gradient(circle at 75% 65%, rgb(167 139 250 / 0.3), transparent 42%)"
+        : "radial-gradient(circle at 20% 30%, rgb(8 145 178 / 0.22), transparent 40%), radial-gradient(circle at 75% 65%, rgb(124 58 237 / 0.16), transparent 42%)",
+    };
+  }
   return { background: surface, border: `1px solid ${dark ? "rgb(255 255 255 / 0.12)" : "rgb(15 23 42 / 0.1)"}` };
 }
 

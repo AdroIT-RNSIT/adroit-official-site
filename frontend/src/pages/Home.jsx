@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ParticleStage, ACCENTS, AUTO_MS } from "../components/DomainParticleStage";
 import { useTheme } from '../lib/theme';
 import { useUiDesign } from "../ui-designs/useUiDesign";
+import Home3dImmersive from "./Home3dImmersive";
 import HomeBauhaus from "./HomeBauhaus";
 import HomeBlueprint from "./HomeBlueprint";
 import HomeCreativeCampus from "./HomeCreativeCampus";
@@ -477,6 +478,10 @@ const Home = () => {
 
   if (design === "bauhaus-modern") {
     return <HomeBauhaus />;
+  }
+
+  if (design === "3d-immersive") {
+    return <Home3dImmersive />;
   }
 
   return (

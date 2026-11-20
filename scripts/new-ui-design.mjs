@@ -40,7 +40,7 @@ const [id, ...labelParts] = process.argv.slice(2);
 const label = labelParts.join(" ").trim();
 
 if (!id) fail("missing the design id.");
-if (!ID_PATTERN.test(id)) fail(`"${id}" is not a valid id. Use 2-24 lowercase letters, digits or dashes, starting with a letter.`);
+if (!ID_PATTERN.test(id)) fail(`"${id}" is not a valid id. Use 2-24 lowercase letters, digits or dashes.`);
 if (!label) fail("missing the label shown in the admin Appearance tab.");
 
 const file = (rel) => path.join(ROOT, rel);

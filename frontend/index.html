@@ -37,7 +37,7 @@
           var stored = localStorage.getItem("adroit-theme") || localStorage.getItem("adroit-nav-color");
           var dark = stored === "dark" || stored === "black";
           if (dark) document.documentElement.classList.add("dark");
-          var designs = ["glass", "neu", "pencil", "swiss", "blueprint", "neo-brutalism", "futuristic-dark", "creative-campus", "dark-luxury", "bauhaus-modern"];
+          var designs = ["glass", "neu", "pencil", "swiss", "blueprint", "neo-brutalism", "futuristic-dark", "creative-campus", "dark-luxury", "bauhaus-modern", "3d-immersive"];
           var ui = localStorage.getItem("adroit-ui-design");
           if (designs.indexOf(ui) === -1) ui = "glass";
           var params = new URLSearchParams(location.search);
@@ -70,6 +70,8 @@
       html[data-ui="dark-luxury"].dark, html[data-ui="dark-luxury"].dark body { background-color: #080808; color: #f3eee6; }
       html[data-ui="bauhaus-modern"], html[data-ui="bauhaus-modern"] body { background-color: #f4f1ea; color: #121212; }
       html[data-ui="bauhaus-modern"].dark, html[data-ui="bauhaus-modern"].dark body { background-color: #101010; color: #f5f2eb; }
+      html[data-ui="3d-immersive"], html[data-ui="3d-immersive"] body { background-color: #eef3fb; color: #0b1220; }
+      html[data-ui="3d-immersive"].dark, html[data-ui="3d-immersive"].dark body { background-color: #05070f; color: #e8eef8; }
     </style>
   </head>
   <body>

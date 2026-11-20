@@ -76,6 +76,7 @@ export default function Members() {
   const blueprint = design === "blueprint";
   const luxury = design === "dark-luxury";
   const bauhaus = design === "bauhaus-modern";
+  const immersive = design === "3d-immersive";
   const memberGroups = useMemberGroups();
   const GROUPS = useMemo(() => buildGroups(memberGroups), [memberGroups]);
   const ALL = useMemo(() => GROUPS.flatMap((g) => g.items), [GROUPS]);
@@ -175,7 +176,7 @@ export default function Members() {
   return (
     <div
       data-page="members"
-      data-layout={campus ? "campus" : brutal ? "brutal" : blueprint ? "blueprint" : luxury ? "luxury" : bauhaus ? "bauhaus" : undefined}
+      data-layout={campus ? "campus" : brutal ? "brutal" : blueprint ? "blueprint" : luxury ? "luxury" : bauhaus ? "bauhaus" : immersive ? "immersive" : undefined}
       className="relative min-h-dvh overflow-x-clip bg-page pt-6 font-sans text-ink antialiased lg:pt-8"
     >
       <style>{CSS}</style>
@@ -207,6 +208,11 @@ export default function Members() {
           {bauhaus && (
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
               Crew · grid directory
+            </p>
+          )}
+          {immersive && (
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+              Crew · spatial directory
             </p>
           )}
           <h1 style={{ animationDelay: "90ms" }} className={`ui-heading fluid-h1 members-rise mt-3 font-extrabold leading-[1.05] text-ink ${brutal || bauhaus ? "uppercase tracking-tight" : ""}`}>

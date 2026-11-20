@@ -3,7 +3,7 @@ export const PREVIEW_PARAM = "previewUi";
 const PREVIEW_KEY = "adroit-ui-preview";
 
 // preview.light / preview.dark are [page, surface, accent].
-// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
+// preview.sample ("glass" | "raised" | "sketch" | "swiss" | "blueprint" | "brutal" | "futuristic" | "campus" | "luxury" | "bauhaus" | "immersive") picks the mini sample drawn in the admin swatch; anything else draws a flat panel.
 export const DESIGNS = [
   {
     id: "glass",
@@ -114,6 +114,17 @@ export const DESIGNS = [
       sample: "bauhaus",
     },
     loader: () => import("./bauhaus-modern/bauhaus-modern.css"),
+  },
+  {
+    id: "3d-immersive",
+    label: "3D Immersive",
+    description: "Spatial depth, floating geometry, and a lightweight Three.js home stage.",
+    preview: {
+      light: ["#eef3fb", "#ffffff", "#0891b2"],
+      dark: ["#05070f", "#0c1220", "#22d3ee"],
+      sample: "immersive",
+    },
+    loader: () => import("./3d-immersive/3d-immersive.css"),
   },
 ];
 

@@ -26,14 +26,14 @@ This:
 
 The new design builds straight away and appears in **Admin69 → Appearance**. Until you fill it in, it
 renders with the flat fallbacks from `base.css`, plus starter values for the selected states. Ids are
-2–24 characters: lowercase letters, digits and dashes, starting with a letter.
+2–24 characters: lowercase letters, digits and dashes.
 
 Then:
 
 1. Fill in the tokens (section 3), then each semantic class (section 2), light and dark.
 2. Replace the description and the `preview` colours in `registry.js`. `preview.light` and
    `preview.dark` are `[page, surface, accent]`. Set `preview.sample` to `"glass"`, `"raised"`,
-   `"sketch"`, `"swiss"`, `"blueprint"`, `"brutal"`, `"futuristic"`, `"campus"`, `"luxury"`, or `"bauhaus"` if the admin swatch should draw that kind of mini card; leave it out for flat.
+   `"sketch"`, `"swiss"`, `"blueprint"`, `"brutal"`, `"futuristic"`, `"campus"`, `"luxury"`, `"bauhaus"`, or `"immersive"` if the admin swatch should draw that kind of mini card; leave it out for flat.
    If the design's page colour isn't plain white (light) and black (dark), add matching
    `html[data-ui="<id>"]` and `html[data-ui="<id>"].dark` background and text colours to the
    `<style>` in `frontend/index.html`, so the first paint and overscroll match the design.
